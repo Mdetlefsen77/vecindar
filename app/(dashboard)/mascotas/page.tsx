@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 import { Suspense } from "react";
 import MascotasFiltros from "./MascotasFiltros";
 import { type TipoAlertaMascota } from "@prisma/client";
@@ -39,8 +40,19 @@ export default async function MascotasPage({
 
   const abiertas = mascotas.filter((m) => m.estado).length;
 
+  // Card color state mapping
+  const getCardStyle = (
+    estado: boolean,
+    tipo: (typeof mascotas)[0]["tipo"],
+  ) => {
+    if (!estado) return "border-gray-200 bg-gray-50 opacity-70";
+    return tipo === "PERDIDA"
+      ? "border-orange-200 bg-orange-50"
+      : "border-green-200 bg-green-50";
+  };
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 space-y-5">
+    <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8 md:py-10 space-y-5">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -85,22 +97,17 @@ export default async function MascotasPage({
             <Link
               key={m.id}
               href={`/mascotas/${m.id}`}
-              className={`block rounded-xl border-2 p-4 hover:shadow-md transition-shadow ${
-                !m.estado
-                  ? "border-gray-200 bg-gray-50 opacity-70"
-                  : m.tipo === "PERDIDA"
-                    ? "border-orange-200 bg-orange-50"
-                    : "border-green-200 bg-green-50"
-              }`}
+              className={`block rounded-xl border-2 p-4 sm:p-5 md:p-6 hover:shadow-md transition-shadow ${getCardStyle(m.estado, m.tipo)}`}
             >
               <div className="flex items-start gap-3">
                 {/* Foto o placeholder */}
                 <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-200 flex items-center justify-center text-3xl">
                   {m.foto ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
+                    <Image
                       src={m.foto}
                       alt={m.nombre ?? "mascota"}
+                      width={64}
+                      height={64}
                       className="w-full h-full object-cover"
                     />
                   ) : m.tipo === "PERDIDA" ? (

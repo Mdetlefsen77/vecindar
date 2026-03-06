@@ -33,6 +33,7 @@ export default async function Page() {
 **Aplica especialmente a:** componentes con Leaflet, librerías que acceden a `window`/`document`, WebSockets, etc.
 
 **Archivos del proyecto donde se aplicó:**
+
 - `app/(dashboard)/incidentes/IncidentesMapaLazy.tsx`
 - `app/(dashboard)/incidentes/[id]/DetalleMapaMiniLazy.tsx`
 
@@ -68,14 +69,18 @@ if (!session?.user || session.user.role !== "ADMIN") {
 ## Pendientes / Backlog
 
 ### Filtros del mapa (`/mapa`) — pendiente catastral
+
 Los botones "Manzanas", "Incidentes" y "Alertas SOS" en la página del mapa están visualmente presentes pero sin conectar a los layers del mapa. Se activan cuando llegue el GeoJSON catastral del contacto en Catastro provincial.
+
 - "Manzanas" e "Incidentes" tienen layers ya construidos (`ManzanasLayer`, `IncidentesLayer`).
 - "Alertas SOS" en el mapa se construye después del catastral.
 
 ### Notificaciones push para Pánico SOS
+
 Cuando un vecino activa el botón SOS, el ideal es que admin/seguridad reciban una **notificación push nativa** (funciona con app cerrada en móvil).
 
 **Stack necesario:**
+
 - `web-push` npm package
 - Generar VAPID keys: `npx web-push generate-vapid-keys`
 - Guardar `VAPID_PUBLIC_KEY` y `VAPID_PRIVATE_KEY` en `.env`
@@ -93,11 +98,13 @@ Cuando un vecino activa el botón SOS, el ideal es que admin/seguridad reciban u
 Agregar la posibilidad de que el usuario suba una foto o captura desde el celular para facilitar la identificación y el manejo de los reportes. Esto se trata como backlog funcional y se implementará en una iteración futura.
 
 Objetivos:
+
 - Permitir adjuntar 1..N imágenes cuando se crea un `Incidente`, una `MascotaPerdida` o un `Requerimiento`.
 - Almacenar URLs en el registro correspondiente (por ejemplo, `incidentes.imagenes: String[]`, `requerimientos.imagenes: String[]`, `mascotas_perdidas.foto`).
 - Soportar carga desde móvil (input file), preview en el formulario y envío multipart/form-data o subida previa a un storage (S3 / Cloudinary) con retorno de URL.
 
 Requisitos técnicos (sugeridos):
+
 - Frontend: componente de upload reutilizable con preview y compresión opcional (client-side).
 - API: endpoint que acepte `multipart/form-data` y guarde archivos en storage seguro; o endpoints para recibir URL tras subir a un servicio externo.
 - Security: validar tipo (`image/*`), tamaño máximo (por ejemplo 5MB por imagen) y sanitizar nombres/paths.
@@ -105,11 +112,13 @@ Requisitos técnicos (sugeridos):
 - Prisma: guardar las URLs en los arrays `imagenes` o campo `foto` según el modelo (modificar `schema.prisma` cuando se implemente).
 
 Ejemplos de uso (backlog):
+
 - Requerimiento: "Foto de calle en mal estado" → Usuario sube foto mostrando el bache/rotura, se guarda en `requerimientos.imagenes` y se muestra en la ficha.
 - Mascotas: "Foto de la mascota perdida" → Usuario sube foto para identificarla rápidamente; aparece en listados y detalles.
 - Incidentes: "Foto del sospechoso" → Permitir adjuntar evidencia visual que ayude en la investigación.
 
 Notas operativas:
+
 - Guardar metadatos opcionales (mimetype, tamaño, nombre original, timestamp) para auditoría.
 - Considerar generación de thumbnails y limitación de resolución para mejorar performance móvil.
 - Revisar requisitos legales sobre almacenamiento de imágenes y privacidad antes de activar public access.

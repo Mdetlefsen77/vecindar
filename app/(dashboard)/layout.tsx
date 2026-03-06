@@ -25,7 +25,7 @@ export default async function DashboardLayout({
 
       {/* Header móvil */}
       <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 shadow-sm">
-        <span className="text-xl font-bold text-blue-600">Vecindar Univ 3</span>
+        <span className="text-xl font-bold text-brand">Vecindar</span>
         <div className="flex items-center gap-2">
           <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center">
             <span className="text-blue-700 font-semibold text-base">

@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 import AccionesMascota from "./AccionesMascota";
 
 type Params = { params: Promise<{ id: string }> };
@@ -64,12 +65,12 @@ export default async function DetalleMascotaPage({ params }: Params) {
 
       {/* Foto */}
       {mascota.foto && (
-        <div className="rounded-xl overflow-hidden border border-gray-200 max-h-72">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+        <div className="rounded-xl overflow-hidden border border-gray-200 relative h-72">
+          <Image
             src={mascota.foto}
             alt={mascota.nombre ?? "mascota"}
-            className="w-full object-cover"
+            fill
+            className="object-cover"
           />
         </div>
       )}
