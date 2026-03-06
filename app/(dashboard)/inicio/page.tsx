@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 import type {
   TipoIncidente,
   CategoriaReq,
@@ -226,7 +227,7 @@ export default async function InicioPage() {
             href: "/mapa",
             icon: <IconMap />,
             label: "Mapa",
-            cls: "bg-blue-600 hover:bg-blue-700",
+            cls: "bg-brand hover:bg-brand-dark",
           },
           {
             href: "/requerimientos",
@@ -456,15 +457,29 @@ export default async function InicioPage() {
                   >
                     {/* Avatar */}
                     {m.foto ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Image
                         src={m.foto}
                         alt={m.nombre ?? "mascota"}
+                        width={48}
+                        height={48}
                         className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0 border-2 border-gray-100"
                       />
                     ) : (
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 text-xl sm:text-2xl border-2 border-amber-200">
-                        🐾
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 border-2 border-amber-200">
+                        <svg
+                          className="w-5 h-5 text-amber-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={1.8}
+                          aria-hidden="true"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zm-5 0c-.83 0-1.5-.67-1.5-1.5v-5C8 2.67 8.67 2 9.5 2S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5zm8 5c-.83 0-1.5-.67-1.5-1.5v-3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5zm-11 0C5.67 15 5 14.33 5 13.5v-3C5 9.67 5.67 9 6.5 9S8 9.67 8 10.5v3c0 .83-.67 1.5-1.5 1.5zm5.5 5c-2.5 0-6-2.5-6-6 0-.83.67-1.5 1.5-1.5h9c.83 0 1.5.67 1.5 1.5 0 3.5-3.5 6-6 6z"
+                          />
+                        </svg>
                       </div>
                     )}
                     {/* Info */}

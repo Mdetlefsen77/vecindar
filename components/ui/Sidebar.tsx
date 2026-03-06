@@ -172,13 +172,13 @@ export default function Sidebar({
     <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-white border-r border-gray-200 z-40">
       {/* Logo */}
       <div className="flex items-center h-16 px-6 border-b border-gray-200 flex-shrink-0">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <HomeIcon />
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-brand rounded-lg flex items-center justify-center flex-shrink-0">
+            <span className="text-white text-sm font-black tracking-tight">
+              V
+            </span>
           </div>
-          <span className="text-xl font-bold text-blue-600">
-            Vecindar Univ 3
-          </span>
+          <span className="text-xl font-bold text-brand">Vecindar</span>
         </div>
       </div>
 
@@ -210,13 +210,13 @@ export default function Sidebar({
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all min-h-[48px] ${
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                 isActive
                   ? "bg-blue-50 text-blue-700 border border-blue-200"
                   : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
               }`}
             >
-              <span className={isActive ? "text-blue-600" : "text-gray-400"}>
+              <span className={isActive ? "text-blue-600" : "text-gray-500"}>
                 {item.icon}
               </span>
               <span>{item.label}</span>

@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const HomeIcon = () => (
   <svg
-    className="w-7 h-7"
+    className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -21,7 +21,7 @@ const HomeIcon = () => (
 
 const MapIcon = () => (
   <svg
-    className="w-7 h-7"
+    className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -51,7 +51,7 @@ const ShieldIcon = () => (
 );
 const SosIcon = () => (
   <svg
-    className="w-7 h-7"
+    className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -66,7 +66,7 @@ const SosIcon = () => (
 );
 const ClipboardIcon = () => (
   <svg
-    className="w-7 h-7"
+    className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -108,7 +108,7 @@ export default function BottomNav() {
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 bottom-nav-safe">
-      <div className="flex items-end justify-around h-[72px]">
+      <div className="flex items-end justify-around h-bottom-nav">
         {NAV_ITEMS.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(item.href + "/");
@@ -118,7 +118,7 @@ export default function BottomNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex flex-col items-center justify-center -mt-4"
+                className="flex flex-col items-center justify-center -mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 rounded-full"
               >
                 <div
                   className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all ${
@@ -138,9 +138,9 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className="flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors py-2"
+              className="flex flex-col items-center justify-center flex-1 min-h-[44px] gap-1 transition-colors py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 rounded-md"
             >
-              <span className={isActive ? "text-blue-600" : "text-gray-400"}>
+              <span className={isActive ? "text-blue-600" : "text-gray-500"}>
                 {item.icon}
               </span>
               <span

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "skills": {
+    "next-best-practices": {
+      "source": "vercel-labs/next-skills",
+      "sourceType": "github",
+      "computedHash": "515ba75178bd44875812d9a560bdf14651f86709f89cf1d4f209638e879807f3"
+    },
+    "prisma-orm-v7-skills": {
+      "source": "gocallum/nextjs16-agent-skills",
+      "sourceType": "github",
+      "computedHash": "31ed4e62967e69619fe62e0f82890eb64ede7f3edd1fa5cac3ca8735d9735d48"
+    },
+    "responsive-styling": {
+      "source": "kanopi/cms-cultivator",
+      "sourceType": "github",
+      "computedHash": "2e917096f1426991ae4b8aad3e2fa9251d35bb33af9dcdf7a8b6efdbc19c1112"
+    },
+    "tailwind-responsive-design": {
+      "source": "thebushidocollective/han",
+      "sourceType": "github",
+      "computedHash": "be0e7e40bdd242626c000a68ee022a7820202e9c03e764bf7ed92ea94f41e14e"
+    },
+    "ui-ux-pro-max": {
+      "source": "nextlevelbuilder/ui-ux-pro-max-skill",
+      "sourceType": "github",
+      "computedHash": "e688fcd4c5693e14ebd00d48e982dbd2be060fbea89f5f60531e79c704a1bc28"
+    }
+  }
+}
