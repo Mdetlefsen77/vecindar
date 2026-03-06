@@ -1,0 +1,234 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// ESTRUCTURA DEL BARRIO
+// ============================================
+
+model Manzana {
+  id        Int       @id @default(autoincrement())
+  numero    String    // "1", "2", "3", etc.
+  zona      String    // "Norte" o "Sur"
+  lotes     Lote[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("manzanas")
+}
+
+model Lote {
+  id              Int         @id @default(autoincrement())
+  numero          String      // número del lote
+  manzanaId       Int
+  manzana         Manzana     @relation(fields: [manzanaId], references: [id])
+  calleFrente     String      // "CALLE PUBLICA A"
+  habitado        Boolean     @default(false)
+  latitud         Float?      // coordenadas para el mapa
+  longitud        Float?
+  area            Float?      // área en m2
+  residentes      Residente[]
+  incidentes      Incidente[]
+  usuario         Usuario?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@unique([manzanaId, numero])
+  @@map("lotes")
+}
+
+model Residente {
+  id                    Int      @id @default(autoincrement())
+  nombre                String
+  telefono              String?
+  loteId                Int
+  lote                  Lote     @relation(fields: [loteId], references: [id], onDelete: Cascade)
+  esContactoPrincipal   Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@map("residentes")
+}
+
+// ============================================
+// USUARIOS Y AUTENTICACIÓN
+// ============================================
+
+model Usuario {
+  id                  Int                 @id @default(autoincrement())
+  email               String              @unique
+  password            String              // hash de bcrypt
+  nombre              String
+  telefono            String?
+  loteId              Int                 @unique
+  lote                Lote                @relation(fields: [loteId], references: [id])
+  verificado          Boolean             @default(false)
+  rol                 Rol                 @default(VECINO)
+  
+  // Relaciones
+  incidentes          Incidente[]
+  alertasPanico       AlertaPanico[]      @relation("UsuarioAlertas")
+  alertasAtendidas    AlertaPanico[]      @relation("AtiendeAlertas")
+  requerimientos      Requerimiento[]
+  comentariosReq      ComentarioReq[]
+  mascotasPerdidas    MascotaPerdida[]
+  
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+
+  @@map("usuarios")
+}
+
+enum Rol {
+  VECINO
+  REFERENTE_MANZANA
+  SEGURIDAD
+  ADMIN
+}
+
+// ============================================
+// SEGURIDAD - INCIDENTES Y PÁNICO
+// ============================================
+
+model Incidente {
+  id              Int             @id @default(autoincrement())
+  tipo            TipoIncidente
+  descripcion     String
+  fechaHora       DateTime        @default(now())
+  loteId          Int?
+  lote            Lote?           @relation(fields: [loteId], references: [id])
+  ubicacionText   String?         // descripción textual de la ubicación
+  latitud         Float?
+  longitud        Float?
+  reportadoPorId  Int
+  reportadoPor    Usuario         @relation(fields: [reportadoPorId], references: [id])
+  imagenes        String[]        // array de URLs
+  estado          EstadoIncidente @default(ACTIVO)
+  visibleVecinos  Boolean         @default(true) // control de visibilidad
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@map("incidentes")
+}
+
+enum TipoIncidente {
+  ROBO
+  ROBO_TENTATIVA
+  SOSPECHOSO
+  VANDALISMO
+  OTRO
+}
+
+enum EstadoIncidente {
+  ACTIVO
+  RESUELTO
+  FALSA_ALARMA
+}
+
+// Botón de Pánico
+model AlertaPanico {
+  id              Int           @id @default(autoincrement())
+  usuarioId       Int
+  usuario         Usuario       @relation("UsuarioAlertas", fields: [usuarioId], references: [id])
+  latitud         Float
+  longitud        Float
+  estado          EstadoAlerta  @default(ENVIADO)
+  atendioPorId    Int?
+  atendioPor      Usuario?      @relation("AtiendeAlertas", fields: [atendioPorId], references: [id])
+  notas           String?       // Notas del que atiende
+  createdAt       DateTime      @default(now())
+  recibidoAt      DateTime?
+  atendidoAt      DateTime?
+  cerradoAt       DateTime?
+  
+  @@map("alertas_panico")
+}
+
+enum EstadoAlerta {
+  ENVIADO
+  RECIBIDO
+  EN_ATENCION
+  CERRADO
+}
+
+// ============================================
+// REQUERIMIENTOS / RECLAMOS
+// ============================================
+
+model Requerimiento {
+  id              Int                   @id @default(autoincrement())
+  categoria       CategoriaReq
+  titulo          String
+  descripcion     String
+  estado          EstadoRequerimiento   @default(NUEVO)
+  usuarioId       Int
+  usuario         Usuario               @relation(fields: [usuarioId], references: [id])
+  imagenes        String[]
+  comentarios     ComentarioReq[]
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  
+  @@map("requerimientos")
+}
+
+model ComentarioReq {
+  id                Int             @id @default(autoincrement())
+  requerimientoId   Int
+  requerimiento     Requerimiento   @relation(fields: [requerimientoId], references: [id], onDelete: Cascade)
+  usuarioId         Int
+  usuario           Usuario         @relation(fields: [usuarioId], references: [id])
+  texto             String
+  createdAt         DateTime        @default(now())
+  
+  @@map("comentarios_requerimientos")
+}
+
+enum CategoriaReq {
+  ILUMINACION
+  PODA
+  CALLES
+  LIMPIEZA
+  SEGURIDAD
+  INFRAESTRUCTURA
+  OTRO
+}
+
+enum EstadoRequerimiento {
+  NUEVO
+  EN_PROGRESO
+  RESUELTO
+  CERRADO
+}
+
+// ============================================
+// MASCOTAS PERDIDAS
+// ============================================
+
+model MascotaPerdida {
+  id          Int                 @id @default(autoincrement())
+  tipo        TipoAlertaMascota
+  nombre      String?
+  descripcion String
+  foto        String?
+  zona        String              // descripción de la zona
+  contacto    String
+  estado      Boolean             @default(true) // true = abierta, false = resuelta
+  usuarioId   Int
+  usuario     Usuario             @relation(fields: [usuarioId], references: [id])
+  createdAt   DateTime            @default(now())
+  resueltaAt  DateTime?
+  
+  @@map("mascotas_perdidas")
+}
+
+enum TipoAlertaMascota {
+  PERDIDA
+  ENCONTRADA
+}
