@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma/client";
 import { auth } from "@/lib/auth";
-import { type Rol } from "@prisma/client";
+import { type Rol } from "@/generated/enums";
 
 // GET /api/usuarios — solo ADMIN
 export async function GET(req: NextRequest) {

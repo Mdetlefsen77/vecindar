@@ -2,7 +2,14 @@ import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 import { CATEGORIA_LABEL, ESTADO_CONFIG } from "../page";
+import {
+  calcularEstadoSLA,
+  PRIORIDAD_CONFIG,
+  ESTADO_SLA_CONFIG,
+  type ConfigSLAMap,
+} from "@/lib/utils/sla";
 import ComentarioForm from "./ComentarioForm";
 import CambiarEstado from "./CambiarEstado";
 
@@ -36,7 +43,18 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
 
   if (!r) notFound();
 
+  const slaRows = await prisma.configSLA.findMany();
+  const slaConfig: ConfigSLAMap = Object.fromEntries(
+    slaRows.map((row) => [row.prioridad, row.horasLimite]),
+  ) as ConfigSLAMap;
+
   const estadoCfg = ESTADO_CONFIG[r.estado];
+  const prioridadCfg = PRIORIDAD_CONFIG[r.prioridad];
+  const estadoSLA =
+    r.estado === "RESUELTO" || r.estado === "CERRADO"
+      ? null
+      : calcularEstadoSLA(r.createdAt, r.prioridad, slaConfig);
+  const slaCfg = estadoSLA ? ESTADO_SLA_CONFIG[estadoSLA] : null;
   const loteInfo = r.usuario.lote
     ? `MZ ${r.usuario.lote.manzana.numero} · Lote ${r.usuario.lote.numero}`
     : "";
@@ -80,11 +98,51 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
           >
             {estadoCfg.label}
           </span>
+          <span
+            className={`text-xs font-semibold px-2.5 py-1 rounded-full ${prioridadCfg.bg} ${prioridadCfg.color}`}
+          >
+            {prioridadCfg.label}
+          </span>
+          {slaCfg && (
+            <span
+              className={`text-xs font-semibold px-2.5 py-1 rounded-full ${slaCfg.bg} ${slaCfg.color}`}
+            >
+              {slaCfg.label}
+            </span>
+          )}
         </div>
 
         <p className="text-gray-800 text-sm leading-relaxed whitespace-pre-wrap">
           {r.descripcion}
         </p>
+
+        {/* Imágenes adjuntas */}
+        {r.imagenes.length > 0 && (
+          <div className="mt-4 pt-4 border-t border-gray-100">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+              Imágenes adjuntas
+            </p>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {r.imagenes.map((url, i) => (
+                <a
+                  key={url}
+                  href={url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 block hover:opacity-90 transition-opacity"
+                >
+                  <Image
+                    src={url}
+                    alt={`imagen ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 50vw, 33vw"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
           <span>
@@ -103,7 +161,11 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
 
       {/* Panel admin: cambiar estado */}
       {isAdmin && (
-        <CambiarEstado requerimientoId={r.id} estadoActual={r.estado} />
+        <CambiarEstado
+          requerimientoId={r.id}
+          estadoActual={r.estado}
+          prioridadActual={r.prioridad}
+        />
       )}
 
       {/* Comentarios */}

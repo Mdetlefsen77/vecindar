@@ -9,19 +9,29 @@ const ESTADOS = [
   { value: "FALSA_ALARMA", label: "Falsa alarma" },
 ];
 
+const PRIORIDADES = [
+  { value: "CRITICO", label: "Crítico" },
+  { value: "ALTO", label: "Alto" },
+  { value: "MEDIO", label: "Medio" },
+  { value: "BAJO", label: "Bajo" },
+];
+
 interface Props {
   incidenteId: number;
   estadoActual: string;
+  prioridadActual: string;
   visibleVecinos: boolean;
 }
 
 export default function CambiarEstadoIncidente({
   incidenteId,
   estadoActual,
+  prioridadActual,
   visibleVecinos,
 }: Props) {
   const router = useRouter();
   const [estado, setEstado] = useState(estadoActual);
+  const [prioridad, setPrioridad] = useState(prioridadActual);
   const [visible, setVisible] = useState(visibleVecinos);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -53,6 +63,12 @@ export default function CambiarEstadoIncidente({
     patch({ estado: nuevoEstado });
   }
 
+  function cambiarPrioridad(nuevaPrioridad: string) {
+    if (nuevaPrioridad === prioridad) return;
+    setPrioridad(nuevaPrioridad);
+    patch({ prioridad: nuevaPrioridad });
+  }
+
   function toggleVisibilidad() {
     const nuevoVisible = !visible;
     setVisible(nuevoVisible);
@@ -81,6 +97,26 @@ export default function CambiarEstadoIncidente({
                 }`}
               >
                 {e.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="text-sm font-medium text-gray-700 mb-2">Prioridad:</p>
+          <div className="flex gap-2 flex-wrap">
+            {PRIORIDADES.map((p) => (
+              <button
+                key={p.value}
+                onClick={() => cambiarPrioridad(p.value)}
+                disabled={loading}
+                className={`px-3 py-1.5 rounded-lg text-sm font-semibold border transition-colors disabled:opacity-60 ${
+                  prioridad === p.value
+                    ? "bg-amber-500 border-amber-500 text-white"
+                    : "bg-white border-gray-200 text-gray-600 hover:border-amber-400"
+                }`}
+              >
+                {p.label}
               </button>
             ))}
           </div>

@@ -21,9 +21,18 @@ const CATEGORIAS = [
   { value: "OTRO", label: "Otro" },
 ];
 
+const PRIORIDADES = [
+  { value: "", label: "Todas" },
+  { value: "CRITICO", label: "Crítico" },
+  { value: "ALTO", label: "Alto" },
+  { value: "MEDIO", label: "Medio" },
+  { value: "BAJO", label: "Bajo" },
+];
+
 interface Props {
   estadoActivo?: string;
   categoriaActiva?: string;
+  prioridadActiva?: string;
   soloMios: boolean;
   userRole: string;
 }
@@ -31,6 +40,7 @@ interface Props {
 export default function RequerimientosFiltros({
   estadoActivo,
   categoriaActiva,
+  prioridadActiva,
   soloMios,
   userRole,
 }: Props) {
@@ -41,6 +51,7 @@ export default function RequerimientosFiltros({
     const sp = new URLSearchParams();
     if (params.estado) sp.set("estado", params.estado);
     if (params.categoria) sp.set("categoria", params.categoria);
+    if (params.prioridad) sp.set("prioridad", params.prioridad);
     if (params.mine === "true") sp.set("mine", "true");
     const query = sp.toString();
     router.push(query ? `${pathname}?${query}` : pathname);
@@ -50,6 +61,7 @@ export default function RequerimientosFiltros({
     navigate({
       estado: v || undefined,
       categoria: categoriaActiva || undefined,
+      prioridad: prioridadActiva || undefined,
       mine: soloMios ? "true" : undefined,
     });
   }
@@ -58,6 +70,16 @@ export default function RequerimientosFiltros({
     navigate({
       estado: estadoActivo || undefined,
       categoria: v || undefined,
+      prioridad: prioridadActiva || undefined,
+      mine: soloMios ? "true" : undefined,
+    });
+  }
+
+  function setPrioridad(v: string) {
+    navigate({
+      estado: estadoActivo || undefined,
+      categoria: categoriaActiva || undefined,
+      prioridad: v || undefined,
       mine: soloMios ? "true" : undefined,
     });
   }
@@ -66,6 +88,7 @@ export default function RequerimientosFiltros({
     navigate({
       estado: estadoActivo || undefined,
       categoria: categoriaActiva || undefined,
+      prioridad: prioridadActiva || undefined,
       mine: !soloMios ? "true" : undefined,
     });
   }
@@ -89,25 +112,47 @@ export default function RequerimientosFiltros({
         ))}
       </div>
 
-      {/* Fila inferior: categoría + "solo los míos" */}
-      <div className="flex items-center gap-3 flex-wrap">
-        <select
-          value={categoriaActiva ?? ""}
-          onChange={(e) => setCategoria(e.target.value)}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-300"
-        >
-          {CATEGORIAS.map((c) => (
-            <option key={c.value} value={c.value}>
-              {c.label}
-            </option>
-          ))}
-        </select>
+      {/* Pills de categoría */}
+      <div className="flex gap-1.5 flex-wrap">
+        {CATEGORIAS.map((c) => (
+          <button
+            key={c.value}
+            onClick={() => setCategoria(c.value)}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              (categoriaActiva ?? "") === c.value
+                ? "bg-blue-600 text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300"
+            }`}
+          >
+            {c.label}
+          </button>
+        ))}
+      </div>
 
+      {/* Prioridad */}
+      <div className="flex gap-1.5 flex-wrap">
+        {PRIORIDADES.map((p) => (
+          <button
+            key={p.value}
+            onClick={() => setPrioridad(p.value)}
+            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              (prioridadActiva ?? "") === p.value
+                ? "bg-blue-600 text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300"
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Solo los míos */}
+      <div>
         <button
           onClick={toggleMios}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border transition-colors ${
             soloMios
-              ? "bg-blue-50 border-blue-300 text-blue-700"
+              ? "bg-blue-600 text-white border-blue-600"
               : "bg-white border-gray-200 text-gray-600 hover:border-blue-300"
           }`}
         >

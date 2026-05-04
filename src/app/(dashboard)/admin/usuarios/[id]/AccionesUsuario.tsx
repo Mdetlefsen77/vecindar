@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { type Rol } from "@prisma/client";
+import { type Rol } from "@/generated/enums";
 
 const ROLES: Rol[] = ["VECINO", "REFERENTE_MANZANA", "SEGURIDAD", "ADMIN"];
 const ROL_LABEL: Record<Rol, string> = {

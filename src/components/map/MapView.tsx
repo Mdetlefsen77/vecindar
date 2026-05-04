@@ -4,8 +4,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import ManzanasLayer from "./ManzanasLayer";
-import LotesLayer from "./LotesLayer";
+import LotesLayer, { type EstadoLote } from "./LotesLayer";
 import IncidentesLayer, { type IncidentePin } from "./IncidentesLayer";
+import AlertasLayer, { type AlertaPin } from "./AlertasLayer";
 import {
   BARRIO_CENTER,
   BARRIO_ZOOM,
@@ -29,18 +30,59 @@ L.Icon.Default.mergeOptions({
 
 interface MapViewProps {
   showManzanas?: boolean;
+  showIncidentes?: boolean;
+  showAlertas?: boolean;
   incidentes?: IncidentePin[];
+  alertas?: AlertaPin[];
 }
 
 export default function MapView({
   showManzanas = true,
+  showIncidentes = true,
+  showAlertas = true,
   incidentes = [],
+  alertas = [],
 }: MapViewProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<L.Map | null>(null);
   const [map, setMap] = useState<L.Map | null>(null);
   const [manzanaSeleccionada, setManzanaSeleccionada] =
     useState<ManzanaConfig | null>(null);
+  const [lotesEstado, setLotesEstado] = useState<Record<string, EstadoLote>>(
+    {},
+  );
+
+  // Fetchar estado de lotes cuando cambia la manzana seleccionada
+  useEffect(() => {
+    if (!manzanaSeleccionada) {
+      setLotesEstado({});
+      return;
+    }
+
+    void fetch(`/api/lotes?manzanaId=${manzanaSeleccionada.id}`)
+      .then((r) => r.json())
+      .then(
+        (data: {
+          lotes: {
+            numero: string;
+            usuario: { id: number } | null;
+            incidentes: { id: number }[];
+          }[];
+        }) => {
+          const estado: Record<string, EstadoLote> = {};
+          for (const lote of data.lotes) {
+            if (lote.incidentes.length > 0) {
+              estado[lote.numero] = "incidente";
+            } else if (lote.usuario !== null) {
+              estado[lote.numero] = "habitado";
+            }
+            // desocupado es el default en LotesLayer, no hace falta setearlo
+          }
+          setLotesEstado(estado);
+        },
+      )
+      .catch(() => setLotesEstado({}));
+  }, [manzanaSeleccionada]);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -90,8 +132,13 @@ export default function MapView({
           onManzanaClick={handleManzanaClick}
         />
       )}
-      <LotesLayer map={map} manzana={manzanaSeleccionada} />
-      <IncidentesLayer map={map} incidentes={incidentes} />
+      <LotesLayer
+        map={map}
+        manzana={manzanaSeleccionada}
+        lotesEstado={lotesEstado}
+      />
+      {showIncidentes && <IncidentesLayer map={map} incidentes={incidentes} />}
+      {showAlertas && <AlertasLayer map={map} alertas={alertas} />}
     </>
   );
 }

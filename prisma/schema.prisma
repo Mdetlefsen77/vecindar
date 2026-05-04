@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client"
+  output   = "../src/generated"
 }
 
 datasource db {
@@ -80,6 +81,8 @@ model Usuario {
   comentariosReq      ComentarioReq[]
   mascotasPerdidas    MascotaPerdida[]
   
+  pushSubscriptions   PushSubscription[]
+
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
@@ -111,6 +114,7 @@ model Incidente {
   reportadoPor    Usuario         @relation(fields: [reportadoPorId], references: [id])
   imagenes        String[]        // array de URLs
   estado          EstadoIncidente @default(ACTIVO)
+  prioridad       Prioridad       @default(MEDIO)
   visibleVecinos  Boolean         @default(true) // control de visibilidad
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
@@ -130,6 +134,22 @@ enum EstadoIncidente {
   ACTIVO
   RESUELTO
   FALSA_ALARMA
+}
+
+enum Prioridad {
+  CRITICO
+  ALTO
+  MEDIO
+  BAJO
+}
+
+model ConfigSLA {
+  id          Int       @id @default(autoincrement())
+  prioridad   Prioridad @unique
+  horasLimite Int       // horas hasta vencimiento
+  updatedAt   DateTime  @updatedAt
+
+  @@map("config_sla")
 }
 
 // Botón de Pánico
@@ -158,6 +178,19 @@ enum EstadoAlerta {
   CERRADO
 }
 
+// Suscripciones Web Push — una por dispositivo/navegador de admin o seguridad
+model PushSubscription {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  @@map("push_subscriptions")
+}
+
 // ============================================
 // REQUERIMIENTOS / RECLAMOS
 // ============================================
@@ -168,6 +201,7 @@ model Requerimiento {
   titulo          String
   descripcion     String
   estado          EstadoRequerimiento   @default(NUEVO)
+  prioridad       Prioridad             @default(MEDIO)
   usuarioId       Int
   usuario         Usuario               @relation(fields: [usuarioId], references: [id])
   imagenes        String[]

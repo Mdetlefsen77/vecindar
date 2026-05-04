@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
-import { TipoIncidente } from "@prisma/client";
+import { TipoIncidente, type Prioridad } from "@/generated/enums";
 
 // ── GET /api/incidentes ──────────────────────────────────────────────────────
 // Query params: ?tipo=ROBO  ?estado=ACTIVO  ?dias=30  ?manzanaId=5
@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
     loteId,
     visibleVecinos,
     imagenes,
+    prioridad,
   } = body;
 
   if (!tipo || !descripcion?.trim() || latitud == null || longitud == null) {
@@ -87,6 +88,7 @@ export async function POST(req: NextRequest) {
       loteId: loteId ? parseInt(loteId) : null,
       visibleVecinos: visibleVecinos ?? true,
       imagenes: imagenes ?? [],
+      prioridad: (prioridad as Prioridad) ?? "MEDIO",
       reportadoPorId: parseInt(session.user.id!),
     },
   });

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import ImageUpload from "@/components/forms/ImageUpload";
 
 const CATEGORIAS = [
   { value: "ILUMINACION", label: "Iluminación" },
@@ -19,6 +20,7 @@ export default function NuevoRequerimientoPage() {
   const [categoria, setCategoria] = useState("ILUMINACION");
   const [titulo, setTitulo] = useState("");
   const [descripcion, setDescripcion] = useState("");
+  const [imagenes, setImagenes] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +38,7 @@ export default function NuevoRequerimientoPage() {
       const res = await fetch("/api/requerimientos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ categoria, titulo, descripcion }),
+        body: JSON.stringify({ categoria, titulo, descripcion, imagenes }),
       });
 
       if (!res.ok) {
@@ -144,6 +146,17 @@ export default function NuevoRequerimientoPage() {
             placeholder="Describí el problema con el mayor detalle posible..."
             rows={5}
             className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none"
+          />
+        </div>
+
+        {/* Fotos adjuntas */}
+        <div>
+          <ImageUpload
+            multiple
+            maxFiles={3}
+            label="Fotos adjuntas"
+            value={imagenes}
+            onChange={setImagenes}
           />
         </div>
 

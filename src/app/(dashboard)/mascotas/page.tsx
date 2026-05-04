@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Suspense } from "react";
 import MascotasFiltros from "./MascotasFiltros";
-import { type TipoAlertaMascota } from "@prisma/client";
+import { type TipoAlertaMascota } from "@/generated/enums";
 
 type SearchParams = Promise<{ tipo?: string; estado?: string }>;
 
@@ -45,10 +45,11 @@ export default async function MascotasPage({
     estado: boolean,
     tipo: (typeof mascotas)[0]["tipo"],
   ) => {
-    if (!estado) return "border-gray-200 bg-gray-50 opacity-70";
+    if (!estado)
+      return "border border-l-4 border-l-gray-300 border-gray-200 bg-white";
     return tipo === "PERDIDA"
-      ? "border-orange-200 bg-orange-50"
-      : "border-green-200 bg-green-50";
+      ? "border border-l-4 border-l-orange-400 border-gray-200 bg-orange-50"
+      : "border border-l-4 border-l-green-500 border-gray-200 bg-green-50";
   };
 
   return (
@@ -79,10 +80,22 @@ export default async function MascotasPage({
         <MascotasFiltros />
       </Suspense>
 
-      {/* Listado */}
+      {/* Empty state */}
       {mascotas.length === 0 ? (
         <div className="text-center py-16 text-gray-400">
-          <div className="text-5xl mb-3">🐾</div>
+          <svg
+            className="w-12 h-12 mx-auto mb-3 opacity-40"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={1.5}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zm-5 0c-.83 0-1.5-.67-1.5-1.5v-5C8 2.67 8.67 2 9.5 2S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5zm8 5c-.83 0-1.5-.67-1.5-1.5v-3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5zm-11 0C5.67 15 5 14.33 5 13.5v-3C5 9.67 5.67 9 6.5 9S8 9.67 8 10.5v3c0 .83-.67 1.5-1.5 1.5zm5.5 5c-2.5 0-6-2.5-6-6 0-.83.67-1.5 1.5-1.5h9c.83 0 1.5.67 1.5 1.5 0 3.5-3.5 6-6 6z"
+            />
+          </svg>
           <p className="font-medium">No hay alertas con esos filtros.</p>
           <Link
             href="/mascotas/nuevo"
@@ -97,23 +110,33 @@ export default async function MascotasPage({
             <Link
               key={m.id}
               href={`/mascotas/${m.id}`}
-              className={`block rounded-xl border-2 p-4 sm:p-5 md:p-6 hover:shadow-md transition-shadow ${getCardStyle(m.estado, m.tipo)}`}
+              className={`block rounded-xl p-4 sm:p-5 hover:shadow-md transition-all group ${getCardStyle(m.estado, m.tipo)}`}
             >
               <div className="flex items-start gap-3">
                 {/* Foto o placeholder */}
-                <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-200 flex items-center justify-center text-3xl">
+                <div className="w-14 h-14 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-200 flex items-center justify-center">
                   {m.foto ? (
                     <Image
                       src={m.foto}
                       alt={m.nombre ?? "mascota"}
-                      width={64}
-                      height={64}
+                      width={56}
+                      height={56}
                       className="w-full h-full object-cover"
                     />
-                  ) : m.tipo === "PERDIDA" ? (
-                    "🐾"
                   ) : (
-                    "🐶"
+                    <svg
+                      className="w-7 h-7 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zm-5 0c-.83 0-1.5-.67-1.5-1.5v-5C8 2.67 8.67 2 9.5 2S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5zm8 5c-.83 0-1.5-.67-1.5-1.5v-3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5zm-11 0C5.67 15 5 14.33 5 13.5v-3C5 9.67 5.67 9 6.5 9S8 9.67 8 10.5v3c0 .83-.67 1.5-1.5 1.5zm5.5 5c-2.5 0-6-2.5-6-6 0-.83.67-1.5 1.5-1.5h9c.83 0 1.5.67 1.5 1.5 0 3.5-3.5 6-6 6z"
+                      />
+                    </svg>
                   )}
                 </div>
 
@@ -123,32 +146,45 @@ export default async function MascotasPage({
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
                         <span
-                          className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
+                          className={`text-xs px-2.5 py-0.5 rounded-full font-semibold ${
                             m.tipo === "PERDIDA"
                               ? "bg-orange-200 text-orange-800"
                               : "bg-green-200 text-green-800"
                           }`}
                         >
-                          {m.tipo === "PERDIDA"
-                            ? "🐾 Perdida"
-                            : "✅ Encontrada"}
+                          {m.tipo === "PERDIDA" ? "Perdida" : "Encontrada"}
                         </span>
                         {!m.estado && (
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-gray-200 text-gray-600 font-medium">
+                          <span className="text-xs px-2.5 py-0.5 rounded-full bg-gray-200 text-gray-600 font-medium">
                             Resuelta
                           </span>
                         )}
                       </div>
-                      <p className="font-bold text-gray-900 mt-1">
+                      <p className="font-bold text-gray-900 mt-1 text-[15px]">
                         {m.nombre ??
                           (m.tipo === "PERDIDA"
                             ? "Sin nombre"
                             : "Mascota encontrada")}
                       </p>
                     </div>
-                    <p className="text-xs text-gray-400 shrink-0">
-                      {new Date(m.createdAt).toLocaleDateString("es-AR")}
-                    </p>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <p className="text-xs text-gray-500">
+                        {new Date(m.createdAt).toLocaleDateString("es-AR")}
+                      </p>
+                      <svg
+                        className="w-4 h-4 text-gray-300 group-hover:text-blue-400 transition-colors"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
                   </div>
 
                   {/* Descripción */}
@@ -157,9 +193,24 @@ export default async function MascotasPage({
                   </p>
 
                   {/* Zona + autor */}
-                  <div className="flex items-center gap-3 mt-2 flex-wrap">
-                    <span className="text-xs text-gray-500">📍 {m.zona}</span>
-                    <span className="text-xs text-gray-400">
+                  <div className="flex items-center gap-3 mt-2.5 pt-2.5 border-t border-black/5 flex-wrap">
+                    <span className="flex items-center gap-1 text-xs text-gray-500">
+                      <svg
+                        className="w-3.5 h-3.5 flex-shrink-0"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      {m.zona}
+                    </span>
+                    <span className="text-xs text-gray-500">
                       por {m.usuario.nombre} · MZ{" "}
                       {m.usuario.lote.manzana.numero}
                     </span>

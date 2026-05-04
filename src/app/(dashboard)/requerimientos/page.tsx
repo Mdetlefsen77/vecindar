@@ -3,32 +3,70 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
 import RequerimientosFiltros from "./RequerimientosFiltros";
-import { type CategoriaReq, type EstadoRequerimiento } from "@prisma/client";
+import { type CategoriaReq, type EstadoRequerimiento } from "@/generated/enums";
+import {
+  calcularEstadoSLA,
+  PRIORIDAD_CONFIG,
+  ESTADO_SLA_CONFIG,
+  SLA_DEFAULTS,
+  type ConfigSLAMap,
+} from "@/lib/utils/sla";
 
 // ── Helpers de display ────────────────────────────────────────────────────────
 
-export const CATEGORIA_LABEL: Record<CategoriaReq, string> = {
-  ILUMINACION: "Iluminación",
-  PODA: "Poda",
-  CALLES: "Calles",
-  LIMPIEZA: "Limpieza",
-  SEGURIDAD: "Seguridad",
-  INFRAESTRUCTURA: "Infraestructura",
-  OTRO: "Otro",
+export const CATEGORIA_CONFIG: Record<
+  CategoriaReq,
+  { label: string; color: string }
+> = {
+  ILUMINACION: { label: "Iluminación", color: "bg-yellow-100 text-yellow-800" },
+  PODA: { label: "Poda", color: "bg-green-100 text-green-800" },
+  CALLES: { label: "Calles", color: "bg-stone-100 text-stone-700" },
+  LIMPIEZA: { label: "Limpieza", color: "bg-sky-100 text-sky-700" },
+  SEGURIDAD: { label: "Seguridad", color: "bg-red-100 text-red-700" },
+  INFRAESTRUCTURA: {
+    label: "Infraestructura",
+    color: "bg-orange-100 text-orange-700",
+  },
+  OTRO: { label: "Otro", color: "bg-gray-100 text-gray-600" },
 };
+
+export const CATEGORIA_LABEL: Record<CategoriaReq, string> = Object.fromEntries(
+  (
+    Object.entries(CATEGORIA_CONFIG) as [
+      CategoriaReq,
+      { label: string; color: string },
+    ][]
+  ).map(([k, v]) => [k, v.label]),
+) as Record<CategoriaReq, string>;
 
 export const ESTADO_CONFIG: Record<
   EstadoRequerimiento,
-  { label: string; bg: string; text: string }
+  { label: string; bg: string; text: string; border: string }
 > = {
-  NUEVO: { label: "Nuevo", bg: "bg-blue-100", text: "text-blue-700" },
+  NUEVO: {
+    label: "Nuevo",
+    bg: "bg-blue-100",
+    text: "text-blue-700",
+    border: "border-l-blue-500",
+  },
   EN_PROGRESO: {
     label: "En progreso",
-    bg: "bg-yellow-100",
-    text: "text-yellow-700",
+    bg: "bg-amber-100",
+    text: "text-amber-700",
+    border: "border-l-amber-400",
   },
-  RESUELTO: { label: "Resuelto", bg: "bg-green-100", text: "text-green-700" },
-  CERRADO: { label: "Cerrado", bg: "bg-gray-100", text: "text-gray-500" },
+  RESUELTO: {
+    label: "Resuelto",
+    bg: "bg-green-100",
+    text: "text-green-700",
+    border: "border-l-green-500",
+  },
+  CERRADO: {
+    label: "Cerrado",
+    bg: "bg-gray-100",
+    text: "text-gray-500",
+    border: "border-l-gray-300",
+  },
 };
 
 // ── Página ────────────────────────────────────────────────────────────────────
@@ -36,6 +74,7 @@ export const ESTADO_CONFIG: Record<
 type SearchParams = Promise<{
   estado?: string;
   categoria?: string;
+  prioridad?: string;
   mine?: string;
 }>;
 
@@ -47,14 +86,20 @@ export default async function RequerimientosPage({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const { estado, categoria, mine } = await searchParams;
+  const { estado, categoria, mine, prioridad } = await searchParams;
   const soloMios = mine === "true";
+
+  const slaRows = await prisma.configSLA.findMany();
+  const slaConfig: ConfigSLAMap = Object.fromEntries(
+    slaRows.map((r) => [r.prioridad, r.horasLimite]),
+  ) as ConfigSLAMap;
 
   const requerimientos = await prisma.requerimiento.findMany({
     where: {
       ...(soloMios ? { usuarioId: parseInt(session.user.id!) } : {}),
       ...(estado ? { estado: estado as EstadoRequerimiento } : {}),
       ...(categoria ? { categoria: categoria as CategoriaReq } : {}),
+      ...(prioridad ? { prioridad: prioridad as never } : {}),
     },
     include: {
       usuario: {
@@ -105,6 +150,7 @@ export default async function RequerimientosPage({
       <RequerimientosFiltros
         estadoActivo={estado}
         categoriaActiva={categoria}
+        prioridadActiva={prioridad}
         soloMios={soloMios}
         userRole={session.user.role ?? "VECINO"}
       />
@@ -133,7 +179,14 @@ export default async function RequerimientosPage({
       ) : (
         <ul className="space-y-3">
           {requerimientos.map((r) => {
-            const estado = ESTADO_CONFIG[r.estado];
+            const estadoCfg = ESTADO_CONFIG[r.estado];
+            const catCfg = CATEGORIA_CONFIG[r.categoria];
+            const prioridadCfg = PRIORIDAD_CONFIG[r.prioridad];
+            const estadoSLA =
+              r.estado === "RESUELTO" || r.estado === "CERRADO"
+                ? null
+                : calcularEstadoSLA(r.createdAt, r.prioridad, slaConfig);
+            const slaCfg = estadoSLA ? ESTADO_SLA_CONFIG[estadoSLA] : null;
             const loteInfo = r.usuario.lote
               ? `MZ ${r.usuario.lote.manzana.numero} · Lote ${r.usuario.lote.numero}`
               : "";
@@ -141,31 +194,61 @@ export default async function RequerimientosPage({
               <li key={r.id}>
                 <Link
                   href={`/requerimientos/${r.id}`}
-                  className="block bg-white rounded-xl border border-gray-200 p-4 hover:border-blue-300 hover:shadow-sm transition-all"
+                  className={`block bg-white rounded-xl border border-gray-200 border-l-4 ${
+                    estadoCfg.border
+                  } p-4 hover:shadow-md transition-all group`}
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-start gap-3">
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
-                        <span className="text-xs font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                          {CATEGORIA_LABEL[r.categoria]}
+                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                        <span
+                          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${catCfg.color}`}
+                        >
+                          {catCfg.label}
                         </span>
                         <span
-                          className={`text-xs font-semibold px-2 py-0.5 rounded-full ${estado.bg} ${estado.text}`}
+                          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${estadoCfg.bg} ${estadoCfg.text}`}
                         >
-                          {estado.label}
+                          {estadoCfg.label}
                         </span>
+                        <span
+                          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${prioridadCfg.bg} ${prioridadCfg.color}`}
+                        >
+                          {prioridadCfg.label}
+                        </span>
+                        {slaCfg && (
+                          <span
+                            className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${slaCfg.bg} ${slaCfg.color}`}
+                          >
+                            {slaCfg.label}
+                          </span>
+                        )}
                       </div>
-                      <p className="font-semibold text-gray-900 truncate">
+                      <p className="font-semibold text-gray-900 line-clamp-2 text-[15px] leading-snug">
                         {r.titulo}
                       </p>
-                      <p className="text-sm text-gray-500 line-clamp-2 mt-0.5">
+                      <p className="text-sm text-gray-600 line-clamp-2 mt-1">
                         {r.descripcion}
                       </p>
                     </div>
+                    <svg
+                      className="w-4 h-4 text-gray-300 group-hover:text-blue-400 flex-shrink-0 mt-0.5 transition-colors"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </div>
-                  <div className="flex items-center gap-3 mt-3 text-xs text-gray-400">
+                  <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
                     <span>
-                      {r.usuario.nombre} · {loteInfo}
+                      {r.usuario.nombre}
+                      {loteInfo ? ` · ${loteInfo}` : ""}
                     </span>
                     <span className="ml-auto flex items-center gap-1">
                       <svg

@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
 import { Suspense } from "react";
 import UsuariosFiltros from "./UsuariosFiltros";
-import { type Rol } from "@prisma/client";
+import { type Rol } from "@/generated/enums";
 
 const ROL_CONFIG: Record<Rol, { label: string; bg: string; text: string }> = {
   VECINO: { label: "Vecino", bg: "bg-gray-100", text: "text-gray-600" },

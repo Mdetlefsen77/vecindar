@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
-import { type EstadoAlerta } from "@prisma/client";
+import { type EstadoAlerta } from "@/generated/enums";
 
 type Params = { params: Promise<{ id: string }> };
 

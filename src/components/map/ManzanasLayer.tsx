@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import L from "leaflet";
-import { type ManzanaConfig } from "@/lib/barrio/manzanas";
+import { type ManzanaConfig, COLORES_MANZANA } from "@/lib/barrio/manzanas";
 
 interface ManzanasLayerProps {
   map: L.Map | null;
@@ -76,10 +76,23 @@ export default function ManzanasLayer({
       | null;
     if (!mapWithContainer?._container || !manzanas.length) return;
 
-    const layers: L.Marker[] = [];
+    const layers: (L.Marker | L.Polygon)[] = [];
 
     try {
       manzanas.forEach((manzana) => {
+        // ── Polígono relleno ──────────────────────────────────────────────
+        const colorKey =
+          manzana.tipo === "manzana" ? manzana.zona : manzana.tipo;
+        const colores = COLORES_MANZANA[colorKey];
+        if (colores) {
+          const polygon = L.polygon(manzana.bounds, {
+            ...colores,
+            interactive: true,
+          });
+          polygon.on("click", () => onManzanaClick?.(manzana));
+          polygon.addTo(map!);
+          layers.push(polygon);
+        }
         const titulo =
           manzana.tipo === "manzana"
             ? `Manzana ${manzana.numero}`

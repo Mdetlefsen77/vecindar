@@ -3,7 +3,8 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import BotonSOS from "./BotonSOS";
 import AccionesAlerta from "./AccionesAlerta";
-import { type EstadoAlerta } from "@prisma/client";
+import PushNotificationToggle from "./PushNotificationToggle";
+import { type EstadoAlerta } from "@/generated/enums";
 
 const ESTADO_BADGE: Record<
   EstadoAlerta,
@@ -109,7 +110,7 @@ export default async function PanicoPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
             Panel de Pánico SOS
@@ -120,9 +121,12 @@ export default async function PanicoPage() {
               : `${activas.length} alerta${activas.length > 1 ? "s" : ""} activa${activas.length > 1 ? "s" : ""}`}
           </p>
         </div>
-        {activas.length > 0 && (
-          <span className="w-3 h-3 rounded-full bg-red-500 animate-ping" />
-        )}
+        <div className="flex items-center gap-3 shrink-0">
+          <PushNotificationToggle />
+          {activas.length > 0 && (
+            <span className="w-3 h-3 rounded-full bg-red-500 animate-ping" />
+          )}
+        </div>
       </div>
 
       {/* Alertas activas */}

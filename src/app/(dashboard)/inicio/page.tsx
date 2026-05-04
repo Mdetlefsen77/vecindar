@@ -7,7 +7,7 @@ import type {
   CategoriaReq,
   EstadoRequerimiento,
   TipoAlertaMascota,
-} from "@prisma/client";
+} from "@/generated/enums";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -136,6 +136,21 @@ const IconPin = () => (
     />
   </svg>
 );
+const IconAlert = () => (
+  <svg
+    className="w-6 h-6 sm:w-8 sm:h-8"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+    />
+  </svg>
+);
 const IconShield = () => (
   <svg
     className="w-5 h-5"
@@ -208,77 +223,113 @@ export default async function InicioPage() {
         </p>
       </div>
 
-      {/* SOS Button — más compacto en mobile */}
-      <Link href="/panico" className="block">
-        <div className="bg-red-600 hover:bg-red-700 active:scale-[0.98] transition-all rounded-2xl py-4 sm:py-5 text-center text-white shadow-lg select-none">
-          <p className="text-3xl sm:text-4xl font-black tracking-[0.2em]">
-            SOS
-          </p>
-          <p className="text-xs sm:text-sm font-medium opacity-85 mt-1">
-            Mantener presionado 3s
-          </p>
-        </div>
-      </Link>
+      {/* ─── Accesos rápidos + SOS central ─────────────────────────────── */}
+      <div className="relative grid grid-cols-2 gap-2">
+        {/* MAPA — arriba izquierda */}
+        <Link
+          href="/mapa"
+          className="bg-brand hover:bg-brand-dark active:scale-[0.97] transition-all
+            rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-[3.5rem]
+            text-white shadow-sm h-40
+            flex flex-col items-center justify-center gap-3"
+        >
+          <span className="[&_svg]:w-12 [&_svg]:h-12">
+            <IconMap />
+          </span>
+          <span className="text-lg font-bold leading-tight">Mapa</span>
+        </Link>
 
-      {/* Accesos rápidos — ícono+texto vertical en mobile, horizontal en sm+ */}
-      <div className="grid grid-cols-2 gap-2 sm:gap-3">
-        {[
-          {
-            href: "/mapa",
-            icon: <IconMap />,
-            label: "Mapa",
-            cls: "bg-brand hover:bg-brand-dark",
-          },
-          {
-            href: "/requerimientos",
-            icon: <IconClipboard />,
-            label: "Requerimientos",
-            cls: "bg-amber-500 hover:bg-amber-600",
-          },
-          {
-            href: "/mascotas",
-            icon: <IconPaw />,
-            label: "Mascotas",
-            cls: "bg-teal-600 hover:bg-teal-700",
-          },
-          {
-            href: "/panico",
-            icon: <IconPin />,
-            label: "Estoy aquí",
-            cls: "bg-rose-500 hover:bg-rose-600",
-          },
-        ].map(({ href, icon, label, cls }) => (
-          <Link
-            key={href}
-            href={href}
-            className={`${cls} active:scale-[0.97] transition-all rounded-2xl text-white shadow-sm
-              flex flex-col items-center justify-center gap-1.5 py-4 px-2
-              sm:flex-row sm:justify-start sm:gap-3 sm:px-4 sm:py-4`}
-          >
-            {icon}
-            <span className="text-xs font-semibold sm:text-base sm:font-semibold leading-tight text-center sm:text-left">
-              {label}
-            </span>
-          </Link>
-        ))}
+        {/* REQUERIMIENTOS — arriba derecha */}
+        <Link
+          href="/requerimientos"
+          className="bg-amber-500 hover:bg-amber-600 active:scale-[0.97] transition-all
+            rounded-tl-2xl rounded-tr-2xl rounded-br-2xl rounded-bl-[3.5rem]
+            text-white shadow-sm h-40
+            flex flex-col items-center justify-center gap-3"
+        >
+          <span className="[&_svg]:w-12 [&_svg]:h-12">
+            <IconClipboard />
+          </span>
+          <span className="text-lg font-bold leading-tight">
+            Requerimientos
+          </span>
+        </Link>
+
+        {/* MASCOTAS — abajo izquierda */}
+        <Link
+          href="/mascotas"
+          className="bg-teal-600 hover:bg-teal-700 active:scale-[0.97] transition-all
+            rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr-[3.5rem]
+            text-white shadow-sm h-40
+            flex flex-col items-center justify-center gap-3"
+        >
+          <span className="[&_svg]:w-12 [&_svg]:h-12">
+            <IconPaw />
+          </span>
+          <span className="text-lg font-bold leading-tight">Mascotas</span>
+        </Link>
+
+        {/* INCIDENTES — abajo derecha */}
+        <Link
+          href="/incidentes"
+          className="bg-orange-600 hover:bg-orange-700 active:scale-[0.97] transition-all
+            rounded-bl-2xl rounded-br-2xl rounded-tr-2xl rounded-tl-[3.5rem]
+            text-white shadow-sm h-40
+            flex flex-col items-center justify-center gap-3"
+        >
+          <span className="[&_svg]:w-12 [&_svg]:h-12">
+            <IconAlert />
+          </span>
+          <span className="text-lg font-bold leading-tight">Incidentes</span>
+        </Link>
+
+        {/* SOS — círculo central flotante */}
+        <Link
+          href="/panico"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            w-[120px] h-[120px] sm:w-[180px] sm:h-[180px] lg:w-[220px] lg:h-[220px] rounded-full
+            bg-red-600 hover:bg-red-700 active:scale-95
+            flex flex-col items-center justify-center
+            text-white select-none
+            shadow-[0_0_0_4px_white,0_0_0_8px_#dc2626,0_8px_28px_rgba(220,38,38,0.6)]
+            sm:shadow-[0_0_0_6px_white,0_0_0_12px_#dc2626,0_10px_36px_rgba(220,38,38,0.6)]
+            lg:shadow-[0_0_0_8px_white,0_0_0_15px_#dc2626,0_12px_44px_rgba(220,38,38,0.65)]
+            z-10 transition-all"
+        >
+          <span className="text-[28px] sm:text-[44px] lg:text-[56px] font-black tracking-[0.15em] leading-tight">
+            SOS
+          </span>
+          <span className="text-[10px] sm:text-xs lg:text-sm font-medium opacity-75 leading-tight">
+            3 seg
+          </span>
+        </Link>
+
+        {/* Silueta de las esquinas interiores detrás del SOS */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+            w-[112px] h-[112px] sm:w-[172px] sm:h-[172px] lg:w-[212px] lg:h-[212px] rounded-[3.5rem]
+            border-[3px] border-white/50
+            bg-black/[0.06]
+            pointer-events-none z-[9]"
+        />
       </div>
 
       {/* Secciones principales — columna única mobile, 2 col en lg */}
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
         {/* Últimos incidentes */}
         <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-100">
-            <div className="flex items-center gap-2">
-              <span className="text-blue-600">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
+            <div className="flex items-center gap-2.5">
+              <span className="text-blue-600 [&_svg]:w-6 [&_svg]:h-6">
                 <IconShield />
               </span>
-              <h2 className="font-bold text-gray-900 text-sm sm:text-base">
+              <h2 className="font-bold text-gray-900 text-base sm:text-lg">
                 Últimos incidentes
               </h2>
             </div>
             <Link
               href="/incidentes"
-              className="text-xs sm:text-sm text-blue-600 font-medium hover:underline whitespace-nowrap"
+              className="text-base text-blue-600 font-semibold hover:bg-blue-50 rounded-lg py-1.5 px-3 -mr-1 transition-colors whitespace-nowrap"
             >
               Ver más ›
             </Link>
@@ -301,30 +352,30 @@ export default async function InicioPage() {
                   <li key={inc.id}>
                     <Link
                       href={`/incidentes/${inc.id}`}
-                      className="flex items-start gap-2.5 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                      className="flex items-start gap-3 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                     >
                       {/* Dot */}
-                      <div className="mt-1.5 flex-shrink-0">
+                      <div className="mt-2 flex-shrink-0">
                         <span
-                          className={`block w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${cfg.dot}`}
+                          className={`block w-3.5 h-3.5 rounded-full ${cfg.dot}`}
                         />
                       </div>
                       {/* Info */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2">
-                          <p className="font-semibold text-gray-900 text-xs sm:text-sm leading-snug">
+                          <p className="font-medium text-gray-900 text-sm sm:text-base leading-snug">
                             {cfg.label} reportado
                           </p>
                           <span
-                            className={`flex-shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${cfg.bg}`}
+                            className={`flex-shrink-0 text-sm font-semibold px-2.5 py-0.5 rounded-full ${cfg.bg}`}
                           >
                             {cfg.label}
                           </span>
                         </div>
-                        <p className="text-xs text-gray-500 truncate mt-0.5">
+                        <p className="text-sm text-gray-500 truncate mt-1">
                           {ubicacion}
                         </p>
-                        <p className="text-xs text-gray-400 mt-0.5">
+                        <p className="text-sm text-gray-400 mt-0.5">
                           {timeAgo(inc.createdAt)}
                         </p>
                       </div>
@@ -338,11 +389,11 @@ export default async function InicioPage() {
 
         {/* Requerimientos abiertos */}
         <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-100">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
+            <div className="flex items-center gap-2.5">
               <span className="text-amber-500">
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -355,13 +406,13 @@ export default async function InicioPage() {
                   />
                 </svg>
               </span>
-              <h2 className="font-bold text-gray-900 text-sm sm:text-base">
+              <h2 className="font-bold text-gray-900 text-base sm:text-lg">
                 Requerimientos abiertos
               </h2>
             </div>
             <Link
               href="/requerimientos"
-              className="text-xs sm:text-sm text-blue-600 font-medium hover:underline whitespace-nowrap"
+              className="text-base text-blue-600 font-semibold hover:bg-blue-50 rounded-lg py-1.5 px-3 -mr-1 transition-colors whitespace-nowrap"
             >
               Ver más ›
             </Link>
@@ -381,26 +432,26 @@ export default async function InicioPage() {
                   <li key={req.id}>
                     <Link
                       href={`/requerimientos/${req.id}`}
-                      className="flex items-start gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                      className="flex items-start gap-3 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                     >
                       {/* Categoría badge — izquierda */}
                       <span
-                        className={`flex-shrink-0 mt-0.5 text-xs font-semibold px-2 py-0.5 rounded-md ${catCfg.color}`}
+                        className={`flex-shrink-0 mt-0.5 text-sm font-semibold px-2.5 py-1 rounded-md ${catCfg.color}`}
                       >
                         {catCfg.label}
                       </span>
                       {/* Contenido central */}
                       <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-900 text-xs sm:text-sm truncate leading-snug">
+                        <p className="font-medium text-gray-900 text-sm sm:text-base truncate leading-snug">
                           {req.titulo}
                         </p>
-                        <p className="text-xs text-gray-400 mt-0.5 truncate">
+                        <p className="text-sm text-gray-500 mt-1 truncate">
                           {req.usuario.nombre} · {timeAgo(req.createdAt)}
                         </p>
                       </div>
                       {/* Estado badge — derecha */}
                       <span
-                        className={`flex-shrink-0 mt-0.5 text-xs font-semibold px-2 py-0.5 rounded-full ${estadoCfg.color}`}
+                        className={`flex-shrink-0 mt-0.5 text-sm font-semibold px-2.5 py-1 rounded-full ${estadoCfg.color}`}
                       >
                         {estadoCfg.label}
                       </span>
@@ -414,11 +465,11 @@ export default async function InicioPage() {
 
         {/* Mascotas perdidas */}
         <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-2">
-          <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-100">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
+            <div className="flex items-center gap-2.5">
               <span className="text-teal-600">
                 <svg
-                  className="w-5 h-5"
+                  className="w-6 h-6"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -431,13 +482,13 @@ export default async function InicioPage() {
                   />
                 </svg>
               </span>
-              <h2 className="font-bold text-gray-900 text-sm sm:text-base">
+              <h2 className="font-bold text-gray-900 text-base sm:text-lg">
                 Mascotas perdidas
               </h2>
             </div>
             <Link
               href="/mascotas"
-              className="text-xs sm:text-sm text-blue-600 font-medium hover:underline whitespace-nowrap"
+              className="text-base text-blue-600 font-semibold hover:bg-blue-50 rounded-lg py-1.5 px-3 -mr-1 transition-colors whitespace-nowrap"
             >
               Ver más ›
             </Link>
@@ -453,21 +504,21 @@ export default async function InicioPage() {
                 <li key={m.id}>
                   <Link
                     href={`/mascotas/${m.id}`}
-                    className="flex items-center gap-3 px-3 sm:px-4 py-3 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+                    className="flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
                   >
                     {/* Avatar */}
                     {m.foto ? (
                       <Image
                         src={m.foto}
                         alt={m.nombre ?? "mascota"}
-                        width={48}
-                        height={48}
-                        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover flex-shrink-0 border-2 border-gray-100"
+                        width={56}
+                        height={56}
+                        className="w-14 h-14 rounded-full object-cover flex-shrink-0 border-2 border-gray-100"
                       />
                     ) : (
-                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 border-2 border-amber-200">
+                      <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 border-2 border-amber-200">
                         <svg
-                          className="w-5 h-5 text-amber-600"
+                          className="w-7 h-7 text-amber-600"
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
@@ -485,11 +536,11 @@ export default async function InicioPage() {
                     {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2">
-                        <p className="font-semibold text-gray-900 text-xs sm:text-sm truncate">
+                        <p className="font-medium text-gray-900 text-sm sm:text-base truncate">
                           {m.nombre ?? "Sin nombre"}
                         </p>
                         <span
-                          className={`flex-shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${
+                          className={`flex-shrink-0 text-sm font-semibold px-2.5 py-0.5 rounded-full ${
                             (m.tipo as TipoAlertaMascota) === "PERDIDA"
                               ? "bg-orange-100 text-orange-700"
                               : "bg-green-100 text-green-700"
@@ -500,10 +551,10 @@ export default async function InicioPage() {
                             : "Encontrada"}
                         </span>
                       </div>
-                      <p className="text-xs text-gray-500 truncate mt-0.5">
+                      <p className="text-sm text-gray-500 truncate mt-1">
                         {m.descripcion}
                       </p>
-                      <p className="text-xs text-gray-400 mt-0.5">
+                      <p className="text-sm text-gray-400 mt-0.5">
                         {timeAgo(m.createdAt)}
                       </p>
                     </div>

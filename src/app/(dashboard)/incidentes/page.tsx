@@ -4,53 +4,92 @@ import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
 import IncidentesFiltros from "./IncidentesFiltros";
 import IncidentesMapaLazy from "./IncidentesMapaLazy";
-import { type TipoIncidente, type EstadoIncidente } from "@prisma/client";
+import { type TipoIncidente, type EstadoIncidente } from "@/generated/enums";
+import {
+  calcularEstadoSLA,
+  PRIORIDAD_CONFIG,
+  ESTADO_SLA_CONFIG,
+  SLA_DEFAULTS,
+  type ConfigSLAMap,
+} from "@/lib/utils/sla";
 
 export const TIPO_CONFIG: Record<
-  TipoIncidente,
-  { label: string; color: string; bg: string; emoji: string }
+  string,
+  {
+    label: string;
+    color: string;
+    bg: string;
+    dot: string;
+    emoji?: string;
+  }
 > = {
-  ROBO: { label: "Robo", color: "text-red-700", bg: "bg-red-100", emoji: "🔴" },
+  ROBO: {
+    label: "Robo",
+    color: "text-red-700",
+    bg: "bg-red-100",
+    dot: "bg-red-500",
+    emoji: "🪙",
+  },
   ROBO_TENTATIVA: {
     label: "Intento de robo",
     color: "text-orange-700",
     bg: "bg-orange-100",
-    emoji: "🟠",
+    dot: "bg-orange-500",
+    emoji: "🪙",
   },
   SOSPECHOSO: {
     label: "Sospechoso",
     color: "text-yellow-700",
     bg: "bg-yellow-100",
-    emoji: "🟡",
+    dot: "bg-yellow-500",
+    emoji: "🪙",
   },
   VANDALISMO: {
     label: "Vandalismo",
     color: "text-purple-700",
     bg: "bg-purple-100",
-    emoji: "🟣",
+    dot: "bg-purple-500",
+    emoji: "🪙",
   },
   OTRO: {
     label: "Otro",
     color: "text-gray-600",
     bg: "bg-gray-100",
-    emoji: "⚫",
+    dot: "bg-gray-400",
+    emoji: "🪙",
   },
 };
 
 export const ESTADO_CONFIG: Record<
   EstadoIncidente,
-  { label: string; bg: string; text: string }
+  { label: string; bg: string; text: string; border: string }
 > = {
-  ACTIVO: { label: "Activo", bg: "bg-red-100", text: "text-red-700" },
-  RESUELTO: { label: "Resuelto", bg: "bg-green-100", text: "text-green-700" },
+  ACTIVO: {
+    label: "Activo",
+    bg: "bg-red-100",
+    text: "text-red-700",
+    border: "border-l-red-500",
+  },
+  RESUELTO: {
+    label: "Resuelto",
+    bg: "bg-green-100",
+    text: "text-green-700",
+    border: "border-l-green-500",
+  },
   FALSA_ALARMA: {
     label: "Falsa alarma",
     bg: "bg-gray-100",
     text: "text-gray-500",
+    border: "border-l-gray-300",
   },
 };
 
-type SearchParams = Promise<{ tipo?: string; estado?: string; dias?: string }>;
+type SearchParams = Promise<{
+  tipo?: string;
+  estado?: string;
+  dias?: string;
+  prioridad?: string;
+}>;
 
 export default async function IncidentesPage({
   searchParams,
@@ -60,9 +99,14 @@ export default async function IncidentesPage({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const { tipo, estado, dias } = await searchParams;
+  const { tipo, estado, dias, prioridad } = await searchParams;
   const diasNum = parseInt(dias ?? "30") || 30;
   const soloVisibles = session.user.role === "VECINO";
+
+  const slaRows = await prisma.configSLA.findMany();
+  const slaConfig: ConfigSLAMap = Object.fromEntries(
+    slaRows.map((r) => [r.prioridad, r.horasLimite]),
+  ) as ConfigSLAMap;
 
   const fechaDesde = new Date(Date.now() - diasNum * 24 * 60 * 60 * 1000);
 
@@ -70,6 +114,7 @@ export default async function IncidentesPage({
     where: {
       ...(tipo ? { tipo: tipo as TipoIncidente } : {}),
       ...(estado ? { estado: estado as EstadoIncidente } : {}),
+      ...(prioridad ? { prioridad: prioridad as never } : {}),
       fechaHora: { gte: fechaDesde },
       ...(soloVisibles ? { visibleVecinos: true } : {}),
     },
@@ -144,11 +189,12 @@ export default async function IncidentesPage({
       <IncidentesFiltros
         tipoActivo={tipo}
         estadoActivo={estado}
+        prioridadActiva={prioridad}
         diasActivo={diasNum}
       />
 
       {/* Conteo */}
-      <p className="text-xs text-gray-400 mb-3">
+      <p className="text-xs text-gray-500 mb-3">
         {incidentes.length} incidente{incidentes.length !== 1 ? "s" : ""} en los
         últimos {diasNum} días
       </p>
@@ -177,6 +223,12 @@ export default async function IncidentesPage({
           {incidentes.map((inc) => {
             const tipoCfg = TIPO_CONFIG[inc.tipo];
             const estadoCfg = ESTADO_CONFIG[inc.estado];
+            const prioridadCfg = PRIORIDAD_CONFIG[inc.prioridad];
+            const estadoSLA =
+              inc.estado === "RESUELTO" || inc.estado === "FALSA_ALARMA"
+                ? null
+                : calcularEstadoSLA(inc.fechaHora, inc.prioridad, slaConfig);
+            const slaCfg = estadoSLA ? ESTADO_SLA_CONFIG[estadoSLA] : null;
             const loteInfo = inc.lote
               ? `MZ ${inc.lote.manzana.numero} · Lote ${inc.lote.numero}`
               : null;
@@ -184,27 +236,46 @@ export default async function IncidentesPage({
               <li key={inc.id}>
                 <Link
                   href={`/incidentes/${inc.id}`}
-                  className="block bg-white rounded-xl border border-gray-200 p-4 hover:border-red-300 hover:shadow-sm transition-all"
+                  className={`block bg-white rounded-xl border border-gray-200 border-l-4 ${
+                    estadoCfg.border
+                  } p-4 hover:shadow-md transition-all group`}
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-2xl mt-0.5">{tipoCfg.emoji}</span>
+                    {/* Dot indicador de tipo */}
+                    <div className="mt-1.5 flex-shrink-0">
+                      <span
+                        className={`block w-3 h-3 rounded-full ${tipoCfg.dot}`}
+                      />
+                    </div>
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                         <span
-                          className={`text-xs font-semibold px-2 py-0.5 rounded-full ${tipoCfg.bg} ${tipoCfg.color}`}
+                          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${tipoCfg.bg} ${tipoCfg.color}`}
                         >
                           {tipoCfg.label}
                         </span>
                         <span
-                          className={`text-xs font-semibold px-2 py-0.5 rounded-full ${estadoCfg.bg} ${estadoCfg.text}`}
+                          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${estadoCfg.bg} ${estadoCfg.text}`}
                         >
                           {estadoCfg.label}
                         </span>
+                        <span
+                          className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${prioridadCfg.bg} ${prioridadCfg.color}`}
+                        >
+                          {prioridadCfg.label}
+                        </span>
+                        {slaCfg && (
+                          <span
+                            className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${slaCfg.bg} ${slaCfg.color}`}
+                          >
+                            {slaCfg.label}
+                          </span>
+                        )}
                       </div>
-                      <p className="text-sm text-gray-800 line-clamp-2">
+                      <p className="text-[15px] font-semibold text-gray-900 line-clamp-2 leading-snug">
                         {inc.descripcion}
                       </p>
-                      <div className="flex items-center gap-2 mt-2 text-xs text-gray-400">
+                      <div className="flex items-center gap-2 mt-2.5 pt-2.5 border-t border-gray-100 text-xs text-gray-500">
                         <span>{inc.reportadoPor.nombre}</span>
                         {loteInfo && <span>· {loteInfo}</span>}
                         <span className="ml-auto">
@@ -216,6 +287,19 @@ export default async function IncidentesPage({
                         </span>
                       </div>
                     </div>
+                    <svg
+                      className="w-4 h-4 text-gray-300 group-hover:text-red-400 flex-shrink-0 mt-0.5 transition-colors"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
                   </div>
                 </Link>
               </li>

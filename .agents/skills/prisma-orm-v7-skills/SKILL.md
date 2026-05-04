@@ -37,7 +37,7 @@ pnpm add -D prisma@7
 - `output` is required in `generator client`.
 - Prisma Client is no longer generated into `node_modules` by default.
 - After `npx prisma generate`, update imports to your generated output path (example:
-	`import { PrismaClient } from './generated/prisma/client'`).
+  `import { PrismaClient } from './generated/prisma/client'`).
 
 Schema datasource deprecations:
 
@@ -49,8 +49,8 @@ Schema datasource deprecations:
 
 - Prisma Client creation now requires a driver adapter for all databases.
 - Example adapters:
-	- Postgres: `@prisma/adapter-pg` (use `PrismaPg` with a direct DB connection string)
-	- SQLite: `@prisma/adapter-better-sqlite3`
+  - Postgres: `@prisma/adapter-pg` (use `PrismaPg` with a direct DB connection string)
+  - SQLite: `@prisma/adapter-better-sqlite3`
 
 ### Prisma Accelerate users (v6 → v7)
 
@@ -82,26 +82,26 @@ Schema datasource deprecations:
 ### Migrate/seed/generate behavior changes
 
 - Automatic seeding after `prisma migrate dev` / `prisma migrate reset` is removed.
-	- Run seeding explicitly: `pnpm prisma db seed` (or `pnpm exec prisma db seed`).
+  - Run seeding explicitly: `pnpm prisma db seed` (or `pnpm exec prisma db seed`).
 - `--skip-generate` and `--skip-seed` flags removed.
 - `prisma migrate dev` and `prisma db push` no longer run `prisma generate` automatically.
-	- Run `pnpm prisma generate` (or `pnpm exec prisma generate`) explicitly.
+  - Run `pnpm prisma generate` (or `pnpm exec prisma generate`) explicitly.
 
 ### Prisma-specific env vars removed
 
 - Removed env vars:
-	- `PRISMA_CLI_QUERY_ENGINE_TYPE`
-	- `PRISMA_CLIENT_ENGINE_TYPE`
-	- `PRISMA_QUERY_ENGINE_BINARY`
-	- `PRISMA_QUERY_ENGINE_LIBRARY`
-	- `PRISMA_GENERATE_SKIP_AUTOINSTALL`
-	- `PRISMA_SKIP_POSTINSTALL_GENERATE`
-	- `PRISMA_GENERATE_IN_POSTINSTALL`
-	- `PRISMA_GENERATE_DATAPROXY`
-	- `PRISMA_GENERATE_NO_ENGINE`
-	- `PRISMA_CLIENT_NO_RETRY`
-	- `PRISMA_MIGRATE_SKIP_GENERATE`
-	- `PRISMA_MIGRATE_SKIP_SEED`
+  - `PRISMA_CLI_QUERY_ENGINE_TYPE`
+  - `PRISMA_CLIENT_ENGINE_TYPE`
+  - `PRISMA_QUERY_ENGINE_BINARY`
+  - `PRISMA_QUERY_ENGINE_LIBRARY`
+  - `PRISMA_GENERATE_SKIP_AUTOINSTALL`
+  - `PRISMA_SKIP_POSTINSTALL_GENERATE`
+  - `PRISMA_GENERATE_IN_POSTINSTALL`
+  - `PRISMA_GENERATE_DATAPROXY`
+  - `PRISMA_GENERATE_NO_ENGINE`
+  - `PRISMA_CLIENT_NO_RETRY`
+  - `PRISMA_MIGRATE_SKIP_GENERATE`
+  - `PRISMA_MIGRATE_SKIP_SEED`
 
 ### MongoDB support
 
@@ -116,6 +116,3 @@ Schema datasource deprecations:
 - Add `prisma.config.ts` at repo root; move datasource config and load env explicitly.
 - Update Prisma Client instantiation to use a driver adapter (unless using Accelerate).
 - Update workflows: run `pnpm prisma generate` and `pnpm prisma db seed` explicitly.
-
-
-
