@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { type EstadoAlerta } from "@prisma/client";
+import { type EstadoAlerta } from "@/generated/enums";
 
 interface Props {
   alertaId: number;

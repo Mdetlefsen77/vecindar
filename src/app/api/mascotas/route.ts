@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
-import { type TipoAlertaMascota } from "@prisma/client";
+import { type TipoAlertaMascota } from "@/generated/enums";
 
 // GET /api/mascotas?tipo=PERDIDA|ENCONTRADA&estado=abierta|resuelta
 export async function GET(req: NextRequest) {

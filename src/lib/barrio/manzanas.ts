@@ -1,78 +1,50 @@
 /**
  * CONFIGURACIÓN CENTRAL DEL BARRIO
  * Universitario de Horizonte III — Córdoba, Argentina
+ *
+ * Los bounds de cada manzana y parcela provienen de los archivos GeoJSON
+ * levantados por agrimensores (fuente oficial).
  */
 
-// Centro fijo del barrio — el mapa siempre arranca aquí
+import {
+  getManzanaBounds,
+  getManzanaBoundsByFid,
+} from "./data/geojson";
+
 export const BARRIO_CENTER: [number, number] = [-31.495963, -64.277734];
-
-// Zoom inicial — 15 muestra el barrio completo; zoom in para detalle de lotes
 export const BARRIO_ZOOM = 15;
-
-// Zoom mínimo permitido (no alejarse demasiado)
 export const BARRIO_ZOOM_MIN = 14;
-
-// Zoom máximo (satélite/detalle de lote)
 export const BARRIO_ZOOM_MAX = 19;
-
 export type Zona = "Norte" | "Sur";
-
 export type TipoZona = "manzana" | "espacio_verde" | "uso_comunitario";
-
 export interface ManzanaConfig {
-  id: number; // coincide con Manzana.id en BD
-  numero: string; // "1" .. "35"
+  id: number;
+  numero: string;
   zona: Zona;
   tipo: TipoZona;
-  label?: string; // para EV y EUC
-  /** Polígono: array de [lat, lng] — vértices [NW, NE, SE, SW] */
+  label?: string;
   bounds: [number, number][];
-  /** Número real de lotes según plano catastral */
   cantidadLotes?: number;
-  /** Número del primer lote de la manzana según plano catastral (ej. MZ2 arranca en 26) */
   loteInicio?: number;
-  /**
-   * Layout de subdivisión interna en lotes.
-   * Si se omite, se asume 1 fila distribuida uniformemente.
-   */
   layout?: ManzanaLayout;
 }
 
-/**
- * Define cómo se subdivide internamente una manzana en lotes.
- * filas: 1 = fila simple, 2 = espalda con espalda.
- */
 export interface ManzanaLayout {
   filas: number;
 }
 
-// Dimensiones de manzana calibradas para Horizonte III (~90m por cuadra)
-const DLat = 0.00081; // alto de una manzana
-const DLng = 0.00095; // ancho de una manzana
-
-/** Rectángulo desde esquina NW: [NW, NE, SE, SW] */
-function rect(
-  latNW: number,
-  lngNW: number,
-  h: number = DLat,
-  w: number = DLng,
-): [number, number][] {
-  return [
-    [latNW, lngNW],
-    [latNW, lngNW + w],
-    [latNW - h, lngNW + w],
-    [latNW - h, lngNW],
-  ];
+/** Convierte el número de manzana interno a formato catastral (e.g. "5" → "005") */
+function gj(n: string): [number, number][] {
+  return getManzanaBounds(n.padStart(3, "0"));
 }
 
 export const MANZANAS_CONFIG: ManzanaConfig[] = [
-  // ─── Calle J (borde norte) ───────────────────────────────────────────
   {
     id: 1,
     numero: "1",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4927912, -64.2789231),
+    bounds: gj("1"),
     cantidadLotes: 25,
     loteInicio: 1,
   },
@@ -81,7 +53,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "2",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4928198, -64.2773473),
+    bounds: gj("2"),
     cantidadLotes: 34,
     loteInicio: 26,
   },
@@ -90,7 +62,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EV1",
     zona: "Norte",
     tipo: "espacio_verde",
-    bounds: rect(-31.4930588, -64.2759566),
+    bounds: getManzanaBoundsByFid(5),
     label: "E.V.1",
   },
 
@@ -100,7 +72,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "3",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4932989, -64.2789231),
+    bounds: gj("3"),
     cantidadLotes: 28,
     loteInicio: 60,
   },
@@ -109,7 +81,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "4",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.493297, -64.2773473),
+    bounds: gj("4"),
     cantidadLotes: 38,
     loteInicio: 88,
   },
@@ -120,7 +92,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EV2",
     zona: "Norte",
     tipo: "espacio_verde",
-    bounds: rect(-31.4938261, -64.2789915),
+    bounds: getManzanaBoundsByFid(7),
     label: "E.V.2",
   },
   {
@@ -128,7 +100,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "6",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4942835, -64.279068),
+    bounds: gj("6"),
     cantidadLotes: 36,
     loteInicio: 162,
   },
@@ -137,7 +109,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "7",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4948199, -64.279068),
+    bounds: gj("7"),
     cantidadLotes: 36,
     loteInicio: 198,
   },
@@ -148,7 +120,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "5",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.494343, -64.2801918),
+    bounds: gj("5"),
     cantidadLotes: 36,
     loteInicio: 126,
   },
@@ -157,7 +129,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "8",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4942835, -64.2779441),
+    bounds: gj("8"),
     cantidadLotes: 33,
     loteInicio: 234,
   },
@@ -166,7 +138,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "9",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4938261, -64.27687666),
+    bounds: gj("9"),
     cantidadLotes: 32,
     loteInicio: 267,
   },
@@ -175,7 +147,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "10",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4942835, -64.27687666),
+    bounds: gj("10"),
     cantidadLotes: 36,
     loteInicio: 299,
   },
@@ -184,7 +156,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "11",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4948199, -64.27687666),
+    bounds: gj("11"),
     cantidadLotes: 36,
     loteInicio: 335,
   },
@@ -193,7 +165,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "12",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4942835, -64.275777),
+    bounds: gj("12"),
     cantidadLotes: 33,
     loteInicio: 371,
   },
@@ -204,7 +176,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "13",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4956432, -64.2801918),
+    bounds: gj("13"),
     cantidadLotes: 33,
     loteInicio: 404,
   },
@@ -213,7 +185,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "14",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.495225, -64.279068),
+    bounds: gj("14"),
     cantidadLotes: 36,
     loteInicio: 437,
   },
@@ -222,7 +194,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "15",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4957473, -64.279068),
+    bounds: gj("15"),
     cantidadLotes: 36,
     loteInicio: 473,
   },
@@ -231,7 +203,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "16",
     zona: "Norte",
     tipo: "manzana",
-    bounds: rect(-31.4962584, -64.279068),
+    bounds: gj("16"),
     cantidadLotes: 36,
     loteInicio: 509,
   },
@@ -240,7 +212,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "17",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4957473, -64.2779441),
+    bounds: gj("17"),
     cantidadLotes: 33,
     loteInicio: 545,
   },
@@ -249,7 +221,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "18",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.495225, -64.27687666),
+    bounds: gj("18"),
     cantidadLotes: 34,
     loteInicio: 578,
   },
@@ -258,7 +230,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EV3",
     zona: "Sur",
     tipo: "espacio_verde",
-    bounds: rect(-31.4957473, -64.277145),
+    bounds: getManzanaBoundsByFid(21),
     label: "E.V.3",
   },
   {
@@ -266,7 +238,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "19",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4962584, -64.277145),
+    bounds: gj("19"),
     cantidadLotes: 18,
     loteInicio: 612,
   },
@@ -275,7 +247,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "20",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.496, -64.276406),
+    bounds: gj("20"),
     cantidadLotes: 18,
     loteInicio: 630,
   },
@@ -284,7 +256,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "21",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4957473, -64.275777),
+    bounds: gj("21"),
     cantidadLotes: 33,
     loteInicio: 648,
   },
@@ -295,7 +267,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "22",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4971732, -64.280228),
+    bounds: gj("22"),
     cantidadLotes: 37,
     loteInicio: 681,
   },
@@ -304,7 +276,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "23",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4967136, -64.2793496),
+    bounds: gj("23"),
     cantidadLotes: 20,
     loteInicio: 718,
   },
@@ -313,7 +285,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "24",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4971732, -64.2793496),
+    bounds: gj("24"),
     cantidadLotes: 22,
     loteInicio: 738,
   },
@@ -322,7 +294,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "25",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.496997, -64.2785454487945),
+    bounds: gj("25"),
     cantidadLotes: 26,
     loteInicio: 760,
   },
@@ -331,7 +303,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "26",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4967479, -64.277696),
+    bounds: gj("26"),
     cantidadLotes: 24,
     loteInicio: 786,
   },
@@ -340,7 +312,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "27",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4967479, -64.276406),
+    bounds: gj("27"),
     cantidadLotes: 34,
     loteInicio: 810,
   },
@@ -349,7 +321,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EUC1",
     zona: "Sur",
     tipo: "uso_comunitario",
-    bounds: rect(-31.4971732, -64.27757),
+    bounds: getManzanaBoundsByFid(32),
     label: "E.U.C.1",
   },
   {
@@ -357,7 +329,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EV4",
     zona: "Sur",
     tipo: "espacio_verde",
-    bounds: rect(-31.49761, -64.2793496),
+    bounds: getManzanaBoundsByFid(28),
     label: "E.V.4",
   },
   {
@@ -365,7 +337,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EV5",
     zona: "Sur",
     tipo: "espacio_verde",
-    bounds: rect(-31.497512, -64.27606975150779),
+    bounds: getManzanaBoundsByFid(42),
     label: "E.V.5",
   },
 
@@ -375,7 +347,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EUC2",
     zona: "Sur",
     tipo: "uso_comunitario",
-    bounds: rect(-31.498141, -64.279391),
+    bounds: getManzanaBoundsByFid(43),
     label: "E.U.C.2",
   },
   {
@@ -383,7 +355,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "28",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.4984666, -64.280228),
+    bounds: gj("28"),
     cantidadLotes: 13,
     loteInicio: 844,
   },
@@ -392,7 +364,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "29",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.498543, -64.279391),
+    bounds: gj("29"),
     cantidadLotes: 24,
     loteInicio: 857,
   },
@@ -401,7 +373,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "30",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.498201646757536, -64.2785454487945),
+    bounds: gj("30"),
     cantidadLotes: 25,
     loteInicio: 881,
   },
@@ -410,7 +382,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "31",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.498201646757536, -64.27793658738442),
+    bounds: gj("31"),
     cantidadLotes: 29,
     loteInicio: 906,
   },
@@ -419,7 +391,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "32",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.498201646757536, -64.27736325943941),
+    bounds: gj("32"),
     cantidadLotes: 31,
     loteInicio: 935,
   },
@@ -428,7 +400,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "33",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.498201646757536, -64.27680565664706),
+    bounds: gj("33"),
     cantidadLotes: 34,
     loteInicio: 966,
   },
@@ -437,7 +409,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "34",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.498055482756985, -64.27606975150779),
+    bounds: getManzanaBoundsByFid(40),
     cantidadLotes: 16,
     loteInicio: 1000,
   },
@@ -446,7 +418,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "35",
     zona: "Sur",
     tipo: "manzana",
-    bounds: rect(-31.498524457386107, -64.27606975150779),
+    bounds: getManzanaBoundsByFid(41),
     cantidadLotes: 20,
     loteInicio: 1016,
   },
@@ -455,7 +427,7 @@ export const MANZANAS_CONFIG: ManzanaConfig[] = [
     numero: "EV6",
     zona: "Sur",
     tipo: "espacio_verde",
-    bounds: rect(-31.499, -64.27793658738442),
+    bounds: getManzanaBoundsByFid(33),
     label: "E.V.6",
   },
 ];

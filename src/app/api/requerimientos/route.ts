@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
-import { CategoriaReq } from "@prisma/client";
+import { CategoriaReq, type Prioridad } from "@/generated/enums";
 
 // ── GET /api/requerimientos ──────────────────────────────────────────────────
 // Query params:
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { categoria, titulo, descripcion, imagenes } = body;
+  const { categoria, titulo, descripcion, imagenes, prioridad } = body;
 
   if (!categoria || !titulo?.trim() || !descripcion?.trim()) {
     return NextResponse.json(
@@ -67,6 +67,7 @@ export async function POST(req: NextRequest) {
       titulo: titulo.trim(),
       descripcion: descripcion.trim(),
       imagenes: imagenes ?? [],
+      prioridad: (prioridad as Prioridad) ?? "MEDIO",
       usuarioId: parseInt(session.user.id!),
     },
   });

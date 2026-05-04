@@ -42,7 +42,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 // ── PATCH /api/incidentes/[id] ───────────────────────────────────────────────
-// Body: { estado?, visibleVecinos? }  — admin only
+// Body: { estado?, visibleVecinos?, prioridad? }  — admin only
 export async function PATCH(req: NextRequest, { params }: Params) {
   const session = await auth();
   if (!session?.user) {
@@ -58,11 +58,16 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   const { id } = await params;
   const body = await req.json();
-  const { estado, visibleVecinos } = body;
+  const { estado, visibleVecinos, prioridad } = body;
 
   const estadosValidos = ["ACTIVO", "RESUELTO", "FALSA_ALARMA"];
   if (estado && !estadosValidos.includes(estado)) {
     return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
+  }
+
+  const prioridadesValidas = ["CRITICO", "ALTO", "MEDIO", "BAJO"];
+  if (prioridad && !prioridadesValidas.includes(prioridad)) {
+    return NextResponse.json({ error: "Prioridad inválida." }, { status: 400 });
   }
 
   const incidente = await prisma.incidente.update({
@@ -70,6 +75,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     data: {
       ...(estado !== undefined ? { estado } : {}),
       ...(visibleVecinos !== undefined ? { visibleVecinos } : {}),
+      ...(prioridad !== undefined ? { prioridad } : {}),
     },
   });
 

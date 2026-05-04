@@ -2,7 +2,14 @@ import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import Link from "next/link";
+import Image from "next/image";
 import { TIPO_CONFIG, ESTADO_CONFIG } from "../page";
+import {
+  calcularEstadoSLA,
+  PRIORIDAD_CONFIG,
+  ESTADO_SLA_CONFIG,
+  type ConfigSLAMap,
+} from "@/lib/utils/sla";
 import CambiarEstadoIncidente from "./CambiarEstadoIncidente";
 import DetalleMapaMini from "./DetalleMapaMiniLazy";
 
@@ -33,8 +40,19 @@ export default async function DetalleIncidentePage({ params }: Params) {
   // Vecinos no pueden ver incidentes ocultos
   if (session.user.role === "VECINO" && !inc.visibleVecinos) notFound();
 
+  const slaRows = await prisma.configSLA.findMany();
+  const slaConfig: ConfigSLAMap = Object.fromEntries(
+    slaRows.map((r) => [r.prioridad, r.horasLimite]),
+  ) as ConfigSLAMap;
+
   const tipoCfg = TIPO_CONFIG[inc.tipo];
   const estadoCfg = ESTADO_CONFIG[inc.estado];
+  const prioridadCfg = PRIORIDAD_CONFIG[inc.prioridad];
+  const estadoSLA =
+    inc.estado === "RESUELTO" || inc.estado === "FALSA_ALARMA"
+      ? null
+      : calcularEstadoSLA(inc.fechaHora, inc.prioridad, slaConfig);
+  const slaCfg = estadoSLA ? ESTADO_SLA_CONFIG[estadoSLA] : null;
   const loteInfo = inc.lote
     ? `MZ ${inc.lote.manzana.numero} · Lote ${inc.lote.numero}`
     : null;
@@ -63,7 +81,7 @@ export default async function DetalleIncidentePage({ params }: Params) {
           </svg>
         </Link>
         <div className="flex items-center gap-2">
-          <span className="text-2xl">{tipoCfg.emoji}</span>
+          <span className="text-2xl">{tipoCfg.emoji ?? "📍"}</span>
           <h1 className="text-xl font-bold text-gray-900">{tipoCfg.label}</h1>
         </div>
       </div>
@@ -81,6 +99,18 @@ export default async function DetalleIncidentePage({ params }: Params) {
           >
             {estadoCfg.label}
           </span>
+          <span
+            className={`text-xs font-semibold px-2.5 py-1 rounded-full ${prioridadCfg.bg} ${prioridadCfg.color}`}
+          >
+            {prioridadCfg.label}
+          </span>
+          {slaCfg && (
+            <span
+              className={`text-xs font-semibold px-2.5 py-1 rounded-full ${slaCfg.bg} ${slaCfg.color}`}
+            >
+              {slaCfg.label}
+            </span>
+          )}
           {!inc.visibleVecinos && (
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-500">
               Solo admin
@@ -140,11 +170,40 @@ export default async function DetalleIncidentePage({ params }: Params) {
         </div>
       )}
 
+      {/* Galería de imágenes */}
+      {inc.imagenes.length > 0 && (
+        <div className="mb-4">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+            Imágenes adjuntas
+          </p>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {inc.imagenes.map((url, i) => (
+              <a
+                key={url}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative aspect-square rounded-xl overflow-hidden border border-gray-200 block hover:opacity-90 transition-opacity"
+              >
+                <Image
+                  src={url}
+                  alt={`imagen ${i + 1}`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 50vw, 33vw"
+                />
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Panel admin */}
       {isAdmin && (
         <CambiarEstadoIncidente
           incidenteId={inc.id}
           estadoActual={inc.estado}
+          prioridadActual={inc.prioridad}
           visibleVecinos={inc.visibleVecinos}
         />
       )}

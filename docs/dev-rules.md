@@ -68,14 +68,16 @@ if (!session?.user || session.user.role !== "ADMIN") {
 
 ## Pendientes / Backlog
 
-### Filtros del mapa (`/mapa`) — pendiente catastral
+### ✅ Filtros del mapa (`/mapa`) — IMPLEMENTADO
 
-Los botones "Manzanas", "Incidentes" y "Alertas SOS" en la página del mapa están visualmente presentes pero sin conectar a los layers del mapa. Se activan cuando llegue el GeoJSON catastral del contacto en Catastro provincial.
+Los botones "Manzanas", "Incidentes" y "Alertas SOS" están conectados a los layers del mapa. Cada botón toglea su layer; "Ver Todo" activa todos.
 
-- "Manzanas" e "Incidentes" tienen layers ya construidos (`ManzanasLayer`, `IncidentesLayer`).
-- "Alertas SOS" en el mapa se construye después del catastral.
+- Fetch client-side desde `/api/incidentes` y `/api/panico` al montar la página.
+- `AlertasLayer.tsx` renderiza pines 🆘 con animación de pulso para alertas activas.
+- Badge rojo en el botón "Alertas SOS" muestra el conteo de alertas activas.
+- La leyenda dinámica refleja solo los layers activos con conteo en tiempo real.
 
-### Notificaciones push para Pánico SOS
+### Notificaciones push para Pánico SOS — IMPLEMENTADO
 
 Cuando un vecino activa el botón SOS, el ideal es que admin/seguridad reciban una **notificación push nativa** (funciona con app cerrada en móvil).
 
@@ -93,9 +95,9 @@ Cuando un vecino activa el botón SOS, el ideal es que admin/seguridad reciban u
 
 ---
 
-### Backlog: soporte de fotos / adjuntos (incidentes, mascotas, requerimientos)
+### ✅ Soporte de fotos / adjuntos (incidentes, mascotas, requerimientos) — IMPLEMENTADO
 
-Agregar la posibilidad de que el usuario suba una foto o captura desde el celular para facilitar la identificación y el manejo de los reportes. Esto se trata como backlog funcional y se implementará en una iteración futura.
+Implementado en marzo 2026. Los usuarios pueden subir fotos desde galería o cámara en los tres módulos.
 
 Objetivos:
 
@@ -122,3 +124,68 @@ Notas operativas:
 - Guardar metadatos opcionales (mimetype, tamaño, nombre original, timestamp) para auditoría.
 - Considerar generación de thumbnails y limitación de resolución para mejorar performance móvil.
 - Revisar requisitos legales sobre almacenamiento de imágenes y privacidad antes de activar public access.
+
+---
+
+### Backlog: SLA y prioridades para incidentes y requerimientos - IMPLEMENTADO
+
+Implementar un sistema de niveles de prioridad con tiempos de respuesta (SLA) configurables por el admin, de modo que cada incidente y requerimiento tenga un nivel de urgencia visible y un indicador de cumplimiento del tiempo acordado.
+
+#### Niveles de prioridad propuestos
+
+| Nivel     | Color sugerido | SLA por defecto | Descripción                                            |
+| --------- | -------------- | --------------- | ------------------------------------------------------ |
+| `CRITICO` | Rojo           | 2 hs            | Riesgo inmediato para la seguridad o integridad física |
+| `ALTO`    | Naranja        | 8 hs            | Afecta a múltiples vecinos o requiere acción urgente   |
+| `MEDIO`   | Amarillo       | 48 hs           | Problema concreto sin riesgo inmediato                 |
+| `BAJO`    | Verde / gris   | 7 días          | Mejora o reclamo menor, puede planificarse             |
+
+#### Objetivos
+
+- Agregar campo `prioridad` a los modelos `Incidente` y `Requerimiento` en `schema.prisma` (enum `Prioridad`).
+- Permitir al admin definir o editar los tiempos de SLA por nivel desde un panel de configuración (tabla `ConfigSLA` en la base de datos).
+- Calcular y exponer en la UI si cada ítem está **En plazo**, **Por vencer** (≤ 20% del tiempo restante) o **Vencido** en función de `createdAt` + SLA del nivel.
+- Mostrar badge de prioridad y estado SLA en los listados de incidentes y requerimientos.
+- Permitir que el admin asigne o cambie la prioridad desde el panel de detalle.
+
+#### Esquema Prisma sugerido
+
+```prisma
+enum Prioridad {
+  CRITICO
+  ALTO
+  MEDIO
+  BAJO
+}
+
+model ConfigSLA {
+  id          Int       @id @default(autoincrement())
+  prioridad   Prioridad @unique
+  horasLimite Int       // horas hasta vencimiento
+  updatedAt   DateTime  @updatedAt
+
+  @@map("config_sla")
+}
+```
+
+Agregar en `Incidente` y `Requerimiento`:
+
+```prisma
+prioridad  Prioridad @default(MEDIO)
+```
+
+#### Requisitos técnicos
+
+- `GET /api/config/sla` — devuelve los 4 niveles con sus horas actuales (solo admin puede editar).
+- `PATCH /api/config/sla` — permite al admin actualizar las horas de cada nivel.
+- Helper `calcularEstadoSLA(createdAt, prioridad, config): "EN_PLAZO" | "POR_VENCER" | "VENCIDO"` — reutilizable en server components y API routes.
+- El campo `prioridad` debe poderse establecer al crear y editar un incidente o requerimiento.
+- En la vista de listado: columna o badge con color + estado SLA.
+- En la vista de detalle: indicador visual claro del tiempo restante o vencimiento.
+
+#### Consideraciones adicionales
+
+- **Notificaciones por vencimiento:** tarea cron (o trigger en cada render del panel admin) para alertar cuando un ítem está próximo a vencer o ya venció. Integra con el backlog de notificaciones push.
+- **Histórico de prioridad:** considerar guardar registros de cambios de prioridad (`PrioridadLog`) para auditoría.
+- **Prioridad automática sugerida:** en el futuro, inferir la prioridad inicial según el tipo (`ROBO` → CRITICO por defecto, `ILUMINACION` → BAJO) para reducir carga operativa del admin.
+- **Dashboard de SLA:** sección en el panel admin con métricas: porcentaje de ítems resueltos en plazo por nivel, tiempo promedio de resolución, cantidad vencidos por semana.

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { enviarPushAdmins } from "@/lib/push/enviarPush";
 
 // GET /api/panico
 // Admin: todas las alertas (activas primero, luego cerradas recientes)
@@ -94,5 +95,17 @@ export async function POST(req: NextRequest) {
     },
   });
 
+  // Enviar push en background — no bloquea la respuesta al vecino
+  const loteInfo = alerta.usuario?.lote
+    ? ` · MZ ${alerta.usuario.lote.manzana.numero} Lote ${alerta.usuario.lote.numero}`
+    : "";
+  void enviarPushAdmins({
+    title: "🆘 Alerta SOS activada",
+    body: `${alerta.usuario?.nombre ?? "Un vecino"} necesita ayuda${loteInfo}.`,
+    url: "/panico",
+    tag: `sos-${alerta.id}`,
+  });
+
   return NextResponse.json(alerta, { status: 201 });
 }
+

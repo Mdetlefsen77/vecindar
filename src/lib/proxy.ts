@@ -10,7 +10,6 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Rutas protegidas
   const protectedRoutes = [
     "/mapa",
     "/incidentes",
@@ -20,18 +19,15 @@ export async function proxy(request: NextRequest) {
     "/admin",
   ];
 
-  // Verificar si la ruta actual es protegida
   const isProtectedRoute = protectedRoutes.some((route) =>
     pathname.startsWith(route),
   );
 
-  // Si es ruta protegida y no hay token, redirigir a login
   if (isProtectedRoute && !token) {
     const url = new URL("/login", request.url);
     return NextResponse.redirect(url);
   }
 
-  // Si está logueado e intenta ir a login, redirigir a mapa
   if (pathname === "/login" && token) {
     const url = new URL("/mapa", request.url);
     return NextResponse.redirect(url);

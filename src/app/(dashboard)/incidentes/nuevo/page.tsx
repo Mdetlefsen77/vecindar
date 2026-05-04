@@ -6,6 +6,7 @@ import Link from "next/link";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { BARRIO_CENTER, BARRIO_ZOOM } from "@/lib/barrio/manzanas";
+import ImageUpload from "@/components/forms/ImageUpload";
 
 // Fix iconos Leaflet
 type IconDefaultWithGetUrl = L.Icon.Default & { _getIconUrl?: string };
@@ -40,6 +41,7 @@ export default function NuevoIncidentePage() {
     lat: number;
     lng: number;
   } | null>(null);
+  const [imagenes, setImagenes] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -104,6 +106,7 @@ export default function NuevoIncidentePage() {
           ubicacionText: ubicacionText || null,
           latitud: coordenadas.lat,
           longitud: coordenadas.lng,
+          imagenes,
         }),
       });
 
@@ -237,6 +240,16 @@ export default function NuevoIncidentePage() {
               placeholder="Describí lo que observaste con el mayor detalle posible..."
               rows={4}
               className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-300 resize-none"
+            />
+          </div>
+          {/* Fotos adjuntas */}
+          <div>
+            <ImageUpload
+              multiple
+              maxFiles={3}
+              label="Fotos adjuntas"
+              value={imagenes}
+              onChange={setImagenes}
             />
           </div>
         </div>

@@ -13,7 +13,7 @@ interface NavItem {
 
 const HomeIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -28,7 +28,7 @@ const HomeIcon = () => (
 );
 const MapIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -43,7 +43,7 @@ const MapIcon = () => (
 );
 const ShieldIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -58,7 +58,7 @@ const ShieldIcon = () => (
 );
 const SosIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -73,7 +73,7 @@ const SosIcon = () => (
 );
 const ClipboardIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -88,7 +88,7 @@ const ClipboardIcon = () => (
 );
 const PawIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -103,7 +103,7 @@ const PawIcon = () => (
 );
 const AdminIcon = () => (
   <svg
-    className="w-5 h-5"
+    className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
     stroke="currentColor"
@@ -237,7 +237,7 @@ export default function Sidebar({
             <p className="text-base font-medium text-gray-900 truncate">
               {userName}
             </p>
-            <p className="text-sm text-gray-500 truncate">{userEmail}</p>
+            <p className="text-sm text-gray-600 truncate">{userEmail}</p>
           </div>
         </div>
         <div className="flex items-center justify-between">

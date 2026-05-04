@@ -45,7 +45,6 @@ export default function LotesLayer({
         fillColor: estilo.fillColor,
         fillOpacity: estilo.fillOpacity,
         weight: estilo.weight,
-        // Para que los bordes internos sean más finos que el perímetro de manzana
         opacity: 0.9,
       });
 

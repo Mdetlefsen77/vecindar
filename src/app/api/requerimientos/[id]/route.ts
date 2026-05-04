@@ -42,7 +42,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 // ── PATCH /api/requerimientos/[id] ───────────────────────────────────────────
-// Body: { estado }  — solo ADMIN puede cambiar estado
+// Body: { estado?, prioridad? }  — solo ADMIN puede cambiar estado o prioridad
 export async function PATCH(req: NextRequest, { params }: Params) {
   const session = await auth();
   if (!session?.user) {
@@ -57,16 +57,28 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   const { id } = await params;
-  const { estado } = await req.json();
+  const { estado, prioridad } = await req.json();
 
   const estadosValidos = ["NUEVO", "EN_PROGRESO", "RESUELTO", "CERRADO"];
-  if (!estadosValidos.includes(estado)) {
+  if (estado && !estadosValidos.includes(estado)) {
     return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
+  }
+
+  const prioridadesValidas = ["CRITICO", "ALTO", "MEDIO", "BAJO"];
+  if (prioridad && !prioridadesValidas.includes(prioridad)) {
+    return NextResponse.json({ error: "Prioridad inválida." }, { status: 400 });
+  }
+
+  if (!estado && !prioridad) {
+    return NextResponse.json({ error: "Nada que actualizar." }, { status: 400 });
   }
 
   const requerimiento = await prisma.requerimiento.update({
     where: { id: parseInt(id) },
-    data: { estado },
+    data: {
+      ...(estado !== undefined ? { estado } : {}),
+      ...(prioridad !== undefined ? { prioridad } : {}),
+    },
   });
 
   return NextResponse.json(requerimiento);

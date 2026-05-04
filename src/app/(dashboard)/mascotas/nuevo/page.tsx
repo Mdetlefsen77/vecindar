@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ImageUpload from "@/components/forms/ImageUpload";
 
 export default function NuevaMascotaPage() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function NuevaMascotaPage() {
   const [descripcion, setDescripcion] = useState("");
   const [zona, setZona] = useState("");
   const [contacto, setContacto] = useState("");
+  const [foto, setFoto] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -32,6 +34,7 @@ export default function NuevaMascotaPage() {
           tipo,
           nombre: nombre.trim() || undefined,
           descripcion: descripcion.trim(),
+          foto: foto ?? undefined,
           zona: zona.trim(),
           contacto: contacto.trim(),
         }),
@@ -160,6 +163,15 @@ export default function NuevaMascotaPage() {
             onChange={(e) => setContacto(e.target.value)}
             placeholder="Teléfono, WhatsApp o cómo contactarte..."
             className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        {/* Foto */}
+        <div>
+          <ImageUpload
+            label="Foto de la mascota"
+            value={foto}
+            onChange={setFoto}
           />
         </div>
 

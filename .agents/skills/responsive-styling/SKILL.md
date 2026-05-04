@@ -6,6 +6,7 @@ description: Automatically generate mobile-first responsive CSS/SCSS when creati
 # Responsive Styling Skill
 
 ## Purpose
+
 Generate mobile-first, responsive CSS/SCSS that works across all devices and follows accessibility best practices.
 
 ## Philosophy
@@ -29,6 +30,7 @@ Responsive design is accessibility. Mobile-first is user-first.
 ## When This Skill Activates
 
 This skill automatically activates when:
+
 - User asks to "make it responsive"
 - User mentions breakpoints, mobile, tablet, or desktop
 - Creating styles for a component
@@ -51,12 +53,14 @@ Before generating responsive styles, determine:
 ### What Are the Breakpoints?
 
 **Standard mobile-first breakpoints**:
+
 - **Base styles** (320px+) - Mobile default
 - **Tablet** (768px+) - `@media (min-width: 768px)`
 - **Desktop** (1024px+) - `@media (min-width: 1024px)`
 - **Large desktop** (1440px+) - Optional for max-width constraints
 
 **When to add breakpoints**:
+
 - ✅ Layout changes significantly (columns stack/unstack)
 - ✅ Typography scales (mobile 16px → desktop 18px)
 - ✅ Touch targets adjust (mobile 44px → desktop 40px)
@@ -65,6 +69,7 @@ Before generating responsive styles, determine:
 ### What Accessibility Requirements?
 
 **WCAG 2.1 Level AA compliance**:
+
 - ✅ **Color contrast**: 4.5:1 for normal text, 3:1 for large text (calculate exactly)
 - ✅ **Touch targets**: ≥ 44x44px on mobile, ≥ 40x40px on desktop
 - ✅ **Focus indicators**: 2px outline minimum, distinct from hover
@@ -73,6 +78,7 @@ Before generating responsive styles, determine:
 ### What States Are Needed?
 
 **Interactive states** (buttons, links):
+
 - `:hover` - Mouse pointer over element
 - `:focus` - Keyboard navigation focus
 - `:focus-visible` - Keyboard focus (not mouse click)
@@ -84,6 +90,7 @@ Before generating responsive styles, determine:
 ### What Typography Scale?
 
 **Mobile-first sizing**:
+
 - **Body text**: Start 16px (never below, readability)
 - **Headings**: Use `clamp()` for fluid scaling
   - Example: `font-size: clamp(1.5rem, 5vw, 2.5rem);`
@@ -93,10 +100,12 @@ Before generating responsive styles, determine:
 ### What Spacing System?
 
 **Consistent spacing scale** (choose one):
+
 - **8px grid**: 8px, 16px, 24px, 32px, 40px, 48px, 64px
 - **rem-based**: 0.5rem, 1rem, 1.5rem, 2rem, 3rem, 4rem
 
 **Apply consistently**:
+
 - Margins, padding, gaps use same scale
 - Avoid arbitrary values (17px, 23px)
 
@@ -125,21 +134,22 @@ Output mobile-first SCSS with exact values
 ## Core Principles
 
 ### 1. Mobile-First Approach
+
 Always write base styles for mobile, then enhance for larger screens:
 
 ```scss
 // ✅ CORRECT: Mobile-first
 .component {
-  font-size: 1rem;        // Base mobile style
+  font-size: 1rem; // Base mobile style
   padding: 1rem;
 
   @media (min-width: 768px) {
-    font-size: 1.125rem;  // Enhance for tablet
+    font-size: 1.125rem; // Enhance for tablet
     padding: 2rem;
   }
 
   @media (min-width: 1024px) {
-    font-size: 1.25rem;   // Enhance for desktop
+    font-size: 1.25rem; // Enhance for desktop
     padding: 3rem;
   }
 }
@@ -183,38 +193,38 @@ Scale typography appropriately:
 ```scss
 .heading-1 {
   // Mobile base
-  font-size: 2rem;        // 32px
+  font-size: 2rem; // 32px
   line-height: 1.2;
   font-weight: 700;
   margin-bottom: 1rem;
 
   // Tablet
   @media (min-width: 768px) {
-    font-size: 2.5rem;    // 40px
+    font-size: 2.5rem; // 40px
     margin-bottom: 1.5rem;
   }
 
   // Desktop
   @media (min-width: 1024px) {
-    font-size: 3rem;      // 48px
+    font-size: 3rem; // 48px
     margin-bottom: 2rem;
   }
 }
 
 .body-text {
   // Mobile base
-  font-size: 1rem;        // 16px
+  font-size: 1rem; // 16px
   line-height: 1.6;
 
   // Tablet
   @media (min-width: 768px) {
-    font-size: 1.125rem;  // 18px
+    font-size: 1.125rem; // 18px
     line-height: 1.7;
   }
 
   // Desktop
   @media (min-width: 1024px) {
-    font-size: 1.25rem;   // 20px
+    font-size: 1.25rem; // 20px
     line-height: 1.8;
   }
 }
@@ -255,6 +265,7 @@ Use fluid spacing that scales:
 ### 5. Responsive Layouts
 
 #### Stacked to Columns
+
 ```scss
 .card-grid {
   display: grid;
@@ -278,6 +289,7 @@ Use fluid spacing that scales:
 ```
 
 #### Flexbox Responsive
+
 ```scss
 .flex-container {
   display: flex;
@@ -313,11 +325,16 @@ Use fluid spacing that scales:
 ## WordPress-Specific Patterns
 
 ### Full-Width Sections
+
 ```scss
 // Handle WordPress core padding
 .wp-block-cover {
   // Full viewport width accounting for theme padding
-  width: calc(100vw - var(--wp--style--root--padding-left) - var(--wp--style--root--padding-right));
+  width: calc(
+    100vw - var(--wp--style--root--padding-left) - var(
+        --wp--style--root--padding-right
+      )
+  );
   max-width: none;
 
   // Center it
@@ -327,6 +344,7 @@ Use fluid spacing that scales:
 ```
 
 ### Responsive Block Patterns
+
 ```scss
 // Pattern wrapper
 .wp-block-group.pattern-name {
@@ -354,6 +372,7 @@ Use fluid spacing that scales:
 ## Drupal-Specific Patterns
 
 ### Paragraph Responsive Styles
+
 ```scss
 .paragraph--type--name {
   // Mobile base
@@ -378,6 +397,7 @@ Use fluid spacing that scales:
 ```
 
 ### Field Responsive Display
+
 ```scss
 .field--name-field-items {
   display: grid;
@@ -405,14 +425,17 @@ Use fluid spacing that scales:
 **IMPORTANT**: WordPress block patterns require TWO separate stylesheets:
 
 ### 1. Front-End Stylesheet
+
 Standard styles that apply to published pages. No special wrapper needed.
 
 ### 2. Editor Stylesheet
+
 Styles for the WordPress block editor (admin). Must wrap all selectors with `.editor-styles-wrapper`.
 
 **Example**:
 
 **Front-end** (`_hero-cta.scss`):
+
 ```scss
 .hero-cta-pattern {
   padding: 2rem 1rem;
@@ -426,6 +449,7 @@ Styles for the WordPress block editor (admin). Must wrap all selectors with `.ed
 ```
 
 **Editor** (`_hero-cta-editor.scss`):
+
 ```scss
 // Wrap everything with .editor-styles-wrapper
 .editor-styles-wrapper {
@@ -442,6 +466,7 @@ Styles for the WordPress block editor (admin). Must wrap all selectors with `.ed
 ```
 
 **Why this is necessary**:
+
 - WordPress block editor uses `.editor-styles-wrapper` as a scoping mechanism
 - Without this wrapper, styles won't apply in the admin editor
 - Pattern appears unstyled when inserted, confusing users
@@ -449,6 +474,7 @@ Styles for the WordPress block editor (admin). Must wrap all selectors with `.ed
 ## Responsive Images
 
 ### Basic Responsive Image
+
 ```scss
 img {
   max-width: 100%;
@@ -458,6 +484,7 @@ img {
 ```
 
 ### Responsive Background Images
+
 ```scss
 .hero-background {
   background-size: cover;
@@ -475,6 +502,7 @@ img {
 ```
 
 ### Art Direction
+
 ```scss
 .responsive-image {
   // Mobile: portrait crop
@@ -496,6 +524,7 @@ img {
 ## Touch-Friendly Design
 
 ### Minimum Touch Targets
+
 ```scss
 button,
 a,
@@ -514,6 +543,7 @@ select {
 ```
 
 ### Spacing for Touch
+
 ```scss
 .touch-menu {
   li {
@@ -543,8 +573,12 @@ select {
 ## Accessibility in Responsive Design
 
 ### Focus Indicators
+
 ```scss
-a, button, input, select {
+a,
+button,
+input,
+select {
   &:focus {
     outline: 2px solid currentColor;
     outline-offset: 2px;
@@ -560,6 +594,7 @@ a, button, input, select {
 ```
 
 ### Text Readability
+
 ```scss
 .content {
   // Mobile: shorter line length
@@ -573,6 +608,7 @@ a, button, input, select {
 ```
 
 ### Reduced Motion
+
 ```scss
 // Respect user's motion preferences
 @media (prefers-reduced-motion: reduce) {
@@ -589,6 +625,7 @@ a, button, input, select {
 ## Common Responsive Patterns
 
 ### Hide/Show Elements
+
 ```scss
 // Show only on mobile
 .mobile-only {
@@ -619,6 +656,7 @@ a, button, input, select {
 ```
 
 ### Responsive Navigation
+
 ```scss
 .main-nav {
   // Mobile: hamburger menu
@@ -657,6 +695,7 @@ a, button, input, select {
 ```
 
 ### Responsive Typography System
+
 ```scss
 // Define fluid typography
 :root {

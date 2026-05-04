@@ -22,21 +22,21 @@ export default function MascotasFiltros() {
   const estado = searchParams.get("estado") ?? "";
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="space-y-2">
       {/* Tipo */}
-      <div className="flex rounded-lg border border-gray-300 overflow-hidden text-sm">
+      <div className="flex flex-wrap gap-1.5">
         {[
           { value: "", label: "Todos" },
-          { value: "PERDIDA", label: "🐾 Perdida" },
-          { value: "ENCONTRADA", label: "✅ Encontrada" },
+          { value: "PERDIDA", label: "Perdida" },
+          { value: "ENCONTRADA", label: "Encontrada" },
         ].map((opt) => (
           <button
             key={opt.value}
             onClick={() => update("tipo", opt.value)}
-            className={`px-3 py-2 transition-colors ${
+            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               tipo === opt.value
-                ? "bg-blue-600 text-white font-medium"
-                : "bg-white text-gray-600 hover:bg-gray-50"
+                ? "bg-blue-600 text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300"
             }`}
           >
             {opt.label}
@@ -45,19 +45,19 @@ export default function MascotasFiltros() {
       </div>
 
       {/* Estado */}
-      <div className="flex rounded-lg border border-gray-300 overflow-hidden text-sm">
+      <div className="flex flex-wrap gap-1.5">
         {[
           { value: "", label: "Todos" },
-          { value: "abierta", label: "🔍 Buscando" },
-          { value: "resuelta", label: "✅ Resueltas" },
+          { value: "abierta", label: "Buscando" },
+          { value: "resuelta", label: "Resueltas" },
         ].map((opt) => (
           <button
             key={opt.value}
             onClick={() => update("estado", opt.value)}
-            className={`px-3 py-2 transition-colors ${
+            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               estado === opt.value
-                ? "bg-blue-600 text-white font-medium"
-                : "bg-white text-gray-600 hover:bg-gray-50"
+                ? "bg-blue-600 text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-blue-300"
             }`}
           >
             {opt.label}
