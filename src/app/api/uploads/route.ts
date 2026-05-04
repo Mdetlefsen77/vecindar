@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { createClient } from "@supabase/supabase-js";
 import { randomUUID } from "crypto";
 
 const MAX_SIZE = 5 * 1024 * 1024; // 5 MB
@@ -15,7 +14,6 @@ const ALLOWED_TYPES = new Set([
   "image/heif",
 ]);
 
-// Extension lookup — use the reported mime type, never user-supplied extension
 const MIME_EXT: Record<string, string> = {
   "image/jpeg": "jpg",
   "image/jpg": "jpg",
@@ -25,6 +23,8 @@ const MIME_EXT: Record<string, string> = {
   "image/heic": "heic",
   "image/heif": "heif",
 };
+
+const BUCKET = "images";
 
 export async function POST(req: NextRequest) {
   const session = await auth();
@@ -47,18 +47,13 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Validate MIME type
   if (!ALLOWED_TYPES.has(file.type)) {
     return NextResponse.json(
-      {
-        error:
-          "Tipo de archivo no permitido. Solo imágenes (JPG, PNG, WEBP, GIF, HEIC).",
-      },
+      { error: "Tipo de archivo no permitido. Solo imágenes (JPG, PNG, WEBP, GIF, HEIC)." },
       { status: 400 },
     );
   }
 
-  // Validate size
   if (file.size > MAX_SIZE) {
     return NextResponse.json(
       { error: "El archivo supera el límite de 5 MB." },
@@ -68,11 +63,29 @@ export async function POST(req: NextRequest) {
 
   const ext = MIME_EXT[file.type] ?? "jpg";
   const filename = `${randomUUID()}.${ext}`;
-  const uploadDir = join(process.cwd(), "public", "uploads");
-
   const bytes = await file.arrayBuffer();
-  await mkdir(uploadDir, { recursive: true });
-  await writeFile(join(uploadDir, filename), Buffer.from(bytes));
 
-  return NextResponse.json({ url: `/uploads/${filename}` }, { status: 201 });
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  );
+
+  const { error } = await supabase.storage
+    .from(BUCKET)
+    .upload(filename, Buffer.from(bytes), {
+      contentType: file.type,
+      upsert: false,
+    });
+
+  if (error) {
+    console.error("Supabase storage upload error:", error);
+    return NextResponse.json(
+      { error: "Error al subir el archivo." },
+      { status: 500 },
+    );
+  }
+
+  const { data } = supabase.storage.from(BUCKET).getPublicUrl(filename);
+
+  return NextResponse.json({ url: data.publicUrl }, { status: 201 });
 }
