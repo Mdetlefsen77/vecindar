@@ -1,13 +1,6 @@
 import webpush from "web-push";
 import { prisma } from "@/lib/prisma/client";
 
-// Inicializar web-push con las VAPID keys una sola vez
-webpush.setVapidDetails(
-    process.env.VAPID_SUBJECT ?? "mailto:admin@vecindar.app",
-    process.env.VAPID_PUBLIC_KEY!,
-    process.env.VAPID_PRIVATE_KEY!,
-);
-
 interface PushPayload {
     title: string;
     body: string;
@@ -20,6 +13,13 @@ interface PushPayload {
  * Las suscripciones expiradas o inválidas se eliminan automáticamente.
  */
 export async function enviarPushAdmins(payload: PushPayload): Promise<void> {
+    // Inicializar web-push aquí (runtime) para evitar errores durante el build
+    webpush.setVapidDetails(
+        process.env.VAPID_SUBJECT ?? "mailto:admin@vecindar.app",
+        process.env.VAPID_PUBLIC_KEY!,
+        process.env.VAPID_PRIVATE_KEY!,
+    );
+
     const suscripciones = await prisma.pushSubscription.findMany({
         where: {
             usuario: {
