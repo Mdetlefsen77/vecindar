@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { requireSession } from "@/lib/api/guard";
 import { type EstadoAlerta } from "@/generated/enums";
 
 type Params = { params: Promise<{ id: string }> };
@@ -16,10 +16,9 @@ const ESTADOS_VALIDOS: EstadoAlerta[] = [
 // Admin/Seguridad: avanzar estado + notas
 // Vecino: solo puede cancelar (→ CERRADO) su propia alerta si está en ENVIADO
 export async function PATCH(req: NextRequest, { params }: Params) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autenticado." }, { status: 401 });
-  }
+  const guard = await requireSession("No autenticado.");
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const { id } = await params;
   const body = await req.json();

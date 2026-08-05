@@ -85,7 +85,7 @@ export default function CambiarEstado({
   return (
     <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4">
       <p className="text-xs font-semibold text-amber-700 mb-2 uppercase tracking-wide">
-        Panel de administración
+        Gestión del requerimiento
       </p>
       <p className="text-sm text-gray-700 mb-3 font-medium">Cambiar estado:</p>
       <div className="flex gap-2 flex-wrap mb-4">

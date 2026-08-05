@@ -1,31 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
-
-// Solo ADMIN y SEGURIDAD pueden suscribirse a push notifications
-function esAdminOSeguridad(role: string | undefined) {
-    return role === "ADMIN" || role === "SEGURIDAD";
-}
+import { requireSession } from "@/lib/api/guard";
+import {
+    suscripcionPushSchema,
+    eliminarSuscripcionPushSchema,
+} from "@/lib/validation/push";
 
 // POST /api/push/subscribe — registra o actualiza la suscripción del dispositivo
 export async function POST(req: NextRequest) {
-    const session = await auth();
-    if (!session?.user || !esAdminOSeguridad(session.user.role)) {
-        return NextResponse.json({ error: "Sin permisos." }, { status: 403 });
-    }
+    const guard = await requireSession();
+    if (guard.response) return guard.response;
+    const { session } = guard;
 
     const body = await req.json();
-    const { endpoint, keys } = body as {
-        endpoint: string;
-        keys: { p256dh: string; auth: string };
-    };
+    const parsed = suscripcionPushSchema.safeParse(body);
 
-    if (!endpoint || !keys?.p256dh || !keys?.auth) {
+    if (!parsed.success) {
         return NextResponse.json(
             { error: "Datos de suscripción inválidos." },
             { status: 400 },
         );
     }
+
+    const { endpoint, keys } = parsed.data;
 
     const usuarioId = parseInt(session.user.id!);
 
@@ -46,21 +43,20 @@ export async function POST(req: NextRequest) {
 
 // DELETE /api/push/subscribe — elimina la suscripción del dispositivo actual
 export async function DELETE(req: NextRequest) {
-    const session = await auth();
-    if (!session?.user || !esAdminOSeguridad(session.user.role)) {
-        return NextResponse.json({ error: "Sin permisos." }, { status: 403 });
-    }
+    const guard = await requireSession();
+    if (guard.response) return guard.response;
+    const { session } = guard;
 
     const body = await req.json();
-    const { endpoint } = body as { endpoint: string };
+    const parsed = eliminarSuscripcionPushSchema.safeParse(body);
 
-    if (!endpoint) {
+    if (!parsed.success) {
         return NextResponse.json({ error: "Endpoint requerido." }, { status: 400 });
     }
 
     await prisma.pushSubscription.deleteMany({
         where: {
-            endpoint,
+            endpoint: parsed.data.endpoint,
             usuarioId: parseInt(session.user.id!),
         },
     });

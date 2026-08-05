@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { requireSession, requireRole } from "@/lib/api/guard";
+import { actualizarIncidenteSchema } from "@/lib/validation/incidentes";
 
 type Params = { params: Promise<{ id: string }> };
 
 // ── GET /api/incidentes/[id] ─────────────────────────────────────────────────
 export async function GET(_req: NextRequest, { params }: Params) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const { id } = await params;
   const incidente = await prisma.incidente.findUnique({
@@ -42,33 +42,37 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 // ── PATCH /api/incidentes/[id] ───────────────────────────────────────────────
-// Body: { estado?, visibleVecinos?, prioridad? }  — admin only
+// Body: { estado?, visibleVecinos?, prioridad? }  — admin y seguridad
 export async function PATCH(req: NextRequest, { params }: Params) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
-  if (session.user.role !== "ADMIN") {
-    return NextResponse.json(
-      { error: "Solo administradores pueden modificar incidentes." },
-      { status: 403 },
-    );
-  }
+  const roleError = requireRole(
+    session.user.role,
+    ["ADMIN", "SEGURIDAD"],
+    "Solo administración o seguridad pueden modificar incidentes.",
+  );
+  if (roleError) return roleError;
 
   const { id } = await params;
   const body = await req.json();
-  const { estado, visibleVecinos, prioridad } = body;
-
-  const estadosValidos = ["ACTIVO", "RESUELTO", "FALSA_ALARMA"];
-  if (estado && !estadosValidos.includes(estado)) {
-    return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
+  const parsed = actualizarIncidenteSchema.safeParse(body);
+  if (!parsed.success) {
+    const badField = parsed.error.issues[0]?.path[0];
+    if (badField === "estado") {
+      return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
+    }
+    if (badField === "prioridad") {
+      return NextResponse.json(
+        { error: "Prioridad inválida." },
+        { status: 400 },
+      );
+    }
+    return NextResponse.json({ error: "Datos inválidos." }, { status: 400 });
   }
 
-  const prioridadesValidas = ["CRITICO", "ALTO", "MEDIO", "BAJO"];
-  if (prioridad && !prioridadesValidas.includes(prioridad)) {
-    return NextResponse.json({ error: "Prioridad inválida." }, { status: 400 });
-  }
+  const { estado, visibleVecinos, prioridad } = parsed.data;
 
   const incidente = await prisma.incidente.update({
     where: { id: parseInt(id) },

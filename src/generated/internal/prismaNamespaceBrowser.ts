@@ -55,6 +55,7 @@ export const ModelName = {
   Lote: 'Lote',
   Residente: 'Residente',
   Usuario: 'Usuario',
+  VistaSeccion: 'VistaSeccion',
   Incidente: 'Incidente',
   ConfigSLA: 'ConfigSLA',
   AlertaPanico: 'AlertaPanico',
@@ -134,6 +135,16 @@ export const UsuarioScalarFieldEnum = {
 } as const
 
 export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
+
+
+export const VistaSeccionScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  seccion: 'seccion',
+  vistoAt: 'vistoAt'
+} as const
+
+export type VistaSeccionScalarFieldEnum = (typeof VistaSeccionScalarFieldEnum)[keyof typeof VistaSeccionScalarFieldEnum]
 
 
 export const IncidenteScalarFieldEnum = {

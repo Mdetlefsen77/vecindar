@@ -38,6 +38,11 @@ export type Residente = Prisma.ResidenteModel
  */
 export type Usuario = Prisma.UsuarioModel
 /**
+ * Model VistaSeccion
+ * 
+ */
+export type VistaSeccion = Prisma.VistaSeccionModel
+/**
  * Model Incidente
  * 
  */

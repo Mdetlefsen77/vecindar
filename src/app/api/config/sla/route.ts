@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { requireSession, requireRoleSession } from "@/lib/api/guard";
 import { Prioridad } from "@/generated/enums";
 import { type ConfigSLAModel } from "@/generated/models/ConfigSLA";
 import { SLA_DEFAULTS } from "@/lib/utils/sla";
@@ -10,10 +10,8 @@ const PRIORIDADES: Prioridad[] = ["CRITICO", "ALTO", "MEDIO", "BAJO"];
 // ── GET /api/config/sla ───────────────────────────────────────────────────────
 // Devuelve los 4 niveles con sus horasLimite. Si no existen registros usa defaults.
 export async function GET() {
-    const session = await auth();
-    if (!session?.user) {
-        return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-    }
+    const guard = await requireSession();
+    if (guard.response) return guard.response;
 
     const rows = await prisma.configSLA.findMany();
     const map = Object.fromEntries(rows.map((r: ConfigSLAModel) => [r.prioridad, r.horasLimite]));
@@ -29,10 +27,8 @@ export async function GET() {
 // ── PATCH /api/config/sla ─────────────────────────────────────────────────────
 // Body: [{ prioridad, horasLimite }, ...]  — solo admin puede modificar
 export async function PATCH(req: NextRequest) {
-    const session = await auth();
-    if (!session?.user || session.user.role !== "ADMIN") {
-        return NextResponse.json({ error: "Sin permisos." }, { status: 403 });
-    }
+    const guard = await requireRoleSession(["ADMIN"]);
+    if (guard.response) return guard.response;
 
     const body = await req.json();
     if (!Array.isArray(body)) {

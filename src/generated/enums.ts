@@ -9,6 +9,15 @@
 * 🟢 You can import this file directly.
 */
 
+export const SeccionInicio = {
+  INCIDENTES: 'INCIDENTES',
+  REQUERIMIENTOS: 'REQUERIMIENTOS',
+  MASCOTAS: 'MASCOTAS'
+} as const
+
+export type SeccionInicio = (typeof SeccionInicio)[keyof typeof SeccionInicio]
+
+
 export const Rol = {
   VECINO: 'VECINO',
   REFERENTE_MANZANA: 'REFERENTE_MANZANA',

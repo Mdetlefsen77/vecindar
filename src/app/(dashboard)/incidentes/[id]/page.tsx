@@ -56,7 +56,8 @@ export default async function DetalleIncidentePage({ params }: Params) {
   const loteInfo = inc.lote
     ? `MZ ${inc.lote.manzana.numero} · Lote ${inc.lote.numero}`
     : null;
-  const isAdmin = session.user.role === "ADMIN";
+  const puedeGestionar =
+    session.user.role === "ADMIN" || session.user.role === "SEGURIDAD";
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
@@ -113,7 +114,7 @@ export default async function DetalleIncidentePage({ params }: Params) {
           )}
           {!inc.visibleVecinos && (
             <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-gray-100 text-gray-500">
-              Solo admin
+              No visible para vecinos
             </span>
           )}
         </div>
@@ -198,8 +199,8 @@ export default async function DetalleIncidentePage({ params }: Params) {
         </div>
       )}
 
-      {/* Panel admin */}
-      {isAdmin && (
+      {/* Panel de gestión — Admin y Seguridad */}
+      {puedeGestionar && (
         <CambiarEstadoIncidente
           incidenteId={inc.id}
           estadoActual={inc.estado}

@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { marcarSeccionVista } from "@/lib/vistas";
 import Link from "next/link";
 import IncidentesFiltros from "./IncidentesFiltros";
 import IncidentesMapaLazy from "./IncidentesMapaLazy";
@@ -98,6 +99,8 @@ export default async function IncidentesPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
+
+  await marcarSeccionVista(parseInt(session.user.id!), "INCIDENTES");
 
   const { tipo, estado, dias, prioridad } = await searchParams;
   const diasNum = parseInt(dias ?? "30") || 30;

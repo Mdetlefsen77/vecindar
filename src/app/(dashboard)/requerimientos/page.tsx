@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { marcarSeccionVista } from "@/lib/vistas";
 import Link from "next/link";
 import RequerimientosFiltros from "./RequerimientosFiltros";
 import { type CategoriaReq, type EstadoRequerimiento } from "@/generated/enums";
@@ -85,6 +86,8 @@ export default async function RequerimientosPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
+
+  await marcarSeccionVista(parseInt(session.user.id!), "REQUERIMIENTOS");
 
   const { estado, categoria, mine, prioridad } = await searchParams;
   const soloMios = mine === "true";

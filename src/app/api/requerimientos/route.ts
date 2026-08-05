@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
-import { CategoriaReq, type Prioridad } from "@/generated/enums";
+import { requireSession } from "@/lib/api/guard";
+import { crearRequerimientoSchema } from "@/lib/validation/requerimientos";
+import type { CategoriaReq } from "@/generated/enums";
 
 // ── GET /api/requerimientos ──────────────────────────────────────────────────
 // Query params:
@@ -9,10 +10,9 @@ import { CategoriaReq, type Prioridad } from "@/generated/enums";
 //   ?estado=NUEVO      → filtrar por estado
 //   ?categoria=CALLES  → filtrar por categoría
 export async function GET(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const { searchParams } = new URL(req.url);
   const mine = searchParams.get("mine") === "true";
@@ -46,28 +46,28 @@ export async function GET(req: NextRequest) {
 // ── POST /api/requerimientos ─────────────────────────────────────────────────
 // Body: { categoria, titulo, descripcion, imagenes? }
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const body = await req.json();
-  const { categoria, titulo, descripcion, imagenes, prioridad } = body;
-
-  if (!categoria || !titulo?.trim() || !descripcion?.trim()) {
+  const parsed = crearRequerimientoSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
       { error: "Categoría, título y descripción son obligatorios." },
       { status: 400 },
     );
   }
 
+  const { categoria, titulo, descripcion, imagenes, prioridad } = parsed.data;
+
   const requerimiento = await prisma.requerimiento.create({
     data: {
       categoria,
-      titulo: titulo.trim(),
-      descripcion: descripcion.trim(),
+      titulo,
+      descripcion,
       imagenes: imagenes ?? [],
-      prioridad: (prioridad as Prioridad) ?? "MEDIO",
+      prioridad: prioridad ?? "MEDIO",
       usuarioId: parseInt(session.user.id!),
     },
   });

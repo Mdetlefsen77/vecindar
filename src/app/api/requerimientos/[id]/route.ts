@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { requireSession, requireRole } from "@/lib/api/guard";
+import { actualizarRequerimientoSchema } from "@/lib/validation/requerimientos";
 
 type Params = { params: Promise<{ id: string }> };
 
 // ── GET /api/requerimientos/[id] ─────────────────────────────────────────────
 export async function GET(_req: NextRequest, { params }: Params) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
 
   const { id } = await params;
 
@@ -42,36 +41,41 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 // ── PATCH /api/requerimientos/[id] ───────────────────────────────────────────
-// Body: { estado?, prioridad? }  — solo ADMIN puede cambiar estado o prioridad
+// Body: { estado?, prioridad? }  — admin, seguridad y referente de manzana
 export async function PATCH(req: NextRequest, { params }: Params) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
-  if (session.user.role !== "ADMIN") {
+  const roleError = requireRole(
+    session.user.role,
+    ["ADMIN", "SEGURIDAD", "REFERENTE_MANZANA"],
+    "No tenés permisos para cambiar el estado de este requerimiento.",
+  );
+  if (roleError) return roleError;
+
+  const { id } = await params;
+  const body = await req.json();
+  const parsed = actualizarRequerimientoSchema.safeParse(body);
+
+  if (!parsed.success) {
+    const badField = parsed.error.issues[0]?.path[0];
+    if (badField === "estado") {
+      return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
+    }
+    if (badField === "prioridad") {
+      return NextResponse.json(
+        { error: "Prioridad inválida." },
+        { status: 400 },
+      );
+    }
     return NextResponse.json(
-      { error: "Solo administradores pueden cambiar el estado." },
-      { status: 403 },
+      { error: "Nada que actualizar." },
+      { status: 400 },
     );
   }
 
-  const { id } = await params;
-  const { estado, prioridad } = await req.json();
-
-  const estadosValidos = ["NUEVO", "EN_PROGRESO", "RESUELTO", "CERRADO"];
-  if (estado && !estadosValidos.includes(estado)) {
-    return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
-  }
-
-  const prioridadesValidas = ["CRITICO", "ALTO", "MEDIO", "BAJO"];
-  if (prioridad && !prioridadesValidas.includes(prioridad)) {
-    return NextResponse.json({ error: "Prioridad inválida." }, { status: 400 });
-  }
-
-  if (!estado && !prioridad) {
-    return NextResponse.json({ error: "Nada que actualizar." }, { status: 400 });
-  }
+  const { estado, prioridad } = parsed.data;
 
   const requerimiento = await prisma.requerimiento.update({
     where: { id: parseInt(id) },

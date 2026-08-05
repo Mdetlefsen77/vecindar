@@ -2,6 +2,8 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Sidebar from "@/components/ui/Sidebar";
 import BottomNav from "@/components/ui/BottomNav";
+import MobileHeader from "@/components/ui/MobileHeader";
+import InstallPrompt from "@/components/ui/InstallPrompt";
 
 export default async function DashboardLayout({
   children,
@@ -24,16 +26,11 @@ export default async function DashboardLayout({
       <Sidebar userName={userName} userEmail={userEmail} userRole={userRole} />
 
       {/* Header móvil */}
-      <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 shadow-sm">
-        <span className="text-xl font-bold text-brand">Vecindar</span>
-        <div className="flex items-center gap-2">
-          <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center">
-            <span className="text-blue-700 font-semibold text-base">
-              {userName.charAt(0).toUpperCase()}
-            </span>
-          </div>
-        </div>
-      </header>
+      <MobileHeader
+        userName={userName}
+        userEmail={userEmail}
+        userRole={userRole}
+      />
 
       {/* Contenido principal */}
       <div className="md:pl-64">
@@ -45,6 +42,8 @@ export default async function DashboardLayout({
 
       {/* Bottom nav — solo mobile */}
       <BottomNav />
+
+      <InstallPrompt />
     </div>
   );
 }
