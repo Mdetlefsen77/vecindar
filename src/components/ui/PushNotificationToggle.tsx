@@ -7,7 +7,7 @@ import { usePushNotifications } from "@/lib/push/usePushNotifications";
  * (SOS, incidentes, respuestas a requerimientos, mascotas) en este dispositivo.
  */
 export default function PushNotificationToggle() {
-  const { state, subscribe, unsubscribe } = usePushNotifications();
+  const { state, subscribe, unsubscribe, error } = usePushNotifications();
 
   if (state === "unsupported") return null;
 
@@ -44,13 +44,20 @@ export default function PushNotificationToggle() {
 
   // idle
   return (
-    <button
-      onClick={subscribe}
-      className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-medium transition-colors"
-      title="Activar notificaciones push en este dispositivo"
-    >
-      <span>🔔</span>
-      Activar notificaciones
-    </button>
+    <div>
+      <button
+        onClick={subscribe}
+        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-medium transition-colors"
+        title="Activar notificaciones push en este dispositivo"
+      >
+        <span>🔔</span>
+        Activar notificaciones
+      </button>
+      {error && (
+        <p className="mt-1.5 text-xs text-red-600">
+          No se pudo activar: {error}
+        </p>
+      )}
+    </div>
   );
 }

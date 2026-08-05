@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 type PushState = "idle" | "loading" | "subscribed" | "denied" | "unsupported";
 
@@ -20,6 +20,15 @@ export function usePushNotifications() {
     const [subscription, setSubscription] = useState<PushSubscription | null>(
         null,
     );
+    const [error, setError] = useState<string | null>(null);
+
+    // Precargados en el mount, para que el click en "Activar" no tenga que
+    // esperar un fetch/registro antes de pedir permiso. En mobile, cualquier
+    // await previo a pushManager.subscribe() puede hacer que el navegador
+    // considere perdido el "user activation" del tap y bloquee el permiso
+    // en silencio (sin mostrar el prompt ni tirar un error visible).
+    const registrationRef = useRef<ServiceWorkerRegistration | null>(null);
+    const publicKeyRef = useRef<string | null>(null);
 
     // Al montar, chequear si ya hay una suscripción activa
     useEffect(() => {
@@ -33,9 +42,19 @@ export function usePushNotifications() {
             return;
         }
 
+        void fetch("/api/push/vapid-public-key")
+            .then((r) => r.json())
+            .then((d: { publicKey: string }) => {
+                publicKeyRef.current = d.publicKey;
+            })
+            .catch(() => {});
+
         void navigator.serviceWorker
             .register("/sw.js")
-            .then((reg) => reg.pushManager.getSubscription())
+            .then(async (reg) => {
+                registrationRef.current = await navigator.serviceWorker.ready;
+                return reg.pushManager.getSubscription();
+            })
             .then((sub) => {
                 if (sub) {
                     setSubscription(sub);
@@ -49,11 +68,19 @@ export function usePushNotifications() {
 
     const subscribe = useCallback(async () => {
         setState("loading");
+        setError(null);
         try {
-            const keyRes = await fetch("/api/push/vapid-public-key");
-            const { publicKey } = (await keyRes.json()) as { publicKey: string };
+            const publicKey =
+                publicKeyRef.current ??
+                (
+                    await fetch("/api/push/vapid-public-key").then(
+                        (r) => r.json() as Promise<{ publicKey: string }>,
+                    )
+                ).publicKey;
 
-            const reg = await navigator.serviceWorker.ready;
+            const reg =
+                registrationRef.current ?? (await navigator.serviceWorker.ready);
+
             const sub = await reg.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: urlBase64ToUint8Array(publicKey),
@@ -70,6 +97,9 @@ export function usePushNotifications() {
         } catch (err) {
             const permission = Notification.permission;
             setState(permission === "denied" ? "denied" : "idle");
+            setError(
+                err instanceof Error ? err.message : "No se pudo activar.",
+            );
             console.error("Error al suscribirse a push:", err);
         }
     }, []);
@@ -92,5 +122,5 @@ export function usePushNotifications() {
         }
     }, [subscription]);
 
-    return { state, subscribe, unsubscribe };
+    return { state, subscribe, unsubscribe, error };
 }
