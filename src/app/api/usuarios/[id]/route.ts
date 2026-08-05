@@ -1,17 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma/client";
-import { auth } from "@/lib/auth";
-import { type Rol } from "@/generated/enums";
+import { requireRoleSession } from "@/lib/api/guard";
+import { actualizarUsuarioSchema } from "@/lib/validation/usuarios";
 
 type Params = { params: Promise<{ id: string }> };
 
 // GET /api/usuarios/[id] — solo ADMIN
 export async function GET(_req: NextRequest, { params }: Params) {
-  const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Sin permisos." }, { status: 403 });
-  }
+  const guard = await requireRoleSession(["ADMIN"]);
+  if (guard.response) return guard.response;
 
   const { id } = await params;
   const usuario = await prisma.usuario.findUnique({
@@ -68,47 +66,42 @@ export async function GET(_req: NextRequest, { params }: Params) {
 // PATCH /api/usuarios/[id] — solo ADMIN
 // Body: { rol?, verificado?, resetPassword? }
 export async function PATCH(req: NextRequest, { params }: Params) {
-  const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Sin permisos." }, { status: 403 });
-  }
+  const guard = await requireRoleSession(["ADMIN"]);
+  if (guard.response) return guard.response;
 
   const { id } = await params;
   const body = await req.json();
-  const { rol, verificado, nuevaPassword } = body as {
-    rol?: Rol;
-    verificado?: boolean;
-    nuevaPassword?: string;
-  };
+  // Una nuevaPassword vacía se trata como "no enviada", igual que el chequeo
+  // truthy original (`if (nuevaPassword) {...}`).
+  const parsed = actualizarUsuarioSchema.safeParse({
+    ...body,
+    nuevaPassword: body?.nuevaPassword || undefined,
+  });
 
-  const rolesValidos: Rol[] = [
-    "VECINO",
-    "REFERENTE_MANZANA",
-    "SEGURIDAD",
-    "ADMIN",
-  ];
-  if (rol && !rolesValidos.includes(rol)) {
-    return NextResponse.json({ error: "Rol inválido." }, { status: 400 });
-  }
-
-  const updateData: Record<string, unknown> = {};
-  if (rol !== undefined) updateData.rol = rol;
-  if (verificado !== undefined) updateData.verificado = verificado;
-  if (nuevaPassword) {
-    if (nuevaPassword.length < 6) {
+  if (!parsed.success) {
+    const badField = parsed.error.issues[0]?.path[0];
+    if (badField === "rol") {
+      return NextResponse.json({ error: "Rol inválido." }, { status: 400 });
+    }
+    if (badField === "nuevaPassword") {
       return NextResponse.json(
         { error: "La contraseña debe tener al menos 6 caracteres." },
         { status: 400 },
       );
     }
-    updateData.password = await hash(nuevaPassword, 12);
-  }
-
-  if (Object.keys(updateData).length === 0) {
     return NextResponse.json(
       { error: "Nada que actualizar." },
       { status: 400 },
     );
+  }
+
+  const { rol, verificado, nuevaPassword } = parsed.data;
+
+  const updateData: Record<string, unknown> = {};
+  if (rol !== undefined) updateData.rol = rol;
+  if (verificado !== undefined) updateData.verificado = verificado;
+  if (nuevaPassword) {
+    updateData.password = await hash(nuevaPassword, 12);
   }
 
   const usuario = await prisma.usuario.update({

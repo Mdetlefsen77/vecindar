@@ -194,6 +194,23 @@ export type EnumRolWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumRolFilter<$PrismaModel>
 }
 
+export type EnumSeccionInicioFilter<$PrismaModel = never> = {
+  equals?: $Enums.SeccionInicio | Prisma.EnumSeccionInicioFieldRefInput<$PrismaModel>
+  in?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSeccionInicioFilter<$PrismaModel> | $Enums.SeccionInicio
+}
+
+export type EnumSeccionInicioWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SeccionInicio | Prisma.EnumSeccionInicioFieldRefInput<$PrismaModel>
+  in?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSeccionInicioWithAggregatesFilter<$PrismaModel> | $Enums.SeccionInicio
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSeccionInicioFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSeccionInicioFilter<$PrismaModel>
+}
+
 export type EnumTipoIncidenteFilter<$PrismaModel = never> = {
   equals?: $Enums.TipoIncidente | Prisma.EnumTipoIncidenteFieldRefInput<$PrismaModel>
   in?: $Enums.TipoIncidente[] | Prisma.ListEnumTipoIncidenteFieldRefInput<$PrismaModel>
@@ -583,6 +600,23 @@ export type NestedEnumRolWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumRolFilter<$PrismaModel>
   _max?: Prisma.NestedEnumRolFilter<$PrismaModel>
+}
+
+export type NestedEnumSeccionInicioFilter<$PrismaModel = never> = {
+  equals?: $Enums.SeccionInicio | Prisma.EnumSeccionInicioFieldRefInput<$PrismaModel>
+  in?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSeccionInicioFilter<$PrismaModel> | $Enums.SeccionInicio
+}
+
+export type NestedEnumSeccionInicioWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.SeccionInicio | Prisma.EnumSeccionInicioFieldRefInput<$PrismaModel>
+  in?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.SeccionInicio[] | Prisma.ListEnumSeccionInicioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumSeccionInicioWithAggregatesFilter<$PrismaModel> | $Enums.SeccionInicio
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumSeccionInicioFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumSeccionInicioFilter<$PrismaModel>
 }
 
 export type NestedEnumTipoIncidenteFilter<$PrismaModel = never> = {

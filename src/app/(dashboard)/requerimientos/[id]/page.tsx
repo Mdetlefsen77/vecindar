@@ -58,7 +58,9 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
   const loteInfo = r.usuario.lote
     ? `MZ ${r.usuario.lote.manzana.numero} · Lote ${r.usuario.lote.numero}`
     : "";
-  const isAdmin = session.user.role === "ADMIN";
+  const puedeGestionar = ["ADMIN", "SEGURIDAD", "REFERENTE_MANZANA"].includes(
+    session.user.role,
+  );
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
@@ -159,8 +161,8 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
         </div>
       </div>
 
-      {/* Panel admin: cambiar estado */}
-      {isAdmin && (
+      {/* Panel de gestión — Admin, Seguridad y Referente de manzana */}
+      {puedeGestionar && (
         <CambiarEstado
           requerimientoId={r.id}
           estadoActual={r.estado}

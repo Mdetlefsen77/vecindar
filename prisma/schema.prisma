@@ -82,11 +82,31 @@ model Usuario {
   mascotasPerdidas    MascotaPerdida[]
   
   pushSubscriptions   PushSubscription[]
+  vistasSecciones     VistaSeccion[]
 
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
   @@map("usuarios")
+}
+
+// Última vez que cada usuario visitó una sección — usado para calcular
+// el contador de "nuevo" en las tarjetas de inicio (badge tipo notificación).
+model VistaSeccion {
+  id        Int              @id @default(autoincrement())
+  usuarioId Int
+  usuario   Usuario          @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  seccion   SeccionInicio
+  vistoAt   DateTime         @default(now())
+
+  @@unique([usuarioId, seccion])
+  @@map("vistas_secciones")
+}
+
+enum SeccionInicio {
+  INCIDENTES
+  REQUERIMIENTOS
+  MASCOTAS
 }
 
 enum Rol {
@@ -178,7 +198,7 @@ enum EstadoAlerta {
   CERRADO
 }
 
-// Suscripciones Web Push — una por dispositivo/navegador de admin o seguridad
+// Suscripciones Web Push — una por dispositivo/navegador de cada usuario
 model PushSubscription {
   id        Int      @id @default(autoincrement())
   usuarioId Int

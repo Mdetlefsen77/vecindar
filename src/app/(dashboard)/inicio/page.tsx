@@ -167,14 +167,53 @@ const IconShield = () => (
   </svg>
 );
 
+// Badge de "nuevo" — círculo con contador, en la esquina externa de la tarjeta
+// (la esquina interna, hacia el centro, la tapa el botón SOS flotante).
+// Se resetea cuando el usuario visita la sección (ver VistaSeccion).
+function NuevoBadge({
+  count,
+  side = "right",
+}: {
+  count: number;
+  side?: "left" | "right";
+}) {
+  if (count <= 0) return null;
+  return (
+    <span
+      className={`absolute -top-2 ${side === "right" ? "-right-2" : "-left-2"} min-w-[26px] h-[26px] px-1.5 flex items-center justify-center rounded-full bg-red-500 text-white text-sm font-bold border-2 border-white shadow-md z-20`}
+    >
+      {count > 9 ? "9+" : count}
+    </span>
+  );
+}
+
 // ─── Page Component ───────────────────────────────────────────────────────────
 
 export default async function InicioPage() {
   const session = await auth();
   const isVecino = session?.user?.role === "VECINO";
   const nombre = session?.user?.name?.split(" ")[0] ?? "Vecino";
+  const usuarioId = parseInt(session!.user.id!);
 
-  const [incidentes, requerimientos, mascotas] = await Promise.all([
+  // Última visita a cada sección — determina qué se cuenta como "nuevo"
+  const usuarioConVistas = await prisma.usuario.findUnique({
+    where: { id: usuarioId },
+    select: { createdAt: true, vistasSecciones: true },
+  });
+  const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
+    usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
+      ?.vistoAt ??
+    usuarioConVistas?.createdAt ??
+    new Date(0);
+
+  const [
+    incidentes,
+    requerimientos,
+    mascotas,
+    nuevosIncidentes,
+    nuevosRequerimientos,
+    nuevasMascotas,
+  ] = await Promise.all([
     prisma.incidente.findMany({
       where: {
         estado: "ACTIVO",
@@ -204,6 +243,25 @@ export default async function InicioPage() {
       where: { estado: true },
       orderBy: { createdAt: "desc" },
       take: 3,
+    }),
+    prisma.incidente.count({
+      where: {
+        createdAt: { gt: vistoAt("INCIDENTES") },
+        reportadoPorId: { not: usuarioId },
+        ...(isVecino ? { visibleVecinos: true } : {}),
+      },
+    }),
+    prisma.requerimiento.count({
+      where: {
+        createdAt: { gt: vistoAt("REQUERIMIENTOS") },
+        usuarioId: { not: usuarioId },
+      },
+    }),
+    prisma.mascotaPerdida.count({
+      where: {
+        createdAt: { gt: vistoAt("MASCOTAS") },
+        usuarioId: { not: usuarioId },
+      },
     }),
   ]);
 
@@ -242,11 +300,12 @@ export default async function InicioPage() {
         {/* REQUERIMIENTOS — arriba derecha */}
         <Link
           href="/requerimientos"
-          className="bg-amber-500 hover:bg-amber-600 active:scale-[0.97] transition-all
+          className="relative bg-amber-500 hover:bg-amber-600 active:scale-[0.97] transition-all
             rounded-tl-2xl rounded-tr-2xl rounded-br-2xl rounded-bl-[3.5rem]
             text-white shadow-sm h-40
             flex flex-col items-center justify-center gap-3"
         >
+          <NuevoBadge count={nuevosRequerimientos} />
           <span className="[&_svg]:w-12 [&_svg]:h-12">
             <IconClipboard />
           </span>
@@ -258,11 +317,12 @@ export default async function InicioPage() {
         {/* MASCOTAS — abajo izquierda */}
         <Link
           href="/mascotas"
-          className="bg-teal-600 hover:bg-teal-700 active:scale-[0.97] transition-all
+          className="relative bg-teal-600 hover:bg-teal-700 active:scale-[0.97] transition-all
             rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr-[3.5rem]
             text-white shadow-sm h-40
             flex flex-col items-center justify-center gap-3"
         >
+          <NuevoBadge count={nuevasMascotas} side="left" />
           <span className="[&_svg]:w-12 [&_svg]:h-12">
             <IconPaw />
           </span>
@@ -272,11 +332,12 @@ export default async function InicioPage() {
         {/* INCIDENTES — abajo derecha */}
         <Link
           href="/incidentes"
-          className="bg-orange-600 hover:bg-orange-700 active:scale-[0.97] transition-all
+          className="relative bg-orange-600 hover:bg-orange-700 active:scale-[0.97] transition-all
             rounded-bl-2xl rounded-br-2xl rounded-tr-2xl rounded-tl-[3.5rem]
             text-white shadow-sm h-40
             flex flex-col items-center justify-center gap-3"
         >
+          <NuevoBadge count={nuevosIncidentes} />
           <span className="[&_svg]:w-12 [&_svg]:h-12">
             <IconAlert />
           </span>

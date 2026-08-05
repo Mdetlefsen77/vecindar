@@ -12,7 +12,7 @@ function urlBase64ToUint8Array(base64String: string): ArrayBuffer {
 }
 
 /**
- * Hook para gestionar suscripciones Web Push en el panel de admin/seguridad.
+ * Hook para gestionar la suscripción Web Push de cualquier usuario logueado.
  * Registra el Service Worker, pide permiso y guarda la suscripción en el servidor.
  */
 export function usePushNotifications() {

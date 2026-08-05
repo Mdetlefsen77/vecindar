@@ -31,7 +31,8 @@ export default async function DetalleMascotaPage({ params }: Params) {
   if (!mascota) notFound();
 
   const esDuenio = parseInt(session.user.id!) === mascota.usuario.id;
-  const esAdmin = session.user.role === "ADMIN";
+  const puedeGestionar =
+    session.user.role === "ADMIN" || session.user.role === "REFERENTE_MANZANA";
 
   return (
     <div className="max-w-lg mx-auto px-4 py-6 space-y-5">
@@ -164,12 +165,12 @@ export default async function DetalleMascotaPage({ params }: Params) {
         )}
       </div>
 
-      {/* Acciones (dueño o admin) */}
+      {/* Acciones (dueño, admin o referente de manzana) */}
       <AccionesMascota
         mascotaId={mascota.id}
         estadoActual={mascota.estado}
         esDuenio={esDuenio}
-        esAdmin={esAdmin}
+        puedeGestionar={puedeGestionar}
       />
     </div>
   );

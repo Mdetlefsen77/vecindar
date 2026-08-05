@@ -7,20 +7,20 @@ interface Props {
   mascotaId: number;
   estadoActual: boolean; // true = abierta
   esDuenio: boolean;
-  esAdmin: boolean;
+  puedeGestionar: boolean;
 }
 
 export default function AccionesMascota({
   mascotaId,
   estadoActual,
   esDuenio,
-  esAdmin,
+  puedeGestionar,
 }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  if (!esDuenio && !esAdmin) return null;
+  if (!esDuenio && !puedeGestionar) return null;
 
   async function cambiarEstado(nuevoEstado: boolean) {
     setLoading(true);

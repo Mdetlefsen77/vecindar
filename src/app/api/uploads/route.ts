@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { requireSession } from "@/lib/api/guard";
 import { createClient } from "@supabase/supabase-js";
 import { randomUUID } from "crypto";
 
@@ -27,10 +27,8 @@ const MIME_EXT: Record<string, string> = {
 const BUCKET = "images";
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autenticado." }, { status: 401 });
-  }
+  const guard = await requireSession("No autenticado.");
+  if (guard.response) return guard.response;
 
   let formData: FormData;
   try {

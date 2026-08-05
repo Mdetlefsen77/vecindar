@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { requireSession } from "@/lib/api/guard";
+import { crearComentarioSchema } from "@/lib/validation/requerimientos";
+import { enviarPushUsuario } from "@/lib/push/enviarPush";
 
 // ── POST /api/requerimientos/[id]/comentarios ────────────────────────────────
 // Body: { texto }
@@ -8,15 +10,15 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const { id } = await params;
-  const { texto } = await req.json();
+  const body = await req.json();
+  const parsed = crearComentarioSchema.safeParse(body);
 
-  if (!texto?.trim()) {
+  if (!parsed.success) {
     return NextResponse.json(
       { error: "El comentario no puede estar vacío." },
       { status: 400 },
@@ -39,12 +41,22 @@ export async function POST(
     data: {
       requerimientoId: parseInt(id),
       usuarioId: parseInt(session.user.id!),
-      texto: texto.trim(),
+      texto: parsed.data.texto,
     },
     include: {
       usuario: { select: { id: true, nombre: true, rol: true } },
     },
   });
+
+  // Avisar al dueño del requerimiento si le respondió otra persona
+  if (requerimiento.usuarioId !== parseInt(session.user.id!)) {
+    void enviarPushUsuario(requerimiento.usuarioId, {
+      title: "💬 Nueva respuesta a tu requerimiento",
+      body: `${comentario.usuario.nombre}: ${parsed.data.texto.slice(0, 120)}`,
+      url: `/requerimientos/${id}`,
+      tag: `requerimiento-${id}`,
+    });
+  }
 
   return NextResponse.json(comentario, { status: 201 });
 }

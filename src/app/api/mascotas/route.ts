@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { requireSession } from "@/lib/api/guard";
+import { crearMascotaSchema } from "@/lib/validation/mascotas";
 import { type TipoAlertaMascota } from "@/generated/enums";
+import { enviarPushBroadcast } from "@/lib/push/enviarPush";
 
 // GET /api/mascotas?tipo=PERDIDA|ENCONTRADA&estado=abierta|resuelta
 export async function GET(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autenticado." }, { status: 401 });
-  }
+  const guard = await requireSession("No autenticado.");
+  if (guard.response) return guard.response;
 
   const { searchParams } = new URL(req.url);
   const tipo = searchParams.get("tipo") as TipoAlertaMascota | null;
@@ -38,20 +38,12 @@ export async function GET(req: NextRequest) {
 
 // POST /api/mascotas
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autenticado." }, { status: 401 });
-  }
+  const guard = await requireSession("No autenticado.");
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const body = await req.json();
-  const { tipo, nombre, descripcion, foto, zona, contacto } = body as {
-    tipo: TipoAlertaMascota;
-    nombre?: string;
-    descripcion: string;
-    foto?: string;
-    zona: string;
-    contacto: string;
-  };
+  const { tipo, descripcion, nombre, foto, zona, contacto } = body ?? {};
 
   if (!tipo || !descripcion || !zona || !contacto) {
     return NextResponse.json(
@@ -60,22 +52,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const tipos: TipoAlertaMascota[] = ["PERDIDA", "ENCONTRADA"];
-  if (!tipos.includes(tipo)) {
+  const parsed = crearMascotaSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "Tipo inválido." }, { status: 400 });
   }
 
   const mascota = await prisma.mascotaPerdida.create({
     data: {
-      tipo,
+      tipo: parsed.data.tipo,
       nombre: nombre?.trim() || null,
-      descripcion: descripcion.trim(),
+      descripcion: parsed.data.descripcion,
       foto: foto?.trim() || null,
-      zona: zona.trim(),
-      contacto: contacto.trim(),
+      zona: parsed.data.zona,
+      contacto: parsed.data.contacto,
       usuarioId: parseInt(session.user.id!),
     },
   });
+
+  void enviarPushBroadcast(
+    {
+      title:
+        mascota.tipo === "PERDIDA" ? "🐾 Mascota perdida" : "🐾 Mascota encontrada",
+      body: `${mascota.nombre ?? "Sin nombre"} — ${mascota.descripcion.slice(0, 100)}`,
+      url: `/mascotas/${mascota.id}`,
+      tag: `mascota-${mascota.id}`,
+    },
+    parseInt(session.user.id!),
+  );
 
   return NextResponse.json(mascota, { status: 201 });
 }

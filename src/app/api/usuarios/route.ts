@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma/client";
-import { auth } from "@/lib/auth";
+import { requireRoleSession } from "@/lib/api/guard";
 import { type Rol } from "@/generated/enums";
 
 // GET /api/usuarios — solo ADMIN
 export async function GET(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user || session.user.role !== "ADMIN") {
-    return NextResponse.json({ error: "Sin permisos." }, { status: 403 });
-  }
+  const guard = await requireRoleSession(["ADMIN"]);
+  if (guard.response) return guard.response;
 
   const { searchParams } = new URL(req.url);
   const rol = searchParams.get("rol") as Rol | null;

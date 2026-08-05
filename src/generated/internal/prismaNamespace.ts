@@ -388,6 +388,7 @@ export const ModelName = {
   Lote: 'Lote',
   Residente: 'Residente',
   Usuario: 'Usuario',
+  VistaSeccion: 'VistaSeccion',
   Incidente: 'Incidente',
   ConfigSLA: 'ConfigSLA',
   AlertaPanico: 'AlertaPanico',
@@ -410,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "incidente" | "configSLA" | "alertaPanico" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -707,6 +708,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UsuarioCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UsuarioCountAggregateOutputType> | number
+        }
+      }
+    }
+    VistaSeccion: {
+      payload: Prisma.$VistaSeccionPayload<ExtArgs>
+      fields: Prisma.VistaSeccionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VistaSeccionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VistaSeccionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>
+        }
+        findFirst: {
+          args: Prisma.VistaSeccionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VistaSeccionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>
+        }
+        findMany: {
+          args: Prisma.VistaSeccionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>[]
+        }
+        create: {
+          args: Prisma.VistaSeccionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>
+        }
+        createMany: {
+          args: Prisma.VistaSeccionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VistaSeccionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>[]
+        }
+        delete: {
+          args: Prisma.VistaSeccionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>
+        }
+        update: {
+          args: Prisma.VistaSeccionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>
+        }
+        deleteMany: {
+          args: Prisma.VistaSeccionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VistaSeccionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VistaSeccionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>[]
+        }
+        upsert: {
+          args: Prisma.VistaSeccionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VistaSeccionPayload>
+        }
+        aggregate: {
+          args: Prisma.VistaSeccionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVistaSeccion>
+        }
+        groupBy: {
+          args: Prisma.VistaSeccionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VistaSeccionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VistaSeccionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VistaSeccionCountAggregateOutputType> | number
         }
       }
     }
@@ -1323,6 +1398,16 @@ export const UsuarioScalarFieldEnum = {
 export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
 
 
+export const VistaSeccionScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  seccion: 'seccion',
+  vistoAt: 'vistoAt'
+} as const
+
+export type VistaSeccionScalarFieldEnum = (typeof VistaSeccionScalarFieldEnum)[keyof typeof VistaSeccionScalarFieldEnum]
+
+
 export const IncidenteScalarFieldEnum = {
   id: 'id',
   tipo: 'tipo',
@@ -1535,6 +1620,20 @@ export type ListEnumRolFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
+ * Reference to a field of type 'SeccionInicio'
+ */
+export type EnumSeccionInicioFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SeccionInicio'>
+    
+
+
+/**
+ * Reference to a field of type 'SeccionInicio[]'
+ */
+export type ListEnumSeccionInicioFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SeccionInicio[]'>
+    
+
+
+/**
  * Reference to a field of type 'TipoIncidente'
  */
 export type EnumTipoIncidenteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoIncidente'>
@@ -1730,6 +1829,7 @@ export type GlobalOmitConfig = {
   lote?: Prisma.LoteOmit
   residente?: Prisma.ResidenteOmit
   usuario?: Prisma.UsuarioOmit
+  vistaSeccion?: Prisma.VistaSeccionOmit
   incidente?: Prisma.IncidenteOmit
   configSLA?: Prisma.ConfigSLAOmit
   alertaPanico?: Prisma.AlertaPanicoOmit

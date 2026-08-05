@@ -1,15 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
-import { TipoIncidente, type Prioridad } from "@/generated/enums";
+import { requireSession } from "@/lib/api/guard";
+import { crearIncidenteSchema } from "@/lib/validation/incidentes";
+import type { TipoIncidente } from "@/generated/enums";
+import { enviarPushBroadcast } from "@/lib/push/enviarPush";
+
+const TIPO_INCIDENTE_LABEL: Record<TipoIncidente, string> = {
+  ROBO: "Robo",
+  ROBO_TENTATIVA: "Intento de robo",
+  SOSPECHOSO: "Movimiento sospechoso",
+  VANDALISMO: "Vandalismo",
+  OTRO: "Incidente",
+};
 
 // ── GET /api/incidentes ──────────────────────────────────────────────────────
 // Query params: ?tipo=ROBO  ?estado=ACTIVO  ?dias=30  ?manzanaId=5
 export async function GET(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const { searchParams } = new URL(req.url);
   const tipo = searchParams.get("tipo") ?? undefined;
@@ -53,12 +62,19 @@ export async function GET(req: NextRequest) {
 // ── POST /api/incidentes ─────────────────────────────────────────────────────
 // Body: { tipo, descripcion, latitud, longitud, ubicacionText?, loteId?, visibleVecinos?, imagenes? }
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
-  }
+  const guard = await requireSession();
+  if (guard.response) return guard.response;
+  const { session } = guard;
 
   const body = await req.json();
+  const parsed = crearIncidenteSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Tipo, descripción y ubicación son obligatorios." },
+      { status: 400 },
+    );
+  }
+
   const {
     tipo,
     descripcion,
@@ -69,29 +85,34 @@ export async function POST(req: NextRequest) {
     visibleVecinos,
     imagenes,
     prioridad,
-  } = body;
-
-  if (!tipo || !descripcion?.trim() || latitud == null || longitud == null) {
-    return NextResponse.json(
-      { error: "Tipo, descripción y ubicación son obligatorios." },
-      { status: 400 },
-    );
-  }
+  } = parsed.data;
 
   const incidente = await prisma.incidente.create({
     data: {
       tipo,
-      descripcion: descripcion.trim(),
+      descripcion,
       latitud,
       longitud,
-      ubicacionText: ubicacionText?.trim() ?? null,
-      loteId: loteId ? parseInt(loteId) : null,
+      ubicacionText: ubicacionText ?? null,
+      loteId: loteId ? parseInt(String(loteId), 10) : null,
       visibleVecinos: visibleVecinos ?? true,
       imagenes: imagenes ?? [],
-      prioridad: (prioridad as Prioridad) ?? "MEDIO",
+      prioridad: prioridad ?? "MEDIO",
       reportadoPorId: parseInt(session.user.id!),
     },
   });
+
+  if (incidente.visibleVecinos) {
+    void enviarPushBroadcast(
+      {
+        title: `⚠️ ${TIPO_INCIDENTE_LABEL[tipo]} reportado`,
+        body: descripcion.slice(0, 120),
+        url: `/incidentes/${incidente.id}`,
+        tag: `incidente-${incidente.id}`,
+      },
+      parseInt(session.user.id!),
+    );
+  }
 
   return NextResponse.json(incidente, { status: 201 });
 }

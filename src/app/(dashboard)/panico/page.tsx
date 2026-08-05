@@ -3,7 +3,6 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import BotonSOS from "./BotonSOS";
 import AccionesAlerta from "./AccionesAlerta";
-import PushNotificationToggle from "./PushNotificationToggle";
 import { type EstadoAlerta } from "@/generated/enums";
 
 const ESTADO_BADGE: Record<
@@ -122,7 +121,6 @@ export default async function PanicoPage() {
           </p>
         </div>
         <div className="flex items-center gap-3 shrink-0">
-          <PushNotificationToggle />
           {activas.length > 0 && (
             <span className="w-3 h-3 rounded-full bg-red-500 animate-ping" />
           )}

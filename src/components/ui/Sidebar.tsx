@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import PushNotificationToggle from "./PushNotificationToggle";
 
 interface NavItem {
   href: string;
   label: string;
   icon: React.ReactNode;
-  onlyAdmin?: boolean;
+  /** Si se define, el ítem solo se muestra a estos roles. Sin definir = todos. */
+  roles?: string[];
 }
 
 const HomeIcon = () => (
@@ -121,6 +123,26 @@ const AdminIcon = () => (
     />
   </svg>
 );
+const SeguridadIcon = () => (
+  <svg
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+    />
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+    />
+  </svg>
+);
 const LogoutIcon = () => (
   <svg
     className="w-5 h-5"
@@ -145,10 +167,16 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/requerimientos", label: "Requerimientos", icon: <ClipboardIcon /> },
   { href: "/mascotas", label: "Mascotas", icon: <PawIcon /> },
   {
+    href: "/seguridad",
+    label: "Panel de Seguridad",
+    icon: <SeguridadIcon />,
+    roles: ["SEGURIDAD"],
+  },
+  {
     href: "/admin",
     label: "Administración",
     icon: <AdminIcon />,
-    onlyAdmin: true,
+    roles: ["ADMIN"],
   },
 ];
 
@@ -164,9 +192,10 @@ export default function Sidebar({
   userEmail,
 }: SidebarProps) {
   const pathname = usePathname();
-  const isAdmin = userRole === "ADMIN";
 
-  const visibleItems = NAV_ITEMS.filter((item) => !item.onlyAdmin || isAdmin);
+  const visibleItems = NAV_ITEMS.filter(
+    (item) => !item.roles || item.roles.includes(userRole),
+  );
 
   return (
     <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-white border-r border-gray-200 z-40">
@@ -251,6 +280,9 @@ export default function Sidebar({
             <LogoutIcon />
             Salir
           </button>
+        </div>
+        <div className="mt-3">
+          <PushNotificationToggle />
         </div>
       </div>
     </aside>
