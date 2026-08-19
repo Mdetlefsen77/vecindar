@@ -296,13 +296,13 @@ export type UsuarioOrderByWithRelationInput = {
 export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   email?: string
-  loteId?: number
   AND?: Prisma.UsuarioWhereInput | Prisma.UsuarioWhereInput[]
   OR?: Prisma.UsuarioWhereInput[]
   NOT?: Prisma.UsuarioWhereInput | Prisma.UsuarioWhereInput[]
   password?: Prisma.StringFilter<"Usuario"> | string
   nombre?: Prisma.StringFilter<"Usuario"> | string
   telefono?: Prisma.StringNullableFilter<"Usuario"> | string | null
+  loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -316,7 +316,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   mascotasPerdidas?: Prisma.MascotaPerdidaListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
   vistasSecciones?: Prisma.VistaSeccionListRelationFilter
-}, "id" | "email" | "loteId">
+}, "id" | "email">
 
 export type UsuarioOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -361,7 +361,7 @@ export type UsuarioCreateInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
@@ -402,7 +402,7 @@ export type UsuarioUpdateInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
@@ -471,9 +471,14 @@ export type UsuarioUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type UsuarioNullableScalarRelationFilter = {
-  is?: Prisma.UsuarioWhereInput | null
-  isNot?: Prisma.UsuarioWhereInput | null
+export type UsuarioListRelationFilter = {
+  every?: Prisma.UsuarioWhereInput
+  some?: Prisma.UsuarioWhereInput
+  none?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type UsuarioCountOrderByAggregateInput = {
@@ -530,36 +535,51 @@ export type UsuarioScalarRelationFilter = {
   isNot?: Prisma.UsuarioWhereInput
 }
 
-export type UsuarioCreateNestedOneWithoutLoteInput = {
-  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput>
-  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput
-  connect?: Prisma.UsuarioWhereUniqueInput
+export type UsuarioNullableScalarRelationFilter = {
+  is?: Prisma.UsuarioWhereInput | null
+  isNot?: Prisma.UsuarioWhereInput | null
 }
 
-export type UsuarioUncheckedCreateNestedOneWithoutLoteInput = {
-  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput>
-  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput
-  connect?: Prisma.UsuarioWhereUniqueInput
+export type UsuarioCreateNestedManyWithoutLoteInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput> | Prisma.UsuarioCreateWithoutLoteInput[] | Prisma.UsuarioUncheckedCreateWithoutLoteInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput | Prisma.UsuarioCreateOrConnectWithoutLoteInput[]
+  createMany?: Prisma.UsuarioCreateManyLoteInputEnvelope
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
 }
 
-export type UsuarioUpdateOneWithoutLoteNestedInput = {
-  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput>
-  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput
-  upsert?: Prisma.UsuarioUpsertWithoutLoteInput
-  disconnect?: Prisma.UsuarioWhereInput | boolean
-  delete?: Prisma.UsuarioWhereInput | boolean
-  connect?: Prisma.UsuarioWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutLoteInput, Prisma.UsuarioUpdateWithoutLoteInput>, Prisma.UsuarioUncheckedUpdateWithoutLoteInput>
+export type UsuarioUncheckedCreateNestedManyWithoutLoteInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput> | Prisma.UsuarioCreateWithoutLoteInput[] | Prisma.UsuarioUncheckedCreateWithoutLoteInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput | Prisma.UsuarioCreateOrConnectWithoutLoteInput[]
+  createMany?: Prisma.UsuarioCreateManyLoteInputEnvelope
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
 }
 
-export type UsuarioUncheckedUpdateOneWithoutLoteNestedInput = {
-  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput>
-  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput
-  upsert?: Prisma.UsuarioUpsertWithoutLoteInput
-  disconnect?: Prisma.UsuarioWhereInput | boolean
-  delete?: Prisma.UsuarioWhereInput | boolean
-  connect?: Prisma.UsuarioWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutLoteInput, Prisma.UsuarioUpdateWithoutLoteInput>, Prisma.UsuarioUncheckedUpdateWithoutLoteInput>
+export type UsuarioUpdateManyWithoutLoteNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput> | Prisma.UsuarioCreateWithoutLoteInput[] | Prisma.UsuarioUncheckedCreateWithoutLoteInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput | Prisma.UsuarioCreateOrConnectWithoutLoteInput[]
+  upsert?: Prisma.UsuarioUpsertWithWhereUniqueWithoutLoteInput | Prisma.UsuarioUpsertWithWhereUniqueWithoutLoteInput[]
+  createMany?: Prisma.UsuarioCreateManyLoteInputEnvelope
+  set?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  disconnect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  delete?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  update?: Prisma.UsuarioUpdateWithWhereUniqueWithoutLoteInput | Prisma.UsuarioUpdateWithWhereUniqueWithoutLoteInput[]
+  updateMany?: Prisma.UsuarioUpdateManyWithWhereWithoutLoteInput | Prisma.UsuarioUpdateManyWithWhereWithoutLoteInput[]
+  deleteMany?: Prisma.UsuarioScalarWhereInput | Prisma.UsuarioScalarWhereInput[]
+}
+
+export type UsuarioUncheckedUpdateManyWithoutLoteNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput> | Prisma.UsuarioCreateWithoutLoteInput[] | Prisma.UsuarioUncheckedCreateWithoutLoteInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutLoteInput | Prisma.UsuarioCreateOrConnectWithoutLoteInput[]
+  upsert?: Prisma.UsuarioUpsertWithWhereUniqueWithoutLoteInput | Prisma.UsuarioUpsertWithWhereUniqueWithoutLoteInput[]
+  createMany?: Prisma.UsuarioCreateManyLoteInputEnvelope
+  set?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  disconnect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  delete?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  update?: Prisma.UsuarioUpdateWithWhereUniqueWithoutLoteInput | Prisma.UsuarioUpdateWithWhereUniqueWithoutLoteInput[]
+  updateMany?: Prisma.UsuarioUpdateManyWithWhereWithoutLoteInput | Prisma.UsuarioUpdateManyWithWhereWithoutLoteInput[]
+  deleteMany?: Prisma.UsuarioScalarWhereInput | Prisma.UsuarioScalarWhereInput[]
 }
 
 export type EnumRolFieldUpdateOperationsInput = {
@@ -724,54 +744,41 @@ export type UsuarioCreateOrConnectWithoutLoteInput = {
   create: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput>
 }
 
-export type UsuarioUpsertWithoutLoteInput = {
-  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutLoteInput, Prisma.UsuarioUncheckedUpdateWithoutLoteInput>
-  create: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput>
-  where?: Prisma.UsuarioWhereInput
+export type UsuarioCreateManyLoteInputEnvelope = {
+  data: Prisma.UsuarioCreateManyLoteInput | Prisma.UsuarioCreateManyLoteInput[]
+  skipDuplicates?: boolean
 }
 
-export type UsuarioUpdateToOneWithWhereWithoutLoteInput = {
-  where?: Prisma.UsuarioWhereInput
+export type UsuarioUpsertWithWhereUniqueWithoutLoteInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutLoteInput, Prisma.UsuarioUncheckedUpdateWithoutLoteInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutLoteInput, Prisma.UsuarioUncheckedCreateWithoutLoteInput>
+}
+
+export type UsuarioUpdateWithWhereUniqueWithoutLoteInput = {
+  where: Prisma.UsuarioWhereUniqueInput
   data: Prisma.XOR<Prisma.UsuarioUpdateWithoutLoteInput, Prisma.UsuarioUncheckedUpdateWithoutLoteInput>
 }
 
-export type UsuarioUpdateWithoutLoteInput = {
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  nombre?: Prisma.StringFieldUpdateOperationsInput | string
-  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
-  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
-  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
-  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
-  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
-  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
-  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
-  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+export type UsuarioUpdateManyWithWhereWithoutLoteInput = {
+  where: Prisma.UsuarioScalarWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateManyMutationInput, Prisma.UsuarioUncheckedUpdateManyWithoutLoteInput>
 }
 
-export type UsuarioUncheckedUpdateWithoutLoteInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  nombre?: Prisma.StringFieldUpdateOperationsInput | string
-  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
-  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
-  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
-  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
-  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
-  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
-  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
-  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+export type UsuarioScalarWhereInput = {
+  AND?: Prisma.UsuarioScalarWhereInput | Prisma.UsuarioScalarWhereInput[]
+  OR?: Prisma.UsuarioScalarWhereInput[]
+  NOT?: Prisma.UsuarioScalarWhereInput | Prisma.UsuarioScalarWhereInput[]
+  id?: Prisma.IntFilter<"Usuario"> | number
+  email?: Prisma.StringFilter<"Usuario"> | string
+  password?: Prisma.StringFilter<"Usuario"> | string
+  nombre?: Prisma.StringFilter<"Usuario"> | string
+  telefono?: Prisma.StringNullableFilter<"Usuario"> | string | null
+  loteId?: Prisma.IntFilter<"Usuario"> | number
+  verificado?: Prisma.BoolFilter<"Usuario"> | boolean
+  rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
 }
 
 export type UsuarioCreateWithoutVistasSeccionesInput = {
@@ -783,7 +790,7 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
@@ -838,7 +845,7 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
@@ -877,7 +884,7 @@ export type UsuarioCreateWithoutIncidentesInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
@@ -932,7 +939,7 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
@@ -971,7 +978,7 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
@@ -1015,7 +1022,7 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
@@ -1070,7 +1077,7 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
@@ -1120,7 +1127,7 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
@@ -1159,7 +1166,7 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
@@ -1214,7 +1221,7 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
@@ -1253,7 +1260,7 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
@@ -1308,7 +1315,7 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
@@ -1347,7 +1354,7 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
@@ -1402,7 +1409,7 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
@@ -1441,7 +1448,7 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   rol?: $Enums.Rol
   createdAt?: Date | string
   updatedAt?: Date | string
-  lote: Prisma.LoteCreateNestedOneWithoutUsuarioInput
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
@@ -1496,7 +1503,7 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuarioNestedInput
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
@@ -1524,6 +1531,69 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateManyLoteInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UsuarioUpdateWithoutLoteInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutLoteInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 

@@ -37,7 +37,9 @@ model Lote {
   area            Float?      // área en m2
   residentes      Residente[]
   incidentes      Incidente[]
-  usuario         Usuario?
+  // Hasta 2 cuentas por lote (ej: madre y padre) — el límite se controla
+  // en la app (ver MAX_USUARIOS_POR_LOTE), no en la base.
+  usuarios        Usuario[]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
@@ -68,7 +70,7 @@ model Usuario {
   password            String              // hash de bcrypt
   nombre              String
   telefono            String?
-  loteId              Int                 @unique
+  loteId              Int
   lote                Lote                @relation(fields: [loteId], references: [id])
   verificado          Boolean             @default(false)
   rol                 Rol                 @default(VECINO)

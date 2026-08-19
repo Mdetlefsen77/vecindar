@@ -65,7 +65,7 @@ export default function MapView({
         (data: {
           lotes: {
             numero: string;
-            usuario: { id: number } | null;
+            usuarios: { id: number }[];
             incidentes: { id: number }[];
           }[];
         }) => {
@@ -73,7 +73,7 @@ export default function MapView({
           for (const lote of data.lotes) {
             if (lote.incidentes.length > 0) {
               estado[lote.numero] = "incidente";
-            } else if (lote.usuario !== null) {
+            } else if (lote.usuarios.length > 0) {
               estado[lote.numero] = "habitado";
             }
             // desocupado es el default en LotesLayer, no hace falta setearlo

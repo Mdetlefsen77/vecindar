@@ -4,6 +4,9 @@ import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
 import { type Rol } from "@/generated/enums";
 
+// Máximo de cuentas de usuario por lote (ej: madre y padre en la misma casa)
+const MAX_USUARIOS_POR_LOTE = 2;
+
 // GET /api/usuarios — solo ADMIN
 export async function GET(req: NextRequest) {
   const guard = await requireRoleSession(["ADMIN"]);
@@ -85,10 +88,10 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Verificar que el lote exista y esté disponible
+    // Verificar que el lote exista y todavía tenga lugar disponible
     const lote = await prisma.lote.findUnique({
       where: { id: parseInt(loteId) },
-      include: { usuario: true },
+      include: { usuarios: { select: { id: true } } },
     });
 
     if (!lote) {
@@ -98,9 +101,11 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (lote.usuario) {
+    if (lote.usuarios.length >= MAX_USUARIOS_POR_LOTE) {
       return NextResponse.json(
-        { error: "Ese lote ya tiene un usuario registrado." },
+        {
+          error: `Ese lote ya alcanzó el máximo de ${MAX_USUARIOS_POR_LOTE} cuentas registradas.`,
+        },
         { status: 409 },
       );
     }

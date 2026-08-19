@@ -27,7 +27,7 @@ export default async function AdminPage() {
       where: { estado: { in: ["ENVIADO", "RECIBIDO", "EN_ATENCION"] } },
     }),
     prisma.lote.count(),
-    prisma.lote.count({ where: { usuario: { isNot: null } } }),
+    prisma.lote.count({ where: { usuarios: { some: {} } } }),
   ]);
 
   const stats = [
