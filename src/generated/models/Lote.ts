@@ -275,7 +275,7 @@ export type LoteWhereInput = {
   manzana?: Prisma.XOR<Prisma.ManzanaScalarRelationFilter, Prisma.ManzanaWhereInput>
   residentes?: Prisma.ResidenteListRelationFilter
   incidentes?: Prisma.IncidenteListRelationFilter
-  usuario?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
+  usuarios?: Prisma.UsuarioListRelationFilter
 }
 
 export type LoteOrderByWithRelationInput = {
@@ -292,7 +292,7 @@ export type LoteOrderByWithRelationInput = {
   manzana?: Prisma.ManzanaOrderByWithRelationInput
   residentes?: Prisma.ResidenteOrderByRelationAggregateInput
   incidentes?: Prisma.IncidenteOrderByRelationAggregateInput
-  usuario?: Prisma.UsuarioOrderByWithRelationInput
+  usuarios?: Prisma.UsuarioOrderByRelationAggregateInput
 }
 
 export type LoteWhereUniqueInput = Prisma.AtLeast<{
@@ -313,7 +313,7 @@ export type LoteWhereUniqueInput = Prisma.AtLeast<{
   manzana?: Prisma.XOR<Prisma.ManzanaScalarRelationFilter, Prisma.ManzanaWhereInput>
   residentes?: Prisma.ResidenteListRelationFilter
   incidentes?: Prisma.IncidenteListRelationFilter
-  usuario?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
+  usuarios?: Prisma.UsuarioListRelationFilter
 }, "id" | "manzanaId_numero">
 
 export type LoteOrderByWithAggregationInput = {
@@ -362,7 +362,7 @@ export type LoteCreateInput = {
   manzana: Prisma.ManzanaCreateNestedOneWithoutLotesInput
   residentes?: Prisma.ResidenteCreateNestedManyWithoutLoteInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioCreateNestedManyWithoutLoteInput
 }
 
 export type LoteUncheckedCreateInput = {
@@ -378,7 +378,7 @@ export type LoteUncheckedCreateInput = {
   updatedAt?: Date | string
   residentes?: Prisma.ResidenteUncheckedCreateNestedManyWithoutLoteInput
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioUncheckedCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioUncheckedCreateNestedManyWithoutLoteInput
 }
 
 export type LoteUpdateInput = {
@@ -393,7 +393,7 @@ export type LoteUpdateInput = {
   manzana?: Prisma.ManzanaUpdateOneRequiredWithoutLotesNestedInput
   residentes?: Prisma.ResidenteUpdateManyWithoutLoteNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUpdateManyWithoutLoteNestedInput
 }
 
 export type LoteUncheckedUpdateInput = {
@@ -409,7 +409,7 @@ export type LoteUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   residentes?: Prisma.ResidenteUncheckedUpdateManyWithoutLoteNestedInput
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUncheckedUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUncheckedUpdateManyWithoutLoteNestedInput
 }
 
 export type LoteCreateManyInput = {
@@ -597,18 +597,18 @@ export type LoteUpdateOneRequiredWithoutResidentesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.LoteUpdateToOneWithWhereWithoutResidentesInput, Prisma.LoteUpdateWithoutResidentesInput>, Prisma.LoteUncheckedUpdateWithoutResidentesInput>
 }
 
-export type LoteCreateNestedOneWithoutUsuarioInput = {
-  create?: Prisma.XOR<Prisma.LoteCreateWithoutUsuarioInput, Prisma.LoteUncheckedCreateWithoutUsuarioInput>
-  connectOrCreate?: Prisma.LoteCreateOrConnectWithoutUsuarioInput
+export type LoteCreateNestedOneWithoutUsuariosInput = {
+  create?: Prisma.XOR<Prisma.LoteCreateWithoutUsuariosInput, Prisma.LoteUncheckedCreateWithoutUsuariosInput>
+  connectOrCreate?: Prisma.LoteCreateOrConnectWithoutUsuariosInput
   connect?: Prisma.LoteWhereUniqueInput
 }
 
-export type LoteUpdateOneRequiredWithoutUsuarioNestedInput = {
-  create?: Prisma.XOR<Prisma.LoteCreateWithoutUsuarioInput, Prisma.LoteUncheckedCreateWithoutUsuarioInput>
-  connectOrCreate?: Prisma.LoteCreateOrConnectWithoutUsuarioInput
-  upsert?: Prisma.LoteUpsertWithoutUsuarioInput
+export type LoteUpdateOneRequiredWithoutUsuariosNestedInput = {
+  create?: Prisma.XOR<Prisma.LoteCreateWithoutUsuariosInput, Prisma.LoteUncheckedCreateWithoutUsuariosInput>
+  connectOrCreate?: Prisma.LoteCreateOrConnectWithoutUsuariosInput
+  upsert?: Prisma.LoteUpsertWithoutUsuariosInput
   connect?: Prisma.LoteWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.LoteUpdateToOneWithWhereWithoutUsuarioInput, Prisma.LoteUpdateWithoutUsuarioInput>, Prisma.LoteUncheckedUpdateWithoutUsuarioInput>
+  update?: Prisma.XOR<Prisma.XOR<Prisma.LoteUpdateToOneWithWhereWithoutUsuariosInput, Prisma.LoteUpdateWithoutUsuariosInput>, Prisma.LoteUncheckedUpdateWithoutUsuariosInput>
 }
 
 export type LoteCreateNestedOneWithoutIncidentesInput = {
@@ -638,7 +638,7 @@ export type LoteCreateWithoutManzanaInput = {
   updatedAt?: Date | string
   residentes?: Prisma.ResidenteCreateNestedManyWithoutLoteInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioCreateNestedManyWithoutLoteInput
 }
 
 export type LoteUncheckedCreateWithoutManzanaInput = {
@@ -653,7 +653,7 @@ export type LoteUncheckedCreateWithoutManzanaInput = {
   updatedAt?: Date | string
   residentes?: Prisma.ResidenteUncheckedCreateNestedManyWithoutLoteInput
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioUncheckedCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioUncheckedCreateNestedManyWithoutLoteInput
 }
 
 export type LoteCreateOrConnectWithoutManzanaInput = {
@@ -709,7 +709,7 @@ export type LoteCreateWithoutResidentesInput = {
   updatedAt?: Date | string
   manzana: Prisma.ManzanaCreateNestedOneWithoutLotesInput
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioCreateNestedManyWithoutLoteInput
 }
 
 export type LoteUncheckedCreateWithoutResidentesInput = {
@@ -724,7 +724,7 @@ export type LoteUncheckedCreateWithoutResidentesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioUncheckedCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioUncheckedCreateNestedManyWithoutLoteInput
 }
 
 export type LoteCreateOrConnectWithoutResidentesInput = {
@@ -754,7 +754,7 @@ export type LoteUpdateWithoutResidentesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   manzana?: Prisma.ManzanaUpdateOneRequiredWithoutLotesNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUpdateManyWithoutLoteNestedInput
 }
 
 export type LoteUncheckedUpdateWithoutResidentesInput = {
@@ -769,10 +769,10 @@ export type LoteUncheckedUpdateWithoutResidentesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUncheckedUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUncheckedUpdateManyWithoutLoteNestedInput
 }
 
-export type LoteCreateWithoutUsuarioInput = {
+export type LoteCreateWithoutUsuariosInput = {
   numero: string
   calleFrente: string
   habitado?: boolean
@@ -786,7 +786,7 @@ export type LoteCreateWithoutUsuarioInput = {
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutLoteInput
 }
 
-export type LoteUncheckedCreateWithoutUsuarioInput = {
+export type LoteUncheckedCreateWithoutUsuariosInput = {
   id?: number
   numero: string
   manzanaId: number
@@ -801,23 +801,23 @@ export type LoteUncheckedCreateWithoutUsuarioInput = {
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutLoteInput
 }
 
-export type LoteCreateOrConnectWithoutUsuarioInput = {
+export type LoteCreateOrConnectWithoutUsuariosInput = {
   where: Prisma.LoteWhereUniqueInput
-  create: Prisma.XOR<Prisma.LoteCreateWithoutUsuarioInput, Prisma.LoteUncheckedCreateWithoutUsuarioInput>
+  create: Prisma.XOR<Prisma.LoteCreateWithoutUsuariosInput, Prisma.LoteUncheckedCreateWithoutUsuariosInput>
 }
 
-export type LoteUpsertWithoutUsuarioInput = {
-  update: Prisma.XOR<Prisma.LoteUpdateWithoutUsuarioInput, Prisma.LoteUncheckedUpdateWithoutUsuarioInput>
-  create: Prisma.XOR<Prisma.LoteCreateWithoutUsuarioInput, Prisma.LoteUncheckedCreateWithoutUsuarioInput>
+export type LoteUpsertWithoutUsuariosInput = {
+  update: Prisma.XOR<Prisma.LoteUpdateWithoutUsuariosInput, Prisma.LoteUncheckedUpdateWithoutUsuariosInput>
+  create: Prisma.XOR<Prisma.LoteCreateWithoutUsuariosInput, Prisma.LoteUncheckedCreateWithoutUsuariosInput>
   where?: Prisma.LoteWhereInput
 }
 
-export type LoteUpdateToOneWithWhereWithoutUsuarioInput = {
+export type LoteUpdateToOneWithWhereWithoutUsuariosInput = {
   where?: Prisma.LoteWhereInput
-  data: Prisma.XOR<Prisma.LoteUpdateWithoutUsuarioInput, Prisma.LoteUncheckedUpdateWithoutUsuarioInput>
+  data: Prisma.XOR<Prisma.LoteUpdateWithoutUsuariosInput, Prisma.LoteUncheckedUpdateWithoutUsuariosInput>
 }
 
-export type LoteUpdateWithoutUsuarioInput = {
+export type LoteUpdateWithoutUsuariosInput = {
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   calleFrente?: Prisma.StringFieldUpdateOperationsInput | string
   habitado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -831,7 +831,7 @@ export type LoteUpdateWithoutUsuarioInput = {
   incidentes?: Prisma.IncidenteUpdateManyWithoutLoteNestedInput
 }
 
-export type LoteUncheckedUpdateWithoutUsuarioInput = {
+export type LoteUncheckedUpdateWithoutUsuariosInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.StringFieldUpdateOperationsInput | string
   manzanaId?: Prisma.IntFieldUpdateOperationsInput | number
@@ -857,7 +857,7 @@ export type LoteCreateWithoutIncidentesInput = {
   updatedAt?: Date | string
   manzana: Prisma.ManzanaCreateNestedOneWithoutLotesInput
   residentes?: Prisma.ResidenteCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioCreateNestedManyWithoutLoteInput
 }
 
 export type LoteUncheckedCreateWithoutIncidentesInput = {
@@ -872,7 +872,7 @@ export type LoteUncheckedCreateWithoutIncidentesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   residentes?: Prisma.ResidenteUncheckedCreateNestedManyWithoutLoteInput
-  usuario?: Prisma.UsuarioUncheckedCreateNestedOneWithoutLoteInput
+  usuarios?: Prisma.UsuarioUncheckedCreateNestedManyWithoutLoteInput
 }
 
 export type LoteCreateOrConnectWithoutIncidentesInput = {
@@ -902,7 +902,7 @@ export type LoteUpdateWithoutIncidentesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   manzana?: Prisma.ManzanaUpdateOneRequiredWithoutLotesNestedInput
   residentes?: Prisma.ResidenteUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUpdateManyWithoutLoteNestedInput
 }
 
 export type LoteUncheckedUpdateWithoutIncidentesInput = {
@@ -917,7 +917,7 @@ export type LoteUncheckedUpdateWithoutIncidentesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   residentes?: Prisma.ResidenteUncheckedUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUncheckedUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUncheckedUpdateManyWithoutLoteNestedInput
 }
 
 export type LoteCreateManyManzanaInput = {
@@ -943,7 +943,7 @@ export type LoteUpdateWithoutManzanaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   residentes?: Prisma.ResidenteUpdateManyWithoutLoteNestedInput
   incidentes?: Prisma.IncidenteUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUpdateManyWithoutLoteNestedInput
 }
 
 export type LoteUncheckedUpdateWithoutManzanaInput = {
@@ -958,7 +958,7 @@ export type LoteUncheckedUpdateWithoutManzanaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   residentes?: Prisma.ResidenteUncheckedUpdateManyWithoutLoteNestedInput
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutLoteNestedInput
-  usuario?: Prisma.UsuarioUncheckedUpdateOneWithoutLoteNestedInput
+  usuarios?: Prisma.UsuarioUncheckedUpdateManyWithoutLoteNestedInput
 }
 
 export type LoteUncheckedUpdateManyWithoutManzanaInput = {
@@ -981,11 +981,13 @@ export type LoteUncheckedUpdateManyWithoutManzanaInput = {
 export type LoteCountOutputType = {
   residentes: number
   incidentes: number
+  usuarios: number
 }
 
 export type LoteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   residentes?: boolean | LoteCountOutputTypeCountResidentesArgs
   incidentes?: boolean | LoteCountOutputTypeCountIncidentesArgs
+  usuarios?: boolean | LoteCountOutputTypeCountUsuariosArgs
 }
 
 /**
@@ -1012,6 +1014,13 @@ export type LoteCountOutputTypeCountIncidentesArgs<ExtArgs extends runtime.Types
   where?: Prisma.IncidenteWhereInput
 }
 
+/**
+ * LoteCountOutputType without action
+ */
+export type LoteCountOutputTypeCountUsuariosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UsuarioWhereInput
+}
+
 
 export type LoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1027,7 +1036,7 @@ export type LoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   manzana?: boolean | Prisma.ManzanaDefaultArgs<ExtArgs>
   residentes?: boolean | Prisma.Lote$residentesArgs<ExtArgs>
   incidentes?: boolean | Prisma.Lote$incidentesArgs<ExtArgs>
-  usuario?: boolean | Prisma.Lote$usuarioArgs<ExtArgs>
+  usuarios?: boolean | Prisma.Lote$usuariosArgs<ExtArgs>
   _count?: boolean | Prisma.LoteCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["lote"]>
 
@@ -1077,7 +1086,7 @@ export type LoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   manzana?: boolean | Prisma.ManzanaDefaultArgs<ExtArgs>
   residentes?: boolean | Prisma.Lote$residentesArgs<ExtArgs>
   incidentes?: boolean | Prisma.Lote$incidentesArgs<ExtArgs>
-  usuario?: boolean | Prisma.Lote$usuarioArgs<ExtArgs>
+  usuarios?: boolean | Prisma.Lote$usuariosArgs<ExtArgs>
   _count?: boolean | Prisma.LoteCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type LoteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1093,7 +1102,7 @@ export type $LotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     manzana: Prisma.$ManzanaPayload<ExtArgs>
     residentes: Prisma.$ResidentePayload<ExtArgs>[]
     incidentes: Prisma.$IncidentePayload<ExtArgs>[]
-    usuario: Prisma.$UsuarioPayload<ExtArgs> | null
+    usuarios: Prisma.$UsuarioPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1503,7 +1512,7 @@ export interface Prisma__LoteClient<T, Null = never, ExtArgs extends runtime.Typ
   manzana<T extends Prisma.ManzanaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ManzanaDefaultArgs<ExtArgs>>): Prisma.Prisma__ManzanaClient<runtime.Types.Result.GetResult<Prisma.$ManzanaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   residentes<T extends Prisma.Lote$residentesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lote$residentesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ResidentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   incidentes<T extends Prisma.Lote$incidentesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lote$incidentesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IncidentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  usuario<T extends Prisma.Lote$usuarioArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lote$usuarioArgs<ExtArgs>>): Prisma.Prisma__UsuarioClient<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  usuarios<T extends Prisma.Lote$usuariosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Lote$usuariosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1987,9 +1996,9 @@ export type Lote$incidentesArgs<ExtArgs extends runtime.Types.Extensions.Interna
 }
 
 /**
- * Lote.usuario
+ * Lote.usuarios
  */
-export type Lote$usuarioArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Lote$usuariosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
    * Select specific fields to fetch from the Usuario
    */
@@ -2003,6 +2012,11 @@ export type Lote$usuarioArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   include?: Prisma.UsuarioInclude<ExtArgs> | null
   where?: Prisma.UsuarioWhereInput
+  orderBy?: Prisma.UsuarioOrderByWithRelationInput | Prisma.UsuarioOrderByWithRelationInput[]
+  cursor?: Prisma.UsuarioWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UsuarioScalarFieldEnum | Prisma.UsuarioScalarFieldEnum[]
 }
 
 /**

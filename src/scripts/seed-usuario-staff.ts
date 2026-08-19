@@ -35,7 +35,7 @@ async function main() {
       existente?.loteId ??
       (
         await prisma.lote.findFirst({
-          where: { usuario: null },
+          where: { usuarios: { none: {} } },
           orderBy: [{ manzanaId: "asc" }, { numero: "asc" }],
         })
       )?.id;
