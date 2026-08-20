@@ -1,6 +1,9 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import ComentariosAlerta, {
+  type ComentarioAlertaData,
+} from "./ComentariosAlerta";
 
 type EstadoAlerta = "ENVIADO" | "RECIBIDO" | "EN_ATENCION" | "CERRADO";
 
@@ -8,8 +11,8 @@ interface AlertaActiva {
   id: number;
   estado: EstadoAlerta;
   createdAt: string;
-  notas: string | null;
   atendioPor: { nombre: string } | null;
+  comentarios: ComentarioAlertaData[];
 }
 
 const ESTADO_INFO: Record<
@@ -209,20 +212,21 @@ export default function BotonSOS({ alertaActivaInicial }: Props) {
           <p className="text-gray-500 text-sm mt-1 max-w-sm">{info.desc}</p>
         </div>
 
-        {/* Notas del administrativo */}
-        {alerta.notas && (
-          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 max-w-sm w-full text-left">
-            <p className="text-xs font-semibold text-blue-500 mb-1">
-              Mensaje del equipo
-            </p>
-            <p className="text-sm text-blue-900">{alerta.notas}</p>
-            {alerta.atendioPor && (
-              <p className="text-xs text-blue-400 mt-1">
-                — {alerta.atendioPor.nombre}
-              </p>
-            )}
-          </div>
-        )}
+        {/* Conversación con el equipo de seguridad */}
+        <div className="max-w-sm w-full">
+          <ComentariosAlerta
+            alertaId={alerta.id}
+            comentarios={alerta.comentarios}
+            cerrada={cerrada}
+            onNuevoComentario={(c) =>
+              setAlerta((prev) =>
+                prev
+                  ? { ...prev, comentarios: [...prev.comentarios, c] }
+                  : prev,
+              )
+            }
+          />
+        </div>
 
         {/* Cuándo se envió */}
         <p className="text-xs text-gray-400">

@@ -33,6 +33,10 @@ export async function GET(_req: NextRequest) {
         },
       },
       atendioPor: { select: { nombre: true } },
+      comentarios: {
+        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        orderBy: { createdAt: "asc" },
+      },
     },
     orderBy: [{ estado: "asc" }, { createdAt: "desc" }],
     take: esAdmin ? 50 : 10,
@@ -52,6 +56,12 @@ export async function POST(req: NextRequest) {
     where: {
       usuarioId: parseInt(session.user.id!),
       estado: { in: ["ENVIADO", "RECIBIDO", "EN_ATENCION"] },
+    },
+    include: {
+      comentarios: {
+        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        orderBy: { createdAt: "asc" },
+      },
     },
   });
 
@@ -90,6 +100,10 @@ export async function POST(req: NextRequest) {
             },
           },
         },
+      },
+      comentarios: {
+        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        orderBy: { createdAt: "asc" },
       },
     },
   });

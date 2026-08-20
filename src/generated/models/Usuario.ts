@@ -266,6 +266,7 @@ export type UsuarioWhereInput = {
   alertasAtendidas?: Prisma.AlertaPanicoListRelationFilter
   requerimientos?: Prisma.RequerimientoListRelationFilter
   comentariosReq?: Prisma.ComentarioReqListRelationFilter
+  comentariosAlertas?: Prisma.ComentarioAlertaListRelationFilter
   mascotasPerdidas?: Prisma.MascotaPerdidaListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
   vistasSecciones?: Prisma.VistaSeccionListRelationFilter
@@ -288,6 +289,7 @@ export type UsuarioOrderByWithRelationInput = {
   alertasAtendidas?: Prisma.AlertaPanicoOrderByRelationAggregateInput
   requerimientos?: Prisma.RequerimientoOrderByRelationAggregateInput
   comentariosReq?: Prisma.ComentarioReqOrderByRelationAggregateInput
+  comentariosAlertas?: Prisma.ComentarioAlertaOrderByRelationAggregateInput
   mascotasPerdidas?: Prisma.MascotaPerdidaOrderByRelationAggregateInput
   pushSubscriptions?: Prisma.PushSubscriptionOrderByRelationAggregateInput
   vistasSecciones?: Prisma.VistaSeccionOrderByRelationAggregateInput
@@ -313,6 +315,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   alertasAtendidas?: Prisma.AlertaPanicoListRelationFilter
   requerimientos?: Prisma.RequerimientoListRelationFilter
   comentariosReq?: Prisma.ComentarioReqListRelationFilter
+  comentariosAlertas?: Prisma.ComentarioAlertaListRelationFilter
   mascotasPerdidas?: Prisma.MascotaPerdidaListRelationFilter
   pushSubscriptions?: Prisma.PushSubscriptionListRelationFilter
   vistasSecciones?: Prisma.VistaSeccionListRelationFilter
@@ -367,6 +370,7 @@ export type UsuarioCreateInput = {
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
@@ -388,6 +392,7 @@ export type UsuarioUncheckedCreateInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -408,6 +413,7 @@ export type UsuarioUpdateInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
@@ -429,6 +435,7 @@ export type UsuarioUncheckedUpdateInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -644,6 +651,20 @@ export type UsuarioUpdateOneWithoutAlertasAtendidasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutAlertasAtendidasInput, Prisma.UsuarioUpdateWithoutAlertasAtendidasInput>, Prisma.UsuarioUncheckedUpdateWithoutAlertasAtendidasInput>
 }
 
+export type UsuarioCreateNestedOneWithoutComentariosAlertasInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutComentariosAlertasInput, Prisma.UsuarioUncheckedCreateWithoutComentariosAlertasInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutComentariosAlertasInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneRequiredWithoutComentariosAlertasNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutComentariosAlertasInput, Prisma.UsuarioUncheckedCreateWithoutComentariosAlertasInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutComentariosAlertasInput
+  upsert?: Prisma.UsuarioUpsertWithoutComentariosAlertasInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutComentariosAlertasInput, Prisma.UsuarioUpdateWithoutComentariosAlertasInput>, Prisma.UsuarioUncheckedUpdateWithoutComentariosAlertasInput>
+}
+
 export type UsuarioCreateNestedOneWithoutPushSubscriptionsInput = {
   create?: Prisma.XOR<Prisma.UsuarioCreateWithoutPushSubscriptionsInput, Prisma.UsuarioUncheckedCreateWithoutPushSubscriptionsInput>
   connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutPushSubscriptionsInput
@@ -714,6 +735,7 @@ export type UsuarioCreateWithoutLoteInput = {
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
@@ -734,6 +756,7 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -796,6 +819,7 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
 }
@@ -816,6 +840,7 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -851,6 +876,7 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
 }
@@ -871,6 +897,7 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -889,6 +916,7 @@ export type UsuarioCreateWithoutIncidentesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
@@ -909,6 +937,7 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -944,6 +973,7 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
@@ -964,6 +994,7 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -983,6 +1014,7 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
@@ -1003,6 +1035,7 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1027,6 +1060,7 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
@@ -1047,6 +1081,7 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1082,6 +1117,7 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
@@ -1102,6 +1138,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1132,6 +1169,7 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
@@ -1150,6 +1188,105 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
   alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutComentariosAlertasInput = {
+  email: string
+  password: string
+  nombre: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutComentariosAlertasInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutComentariosAlertasInput, Prisma.UsuarioUncheckedCreateWithoutComentariosAlertasInput>
+}
+
+export type UsuarioUpsertWithoutComentariosAlertasInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutComentariosAlertasInput, Prisma.UsuarioUncheckedUpdateWithoutComentariosAlertasInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutComentariosAlertasInput, Prisma.UsuarioUncheckedCreateWithoutComentariosAlertasInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutComentariosAlertasInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutComentariosAlertasInput, Prisma.UsuarioUncheckedUpdateWithoutComentariosAlertasInput>
+}
+
+export type UsuarioUpdateWithoutComentariosAlertasInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1172,6 +1309,7 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
 }
@@ -1192,6 +1330,7 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1227,6 +1366,7 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
 }
@@ -1247,6 +1387,7 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -1265,6 +1406,7 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
@@ -1285,6 +1427,7 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1320,6 +1463,7 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
@@ -1340,6 +1484,7 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1359,6 +1504,7 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
@@ -1379,6 +1525,7 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1414,6 +1561,7 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
@@ -1434,6 +1582,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1454,6 +1603,7 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
 }
@@ -1474,6 +1624,7 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
   requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
   comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1509,6 +1660,7 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
 }
@@ -1529,6 +1681,7 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -1559,6 +1712,7 @@ export type UsuarioUpdateWithoutLoteInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
@@ -1579,6 +1733,7 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
   requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
   comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
   mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
   pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1607,6 +1762,7 @@ export type UsuarioCountOutputType = {
   alertasAtendidas: number
   requerimientos: number
   comentariosReq: number
+  comentariosAlertas: number
   mascotasPerdidas: number
   pushSubscriptions: number
   vistasSecciones: number
@@ -1618,6 +1774,7 @@ export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   alertasAtendidas?: boolean | UsuarioCountOutputTypeCountAlertasAtendidasArgs
   requerimientos?: boolean | UsuarioCountOutputTypeCountRequerimientosArgs
   comentariosReq?: boolean | UsuarioCountOutputTypeCountComentariosReqArgs
+  comentariosAlertas?: boolean | UsuarioCountOutputTypeCountComentariosAlertasArgs
   mascotasPerdidas?: boolean | UsuarioCountOutputTypeCountMascotasPerdidasArgs
   pushSubscriptions?: boolean | UsuarioCountOutputTypeCountPushSubscriptionsArgs
   vistasSecciones?: boolean | UsuarioCountOutputTypeCountVistasSeccionesArgs
@@ -1671,6 +1828,13 @@ export type UsuarioCountOutputTypeCountComentariosReqArgs<ExtArgs extends runtim
 /**
  * UsuarioCountOutputType without action
  */
+export type UsuarioCountOutputTypeCountComentariosAlertasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ComentarioAlertaWhereInput
+}
+
+/**
+ * UsuarioCountOutputType without action
+ */
 export type UsuarioCountOutputTypeCountMascotasPerdidasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.MascotaPerdidaWhereInput
 }
@@ -1707,6 +1871,7 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   alertasAtendidas?: boolean | Prisma.Usuario$alertasAtendidasArgs<ExtArgs>
   requerimientos?: boolean | Prisma.Usuario$requerimientosArgs<ExtArgs>
   comentariosReq?: boolean | Prisma.Usuario$comentariosReqArgs<ExtArgs>
+  comentariosAlertas?: boolean | Prisma.Usuario$comentariosAlertasArgs<ExtArgs>
   mascotasPerdidas?: boolean | Prisma.Usuario$mascotasPerdidasArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.Usuario$pushSubscriptionsArgs<ExtArgs>
   vistasSecciones?: boolean | Prisma.Usuario$vistasSeccionesArgs<ExtArgs>
@@ -1762,6 +1927,7 @@ export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   alertasAtendidas?: boolean | Prisma.Usuario$alertasAtendidasArgs<ExtArgs>
   requerimientos?: boolean | Prisma.Usuario$requerimientosArgs<ExtArgs>
   comentariosReq?: boolean | Prisma.Usuario$comentariosReqArgs<ExtArgs>
+  comentariosAlertas?: boolean | Prisma.Usuario$comentariosAlertasArgs<ExtArgs>
   mascotasPerdidas?: boolean | Prisma.Usuario$mascotasPerdidasArgs<ExtArgs>
   pushSubscriptions?: boolean | Prisma.Usuario$pushSubscriptionsArgs<ExtArgs>
   vistasSecciones?: boolean | Prisma.Usuario$vistasSeccionesArgs<ExtArgs>
@@ -1783,6 +1949,7 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     alertasAtendidas: Prisma.$AlertaPanicoPayload<ExtArgs>[]
     requerimientos: Prisma.$RequerimientoPayload<ExtArgs>[]
     comentariosReq: Prisma.$ComentarioReqPayload<ExtArgs>[]
+    comentariosAlertas: Prisma.$ComentarioAlertaPayload<ExtArgs>[]
     mascotasPerdidas: Prisma.$MascotaPerdidaPayload<ExtArgs>[]
     pushSubscriptions: Prisma.$PushSubscriptionPayload<ExtArgs>[]
     vistasSecciones: Prisma.$VistaSeccionPayload<ExtArgs>[]
@@ -2198,6 +2365,7 @@ export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends runtime.
   alertasAtendidas<T extends Prisma.Usuario$alertasAtendidasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$alertasAtendidasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AlertaPanicoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   requerimientos<T extends Prisma.Usuario$requerimientosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$requerimientosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RequerimientoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comentariosReq<T extends Prisma.Usuario$comentariosReqArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$comentariosReqArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComentarioReqPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  comentariosAlertas<T extends Prisma.Usuario$comentariosAlertasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$comentariosAlertasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComentarioAlertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   mascotasPerdidas<T extends Prisma.Usuario$mascotasPerdidasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$mascotasPerdidasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MascotaPerdidaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pushSubscriptions<T extends Prisma.Usuario$pushSubscriptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$pushSubscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PushSubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   vistasSecciones<T extends Prisma.Usuario$vistasSeccionesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$vistasSeccionesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VistaSeccionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2753,6 +2921,30 @@ export type Usuario$comentariosReqArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.ComentarioReqScalarFieldEnum | Prisma.ComentarioReqScalarFieldEnum[]
+}
+
+/**
+ * Usuario.comentariosAlertas
+ */
+export type Usuario$comentariosAlertasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ComentarioAlerta
+   */
+  select?: Prisma.ComentarioAlertaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ComentarioAlerta
+   */
+  omit?: Prisma.ComentarioAlertaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ComentarioAlertaInclude<ExtArgs> | null
+  where?: Prisma.ComentarioAlertaWhereInput
+  orderBy?: Prisma.ComentarioAlertaOrderByWithRelationInput | Prisma.ComentarioAlertaOrderByWithRelationInput[]
+  cursor?: Prisma.ComentarioAlertaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ComentarioAlertaScalarFieldEnum | Prisma.ComentarioAlertaScalarFieldEnum[]
 }
 
 /**

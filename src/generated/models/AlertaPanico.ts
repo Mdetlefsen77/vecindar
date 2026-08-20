@@ -282,6 +282,7 @@ export type AlertaPanicoWhereInput = {
   cerradoAt?: Prisma.DateTimeNullableFilter<"AlertaPanico"> | Date | string | null
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
   atendioPor?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
+  comentarios?: Prisma.ComentarioAlertaListRelationFilter
 }
 
 export type AlertaPanicoOrderByWithRelationInput = {
@@ -298,6 +299,7 @@ export type AlertaPanicoOrderByWithRelationInput = {
   cerradoAt?: Prisma.SortOrderInput | Prisma.SortOrder
   usuario?: Prisma.UsuarioOrderByWithRelationInput
   atendioPor?: Prisma.UsuarioOrderByWithRelationInput
+  comentarios?: Prisma.ComentarioAlertaOrderByRelationAggregateInput
 }
 
 export type AlertaPanicoWhereUniqueInput = Prisma.AtLeast<{
@@ -317,6 +319,7 @@ export type AlertaPanicoWhereUniqueInput = Prisma.AtLeast<{
   cerradoAt?: Prisma.DateTimeNullableFilter<"AlertaPanico"> | Date | string | null
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
   atendioPor?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
+  comentarios?: Prisma.ComentarioAlertaListRelationFilter
 }, "id">
 
 export type AlertaPanicoOrderByWithAggregationInput = {
@@ -366,6 +369,7 @@ export type AlertaPanicoCreateInput = {
   cerradoAt?: Date | string | null
   usuario: Prisma.UsuarioCreateNestedOneWithoutAlertasPanicoInput
   atendioPor?: Prisma.UsuarioCreateNestedOneWithoutAlertasAtendidasInput
+  comentarios?: Prisma.ComentarioAlertaCreateNestedManyWithoutAlertaInput
 }
 
 export type AlertaPanicoUncheckedCreateInput = {
@@ -380,6 +384,7 @@ export type AlertaPanicoUncheckedCreateInput = {
   recibidoAt?: Date | string | null
   atendidoAt?: Date | string | null
   cerradoAt?: Date | string | null
+  comentarios?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutAlertaInput
 }
 
 export type AlertaPanicoUpdateInput = {
@@ -393,6 +398,7 @@ export type AlertaPanicoUpdateInput = {
   cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutAlertasPanicoNestedInput
   atendioPor?: Prisma.UsuarioUpdateOneWithoutAlertasAtendidasNestedInput
+  comentarios?: Prisma.ComentarioAlertaUpdateManyWithoutAlertaNestedInput
 }
 
 export type AlertaPanicoUncheckedUpdateInput = {
@@ -407,6 +413,7 @@ export type AlertaPanicoUncheckedUpdateInput = {
   recibidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   atendidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  comentarios?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutAlertaNestedInput
 }
 
 export type AlertaPanicoCreateManyInput = {
@@ -516,6 +523,11 @@ export type AlertaPanicoSumOrderByAggregateInput = {
   atendioPorId?: Prisma.SortOrder
 }
 
+export type AlertaPanicoScalarRelationFilter = {
+  is?: Prisma.AlertaPanicoWhereInput
+  isNot?: Prisma.AlertaPanicoWhereInput
+}
+
 export type AlertaPanicoCreateNestedManyWithoutUsuarioInput = {
   create?: Prisma.XOR<Prisma.AlertaPanicoCreateWithoutUsuarioInput, Prisma.AlertaPanicoUncheckedCreateWithoutUsuarioInput> | Prisma.AlertaPanicoCreateWithoutUsuarioInput[] | Prisma.AlertaPanicoUncheckedCreateWithoutUsuarioInput[]
   connectOrCreate?: Prisma.AlertaPanicoCreateOrConnectWithoutUsuarioInput | Prisma.AlertaPanicoCreateOrConnectWithoutUsuarioInput[]
@@ -616,6 +628,20 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
 }
 
+export type AlertaPanicoCreateNestedOneWithoutComentariosInput = {
+  create?: Prisma.XOR<Prisma.AlertaPanicoCreateWithoutComentariosInput, Prisma.AlertaPanicoUncheckedCreateWithoutComentariosInput>
+  connectOrCreate?: Prisma.AlertaPanicoCreateOrConnectWithoutComentariosInput
+  connect?: Prisma.AlertaPanicoWhereUniqueInput
+}
+
+export type AlertaPanicoUpdateOneRequiredWithoutComentariosNestedInput = {
+  create?: Prisma.XOR<Prisma.AlertaPanicoCreateWithoutComentariosInput, Prisma.AlertaPanicoUncheckedCreateWithoutComentariosInput>
+  connectOrCreate?: Prisma.AlertaPanicoCreateOrConnectWithoutComentariosInput
+  upsert?: Prisma.AlertaPanicoUpsertWithoutComentariosInput
+  connect?: Prisma.AlertaPanicoWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AlertaPanicoUpdateToOneWithWhereWithoutComentariosInput, Prisma.AlertaPanicoUpdateWithoutComentariosInput>, Prisma.AlertaPanicoUncheckedUpdateWithoutComentariosInput>
+}
+
 export type AlertaPanicoCreateWithoutUsuarioInput = {
   latitud: number
   longitud: number
@@ -626,6 +652,7 @@ export type AlertaPanicoCreateWithoutUsuarioInput = {
   atendidoAt?: Date | string | null
   cerradoAt?: Date | string | null
   atendioPor?: Prisma.UsuarioCreateNestedOneWithoutAlertasAtendidasInput
+  comentarios?: Prisma.ComentarioAlertaCreateNestedManyWithoutAlertaInput
 }
 
 export type AlertaPanicoUncheckedCreateWithoutUsuarioInput = {
@@ -639,6 +666,7 @@ export type AlertaPanicoUncheckedCreateWithoutUsuarioInput = {
   recibidoAt?: Date | string | null
   atendidoAt?: Date | string | null
   cerradoAt?: Date | string | null
+  comentarios?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutAlertaInput
 }
 
 export type AlertaPanicoCreateOrConnectWithoutUsuarioInput = {
@@ -661,6 +689,7 @@ export type AlertaPanicoCreateWithoutAtendioPorInput = {
   atendidoAt?: Date | string | null
   cerradoAt?: Date | string | null
   usuario: Prisma.UsuarioCreateNestedOneWithoutAlertasPanicoInput
+  comentarios?: Prisma.ComentarioAlertaCreateNestedManyWithoutAlertaInput
 }
 
 export type AlertaPanicoUncheckedCreateWithoutAtendioPorInput = {
@@ -674,6 +703,7 @@ export type AlertaPanicoUncheckedCreateWithoutAtendioPorInput = {
   recibidoAt?: Date | string | null
   atendidoAt?: Date | string | null
   cerradoAt?: Date | string | null
+  comentarios?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutAlertaInput
 }
 
 export type AlertaPanicoCreateOrConnectWithoutAtendioPorInput = {
@@ -735,6 +765,76 @@ export type AlertaPanicoUpdateManyWithWhereWithoutAtendioPorInput = {
   data: Prisma.XOR<Prisma.AlertaPanicoUpdateManyMutationInput, Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorInput>
 }
 
+export type AlertaPanicoCreateWithoutComentariosInput = {
+  latitud: number
+  longitud: number
+  estado?: $Enums.EstadoAlerta
+  notas?: string | null
+  createdAt?: Date | string
+  recibidoAt?: Date | string | null
+  atendidoAt?: Date | string | null
+  cerradoAt?: Date | string | null
+  usuario: Prisma.UsuarioCreateNestedOneWithoutAlertasPanicoInput
+  atendioPor?: Prisma.UsuarioCreateNestedOneWithoutAlertasAtendidasInput
+}
+
+export type AlertaPanicoUncheckedCreateWithoutComentariosInput = {
+  id?: number
+  usuarioId: number
+  latitud: number
+  longitud: number
+  estado?: $Enums.EstadoAlerta
+  atendioPorId?: number | null
+  notas?: string | null
+  createdAt?: Date | string
+  recibidoAt?: Date | string | null
+  atendidoAt?: Date | string | null
+  cerradoAt?: Date | string | null
+}
+
+export type AlertaPanicoCreateOrConnectWithoutComentariosInput = {
+  where: Prisma.AlertaPanicoWhereUniqueInput
+  create: Prisma.XOR<Prisma.AlertaPanicoCreateWithoutComentariosInput, Prisma.AlertaPanicoUncheckedCreateWithoutComentariosInput>
+}
+
+export type AlertaPanicoUpsertWithoutComentariosInput = {
+  update: Prisma.XOR<Prisma.AlertaPanicoUpdateWithoutComentariosInput, Prisma.AlertaPanicoUncheckedUpdateWithoutComentariosInput>
+  create: Prisma.XOR<Prisma.AlertaPanicoCreateWithoutComentariosInput, Prisma.AlertaPanicoUncheckedCreateWithoutComentariosInput>
+  where?: Prisma.AlertaPanicoWhereInput
+}
+
+export type AlertaPanicoUpdateToOneWithWhereWithoutComentariosInput = {
+  where?: Prisma.AlertaPanicoWhereInput
+  data: Prisma.XOR<Prisma.AlertaPanicoUpdateWithoutComentariosInput, Prisma.AlertaPanicoUncheckedUpdateWithoutComentariosInput>
+}
+
+export type AlertaPanicoUpdateWithoutComentariosInput = {
+  latitud?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitud?: Prisma.FloatFieldUpdateOperationsInput | number
+  estado?: Prisma.EnumEstadoAlertaFieldUpdateOperationsInput | $Enums.EstadoAlerta
+  notas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recibidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  atendidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  usuario?: Prisma.UsuarioUpdateOneRequiredWithoutAlertasPanicoNestedInput
+  atendioPor?: Prisma.UsuarioUpdateOneWithoutAlertasAtendidasNestedInput
+}
+
+export type AlertaPanicoUncheckedUpdateWithoutComentariosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  usuarioId?: Prisma.IntFieldUpdateOperationsInput | number
+  latitud?: Prisma.FloatFieldUpdateOperationsInput | number
+  longitud?: Prisma.FloatFieldUpdateOperationsInput | number
+  estado?: Prisma.EnumEstadoAlertaFieldUpdateOperationsInput | $Enums.EstadoAlerta
+  atendioPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  notas?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recibidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  atendidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
 export type AlertaPanicoCreateManyUsuarioInput = {
   id?: number
   latitud: number
@@ -771,6 +871,7 @@ export type AlertaPanicoUpdateWithoutUsuarioInput = {
   atendidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   atendioPor?: Prisma.UsuarioUpdateOneWithoutAlertasAtendidasNestedInput
+  comentarios?: Prisma.ComentarioAlertaUpdateManyWithoutAlertaNestedInput
 }
 
 export type AlertaPanicoUncheckedUpdateWithoutUsuarioInput = {
@@ -784,6 +885,7 @@ export type AlertaPanicoUncheckedUpdateWithoutUsuarioInput = {
   recibidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   atendidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  comentarios?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutAlertaNestedInput
 }
 
 export type AlertaPanicoUncheckedUpdateManyWithoutUsuarioInput = {
@@ -809,6 +911,7 @@ export type AlertaPanicoUpdateWithoutAtendioPorInput = {
   atendidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutAlertasPanicoNestedInput
+  comentarios?: Prisma.ComentarioAlertaUpdateManyWithoutAlertaNestedInput
 }
 
 export type AlertaPanicoUncheckedUpdateWithoutAtendioPorInput = {
@@ -822,6 +925,7 @@ export type AlertaPanicoUncheckedUpdateWithoutAtendioPorInput = {
   recibidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   atendidoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cerradoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  comentarios?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutAlertaNestedInput
 }
 
 export type AlertaPanicoUncheckedUpdateManyWithoutAtendioPorInput = {
@@ -838,6 +942,35 @@ export type AlertaPanicoUncheckedUpdateManyWithoutAtendioPorInput = {
 }
 
 
+/**
+ * Count Type AlertaPanicoCountOutputType
+ */
+
+export type AlertaPanicoCountOutputType = {
+  comentarios: number
+}
+
+export type AlertaPanicoCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  comentarios?: boolean | AlertaPanicoCountOutputTypeCountComentariosArgs
+}
+
+/**
+ * AlertaPanicoCountOutputType without action
+ */
+export type AlertaPanicoCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AlertaPanicoCountOutputType
+   */
+  select?: Prisma.AlertaPanicoCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * AlertaPanicoCountOutputType without action
+ */
+export type AlertaPanicoCountOutputTypeCountComentariosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ComentarioAlertaWhereInput
+}
+
 
 export type AlertaPanicoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -853,6 +986,8 @@ export type AlertaPanicoSelect<ExtArgs extends runtime.Types.Extensions.Internal
   cerradoAt?: boolean
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   atendioPor?: boolean | Prisma.AlertaPanico$atendioPorArgs<ExtArgs>
+  comentarios?: boolean | Prisma.AlertaPanico$comentariosArgs<ExtArgs>
+  _count?: boolean | Prisma.AlertaPanicoCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["alertaPanico"]>
 
 export type AlertaPanicoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -905,6 +1040,8 @@ export type AlertaPanicoOmit<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type AlertaPanicoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   atendioPor?: boolean | Prisma.AlertaPanico$atendioPorArgs<ExtArgs>
+  comentarios?: boolean | Prisma.AlertaPanico$comentariosArgs<ExtArgs>
+  _count?: boolean | Prisma.AlertaPanicoCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AlertaPanicoIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -920,6 +1057,7 @@ export type $AlertaPanicoPayload<ExtArgs extends runtime.Types.Extensions.Intern
   objects: {
     usuario: Prisma.$UsuarioPayload<ExtArgs>
     atendioPor: Prisma.$UsuarioPayload<ExtArgs> | null
+    comentarios: Prisma.$ComentarioAlertaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1329,6 +1467,7 @@ export interface Prisma__AlertaPanicoClient<T, Null = never, ExtArgs extends run
   readonly [Symbol.toStringTag]: "PrismaPromise"
   usuario<T extends Prisma.UsuarioDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UsuarioDefaultArgs<ExtArgs>>): Prisma.Prisma__UsuarioClient<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   atendioPor<T extends Prisma.AlertaPanico$atendioPorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AlertaPanico$atendioPorArgs<ExtArgs>>): Prisma.Prisma__UsuarioClient<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  comentarios<T extends Prisma.AlertaPanico$comentariosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AlertaPanico$comentariosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ComentarioAlertaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1781,6 +1920,30 @@ export type AlertaPanico$atendioPorArgs<ExtArgs extends runtime.Types.Extensions
    */
   include?: Prisma.UsuarioInclude<ExtArgs> | null
   where?: Prisma.UsuarioWhereInput
+}
+
+/**
+ * AlertaPanico.comentarios
+ */
+export type AlertaPanico$comentariosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ComentarioAlerta
+   */
+  select?: Prisma.ComentarioAlertaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ComentarioAlerta
+   */
+  omit?: Prisma.ComentarioAlertaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ComentarioAlertaInclude<ExtArgs> | null
+  where?: Prisma.ComentarioAlertaWhereInput
+  orderBy?: Prisma.ComentarioAlertaOrderByWithRelationInput | Prisma.ComentarioAlertaOrderByWithRelationInput[]
+  cursor?: Prisma.ComentarioAlertaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ComentarioAlertaScalarFieldEnum | Prisma.ComentarioAlertaScalarFieldEnum[]
 }
 
 /**

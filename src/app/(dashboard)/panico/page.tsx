@@ -49,7 +49,15 @@ export default async function PanicoPage() {
         usuarioId: parseInt(session.user.id!),
         estado: { in: ["ENVIADO", "RECIBIDO", "EN_ATENCION"] },
       },
-      include: { atendioPor: { select: { nombre: true } } },
+      include: {
+        atendioPor: { select: { nombre: true } },
+        comentarios: {
+          include: {
+            usuario: { select: { id: true, nombre: true, rol: true } },
+          },
+          orderBy: { createdAt: "asc" },
+        },
+      },
       orderBy: { createdAt: "desc" },
     });
 
@@ -61,8 +69,13 @@ export default async function PanicoPage() {
                 id: alertaActiva.id,
                 estado: alertaActiva.estado,
                 createdAt: alertaActiva.createdAt.toISOString(),
-                notas: alertaActiva.notas,
                 atendioPor: alertaActiva.atendioPor,
+                comentarios: alertaActiva.comentarios.map((c) => ({
+                  id: c.id,
+                  texto: c.texto,
+                  createdAt: c.createdAt.toISOString(),
+                  usuario: c.usuario,
+                })),
               }
             : null
         }
@@ -85,6 +98,12 @@ export default async function PanicoPage() {
           },
         },
         atendioPor: { select: { nombre: true } },
+        comentarios: {
+          include: {
+            usuario: { select: { id: true, nombre: true, rol: true } },
+          },
+          orderBy: { createdAt: "asc" },
+        },
       },
       orderBy: { createdAt: "asc" }, // las más antiguas primero (más urgentes)
     }),
@@ -211,23 +230,16 @@ export default async function PanicoPage() {
                   </p>
                 )}
 
-                {/* Notas actuales */}
-                {a.notas && (
-                  <div className="bg-white border border-blue-100 rounded-xl px-3 py-2">
-                    <p className="text-xs text-gray-400 font-medium">
-                      Mensaje enviado al vecino:
-                    </p>
-                    <p className="text-sm text-gray-700 italic mt-0.5">
-                      "{a.notas}"
-                    </p>
-                  </div>
-                )}
-
                 {/* Acciones */}
                 <AccionesAlerta
                   alertaId={a.id}
                   estadoActual={a.estado}
-                  notasActuales={a.notas}
+                  comentarios={a.comentarios.map((c) => ({
+                    id: c.id,
+                    texto: c.texto,
+                    createdAt: c.createdAt.toISOString(),
+                    usuario: c.usuario,
+                  }))}
                 />
               </div>
             );

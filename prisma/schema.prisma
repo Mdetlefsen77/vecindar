@@ -81,6 +81,7 @@ model Usuario {
   alertasAtendidas    AlertaPanico[]      @relation("AtiendeAlertas")
   requerimientos      Requerimiento[]
   comentariosReq      ComentarioReq[]
+  comentariosAlertas  ComentarioAlerta[]
   mascotasPerdidas    MascotaPerdida[]
   
   pushSubscriptions   PushSubscription[]
@@ -184,13 +185,27 @@ model AlertaPanico {
   estado          EstadoAlerta  @default(ENVIADO)
   atendioPorId    Int?
   atendioPor      Usuario?      @relation("AtiendeAlertas", fields: [atendioPorId], references: [id])
-  notas           String?       // Notas del que atiende
+  notas           String?       // Nota rápida del que atiende (legado, ver comentarios)
+  comentarios     ComentarioAlerta[]
   createdAt       DateTime      @default(now())
   recibidoAt      DateTime?
   atendidoAt      DateTime?
   cerradoAt       DateTime?
-  
+
   @@map("alertas_panico")
+}
+
+// Conversación entre el vecino que activó la alerta y admin/seguridad
+model ComentarioAlerta {
+  id         Int          @id @default(autoincrement())
+  alertaId   Int
+  alerta     AlertaPanico @relation(fields: [alertaId], references: [id], onDelete: Cascade)
+  usuarioId  Int
+  usuario    Usuario      @relation(fields: [usuarioId], references: [id])
+  texto      String
+  createdAt  DateTime     @default(now())
+
+  @@map("comentarios_alertas")
 }
 
 enum EstadoAlerta {
