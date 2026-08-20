@@ -4,6 +4,7 @@ import Sidebar from "@/components/ui/Sidebar";
 import BottomNav from "@/components/ui/BottomNav";
 import MobileHeader from "@/components/ui/MobileHeader";
 import InstallPrompt from "@/components/ui/InstallPrompt";
+import SosAlertListener from "@/components/ui/SosAlertListener";
 
 export default async function DashboardLayout({
   children,
@@ -44,6 +45,10 @@ export default async function DashboardLayout({
       <BottomNav />
 
       <InstallPrompt />
+
+      {(userRole === "ADMIN" || userRole === "SEGURIDAD") && (
+        <SosAlertListener />
+      )}
     </div>
   );
 }

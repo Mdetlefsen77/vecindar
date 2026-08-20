@@ -104,6 +104,7 @@ export async function POST(req: NextRequest) {
     url: "/panico",
     tag: `sos-${alerta.id}`,
     requireInteraction: true,
+    tipo: "SOS",
   });
 
   return NextResponse.json(alerta, { status: 201 });

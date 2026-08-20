@@ -35,7 +35,21 @@ self.addEventListener("push", (event) => {
     ],
   };
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  event.waitUntil(
+    Promise.all([
+      self.registration.showNotification(title, options),
+      // Avisarle a las pestañas ya abiertas (el push llega igual aunque la
+      // app esté en primer plano) — la pestaña decide si amerita la alarma
+      // sonora (ver SosAlertListener), acá solo se reenvía el payload tal cual.
+      self.clients
+        .matchAll({ type: "window", includeUncontrolled: true })
+        .then((clientList) => {
+          for (const client of clientList) {
+            client.postMessage({ type: "PUSH_RECIBIDO", payload: data });
+          }
+        }),
+    ]),
+  );
 });
 
 self.addEventListener("notificationclick", (event) => {

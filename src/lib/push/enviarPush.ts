@@ -9,6 +9,8 @@ interface PushPayload {
     tag?: string;
     /** Notificación persistente que no se auto-descarta (usar solo para SOS). */
     requireInteraction?: boolean;
+    /** "SOS" dispara el popup + alarma sonora en la pestaña abierta (ver SosAlertListener). */
+    tipo?: "SOS";
 }
 
 type Suscripcion = { endpoint: string; p256dh: string; auth: string };
@@ -69,6 +71,18 @@ async function enviarASuscripciones(
 export async function enviarPushAdmins(payload: PushPayload): Promise<void> {
     const suscripciones = await prisma.pushSubscription.findMany({
         where: { usuario: { rol: { in: ["ADMIN", "SEGURIDAD"] } } },
+    });
+    await enviarASuscripciones(suscripciones, payload);
+}
+
+/**
+ * Envía una notificación push solo a los ADMIN suscritos (ej: nuevo registro
+ * pendiente de aprobación — a diferencia de enviarPushAdmins, SEGURIDAD no
+ * gestiona usuarios, así que no la recibe).
+ */
+export async function enviarPushSoloAdmin(payload: PushPayload): Promise<void> {
+    const suscripciones = await prisma.pushSubscription.findMany({
+        where: { usuario: { rol: "ADMIN" } },
     });
     await enviarASuscripciones(suscripciones, payload);
 }

@@ -3,6 +3,7 @@ import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
 import { type Rol } from "@/generated/enums";
+import { enviarPushSoloAdmin } from "@/lib/push/enviarPush";
 
 // Máximo de cuentas de usuario por lote (ej: madre y padre en la misma casa)
 const MAX_USUARIOS_POR_LOTE = 2;
@@ -137,6 +138,13 @@ export async function POST(req: NextRequest) {
           },
         },
       },
+    });
+
+    void enviarPushSoloAdmin({
+      title: "👤 Nuevo registro pendiente",
+      body: `${nuevoUsuario.nombre} solicitó una cuenta — MZ ${nuevoUsuario.lote.manzana.numero} Lote ${nuevoUsuario.lote.numero}`,
+      url: "/admin/usuarios?verificado=false",
+      tag: `nuevo-usuario-${nuevoUsuario.id}`,
     });
 
     return NextResponse.json(
