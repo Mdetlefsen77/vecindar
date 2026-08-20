@@ -392,6 +392,7 @@ export const ModelName = {
   Incidente: 'Incidente',
   ConfigSLA: 'ConfigSLA',
   AlertaPanico: 'AlertaPanico',
+  ComentarioAlerta: 'ComentarioAlerta',
   PushSubscription: 'PushSubscription',
   Requerimiento: 'Requerimiento',
   ComentarioReq: 'ComentarioReq',
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1007,6 +1008,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ComentarioAlerta: {
+      payload: Prisma.$ComentarioAlertaPayload<ExtArgs>
+      fields: Prisma.ComentarioAlertaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ComentarioAlertaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ComentarioAlertaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>
+        }
+        findFirst: {
+          args: Prisma.ComentarioAlertaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ComentarioAlertaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>
+        }
+        findMany: {
+          args: Prisma.ComentarioAlertaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>[]
+        }
+        create: {
+          args: Prisma.ComentarioAlertaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>
+        }
+        createMany: {
+          args: Prisma.ComentarioAlertaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ComentarioAlertaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>[]
+        }
+        delete: {
+          args: Prisma.ComentarioAlertaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>
+        }
+        update: {
+          args: Prisma.ComentarioAlertaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>
+        }
+        deleteMany: {
+          args: Prisma.ComentarioAlertaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ComentarioAlertaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ComentarioAlertaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>[]
+        }
+        upsert: {
+          args: Prisma.ComentarioAlertaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ComentarioAlertaPayload>
+        }
+        aggregate: {
+          args: Prisma.ComentarioAlertaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateComentarioAlerta>
+        }
+        groupBy: {
+          args: Prisma.ComentarioAlertaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ComentarioAlertaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ComentarioAlertaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ComentarioAlertaCountAggregateOutputType> | number
+        }
+      }
+    }
     PushSubscription: {
       payload: Prisma.$PushSubscriptionPayload<ExtArgs>
       fields: Prisma.PushSubscriptionFieldRefs
@@ -1456,6 +1531,17 @@ export const AlertaPanicoScalarFieldEnum = {
 export type AlertaPanicoScalarFieldEnum = (typeof AlertaPanicoScalarFieldEnum)[keyof typeof AlertaPanicoScalarFieldEnum]
 
 
+export const ComentarioAlertaScalarFieldEnum = {
+  id: 'id',
+  alertaId: 'alertaId',
+  usuarioId: 'usuarioId',
+  texto: 'texto',
+  createdAt: 'createdAt'
+} as const
+
+export type ComentarioAlertaScalarFieldEnum = (typeof ComentarioAlertaScalarFieldEnum)[keyof typeof ComentarioAlertaScalarFieldEnum]
+
+
 export const PushSubscriptionScalarFieldEnum = {
   id: 'id',
   usuarioId: 'usuarioId',
@@ -1833,6 +1919,7 @@ export type GlobalOmitConfig = {
   incidente?: Prisma.IncidenteOmit
   configSLA?: Prisma.ConfigSLAOmit
   alertaPanico?: Prisma.AlertaPanicoOmit
+  comentarioAlerta?: Prisma.ComentarioAlertaOmit
   pushSubscription?: Prisma.PushSubscriptionOmit
   requerimiento?: Prisma.RequerimientoOmit
   comentarioReq?: Prisma.ComentarioReqOmit

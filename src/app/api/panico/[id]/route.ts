@@ -88,6 +88,10 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         },
       },
       atendioPor: { select: { nombre: true } },
+      comentarios: {
+        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        orderBy: { createdAt: "asc" },
+      },
     },
   });
 

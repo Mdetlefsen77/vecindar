@@ -58,6 +58,11 @@ export type ConfigSLA = Prisma.ConfigSLAModel
  */
 export type AlertaPanico = Prisma.AlertaPanicoModel
 /**
+ * Model ComentarioAlerta
+ * 
+ */
+export type ComentarioAlerta = Prisma.ComentarioAlertaModel
+/**
  * Model PushSubscription
  * 
  */

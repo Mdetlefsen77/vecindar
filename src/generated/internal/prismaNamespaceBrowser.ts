@@ -59,6 +59,7 @@ export const ModelName = {
   Incidente: 'Incidente',
   ConfigSLA: 'ConfigSLA',
   AlertaPanico: 'AlertaPanico',
+  ComentarioAlerta: 'ComentarioAlerta',
   PushSubscription: 'PushSubscription',
   Requerimiento: 'Requerimiento',
   ComentarioReq: 'ComentarioReq',
@@ -193,6 +194,17 @@ export const AlertaPanicoScalarFieldEnum = {
 } as const
 
 export type AlertaPanicoScalarFieldEnum = (typeof AlertaPanicoScalarFieldEnum)[keyof typeof AlertaPanicoScalarFieldEnum]
+
+
+export const ComentarioAlertaScalarFieldEnum = {
+  id: 'id',
+  alertaId: 'alertaId',
+  usuarioId: 'usuarioId',
+  texto: 'texto',
+  createdAt: 'createdAt'
+} as const
+
+export type ComentarioAlertaScalarFieldEnum = (typeof ComentarioAlertaScalarFieldEnum)[keyof typeof ComentarioAlertaScalarFieldEnum]
 
 
 export const PushSubscriptionScalarFieldEnum = {
