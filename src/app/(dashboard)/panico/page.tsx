@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import BotonSOS from "./BotonSOS";
 import AccionesAlerta from "./AccionesAlerta";
+import PanicoAutoRefresh from "./PanicoAutoRefresh";
 import { type EstadoAlerta } from "@/generated/enums";
 
 const ESTADO_BADGE: Record<
@@ -127,6 +128,8 @@ export default async function PanicoPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+      <PanicoAutoRefresh />
+
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
