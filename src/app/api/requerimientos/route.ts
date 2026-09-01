@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession } from "@/lib/api/guard";
+import { requireSession, getUserId } from "@/lib/api/guard";
 import { crearRequerimientoSchema } from "@/lib/validation/requerimientos";
 import type { CategoriaReq } from "@/generated/enums";
 
@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
 
   const requerimientos = await prisma.requerimiento.findMany({
     where: {
-      ...(mine ? { usuarioId: parseInt(session.user.id!) } : {}),
+      ...(mine ? { usuarioId: getUserId(session) } : {}),
       ...(estado ? { estado: estado as never } : {}),
       ...(categoria ? { categoria: categoria as CategoriaReq } : {}),
     },
@@ -30,6 +30,7 @@ export async function GET(req: NextRequest) {
         select: {
           id: true,
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -68,7 +69,7 @@ export async function POST(req: NextRequest) {
       descripcion,
       imagenes: imagenes ?? [],
       prioridad: prioridad ?? "MEDIO",
-      usuarioId: parseInt(session.user.id!),
+      usuarioId: getUserId(session),
     },
   });
 

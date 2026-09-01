@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
+import { getUserId } from "@/lib/api/guard";
+import { esGestor, GESTORES_MASCOTAS } from "@/lib/permisos";
 import Link from "next/link";
 import Image from "next/image";
 import AccionesMascota from "./AccionesMascota";
@@ -19,6 +22,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
         select: {
           id: true,
           nombre: true,
+          apellido: true,
           telefono: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
@@ -30,9 +34,8 @@ export default async function DetalleMascotaPage({ params }: Params) {
 
   if (!mascota) notFound();
 
-  const esDuenio = parseInt(session.user.id!) === mascota.usuario.id;
-  const puedeGestionar =
-    session.user.role === "ADMIN" || session.user.role === "REFERENTE_MANZANA";
+  const esDuenio = getUserId(session) === mascota.usuario.id;
+  const puedeGestionar = esGestor(session.user.role, GESTORES_MASCOTAS);
 
   return (
     <div className="max-w-lg mx-auto px-4 py-6 space-y-5">
@@ -138,7 +141,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
           </div>
           <div>
             <p className="text-sm font-medium text-gray-900">
-              {mascota.usuario.nombre}
+              {nombreCompleto(mascota.usuario)}
             </p>
             <p className="text-xs text-gray-400">
               MZ {mascota.usuario.lote.manzana.numero} – Lote{" "}

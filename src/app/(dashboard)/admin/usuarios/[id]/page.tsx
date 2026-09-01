@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
 import Link from "next/link";
 import AccionesUsuario from "./AccionesUsuario";
 
@@ -36,6 +37,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
     select: {
       id: true,
       nombre: true,
+      apellido: true,
       email: true,
       telefono: true,
       rol: true,
@@ -94,13 +96,15 @@ export default async function DetalleUsuarioPage({ params }: Params) {
           Usuarios
         </Link>
         <span>›</span>
-        <span className="text-gray-700">{usuario.nombre}</span>
+        <span className="text-gray-700">{nombreCompleto(usuario)}</span>
       </div>
 
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{usuario.nombre}</h1>
+          <h1 className="text-2xl font-bold text-gray-900">
+            {nombreCompleto(usuario)}
+          </h1>
           <p className="text-gray-500 text-sm">{usuario.email}</p>
           {usuario.telefono && (
             <p className="text-gray-500 text-sm">{usuario.telefono}</p>

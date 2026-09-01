@@ -13,8 +13,8 @@ import { hash } from "bcryptjs";
 import { prisma } from "../lib/prisma/client";
 
 const VECINOS = [
-  { email: "vecino1@vecindar.local", nombre: "Vecino Uno" },
-  { email: "vecino2@vecindar.local", nombre: "Vecino Dos" },
+  { email: "vecino1@vecindar.local", nombre: "Vecino", apellido: "Uno" },
+  { email: "vecino2@vecindar.local", nombre: "Vecino", apellido: "Dos" },
 ];
 const PASSWORD = "vecino123";
 
@@ -23,7 +23,7 @@ async function main() {
 
   const passwordHash = await hash(PASSWORD, 10);
 
-  for (const { email, nombre } of VECINOS) {
+  for (const { email, nombre, apellido } of VECINOS) {
     // Cada Usuario necesita un lote propio (relación 1 a 1) — buscamos
     // uno que todavía no tenga usuario asignado.
     const existente = await prisma.usuario.findUnique({ where: { email } });
@@ -49,6 +49,7 @@ async function main() {
         email,
         password: passwordHash,
         nombre,
+        apellido,
         loteId,
         verificado: true,
         rol: "VECINO",
@@ -56,6 +57,7 @@ async function main() {
       update: {
         password: passwordHash,
         nombre,
+        apellido,
         verificado: true,
         rol: "VECINO",
       },

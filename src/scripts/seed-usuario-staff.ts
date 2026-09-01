@@ -13,11 +13,17 @@ import { hash } from "bcryptjs";
 import { prisma } from "../lib/prisma/client";
 import type { Rol } from "../generated/enums";
 
-const STAFF: { email: string; nombre: string; rol: Rol }[] = [
-  { email: "seguridad@vecindar.local", nombre: "Seguridad Local", rol: "SEGURIDAD" },
+const STAFF: { email: string; nombre: string; apellido: string; rol: Rol }[] = [
+  {
+    email: "seguridad@vecindar.local",
+    nombre: "Seguridad",
+    apellido: "Local",
+    rol: "SEGURIDAD",
+  },
   {
     email: "referente@vecindar.local",
-    nombre: "Referente de Manzana",
+    nombre: "Referente",
+    apellido: "de Manzana",
     rol: "REFERENTE_MANZANA",
   },
 ];
@@ -28,7 +34,7 @@ async function main() {
 
   const passwordHash = await hash(PASSWORD, 10);
 
-  for (const { email, nombre, rol } of STAFF) {
+  for (const { email, nombre, apellido, rol } of STAFF) {
     const existente = await prisma.usuario.findUnique({ where: { email } });
 
     const loteId =
@@ -48,8 +54,22 @@ async function main() {
 
     const usuario = await prisma.usuario.upsert({
       where: { email },
-      create: { email, password: passwordHash, nombre, loteId, verificado: true, rol },
-      update: { password: passwordHash, nombre, verificado: true, rol },
+      create: {
+        email,
+        password: passwordHash,
+        nombre,
+        apellido,
+        loteId,
+        verificado: true,
+        rol,
+      },
+      update: {
+        password: passwordHash,
+        nombre,
+        apellido,
+        verificado: true,
+        rol,
+      },
     });
 
     console.log(`✅ ${usuario.email} (${usuario.rol}) — lote #${loteId}`);

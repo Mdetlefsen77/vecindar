@@ -127,6 +127,7 @@ export const UsuarioScalarFieldEnum = {
   email: 'email',
   password: 'password',
   nombre: 'nombre',
+  apellido: 'apellido',
   telefono: 'telefono',
   loteId: 'loteId',
   verificado: 'verificado',

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession } from "@/lib/api/guard";
+import { requireSession, getUserId } from "@/lib/api/guard";
+import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import { crearComentarioAlertaSchema } from "@/lib/validation/panico";
+import { nombreCompleto } from "@/lib/usuarios";
 import { enviarPushAdmins, enviarPushUsuario } from "@/lib/push/enviarPush";
 
 // ── POST /api/panico/[id]/comentarios ────────────────────────────────────────
@@ -36,9 +38,8 @@ export async function POST(
     );
   }
 
-  const usuarioId = parseInt(session.user.id!);
-  const esAdmin =
-    session.user.role === "ADMIN" || session.user.role === "SEGURIDAD";
+  const usuarioId = getUserId(session);
+  const esAdmin = esGestor(session.user.role, GESTORES_PANICO);
   const esDuenio = alerta.usuarioId === usuarioId;
 
   if (!esAdmin && !esDuenio) {
@@ -52,7 +53,9 @@ export async function POST(
       texto: parsed.data.texto,
     },
     include: {
-      usuario: { select: { id: true, nombre: true, rol: true } },
+      usuario: {
+        select: { id: true, nombre: true, apellido: true, rol: true },
+      },
     },
   });
 
@@ -67,7 +70,7 @@ export async function POST(
   } else {
     void enviarPushAdmins({
       title: "💬 Respuesta en alerta SOS",
-      body: `${comentario.usuario.nombre}: ${parsed.data.texto.slice(0, 120)}`,
+      body: `${nombreCompleto(comentario.usuario)}: ${parsed.data.texto.slice(0, 120)}`,
       url: "/panico",
       tag: `sos-${id}`,
     });

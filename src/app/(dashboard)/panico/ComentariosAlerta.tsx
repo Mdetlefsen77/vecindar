@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { nombreCompleto } from "@/lib/usuarios";
 
 export interface ComentarioAlertaData {
   id: number;
   texto: string;
   createdAt: string;
-  usuario: { id: number; nombre: string; rol: string };
+  usuario: { id: number; nombre: string; apellido: string; rol: string };
 }
 
 interface Props {
@@ -66,7 +67,8 @@ export default function ComentariosAlerta({
       {comentarios.length > 0 && (
         <div className="space-y-2">
           {comentarios.map((c) => {
-            const esStaff = c.usuario.rol === "ADMIN" || c.usuario.rol === "SEGURIDAD";
+            const esStaff =
+              c.usuario.rol === "ADMIN" || c.usuario.rol === "SEGURIDAD";
             return (
               <div
                 key={c.id}
@@ -82,7 +84,7 @@ export default function ComentariosAlerta({
                 <p
                   className={`text-xs mt-0.5 ${esStaff ? "text-blue-400" : "text-gray-400"}`}
                 >
-                  — {c.usuario.nombre}
+                  — {nombreCompleto(c.usuario)}
                   {esStaff ? " (equipo)" : ""} ·{" "}
                   {new Date(c.createdAt).toLocaleTimeString("es-AR", {
                     hour: "2-digit",

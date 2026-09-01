@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
+import { GESTORES_USUARIOS } from "@/lib/permisos";
+import { rateLimit, clientIp } from "@/lib/api/rateLimit";
+import { registroUsuarioSchema } from "@/lib/validation/usuarios";
+import { nombreCompleto } from "@/lib/usuarios";
 import { type Rol } from "@/generated/enums";
 import { enviarPushSoloAdmin } from "@/lib/push/enviarPush";
 
@@ -10,7 +14,7 @@ const MAX_USUARIOS_POR_LOTE = 2;
 
 // GET /api/usuarios — solo ADMIN
 export async function GET(req: NextRequest) {
-  const guard = await requireRoleSession(["ADMIN"]);
+  const guard = await requireRoleSession(GESTORES_USUARIOS);
   if (guard.response) return guard.response;
 
   const { searchParams } = new URL(req.url);
@@ -26,6 +30,7 @@ export async function GET(req: NextRequest) {
         ? {
             OR: [
               { nombre: { contains: q, mode: "insensitive" } },
+              { apellido: { contains: q, mode: "insensitive" } },
               { email: { contains: q, mode: "insensitive" } },
             ],
           }
@@ -34,6 +39,7 @@ export async function GET(req: NextRequest) {
     select: {
       id: true,
       nombre: true,
+      apellido: true,
       email: true,
       telefono: true,
       rol: true,
@@ -60,23 +66,37 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
-    const { nombre, email, password, telefono, loteId } = body;
-
-    // Validaciones básicas
-    if (!nombre || !email || !password || !loteId) {
+    // Registro público: limitar intentos por IP para frenar altas masivas.
+    if (!rateLimit(`registro:${clientIp(req)}`, 5, 60_000)) {
       return NextResponse.json(
-        { error: "Nombre, email, contraseña y lote son obligatorios." },
+        { error: "Demasiados intentos. Esperá un minuto y volvé a probar." },
+        { status: 429 },
+      );
+    }
+
+    const body = await req.json().catch(() => null);
+    const parsed = registroUsuarioSchema.safeParse(body);
+
+    if (!parsed.success) {
+      const badField = parsed.error.issues[0]?.path[0];
+      const mensajes: Record<string, string> = {
+        email: "Ingresá un email válido.",
+        password: "La contraseña debe tener entre 6 y 100 caracteres.",
+        nombre: "El nombre debe tener al menos 2 caracteres.",
+        apellido: "El apellido debe tener al menos 2 caracteres.",
+        loteId: "Seleccioná un lote válido.",
+      };
+      return NextResponse.json(
+        {
+          error:
+            mensajes[String(badField)] ??
+            "Nombre, apellido, email, contraseña y lote son obligatorios.",
+        },
         { status: 400 },
       );
     }
 
-    if (password.length < 6) {
-      return NextResponse.json(
-        { error: "La contraseña debe tener al menos 6 caracteres." },
-        { status: 400 },
-      );
-    }
+    const { nombre, apellido, email, password, telefono, loteId } = parsed.data;
 
     // Verificar que el email no esté registrado
     const emailExistente = await prisma.usuario.findUnique({
@@ -91,7 +111,7 @@ export async function POST(req: NextRequest) {
 
     // Verificar que el lote exista y todavía tenga lugar disponible
     const lote = await prisma.lote.findUnique({
-      where: { id: parseInt(loteId) },
+      where: { id: loteId },
       include: { usuarios: { select: { id: true } } },
     });
 
@@ -118,16 +138,18 @@ export async function POST(req: NextRequest) {
     const nuevoUsuario = await prisma.usuario.create({
       data: {
         nombre,
+        apellido,
         email,
         password: hashedPassword,
-        telefono: telefono || null,
-        loteId: parseInt(loteId),
+        telefono: telefono,
+        loteId: loteId,
         verificado: false,
         rol: "VECINO",
       },
       select: {
         id: true,
         nombre: true,
+        apellido: true,
         email: true,
         verificado: true,
         rol: true,
@@ -142,7 +164,7 @@ export async function POST(req: NextRequest) {
 
     void enviarPushSoloAdmin({
       title: "👤 Nuevo registro pendiente",
-      body: `${nuevoUsuario.nombre} solicitó una cuenta — MZ ${nuevoUsuario.lote.manzana.numero} Lote ${nuevoUsuario.lote.numero}`,
+      body: `${nombreCompleto(nuevoUsuario)} solicitó una cuenta — MZ ${nuevoUsuario.lote.manzana.numero} Lote ${nuevoUsuario.lote.numero}`,
       url: "/admin/usuarios?verificado=false",
       tag: `nuevo-usuario-${nuevoUsuario.id}`,
     });

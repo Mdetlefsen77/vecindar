@@ -41,6 +41,7 @@ export type UsuarioMinAggregateOutputType = {
   email: string | null
   password: string | null
   nombre: string | null
+  apellido: string | null
   telefono: string | null
   loteId: number | null
   verificado: boolean | null
@@ -54,6 +55,7 @@ export type UsuarioMaxAggregateOutputType = {
   email: string | null
   password: string | null
   nombre: string | null
+  apellido: string | null
   telefono: string | null
   loteId: number | null
   verificado: boolean | null
@@ -67,6 +69,7 @@ export type UsuarioCountAggregateOutputType = {
   email: number
   password: number
   nombre: number
+  apellido: number
   telefono: number
   loteId: number
   verificado: number
@@ -92,6 +95,7 @@ export type UsuarioMinAggregateInputType = {
   email?: true
   password?: true
   nombre?: true
+  apellido?: true
   telefono?: true
   loteId?: true
   verificado?: true
@@ -105,6 +109,7 @@ export type UsuarioMaxAggregateInputType = {
   email?: true
   password?: true
   nombre?: true
+  apellido?: true
   telefono?: true
   loteId?: true
   verificado?: true
@@ -118,6 +123,7 @@ export type UsuarioCountAggregateInputType = {
   email?: true
   password?: true
   nombre?: true
+  apellido?: true
   telefono?: true
   loteId?: true
   verificado?: true
@@ -218,6 +224,7 @@ export type UsuarioGroupByOutputType = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono: string | null
   loteId: number
   verificado: boolean
@@ -254,6 +261,7 @@ export type UsuarioWhereInput = {
   email?: Prisma.StringFilter<"Usuario"> | string
   password?: Prisma.StringFilter<"Usuario"> | string
   nombre?: Prisma.StringFilter<"Usuario"> | string
+  apellido?: Prisma.StringFilter<"Usuario"> | string
   telefono?: Prisma.StringNullableFilter<"Usuario"> | string | null
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
@@ -277,6 +285,7 @@ export type UsuarioOrderByWithRelationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
+  apellido?: Prisma.SortOrder
   telefono?: Prisma.SortOrderInput | Prisma.SortOrder
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
@@ -303,6 +312,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.UsuarioWhereInput | Prisma.UsuarioWhereInput[]
   password?: Prisma.StringFilter<"Usuario"> | string
   nombre?: Prisma.StringFilter<"Usuario"> | string
+  apellido?: Prisma.StringFilter<"Usuario"> | string
   telefono?: Prisma.StringNullableFilter<"Usuario"> | string | null
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
@@ -326,6 +336,7 @@ export type UsuarioOrderByWithAggregationInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
+  apellido?: Prisma.SortOrder
   telefono?: Prisma.SortOrderInput | Prisma.SortOrder
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
@@ -347,6 +358,7 @@ export type UsuarioScalarWhereWithAggregatesInput = {
   email?: Prisma.StringWithAggregatesFilter<"Usuario"> | string
   password?: Prisma.StringWithAggregatesFilter<"Usuario"> | string
   nombre?: Prisma.StringWithAggregatesFilter<"Usuario"> | string
+  apellido?: Prisma.StringWithAggregatesFilter<"Usuario"> | string
   telefono?: Prisma.StringNullableWithAggregatesFilter<"Usuario"> | string | null
   loteId?: Prisma.IntWithAggregatesFilter<"Usuario"> | number
   verificado?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
@@ -359,6 +371,7 @@ export type UsuarioCreateInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -381,6 +394,7 @@ export type UsuarioUncheckedCreateInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -402,6 +416,7 @@ export type UsuarioUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -424,6 +439,7 @@ export type UsuarioUncheckedUpdateInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -446,6 +462,7 @@ export type UsuarioCreateManyInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -458,6 +475,7 @@ export type UsuarioUpdateManyMutationInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -470,6 +488,7 @@ export type UsuarioUncheckedUpdateManyInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -493,6 +512,7 @@ export type UsuarioCountOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
+  apellido?: Prisma.SortOrder
   telefono?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
@@ -511,6 +531,7 @@ export type UsuarioMaxOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
+  apellido?: Prisma.SortOrder
   telefono?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
@@ -524,6 +545,7 @@ export type UsuarioMinOrderByAggregateInput = {
   email?: Prisma.SortOrder
   password?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
+  apellido?: Prisma.SortOrder
   telefono?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
@@ -725,6 +747,7 @@ export type UsuarioCreateWithoutLoteInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -746,6 +769,7 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -796,6 +820,7 @@ export type UsuarioScalarWhereInput = {
   email?: Prisma.StringFilter<"Usuario"> | string
   password?: Prisma.StringFilter<"Usuario"> | string
   nombre?: Prisma.StringFilter<"Usuario"> | string
+  apellido?: Prisma.StringFilter<"Usuario"> | string
   telefono?: Prisma.StringNullableFilter<"Usuario"> | string | null
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
@@ -808,6 +833,7 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -829,6 +855,7 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -865,6 +892,7 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -886,6 +914,7 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -906,6 +935,7 @@ export type UsuarioCreateWithoutIncidentesInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -927,6 +957,7 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -963,6 +994,7 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -984,6 +1016,7 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1004,6 +1037,7 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1025,6 +1059,7 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -1050,6 +1085,7 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1071,6 +1107,7 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -1107,6 +1144,7 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1128,6 +1166,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1159,6 +1198,7 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1180,6 +1220,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1200,6 +1241,7 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1221,6 +1263,7 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -1257,6 +1300,7 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1278,6 +1322,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1298,6 +1343,7 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1319,6 +1365,7 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -1355,6 +1402,7 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1376,6 +1424,7 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1396,6 +1445,7 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1417,6 +1467,7 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -1453,6 +1504,7 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1474,6 +1526,7 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1494,6 +1547,7 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1515,6 +1569,7 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -1551,6 +1606,7 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1572,6 +1628,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1592,6 +1649,7 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1613,6 +1671,7 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   loteId: number
   verificado?: boolean
@@ -1649,6 +1708,7 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1670,6 +1730,7 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1691,6 +1752,7 @@ export type UsuarioCreateManyLoteInput = {
   email: string
   password: string
   nombre: string
+  apellido: string
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
@@ -1702,6 +1764,7 @@ export type UsuarioUpdateWithoutLoteInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1723,6 +1786,7 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1744,6 +1808,7 @@ export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
@@ -1859,6 +1924,7 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   email?: boolean
   password?: boolean
   nombre?: boolean
+  apellido?: boolean
   telefono?: boolean
   loteId?: boolean
   verificado?: boolean
@@ -1883,6 +1949,7 @@ export type UsuarioSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   email?: boolean
   password?: boolean
   nombre?: boolean
+  apellido?: boolean
   telefono?: boolean
   loteId?: boolean
   verificado?: boolean
@@ -1897,6 +1964,7 @@ export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   email?: boolean
   password?: boolean
   nombre?: boolean
+  apellido?: boolean
   telefono?: boolean
   loteId?: boolean
   verificado?: boolean
@@ -1911,6 +1979,7 @@ export type UsuarioSelectScalar = {
   email?: boolean
   password?: boolean
   nombre?: boolean
+  apellido?: boolean
   telefono?: boolean
   loteId?: boolean
   verificado?: boolean
@@ -1919,7 +1988,7 @@ export type UsuarioSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "telefono" | "loteId" | "verificado" | "rol" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
+export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
 export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
   incidentes?: boolean | Prisma.Usuario$incidentesArgs<ExtArgs>
@@ -1959,6 +2028,7 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     email: string
     password: string
     nombre: string
+    apellido: string
     telefono: string | null
     loteId: number
     verificado: boolean
@@ -2402,6 +2472,7 @@ export interface UsuarioFieldRefs {
   readonly email: Prisma.FieldRef<"Usuario", 'String'>
   readonly password: Prisma.FieldRef<"Usuario", 'String'>
   readonly nombre: Prisma.FieldRef<"Usuario", 'String'>
+  readonly apellido: Prisma.FieldRef<"Usuario", 'String'>
   readonly telefono: Prisma.FieldRef<"Usuario", 'String'>
   readonly loteId: Prisma.FieldRef<"Usuario", 'Int'>
   readonly verificado: Prisma.FieldRef<"Usuario", 'Boolean'>

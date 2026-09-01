@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { hash } from "bcryptjs";
 import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
+import { GESTORES_USUARIOS } from "@/lib/permisos";
 import { actualizarUsuarioSchema } from "@/lib/validation/usuarios";
 
 type Params = { params: Promise<{ id: string }> };
 
 // GET /api/usuarios/[id] — solo ADMIN
 export async function GET(_req: NextRequest, { params }: Params) {
-  const guard = await requireRoleSession(["ADMIN"]);
+  const guard = await requireRoleSession(GESTORES_USUARIOS);
   if (guard.response) return guard.response;
 
   const { id } = await params;
@@ -17,6 +18,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
     select: {
       id: true,
       nombre: true,
+      apellido: true,
       email: true,
       telefono: true,
       rol: true,
@@ -66,7 +68,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 // PATCH /api/usuarios/[id] — solo ADMIN
 // Body: { rol?, verificado?, resetPassword? }
 export async function PATCH(req: NextRequest, { params }: Params) {
-  const guard = await requireRoleSession(["ADMIN"]);
+  const guard = await requireRoleSession(GESTORES_USUARIOS);
   if (guard.response) return guard.response;
 
   const { id } = await params;
@@ -110,6 +112,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     select: {
       id: true,
       nombre: true,
+      apellido: true,
       email: true,
       rol: true,
       verificado: true,

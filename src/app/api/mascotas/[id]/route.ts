@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession } from "@/lib/api/guard";
+import { requireSession, getUserId } from "@/lib/api/guard";
+import { esGestor, GESTORES_MASCOTAS } from "@/lib/permisos";
 import { actualizarMascotaSchema } from "@/lib/validation/mascotas";
 
 type Params = { params: Promise<{ id: string }> };
@@ -18,6 +19,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
         select: {
           id: true,
           nombre: true,
+          apellido: true,
           telefono: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
@@ -52,9 +54,8 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: "No encontrado." }, { status: 404 });
   }
 
-  const puedeGestionar =
-    session.user.role === "ADMIN" || session.user.role === "REFERENTE_MANZANA";
-  const esDuenio = mascota.usuarioId === parseInt(session.user.id!);
+  const puedeGestionar = esGestor(session.user.role, GESTORES_MASCOTAS);
+  const esDuenio = mascota.usuarioId === getUserId(session);
 
   if (!puedeGestionar && !esDuenio) {
     return NextResponse.json({ error: "Sin permisos." }, { status: 403 });

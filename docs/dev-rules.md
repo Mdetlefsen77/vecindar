@@ -53,16 +53,31 @@ if (!session?.user) redirect("/login");
 if (session.user.role !== "ADMIN") redirect("/");
 ```
 
-**Patrón en API Routes:**
+**Patrón en API Routes:** usar los helpers de `@/lib/api/guard`
+(`requireSession`, `requireRole`, `requireRoleSession`, `getUserId`):
 
 ```ts
-const session = await auth();
-if (!session?.user || session.user.role !== "ADMIN") {
-  return NextResponse.json({ error: "Sin permisos." }, { status: 403 });
-}
+const guard = await requireRoleSession(GESTORES_USUARIOS);
+if (guard.response) return guard.response;
+const { session } = guard;
 ```
 
 **Regla:** nunca confiar en el cliente para ocultar rutas. El guard siempre va en el servidor.
+
+### Matriz de roles — `@/lib/permisos.ts`
+
+Los conjuntos de roles que pueden gestionar cada módulo viven en un solo lugar
+(`GESTORES_INCIDENTES`, `GESTORES_REQUERIMIENTOS`, `GESTORES_MASCOTAS`,
+`GESTORES_PANICO`, `GESTORES_USUARIOS`). Chequear con `esGestor(rol, CONJUNTO)`.
+No repetir `role === "ADMIN" || role === "SEGURIDAD"` inline.
+
+### Proxy (edge) — `src/proxy.ts`
+
+Primera barrera de auth antes de renderizar: verifica la firma del JWT de sesión
+con `getToken` y redirige a `/login` las rutas protegidas sin token. Es defensa
+en profundidad — la verificación de rol y datos finos sigue en cada Server
+Component / route handler. Convención de Next 16: el archivo se llama `proxy.ts`
+(antes `middleware.ts`) y exporta `proxy` + `config.matcher`.
 
 ---
 

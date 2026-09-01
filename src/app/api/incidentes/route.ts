@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession } from "@/lib/api/guard";
+import { requireSession, getUserId } from "@/lib/api/guard";
 import { crearIncidenteSchema } from "@/lib/validation/incidentes";
 import type { TipoIncidente } from "@/generated/enums";
 import { enviarPushBroadcast } from "@/lib/push/enviarPush";
@@ -44,6 +44,7 @@ export async function GET(req: NextRequest) {
       reportadoPor: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -98,7 +99,7 @@ export async function POST(req: NextRequest) {
       visibleVecinos: visibleVecinos ?? true,
       imagenes: imagenes ?? [],
       prioridad: prioridad ?? "MEDIO",
-      reportadoPorId: parseInt(session.user.id!),
+      reportadoPorId: getUserId(session),
     },
   });
 
@@ -110,7 +111,7 @@ export async function POST(req: NextRequest) {
         url: `/incidentes/${incidente.id}`,
         tag: `incidente-${incidente.id}`,
       },
-      parseInt(session.user.id!),
+      getUserId(session),
     );
   }
 

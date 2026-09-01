@@ -14,7 +14,8 @@ import { prisma } from "../lib/prisma/client";
 
 const EMAIL = "admin@vecindar.local";
 const PASSWORD = "admin123";
-const NOMBRE = "Admin Local";
+const NOMBRE = "Admin";
+const APELLIDO = "Local";
 
 async function main() {
   console.log("🚀 Seed de usuario admin\n");
@@ -37,6 +38,7 @@ async function main() {
       email: EMAIL,
       password: passwordHash,
       nombre: NOMBRE,
+      apellido: APELLIDO,
       loteId: lote.id,
       verificado: true,
       rol: "ADMIN",
@@ -44,6 +46,7 @@ async function main() {
     update: {
       password: passwordHash,
       nombre: NOMBRE,
+      apellido: APELLIDO,
       verificado: true,
       rol: "ADMIN",
     },
@@ -53,7 +56,9 @@ async function main() {
   console.log(`   Email:    ${usuario.email}`);
   console.log(`   Password: ${PASSWORD}`);
   console.log(`   Rol:      ${usuario.rol}`);
-  console.log(`   Lote:     #${lote.id} (manzana ${lote.manzanaId}, lote ${lote.numero})`);
+  console.log(
+    `   Lote:     #${lote.id} (manzana ${lote.manzanaId}, lote ${lote.numero})`,
+  );
 }
 
 main()

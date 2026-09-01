@@ -1,16 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession } from "@/lib/api/guard";
-import { type EstadoAlerta } from "@/generated/enums";
+import { requireSession, getUserId } from "@/lib/api/guard";
+import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
+import { actualizarAlertaPanicoSchema } from "@/lib/validation/panico";
 
 type Params = { params: Promise<{ id: string }> };
-
-const ESTADOS_VALIDOS: EstadoAlerta[] = [
-  "ENVIADO",
-  "RECIBIDO",
-  "EN_ATENCION",
-  "CERRADO",
-];
 
 // PATCH /api/panico/[id]
 // Admin/Seguridad: avanzar estado + notas
@@ -21,8 +15,19 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const { session } = guard;
 
   const { id } = await params;
-  const body = await req.json();
-  const { estado, notas } = body as { estado?: EstadoAlerta; notas?: string };
+  const body = await req.json().catch(() => null);
+  const parsed = actualizarAlertaPanicoSchema.safeParse(body);
+  if (!parsed.success) {
+    const badField = parsed.error.issues[0]?.path[0];
+    if (badField === "estado") {
+      return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
+    }
+    return NextResponse.json(
+      { error: parsed.error.issues[0]?.message ?? "Datos inválidos." },
+      { status: 400 },
+    );
+  }
+  const { estado, notas } = parsed.data;
 
   const alerta = await prisma.alertaPanico.findUnique({
     where: { id: parseInt(id) },
@@ -35,9 +40,8 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     );
   }
 
-  const esAdmin =
-    session.user.role === "ADMIN" || session.user.role === "SEGURIDAD";
-  const esDuenio = parseInt(session.user.id!) === alerta.usuarioId;
+  const esAdmin = esGestor(session.user.role, GESTORES_PANICO);
+  const esDuenio = getUserId(session) === alerta.usuarioId;
 
   // Vecino solo puede cancelar su propia alerta en estado ENVIADO
   if (!esAdmin) {
@@ -50,10 +54,6 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         { status: 403 },
       );
     }
-  }
-
-  if (estado && !ESTADOS_VALIDOS.includes(estado)) {
-    return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
   }
 
   // Timestamps automáticos según estado
@@ -74,7 +74,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       ...(estado ? { estado } : {}),
       ...(notas !== undefined ? { notas } : {}),
       ...(esAdmin && estado && estado !== "ENVIADO"
-        ? { atendioPorId: parseInt(session.user.id!) }
+        ? { atendioPorId: getUserId(session) }
         : {}),
       ...timestamps,
     },
@@ -82,14 +82,19 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       usuario: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
         },
       },
-      atendioPor: { select: { nombre: true } },
+      atendioPor: { select: { nombre: true, apellido: true } },
       comentarios: {
-        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        include: {
+          usuario: {
+            select: { id: true, nombre: true, apellido: true, rol: true },
+          },
+        },
         orderBy: { createdAt: "asc" },
       },
     },
