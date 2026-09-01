@@ -44,7 +44,7 @@ const authConfig = {
           return {
             id: usuario.id.toString(),
             email: usuario.email,
-            name: usuario.nombre,
+            name: `${usuario.nombre} ${usuario.apellido}`.trim(),
             role: usuario.rol,
             loteId: usuario.loteId,
           };

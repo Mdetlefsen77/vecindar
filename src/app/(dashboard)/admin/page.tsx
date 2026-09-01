@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
 import Link from "next/link";
 
 export default async function AdminPage() {
@@ -93,6 +94,7 @@ export default async function AdminPage() {
     select: {
       id: true,
       nombre: true,
+      apellido: true,
       email: true,
       createdAt: true,
       lote: { select: { numero: true, manzana: { select: { numero: true } } } },
@@ -166,7 +168,7 @@ export default async function AdminPage() {
               >
                 <div>
                   <p className="font-medium text-sm text-gray-900">
-                    {u.nombre}
+                    {nombreCompleto(u)}
                   </p>
                   <p className="text-xs text-gray-500">
                     {u.email} · MZ {u.lote.manzana.numero} – Lote{" "}

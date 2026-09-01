@@ -11,7 +11,7 @@ interface AlertaActiva {
   id: number;
   estado: EstadoAlerta;
   createdAt: string;
-  atendioPor: { nombre: string } | null;
+  atendioPor: { nombre: string; apellido: string } | null;
   comentarios: ComentarioAlertaData[];
 }
 
@@ -80,7 +80,7 @@ export default function BotonSOS({ alertaActivaInicial }: Props) {
         // silencioso
       }
     }, 5000);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const stopPolling = () => {
     if (pollTimerRef.current) {

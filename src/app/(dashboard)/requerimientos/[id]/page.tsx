@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
 import Link from "next/link";
 import Image from "next/image";
 import { CATEGORIA_LABEL, ESTADO_CONFIG } from "../page";
@@ -27,6 +28,7 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
         select: {
           id: true,
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -34,7 +36,9 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
       },
       comentarios: {
         include: {
-          usuario: { select: { id: true, nombre: true, rol: true } },
+          usuario: {
+            select: { id: true, nombre: true, apellido: true, rol: true },
+          },
         },
         orderBy: { createdAt: "asc" },
       },
@@ -148,7 +152,7 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
 
         <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
           <span>
-            {r.usuario.nombre}
+            {nombreCompleto(r.usuario)}
             {loteInfo && ` · ${loteInfo}`}
           </span>
           <span>
@@ -195,7 +199,7 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
                 >
                   <div className="flex items-center gap-2 mb-1">
                     <span className="font-semibold text-gray-800">
-                      {c.usuario.nombre}
+                      {nombreCompleto(c.usuario)}
                     </span>
                     {esAdmin && (
                       <span className="text-xs bg-blue-100 text-blue-700 font-semibold px-1.5 py-0.5 rounded">

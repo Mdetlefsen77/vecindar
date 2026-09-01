@@ -4,6 +4,14 @@ import { auth } from "@/lib/auth";
 
 export type AuthedSession = Session & { user: NonNullable<Session["user"]> };
 
+/**
+ * id numérico del usuario logueado. En el JWT se guarda como string (requisito
+ * de NextAuth), así que casi todos los handlers hacían `parseInt(session.user.id!)`.
+ */
+export function getUserId(session: { user: { id: string } }): number {
+  return Number(session.user.id);
+}
+
 type SessionResult =
   | { session: AuthedSession; response?: undefined }
   | { session?: undefined; response: NextResponse };

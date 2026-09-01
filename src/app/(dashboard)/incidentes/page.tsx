@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
+import { getUserId } from "@/lib/api/guard";
 import { marcarSeccionVista } from "@/lib/vistas";
 import Link from "next/link";
 import IncidentesFiltros from "./IncidentesFiltros";
@@ -10,7 +12,6 @@ import {
   calcularEstadoSLA,
   PRIORIDAD_CONFIG,
   ESTADO_SLA_CONFIG,
-  SLA_DEFAULTS,
   type ConfigSLAMap,
 } from "@/lib/utils/sla";
 
@@ -100,7 +101,7 @@ export default async function IncidentesPage({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  await marcarSeccionVista(parseInt(session.user.id!), "INCIDENTES");
+  await marcarSeccionVista(getUserId(session), "INCIDENTES");
 
   const { tipo, estado, dias, prioridad } = await searchParams;
   const diasNum = parseInt(dias ?? "30") || 30;
@@ -111,6 +112,10 @@ export default async function IncidentesPage({
     slaRows.map((r) => [r.prioridad, r.horasLimite]),
   ) as ConfigSLAMap;
 
+  // Server Component asíncrono: se renderiza una sola vez en el servidor, así
+  // que `Date.now()` acá es determinista para esta request (la regla
+  // react-hooks/purity apunta a componentes cliente).
+  // eslint-disable-next-line react-hooks/purity
   const fechaDesde = new Date(Date.now() - diasNum * 24 * 60 * 60 * 1000);
 
   const incidentes = await prisma.incidente.findMany({
@@ -125,6 +130,7 @@ export default async function IncidentesPage({
       reportadoPor: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -279,7 +285,7 @@ export default async function IncidentesPage({
                         {inc.descripcion}
                       </p>
                       <div className="flex items-center gap-2 mt-2.5 pt-2.5 border-t border-gray-100 text-xs text-gray-500">
-                        <span>{inc.reportadoPor.nombre}</span>
+                        <span>{nombreCompleto(inc.reportadoPor)}</span>
                         {loteInfo && <span>· {loteInfo}</span>}
                         <span className="ml-auto">
                           {new Date(inc.fechaHora).toLocaleDateString("es-AR", {

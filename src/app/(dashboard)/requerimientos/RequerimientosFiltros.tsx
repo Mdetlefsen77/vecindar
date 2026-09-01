@@ -34,7 +34,6 @@ interface Props {
   categoriaActiva?: string;
   prioridadActiva?: string;
   soloMios: boolean;
-  userRole: string;
 }
 
 export default function RequerimientosFiltros({
@@ -42,7 +41,6 @@ export default function RequerimientosFiltros({
   categoriaActiva,
   prioridadActiva,
   soloMios,
-  userRole,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();

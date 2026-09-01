@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
+import { getUserId } from "@/lib/api/guard";
+import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import BotonSOS from "./BotonSOS";
 import AccionesAlerta from "./AccionesAlerta";
 import PanicoAutoRefresh from "./PanicoAutoRefresh";
@@ -40,21 +43,26 @@ export default async function PanicoPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const esAdmin =
-    session.user.role === "ADMIN" || session.user.role === "SEGURIDAD";
+  const esAdmin = esGestor(session.user.role, GESTORES_PANICO);
+  // Server Component: se renderiza una sola vez en el servidor, así que este
+  // "ahora" es determinista para la request (react-hooks/purity apunta a cliente).
+  // eslint-disable-next-line react-hooks/purity
+  const ahoraMs = Date.now();
 
   // ── VISTA VECINO ─────────────────────────────────────────────────────────
   if (!esAdmin) {
     const alertaActiva = await prisma.alertaPanico.findFirst({
       where: {
-        usuarioId: parseInt(session.user.id!),
+        usuarioId: getUserId(session),
         estado: { in: ["ENVIADO", "RECIBIDO", "EN_ATENCION"] },
       },
       include: {
-        atendioPor: { select: { nombre: true } },
+        atendioPor: { select: { nombre: true, apellido: true } },
         comentarios: {
           include: {
-            usuario: { select: { id: true, nombre: true, rol: true } },
+            usuario: {
+              select: { id: true, nombre: true, apellido: true, rol: true },
+            },
           },
           orderBy: { createdAt: "asc" },
         },
@@ -92,16 +100,19 @@ export default async function PanicoPage() {
         usuario: {
           select: {
             nombre: true,
+            apellido: true,
             telefono: true,
             lote: {
               select: { numero: true, manzana: { select: { numero: true } } },
             },
           },
         },
-        atendioPor: { select: { nombre: true } },
+        atendioPor: { select: { nombre: true, apellido: true } },
         comentarios: {
           include: {
-            usuario: { select: { id: true, nombre: true, rol: true } },
+            usuario: {
+              select: { id: true, nombre: true, apellido: true, rol: true },
+            },
           },
           orderBy: { createdAt: "asc" },
         },
@@ -114,12 +125,13 @@ export default async function PanicoPage() {
         usuario: {
           select: {
             nombre: true,
+            apellido: true,
             lote: {
               select: { numero: true, manzana: { select: { numero: true } } },
             },
           },
         },
-        atendioPor: { select: { nombre: true } },
+        atendioPor: { select: { nombre: true, apellido: true } },
       },
       orderBy: { cerradoAt: "desc" },
       take: 10,
@@ -166,7 +178,7 @@ export default async function PanicoPage() {
           {activas.map((a) => {
             const badge = ESTADO_BADGE[a.estado];
             const tiempoTranscurrido = Math.floor(
-              (Date.now() - new Date(a.createdAt).getTime()) / 60000,
+              (ahoraMs - new Date(a.createdAt).getTime()) / 60000,
             );
 
             return (
@@ -182,7 +194,7 @@ export default async function PanicoPage() {
                     </div>
                     <div>
                       <p className="font-bold text-gray-900">
-                        {a.usuario.nombre}
+                        {nombreCompleto(a.usuario)}
                       </p>
                       <p className="text-sm text-gray-600">
                         MZ {a.usuario.lote.manzana.numero} – Lote{" "}
@@ -229,7 +241,9 @@ export default async function PanicoPage() {
                 {a.atendioPor && (
                   <p className="text-xs text-gray-500">
                     Atendiendo:{" "}
-                    <span className="font-medium">{a.atendioPor.nombre}</span>
+                    <span className="font-medium">
+                      {nombreCompleto(a.atendioPor)}
+                    </span>
                   </p>
                 )}
 
@@ -267,12 +281,13 @@ export default async function PanicoPage() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900">
-                    {a.usuario.nombre}
+                    {nombreCompleto(a.usuario)}
                   </p>
                   <p className="text-xs text-gray-400">
                     MZ {a.usuario.lote.manzana.numero} – Lote{" "}
                     {a.usuario.lote.numero}
-                    {a.atendioPor && ` · Atendida por ${a.atendioPor.nombre}`}
+                    {a.atendioPor &&
+                      ` · Atendida por ${nombreCompleto(a.atendioPor)}`}
                   </p>
                 </div>
                 <p className="text-xs text-gray-400 shrink-0">

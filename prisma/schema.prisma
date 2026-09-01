@@ -68,7 +68,8 @@ model Usuario {
   id                  Int                 @id @default(autoincrement())
   email               String              @unique
   password            String              // hash de bcrypt
-  nombre              String
+  nombre              String              // solo el nombre de pila
+  apellido            String
   telefono            String?
   loteId              Int
   lote                Lote                @relation(fields: [loteId], references: [id])

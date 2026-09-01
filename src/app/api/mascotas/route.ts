@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession } from "@/lib/api/guard";
+import { requireSession, getUserId } from "@/lib/api/guard";
 import { crearMascotaSchema } from "@/lib/validation/mascotas";
 import { type TipoAlertaMascota } from "@/generated/enums";
 import { enviarPushBroadcast } from "@/lib/push/enviarPush";
@@ -24,6 +24,7 @@ export async function GET(req: NextRequest) {
       usuario: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -42,42 +43,44 @@ export async function POST(req: NextRequest) {
   if (guard.response) return guard.response;
   const { session } = guard;
 
-  const body = await req.json();
-  const { tipo, descripcion, nombre, foto, zona, contacto } = body ?? {};
-
-  if (!tipo || !descripcion || !zona || !contacto) {
-    return NextResponse.json(
-      { error: "Tipo, descripción, zona y contacto son obligatorios." },
-      { status: 400 },
-    );
-  }
-
+  const body = await req.json().catch(() => null);
   const parsed = crearMascotaSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Tipo inválido." }, { status: 400 });
+    const badField = parsed.error.issues[0]?.path[0];
+    return NextResponse.json(
+      {
+        error:
+          badField === "tipo"
+            ? "Tipo inválido."
+            : "Tipo, descripción, zona y contacto son obligatorios.",
+      },
+      { status: 400 },
+    );
   }
 
   const mascota = await prisma.mascotaPerdida.create({
     data: {
       tipo: parsed.data.tipo,
-      nombre: nombre?.trim() || null,
+      nombre: parsed.data.nombre?.trim() || null,
       descripcion: parsed.data.descripcion,
-      foto: foto?.trim() || null,
+      foto: parsed.data.foto?.trim() || null,
       zona: parsed.data.zona,
       contacto: parsed.data.contacto,
-      usuarioId: parseInt(session.user.id!),
+      usuarioId: getUserId(session),
     },
   });
 
   void enviarPushBroadcast(
     {
       title:
-        mascota.tipo === "PERDIDA" ? "🐾 Mascota perdida" : "🐾 Mascota encontrada",
+        mascota.tipo === "PERDIDA"
+          ? "🐾 Mascota perdida"
+          : "🐾 Mascota encontrada",
       body: `${mascota.nombre ?? "Sin nombre"} — ${mascota.descripcion.slice(0, 100)}`,
       url: `/mascotas/${mascota.id}`,
       tag: `mascota-${mascota.id}`,
     },
-    parseInt(session.user.id!),
+    getUserId(session),
   );
 
   return NextResponse.json(mascota, { status: 201 });

@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
 import Link from "next/link";
 import Image from "next/image";
 import { TIPO_CONFIG, ESTADO_CONFIG } from "../page";
@@ -26,6 +27,7 @@ export default async function DetalleIncidentePage({ params }: Params) {
       reportadoPor: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -144,7 +146,7 @@ export default async function DetalleIncidentePage({ params }: Params) {
 
         <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
           <span>
-            {inc.reportadoPor.nombre}
+            {nombreCompleto(inc.reportadoPor)}
             {loteInfo && ` · ${loteInfo}`}
           </span>
           <span>

@@ -52,12 +52,11 @@ export default function MapView({
     {},
   );
 
-  // Fetchar estado de lotes cuando cambia la manzana seleccionada
+  // Fetchar estado de lotes cuando cambia la manzana seleccionada.
+  // Cuando no hay manzana seleccionada no tocamos el estado acá (evita el
+  // setState síncrono dentro del effect); el render usa `{}` en ese caso.
   useEffect(() => {
-    if (!manzanaSeleccionada) {
-      setLotesEstado({});
-      return;
-    }
+    if (!manzanaSeleccionada) return;
 
     void fetch(`/api/lotes?manzanaId=${manzanaSeleccionada.id}`)
       .then((r) => r.json())
@@ -135,7 +134,7 @@ export default function MapView({
       <LotesLayer
         map={map}
         manzana={manzanaSeleccionada}
-        lotesEstado={lotesEstado}
+        lotesEstado={manzanaSeleccionada ? lotesEstado : {}}
       />
       {showIncidentes && <IncidentesLayer map={map} incidentes={incidentes} />}
       {showAlertas && <AlertasLayer map={map} alertas={alertas} />}

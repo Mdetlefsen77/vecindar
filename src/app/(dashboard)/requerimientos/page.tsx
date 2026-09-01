@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
+import { getUserId } from "@/lib/api/guard";
 import { marcarSeccionVista } from "@/lib/vistas";
 import Link from "next/link";
 import RequerimientosFiltros from "./RequerimientosFiltros";
@@ -9,7 +11,6 @@ import {
   calcularEstadoSLA,
   PRIORIDAD_CONFIG,
   ESTADO_SLA_CONFIG,
-  SLA_DEFAULTS,
   type ConfigSLAMap,
 } from "@/lib/utils/sla";
 
@@ -87,7 +88,7 @@ export default async function RequerimientosPage({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  await marcarSeccionVista(parseInt(session.user.id!), "REQUERIMIENTOS");
+  await marcarSeccionVista(getUserId(session), "REQUERIMIENTOS");
 
   const { estado, categoria, mine, prioridad } = await searchParams;
   const soloMios = mine === "true";
@@ -99,7 +100,7 @@ export default async function RequerimientosPage({
 
   const requerimientos = await prisma.requerimiento.findMany({
     where: {
-      ...(soloMios ? { usuarioId: parseInt(session.user.id!) } : {}),
+      ...(soloMios ? { usuarioId: getUserId(session) } : {}),
       ...(estado ? { estado: estado as EstadoRequerimiento } : {}),
       ...(categoria ? { categoria: categoria as CategoriaReq } : {}),
       ...(prioridad ? { prioridad: prioridad as never } : {}),
@@ -108,6 +109,7 @@ export default async function RequerimientosPage({
       usuario: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -155,7 +157,6 @@ export default async function RequerimientosPage({
         categoriaActiva={categoria}
         prioridadActiva={prioridad}
         soloMios={soloMios}
-        userRole={session.user.role ?? "VECINO"}
       />
 
       {/* Lista */}
@@ -250,7 +251,7 @@ export default async function RequerimientosPage({
                   </div>
                   <div className="flex items-center gap-3 mt-3 pt-3 border-t border-gray-100 text-xs text-gray-500">
                     <span>
-                      {r.usuario.nombre}
+                      {nombreCompleto(r.usuario)}
                       {loteInfo ? ` · ${loteInfo}` : ""}
                     </span>
                     <span className="ml-auto flex items-center gap-1">

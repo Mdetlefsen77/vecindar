@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireSession, requireRole } from "@/lib/api/guard";
+import { GESTORES_INCIDENTES } from "@/lib/permisos";
 import { actualizarIncidenteSchema } from "@/lib/validation/incidentes";
 
 type Params = { params: Promise<{ id: string }> };
@@ -18,6 +19,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
       reportadoPor: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -50,13 +52,13 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   const roleError = requireRole(
     session.user.role,
-    ["ADMIN", "SEGURIDAD"],
+    GESTORES_INCIDENTES,
     "Solo administración o seguridad pueden modificar incidentes.",
   );
   if (roleError) return roleError;
 
   const { id } = await params;
-  const body = await req.json();
+  const body = await req.json().catch(() => null);
   const parsed = actualizarIncidenteSchema.safeParse(body);
   if (!parsed.success) {
     const badField = parsed.error.issues[0]?.path[0];
@@ -73,6 +75,14 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   const { estado, visibleVecinos, prioridad } = parsed.data;
+
+  const existe = await prisma.incidente.findUnique({
+    where: { id: parseInt(id) },
+    select: { id: true },
+  });
+  if (!existe) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
 
   const incidente = await prisma.incidente.update({
     where: { id: parseInt(id) },

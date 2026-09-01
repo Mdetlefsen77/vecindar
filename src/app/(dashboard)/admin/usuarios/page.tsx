@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
 import Link from "next/link";
 import { Suspense } from "react";
 import UsuariosFiltros from "./UsuariosFiltros";
@@ -52,6 +53,7 @@ export default async function AdminUsuariosPage({
     select: {
       id: true,
       nombre: true,
+      apellido: true,
       email: true,
       telefono: true,
       rol: true,
@@ -131,7 +133,7 @@ export default async function AdminUsuariosPage({
                   {/* Nombre */}
                   <div>
                     <p className="font-medium text-sm text-gray-900">
-                      {u.nombre}
+                      {nombreCompleto(u)}
                     </p>
                     <p className="text-xs text-gray-400 sm:hidden">{u.email}</p>
                     <p className="text-xs text-gray-400 mt-0.5">

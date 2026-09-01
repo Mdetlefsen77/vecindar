@@ -2,7 +2,12 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "**" }],
+    // Solo se permiten imágenes desde Supabase Storage (donde `/api/uploads`
+    // sube las fotos). Antes estaba abierto a cualquier host HTTPS (`**`).
+    remotePatterns: [
+      { protocol: "https", hostname: "*.supabase.co" },
+      { protocol: "https", hostname: "*.supabase.in" },
+    ],
   },
 };
 

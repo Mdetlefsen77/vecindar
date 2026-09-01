@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireSession, requireRole } from "@/lib/api/guard";
+import { GESTORES_REQUERIMIENTOS } from "@/lib/permisos";
 import { actualizarRequerimientoSchema } from "@/lib/validation/requerimientos";
 
 type Params = { params: Promise<{ id: string }> };
@@ -19,6 +20,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
         select: {
           id: true,
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -26,7 +28,9 @@ export async function GET(_req: NextRequest, { params }: Params) {
       },
       comentarios: {
         include: {
-          usuario: { select: { id: true, nombre: true, rol: true } },
+          usuario: {
+            select: { id: true, nombre: true, apellido: true, rol: true },
+          },
         },
         orderBy: { createdAt: "asc" },
       },
@@ -49,13 +53,13 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   const roleError = requireRole(
     session.user.role,
-    ["ADMIN", "SEGURIDAD", "REFERENTE_MANZANA"],
+    GESTORES_REQUERIMIENTOS,
     "No tenés permisos para cambiar el estado de este requerimiento.",
   );
   if (roleError) return roleError;
 
   const { id } = await params;
-  const body = await req.json();
+  const body = await req.json().catch(() => null);
   const parsed = actualizarRequerimientoSchema.safeParse(body);
 
   if (!parsed.success) {
@@ -76,6 +80,14 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   const { estado, prioridad } = parsed.data;
+
+  const existe = await prisma.requerimiento.findUnique({
+    where: { id: parseInt(id) },
+    select: { id: true },
+  });
+  if (!existe) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
 
   const requerimiento = await prisma.requerimiento.update({
     where: { id: parseInt(id) },

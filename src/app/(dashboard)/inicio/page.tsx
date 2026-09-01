@@ -1,5 +1,8 @@
 import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
+import { getUserId } from "@/lib/api/guard";
 import Link from "next/link";
 import Image from "next/image";
 import type {
@@ -116,26 +119,6 @@ const IconPaw = () => (
     />
   </svg>
 );
-const IconPin = () => (
-  <svg
-    className="w-6 h-6 sm:w-8 sm:h-8"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-    />
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-    />
-  </svg>
-);
 const IconAlert = () => (
   <svg
     className="w-6 h-6 sm:w-8 sm:h-8"
@@ -191,9 +174,11 @@ function NuevoBadge({
 
 export default async function InicioPage() {
   const session = await auth();
-  const isVecino = session?.user?.role === "VECINO";
-  const nombre = session?.user?.name?.split(" ")[0] ?? "Vecino";
-  const usuarioId = parseInt(session!.user.id!);
+  if (!session?.user) redirect("/login");
+
+  const isVecino = session.user.role === "VECINO";
+  const nombre = session.user.name?.split(" ")[0] ?? "Vecino";
+  const usuarioId = getUserId(session);
 
   // Última visita a cada sección — determina qué se cuenta como "nuevo"
   const usuarioConVistas = await prisma.usuario.findUnique({
@@ -234,7 +219,7 @@ export default async function InicioPage() {
     prisma.requerimiento.findMany({
       where: { estado: { in: ["NUEVO", "EN_PROGRESO"] } },
       include: {
-        usuario: { select: { nombre: true } },
+        usuario: { select: { nombre: true, apellido: true } },
       },
       orderBy: { createdAt: "desc" },
       take: 4,
@@ -507,7 +492,8 @@ export default async function InicioPage() {
                           {req.titulo}
                         </p>
                         <p className="text-sm text-gray-500 mt-1 truncate">
-                          {req.usuario.nombre} · {timeAgo(req.createdAt)}
+                          {nombreCompleto(req.usuario)} ·{" "}
+                          {timeAgo(req.createdAt)}
                         </p>
                       </div>
                       {/* Estado badge — derecha */}

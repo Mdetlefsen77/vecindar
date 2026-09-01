@@ -1,6 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { nombreCompleto } from "@/lib/usuarios";
+import { getUserId } from "@/lib/api/guard";
 import { marcarSeccionVista } from "@/lib/vistas";
 import Link from "next/link";
 import Image from "next/image";
@@ -18,7 +20,7 @@ export default async function MascotasPage({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  await marcarSeccionVista(parseInt(session.user.id!), "MASCOTAS");
+  await marcarSeccionVista(getUserId(session), "MASCOTAS");
 
   const { tipo, estado } = await searchParams;
 
@@ -32,6 +34,7 @@ export default async function MascotasPage({
       usuario: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: { numero: true, manzana: { select: { numero: true } } },
           },
@@ -214,7 +217,7 @@ export default async function MascotasPage({
                       {m.zona}
                     </span>
                     <span className="text-xs text-gray-500">
-                      por {m.usuario.nombre} · MZ{" "}
+                      por {nombreCompleto(m.usuario)} · MZ{" "}
                       {m.usuario.lote.manzana.numero}
                     </span>
                   </div>

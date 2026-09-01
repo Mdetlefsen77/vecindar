@@ -1,28 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession } from "@/lib/api/guard";
+import { requireSession, getUserId } from "@/lib/api/guard";
+import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import { enviarPushAdmins } from "@/lib/push/enviarPush";
 import { crearAlertaPanicoSchema } from "@/lib/validation/panico";
 
 // GET /api/panico
 // Admin: todas las alertas (activas primero, luego cerradas recientes)
 // Vecino: solo sus propias alertas activas
-export async function GET(_req: NextRequest) {
+export async function GET() {
   const guard = await requireSession("No autenticado.");
   if (guard.response) return guard.response;
   const { session } = guard;
 
-  const esAdmin =
-    session.user.role === "ADMIN" || session.user.role === "SEGURIDAD";
+  const esAdmin = esGestor(session.user.role, GESTORES_PANICO);
 
   const alertas = await prisma.alertaPanico.findMany({
     where: esAdmin
       ? {} // admin ve todo
-      : { usuarioId: parseInt(session.user.id!) }, // vecino solo las suyas
+      : { usuarioId: getUserId(session) }, // vecino solo las suyas
     include: {
       usuario: {
         select: {
           nombre: true,
+          apellido: true,
           telefono: true,
           lote: {
             select: {
@@ -32,9 +33,13 @@ export async function GET(_req: NextRequest) {
           },
         },
       },
-      atendioPor: { select: { nombre: true } },
+      atendioPor: { select: { nombre: true, apellido: true } },
       comentarios: {
-        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        include: {
+          usuario: {
+            select: { id: true, nombre: true, apellido: true, rol: true },
+          },
+        },
         orderBy: { createdAt: "asc" },
       },
     },
@@ -54,12 +59,16 @@ export async function POST(req: NextRequest) {
   // Bloquear si ya tiene una alerta activa
   const activa = await prisma.alertaPanico.findFirst({
     where: {
-      usuarioId: parseInt(session.user.id!),
+      usuarioId: getUserId(session),
       estado: { in: ["ENVIADO", "RECIBIDO", "EN_ATENCION"] },
     },
     include: {
       comentarios: {
-        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        include: {
+          usuario: {
+            select: { id: true, nombre: true, apellido: true, rol: true },
+          },
+        },
         orderBy: { createdAt: "asc" },
       },
     },
@@ -84,7 +93,7 @@ export async function POST(req: NextRequest) {
 
   const alerta = await prisma.alertaPanico.create({
     data: {
-      usuarioId: parseInt(session.user.id!),
+      usuarioId: getUserId(session),
       latitud: parsed.data.latitud,
       longitud: parsed.data.longitud,
       estado: "ENVIADO",
@@ -93,6 +102,7 @@ export async function POST(req: NextRequest) {
       usuario: {
         select: {
           nombre: true,
+          apellido: true,
           lote: {
             select: {
               numero: true,
@@ -102,7 +112,11 @@ export async function POST(req: NextRequest) {
         },
       },
       comentarios: {
-        include: { usuario: { select: { id: true, nombre: true, rol: true } } },
+        include: {
+          usuario: {
+            select: { id: true, nombre: true, apellido: true, rol: true },
+          },
+        },
         orderBy: { createdAt: "asc" },
       },
     },
@@ -123,4 +137,3 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json(alerta, { status: 201 });
 }
-

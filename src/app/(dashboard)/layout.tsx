@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import Sidebar from "@/components/ui/Sidebar";
 import BottomNav from "@/components/ui/BottomNav";
 import MobileHeader from "@/components/ui/MobileHeader";
@@ -46,9 +47,7 @@ export default async function DashboardLayout({
 
       <InstallPrompt />
 
-      {(userRole === "ADMIN" || userRole === "SEGURIDAD") && (
-        <SosAlertListener />
-      )}
+      {esGestor(userRole, GESTORES_PANICO) && <SosAlertListener />}
     </div>
   );
 }
