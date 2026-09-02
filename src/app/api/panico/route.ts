@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireSession, getUserId } from "@/lib/api/guard";
 import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
-import { enviarPushAdmins } from "@/lib/push/enviarPush";
+import { enviarPushAdmins, enviarPushVecinos } from "@/lib/push/enviarPush";
 import { crearAlertaPanicoSchema } from "@/lib/validation/panico";
 
 // GET /api/panico
@@ -134,6 +134,19 @@ export async function POST(req: NextRequest) {
     requireInteraction: true,
     tipo: "SOS",
   });
+
+  // Los vecinos también se enteran (para reaccionar entre ellos), pero sin la
+  // alarma sonora / notificación persistente — eso queda para quienes gestionan
+  // la alerta. Se excluye al que activó el pánico.
+  void enviarPushVecinos(
+    {
+      title: "🆘 Alerta SOS en el barrio",
+      body: `${alerta.usuario?.nombre ?? "Un vecino"} activó el botón de pánico${loteInfo}.`,
+      url: "/inicio",
+      tag: `sos-${alerta.id}`,
+    },
+    getUserId(session),
+  );
 
   return NextResponse.json(alerta, { status: 201 });
 }

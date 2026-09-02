@@ -38,7 +38,7 @@ export async function proxy(request: NextRequest) {
 
   // Ya logueado: no tiene sentido mostrar el login.
   if (pathname === "/login" && token) {
-    return NextResponse.redirect(new URL("/mapa", request.url));
+    return NextResponse.redirect(new URL("/inicio", request.url));
   }
 
   return NextResponse.next();

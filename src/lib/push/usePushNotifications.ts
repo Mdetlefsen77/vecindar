@@ -13,6 +13,25 @@ function urlBase64ToUint8Array(base64String: string): ArrayBuffer {
 }
 
 /**
+ * `true` si la suscripción existente fue creada con otra VAPID public key
+ * (típicamente porque se rotaron las keys en el server). Esas suscripciones
+ * siguen "vivas" en el navegador pero el server no puede mandarles nada
+ * (web-push devuelve 403, que ni siquiera dispara la limpieza de 410/404),
+ * así que hay que desuscribir y volver a suscribir con la key nueva.
+ */
+function claveDesactualizada(
+  sub: PushSubscription,
+  publicKey: string,
+): boolean {
+  const actual = sub.options?.applicationServerKey;
+  if (!actual) return false; // sin dato para comparar — no forzar re-suscripción
+  const esperada = new Uint8Array(urlBase64ToUint8Array(publicKey));
+  const tiene = new Uint8Array(actual);
+  if (tiene.length !== esperada.length) return true;
+  return tiene.some((b, i) => b !== esperada[i]);
+}
+
+/**
  * Hook para gestionar la suscripción Web Push de cualquier usuario logueado.
  * Registra el Service Worker, pide permiso y guarda la suscripción en el servidor.
  */
@@ -48,28 +67,57 @@ export function usePushNotifications() {
     }
     /* eslint-enable react-hooks/set-state-in-effect */
 
-    void fetch("/api/push/vapid-public-key")
+    const keyPromise = fetch("/api/push/vapid-public-key")
       .then((r) => r.json())
       .then((d: { publicKey: string }) => {
         publicKeyRef.current = d.publicKey;
+        return d.publicKey;
       })
-      .catch(() => {});
+      .catch(() => null);
 
-    void navigator.serviceWorker
-      .register("/sw.js")
-      .then(async (reg) => {
-        registrationRef.current = await navigator.serviceWorker.ready;
-        return reg.pushManager.getSubscription();
-      })
-      .then((sub) => {
-        if (sub) {
-          setSubscription(sub);
-          setState("subscribed");
-        } else {
+    async function registrarYSincronizar() {
+      await navigator.serviceWorker.register("/sw.js");
+      const reg = await navigator.serviceWorker.ready;
+      registrationRef.current = reg;
+
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) {
+        setState("idle");
+        return;
+      }
+
+      // Si las VAPID keys se rotaron, la suscripción vieja ya no sirve:
+      // desuscribir y rearmar con la key actual antes de mandarla al server.
+      const publicKey = await keyPromise;
+      if (publicKey && claveDesactualizada(sub, publicKey)) {
+        try {
+          await sub.unsubscribe();
+          sub = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(publicKey),
+          });
+        } catch {
           setState("idle");
+          return;
         }
-      })
-      .catch(() => setState("idle"));
+      }
+
+      setSubscription(sub);
+      setState("subscribed");
+
+      // Re-registrar en el server en cada arranque. El navegador puede seguir
+      // teniendo la suscripción mientras el server perdió la fila (limpieza de
+      // endpoints 410/404 en enviarPush.ts, reset de DB, migración): sin esto
+      // el botón muestra "activas" pero no llega ninguna notificación. El
+      // upsert por endpoint lo hace idempotente.
+      void fetch("/api/push/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sub.toJSON()),
+      }).catch(() => {});
+    }
+
+    void registrarYSincronizar().catch(() => setState("idle"));
   }, []);
 
   const subscribe = useCallback(async () => {
@@ -86,6 +134,13 @@ export function usePushNotifications() {
 
       const reg =
         registrationRef.current ?? (await navigator.serviceWorker.ready);
+
+      // Si ya hay una suscripción con otra VAPID key, subscribe() rechazaría
+      // ("a subscription with a different applicationServerKey already exists").
+      const previa = await reg.pushManager.getSubscription();
+      if (previa && claveDesactualizada(previa, publicKey)) {
+        await previa.unsubscribe();
+      }
 
       const sub = await reg.pushManager.subscribe({
         userVisibleOnly: true,
