@@ -51,6 +51,10 @@ export default function MapView({
   const [lotesEstado, setLotesEstado] = useState<Record<string, EstadoLote>>(
     {},
   );
+  // Nombre y apellido de las cuentas de cada lote, keyed por numero de lote.
+  const [lotesResidentes, setLotesResidentes] = useState<
+    Record<string, string[]>
+  >({});
 
   // Fetchar estado de lotes cuando cambia la manzana seleccionada.
   // Cuando no hay manzana seleccionada no tocamos el estado acá (evita el
@@ -64,11 +68,12 @@ export default function MapView({
         (data: {
           lotes: {
             numero: string;
-            usuarios: { id: number }[];
+            usuarios: { id: number; nombre: string; apellido: string }[];
             incidentes: { id: number }[];
           }[];
         }) => {
           const estado: Record<string, EstadoLote> = {};
+          const residentes: Record<string, string[]> = {};
           for (const lote of data.lotes) {
             if (lote.incidentes.length > 0) {
               estado[lote.numero] = "incidente";
@@ -76,11 +81,20 @@ export default function MapView({
               estado[lote.numero] = "habitado";
             }
             // desocupado es el default en LotesLayer, no hace falta setearlo
+            if (lote.usuarios.length > 0) {
+              residentes[lote.numero] = lote.usuarios.map((u) =>
+                `${u.nombre} ${u.apellido}`.trim(),
+              );
+            }
           }
           setLotesEstado(estado);
+          setLotesResidentes(residentes);
         },
       )
-      .catch(() => setLotesEstado({}));
+      .catch(() => {
+        setLotesEstado({});
+        setLotesResidentes({});
+      });
   }, [manzanaSeleccionada]);
 
   useEffect(() => {
@@ -135,6 +149,7 @@ export default function MapView({
         map={map}
         manzana={manzanaSeleccionada}
         lotesEstado={manzanaSeleccionada ? lotesEstado : {}}
+        lotesResidentes={manzanaSeleccionada ? lotesResidentes : {}}
       />
       {showIncidentes && <IncidentesLayer map={map} incidentes={incidentes} />}
       {showAlertas && <AlertasLayer map={map} alertas={alertas} />}

@@ -7,6 +7,16 @@ import { calcularLotesPolygons, type LotePolygon } from "@/lib/barrio/lotes";
 
 export type EstadoLote = keyof typeof COLORES_LOTE;
 
+// El popup se arma por interpolación de strings, así que los nombres (que
+// vienen de datos cargados por usuarios) hay que escaparlos.
+function escapeHtml(texto: string): string {
+  return texto
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
 interface LotesLayerProps {
   map: L.Map | null;
   /** Manzana seleccionada. null = no se muestran lotes. */
@@ -16,6 +26,8 @@ interface LotesLayerProps {
    * Los lotes sin entrada se muestran como "desocupado".
    */
   lotesEstado?: Record<string, EstadoLote>;
+  /** Nombre y apellido de las cuentas de cada lote, keyed por numero de lote. */
+  lotesResidentes?: Record<string, string[]>;
   onLoteClick?: (lote: LotePolygon, manzana: ManzanaConfig) => void;
 }
 
@@ -23,6 +35,7 @@ export default function LotesLayer({
   map,
   manzana,
   lotesEstado = {},
+  lotesResidentes = {},
   onLoteClick,
 }: LotesLayerProps) {
   useEffect(() => {
@@ -83,6 +96,14 @@ export default function LotesLayer({
       });
 
       const zonaLabel = manzana.zona === "Norte" ? "Norte" : "Sur";
+      const residentes = lotesResidentes[lote.numero] ?? [];
+      const residentesHtml = residentes.length
+        ? `<div style="margin-top:6px; font-size:12px; color:#374151; line-height:1.4;">
+                        ${residentes
+                          .map((nombre) => `<div>${escapeHtml(nombre)}</div>`)
+                          .join("")}
+                    </div>`
+        : "";
       polygon.bindPopup(`
                 <div style="min-width:130px; padding:3px 2px;">
                     <h3 style="margin:0 0 4px; font-size:14px; font-weight:700; color:#111827;">
@@ -97,6 +118,7 @@ export default function LotesLayer({
                         padding:2px 8px; border-radius:9999px; font-size:11px; font-weight:600;">
                         ${estado === "habitado" ? "Habitado" : estado === "incidente" ? "Incidente" : estado === "sos_activo" ? "Alerta SOS" : "Desocupado"}
                     </span>
+                    ${residentesHtml}
                 </div>
             `);
 
@@ -118,7 +140,7 @@ export default function LotesLayer({
         map?.removeLayer(p);
       });
     };
-  }, [map, manzana, lotesEstado, onLoteClick]);
+  }, [map, manzana, lotesEstado, lotesResidentes, onLoteClick]);
 
   return null;
 }

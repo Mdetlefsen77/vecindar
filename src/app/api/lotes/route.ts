@@ -34,7 +34,7 @@ export async function GET(req: NextRequest) {
         ...(publico
           ? {}
           : {
-              usuarios: { select: { id: true } },
+              usuarios: { select: { id: true, nombre: true, apellido: true } },
               incidentes: {
                 where: { estado: { not: "RESUELTO" } },
                 select: { id: true, tipo: true, estado: true },
