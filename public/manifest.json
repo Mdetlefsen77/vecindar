@@ -2,7 +2,7 @@
   "name": "Vecindar",
   "short_name": "Vecindar",
   "description": "Tu barrio conectado — mapa de incidentes, requerimientos, mascotas y botón de pánico.",
-  "start_url": "/mapa",
+  "start_url": "/inicio",
   "scope": "/",
   "display": "standalone",
   "background_color": "#EFF6FF",

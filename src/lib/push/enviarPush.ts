@@ -90,6 +90,25 @@ export async function enviarPushAdmins(payload: PushPayload): Promise<void> {
 }
 
 /**
+ * Envía una notificación push a los vecinos suscritos que NO son gestores de
+ * pánico. Se usa para el SOS: ADMIN/SEGURIDAD ya reciben la versión con alarma
+ * sonora (`enviarPushAdmins`, tipo "SOS"), así que quedarían notificados dos
+ * veces si se usara `enviarPushBroadcast`. Excluye opcionalmente al autor.
+ */
+export async function enviarPushVecinos(
+  payload: PushPayload,
+  excluirUsuarioId?: number,
+): Promise<void> {
+  const suscripciones = await prisma.pushSubscription.findMany({
+    where: {
+      usuario: { rol: { notIn: [...GESTORES_PANICO] } },
+      ...(excluirUsuarioId ? { usuarioId: { not: excluirUsuarioId } } : {}),
+    },
+  });
+  await enviarASuscripciones(suscripciones, payload);
+}
+
+/**
  * Envía una notificación push solo a los ADMIN suscritos (ej: nuevo registro
  * pendiente de aprobación — a diferencia de enviarPushAdmins, SEGURIDAD no
  * gestiona usuarios, así que no la recibe).

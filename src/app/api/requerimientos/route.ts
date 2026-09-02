@@ -2,7 +2,18 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireSession, getUserId } from "@/lib/api/guard";
 import { crearRequerimientoSchema } from "@/lib/validation/requerimientos";
+import { enviarPushBroadcast } from "@/lib/push/enviarPush";
 import type { CategoriaReq } from "@/generated/enums";
+
+const CATEGORIA_REQ_LABEL: Record<CategoriaReq, string> = {
+  ILUMINACION: "Iluminación",
+  PODA: "Poda",
+  CALLES: "Calles",
+  LIMPIEZA: "Limpieza",
+  SEGURIDAD: "Seguridad",
+  INFRAESTRUCTURA: "Infraestructura",
+  OTRO: "Requerimiento",
+};
 
 // ── GET /api/requerimientos ──────────────────────────────────────────────────
 // Query params:
@@ -72,6 +83,17 @@ export async function POST(req: NextRequest) {
       usuarioId: getUserId(session),
     },
   });
+
+  // Aviso a todo el barrio (menos el autor) — mismo patrón que incidentes/mascotas.
+  void enviarPushBroadcast(
+    {
+      title: `🛠️ Nuevo requerimiento: ${CATEGORIA_REQ_LABEL[categoria]}`,
+      body: titulo.slice(0, 120),
+      url: `/requerimientos/${requerimiento.id}`,
+      tag: `requerimiento-${requerimiento.id}`,
+    },
+    getUserId(session),
+  );
 
   return NextResponse.json(requerimiento, { status: 201 });
 }

@@ -5,6 +5,7 @@ import Sidebar from "@/components/ui/Sidebar";
 import BottomNav from "@/components/ui/BottomNav";
 import MobileHeader from "@/components/ui/MobileHeader";
 import InstallPrompt from "@/components/ui/InstallPrompt";
+import PushOptInBanner from "@/components/ui/PushOptInBanner";
 import SosAlertListener from "@/components/ui/SosAlertListener";
 
 export default async function DashboardLayout({
@@ -46,6 +47,7 @@ export default async function DashboardLayout({
       <BottomNav />
 
       <InstallPrompt />
+      <PushOptInBanner />
 
       {esGestor(userRole, GESTORES_PANICO) && <SosAlertListener />}
     </div>

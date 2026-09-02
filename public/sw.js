@@ -52,6 +52,43 @@ self.addEventListener("push", (event) => {
   );
 });
 
+// Algunos navegadores (Chrome/FCM sobre todo) rotan o expiran el endpoint de
+// push cada tanto. Cuando pasa, hay que re-suscribir con la misma VAPID key y
+// reenviar la suscripción al server; si no, el dispositivo queda sin
+// notificaciones hasta que el usuario vuelve a tocar el toggle a mano.
+self.addEventListener("pushsubscriptionchange", (event) => {
+  event.waitUntil(
+    (async () => {
+      try {
+        const res = await fetch("/api/push/vapid-public-key");
+        const { publicKey } = await res.json();
+        const nuevaSub = await self.registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(publicKey),
+        });
+        await fetch("/api/push/subscribe", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(nuevaSub.toJSON()),
+        });
+      } catch (err) {
+        // best-effort: si falla (ej: sin sesión válida), el usuario tendrá
+        // que re-activar las notificaciones desde el menú.
+        console.error("pushsubscriptionchange: no se pudo re-suscribir", err);
+      }
+    })(),
+  );
+});
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+  const raw = self.atob(base64);
+  const output = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i += 1) output[i] = raw.charCodeAt(i);
+  return output;
+}
+
 self.addEventListener("notificationclick", (event) => {
   event.notification.close();
 
