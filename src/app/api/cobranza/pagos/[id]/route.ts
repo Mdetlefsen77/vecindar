@@ -23,8 +23,10 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: "El pago no existe." }, { status: 404 });
   }
 
-  await prisma.pago.delete({ where: { id: pagoId } });
-  await recalcularVigencia(pago.usuarioId);
+  await prisma.$transaction(async (tx) => {
+    await tx.pago.delete({ where: { id: pagoId } });
+    await recalcularVigencia(pago.usuarioId, tx);
+  });
 
   return NextResponse.json({ ok: true });
 }

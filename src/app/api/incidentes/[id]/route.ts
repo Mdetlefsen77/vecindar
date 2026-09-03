@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, requireRole } from "@/lib/api/guard";
+import { requireSession, requireRole, parseId } from "@/lib/api/guard";
 import { GESTORES_INCIDENTES } from "@/lib/permisos";
 import { actualizarIncidenteSchema } from "@/lib/validation/incidentes";
 
@@ -13,8 +13,12 @@ export async function GET(_req: NextRequest, { params }: Params) {
   const { session } = guard;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const incidente = await prisma.incidente.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     include: {
       reportadoPor: {
         select: {
@@ -58,6 +62,10 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   if (roleError) return roleError;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const body = await req.json().catch(() => null);
   const parsed = actualizarIncidenteSchema.safeParse(body);
   if (!parsed.success) {
@@ -77,7 +85,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const { estado, visibleVecinos, prioridad } = parsed.data;
 
   const existe = await prisma.incidente.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     select: { id: true },
   });
   if (!existe) {
@@ -85,7 +93,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   const incidente = await prisma.incidente.update({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     data: {
       ...(estado !== undefined ? { estado } : {}),
       ...(visibleVecinos !== undefined ? { visibleVecinos } : {}),

@@ -33,6 +33,7 @@ export default function CobranzaFiltros() {
     <div className="flex flex-wrap gap-2">
       <input
         type="search"
+        aria-label="Buscar usuarios"
         placeholder="Buscar nombre, apellido o email..."
         defaultValue={q}
         onChange={(e) => update("q", e.target.value)}

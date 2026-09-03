@@ -14,8 +14,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vecindar",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
+  title: {
+    default: "Vecindar",
+    template: "%s · Vecindar",
+  },
   description: "Conectando vecinos, mejorando barrios",
+  // App privada de un barrio: no queremos que ningún buscador la indexe.
+  robots: { index: false, follow: false },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, getUserId } from "@/lib/api/guard";
+import { requireSession, getUserId, parseId } from "@/lib/api/guard";
 import { crearComentarioSchema } from "@/lib/validation/requerimientos";
 import { nombreCompleto } from "@/lib/usuarios";
 import { enviarPushUsuario } from "@/lib/push/enviarPush";
@@ -16,6 +16,10 @@ export async function POST(
   const { session } = guard;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const body = await req.json();
   const parsed = crearComentarioSchema.safeParse(body);
 
@@ -28,7 +32,7 @@ export async function POST(
 
   // Verificar que el requerimiento existe
   const requerimiento = await prisma.requerimiento.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
   });
 
   if (!requerimiento) {
@@ -40,7 +44,7 @@ export async function POST(
 
   const comentario = await prisma.comentarioReq.create({
     data: {
-      requerimientoId: parseInt(id),
+      requerimientoId: numId,
       usuarioId: getUserId(session),
       texto: parsed.data.texto,
     },

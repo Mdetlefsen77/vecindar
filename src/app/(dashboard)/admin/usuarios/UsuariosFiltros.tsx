@@ -36,6 +36,7 @@ export default function UsuariosFiltros() {
       {/* Búsqueda */}
       <input
         type="search"
+        aria-label="Buscar usuarios"
         placeholder="Buscar nombre, apellido o email..."
         defaultValue={q}
         onChange={(e) => update("q", e.target.value)}
@@ -44,6 +45,7 @@ export default function UsuariosFiltros() {
 
       {/* Rol */}
       <select
+        aria-label="Filtrar por rol"
         value={rol}
         onChange={(e) => update("rol", e.target.value)}
         className="border border-gray-300 rounded-lg px-3 py-2 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"

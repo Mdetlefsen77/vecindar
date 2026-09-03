@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
 import { getUserId } from "@/lib/api/guard";
@@ -20,7 +21,7 @@ export default async function MascotasPage({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  await marcarSeccionVista(getUserId(session), "MASCOTAS");
+  after(() => marcarSeccionVista(getUserId(session), "MASCOTAS"));
 
   const { tipo, estado } = await searchParams;
 

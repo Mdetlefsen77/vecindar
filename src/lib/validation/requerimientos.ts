@@ -25,3 +25,9 @@ export const actualizarRequerimientoSchema = z
 export const crearComentarioSchema = z.object({
   texto: z.string().trim().min(1),
 });
+
+export type CrearRequerimientoInput = z.infer<typeof crearRequerimientoSchema>;
+export type ActualizarRequerimientoInput = z.infer<
+  typeof actualizarRequerimientoSchema
+>;
+export type CrearComentarioInput = z.infer<typeof crearComentarioSchema>;

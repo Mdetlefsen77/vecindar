@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, getUserId } from "@/lib/api/guard";
+import { requireSession, getUserId, parseId } from "@/lib/api/guard";
+import { respuestaValidacion } from "@/lib/api/validation";
 import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import { actualizarAlertaPanicoSchema } from "@/lib/validation/panico";
 
@@ -15,6 +16,10 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const { session } = guard;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const body = await req.json().catch(() => null);
   const parsed = actualizarAlertaPanicoSchema.safeParse(body);
   if (!parsed.success) {
@@ -22,15 +27,12 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     if (badField === "estado") {
       return NextResponse.json({ error: "Estado inválido." }, { status: 400 });
     }
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? "Datos inválidos." },
-      { status: 400 },
-    );
+    return respuestaValidacion(parsed.error);
   }
   const { estado, notas } = parsed.data;
 
   const alerta = await prisma.alertaPanico.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
   });
 
   if (!alerta) {
@@ -69,7 +71,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   const updated = await prisma.alertaPanico.update({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     data: {
       ...(estado ? { estado } : {}),
       ...(notas !== undefined ? { notas } : {}),

@@ -13,3 +13,6 @@ export const crearMascotaSchema = z.object({
 export const actualizarMascotaSchema = z.object({
   estado: z.boolean(),
 });
+
+export type CrearMascotaInput = z.infer<typeof crearMascotaSchema>;
+export type ActualizarMascotaInput = z.infer<typeof actualizarMascotaSchema>;

@@ -7,6 +7,7 @@ import PushNotificationToggle from "./PushNotificationToggle";
 
 const LogoutIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-5 h-5"
     fill="none"
     viewBox="0 0 24 24"
@@ -23,6 +24,7 @@ const LogoutIcon = () => (
 
 const PanelIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-5 h-5"
     fill="none"
     viewBox="0 0 24 24"
@@ -60,7 +62,7 @@ export default function MobileHeader({
       <span className="text-xl font-bold text-brand">Vecindar</span>
 
       <Menu as="div" className="relative">
-        <MenuButton className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
+        <MenuButton aria-label="Abrir menú de cuenta" className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
           <span className="text-blue-700 font-semibold text-base">
             {userName.charAt(0).toUpperCase()}
           </span>

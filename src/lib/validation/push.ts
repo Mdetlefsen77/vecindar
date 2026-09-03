@@ -11,3 +11,8 @@ export const suscripcionPushSchema = z.object({
 export const eliminarSuscripcionPushSchema = z.object({
   endpoint: z.string().min(1),
 });
+
+export type SuscripcionPushInput = z.infer<typeof suscripcionPushSchema>;
+export type EliminarSuscripcionPushInput = z.infer<
+  typeof eliminarSuscripcionPushSchema
+>;

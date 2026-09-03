@@ -57,6 +57,7 @@ model Residente {
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
+  @@index([loteId])
   @@map("residentes")
 }
 
@@ -101,6 +102,7 @@ model Usuario {
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
+  @@index([loteId])
   @@index([ultimaActividadAt])
   @@map("usuarios")
 }
@@ -146,6 +148,7 @@ model Pago {
 
   @@unique([usuarioId, periodo])
   @@index([periodo])
+  @@index([registradoPorId])
   @@map("pagos")
 }
 
@@ -205,6 +208,9 @@ model Incidente {
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
+  @@index([loteId])
+  @@index([reportadoPorId])
+  @@index([fechaHora])
   @@map("incidentes")
 }
 
@@ -255,6 +261,8 @@ model AlertaPanico {
   atendidoAt      DateTime?
   cerradoAt       DateTime?
 
+  @@index([usuarioId])
+  @@index([atendioPorId])
   @@map("alertas_panico")
 }
 
@@ -268,6 +276,8 @@ model ComentarioAlerta {
   texto      String
   createdAt  DateTime     @default(now())
 
+  @@index([alertaId])
+  @@index([usuarioId])
   @@map("comentarios_alertas")
 }
 
@@ -288,6 +298,7 @@ model PushSubscription {
   auth      String
   createdAt DateTime @default(now())
 
+  @@index([usuarioId])
   @@map("push_subscriptions")
 }
 
@@ -308,7 +319,8 @@ model Requerimiento {
   comentarios     ComentarioReq[]
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
-  
+
+  @@index([usuarioId])
   @@map("requerimientos")
 }
 
@@ -320,7 +332,9 @@ model ComentarioReq {
   usuario           Usuario         @relation(fields: [usuarioId], references: [id])
   texto             String
   createdAt         DateTime        @default(now())
-  
+
+  @@index([requerimientoId])
+  @@index([usuarioId])
   @@map("comentarios_requerimientos")
 }
 
@@ -358,7 +372,8 @@ model MascotaPerdida {
   usuario     Usuario             @relation(fields: [usuarioId], references: [id])
   createdAt   DateTime            @default(now())
   resueltaAt  DateTime?
-  
+
+  @@index([usuarioId])
   @@map("mascotas_perdidas")
 }
 

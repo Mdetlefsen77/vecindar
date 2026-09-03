@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
-import { getUserId } from "@/lib/api/guard";
+import { getUserId, parseId } from "@/lib/api/guard";
 import { esGestor, GESTORES_MASCOTAS } from "@/lib/permisos";
 import Link from "next/link";
 import Image from "next/image";
@@ -15,8 +15,10 @@ export default async function DetalleMascotaPage({ params }: Params) {
   if (!session?.user) redirect("/login");
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) notFound();
   const mascota = await prisma.mascotaPerdida.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     include: {
       usuario: {
         select: {

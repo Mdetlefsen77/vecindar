@@ -23,3 +23,8 @@ export const actualizarSuscripcionSchema = z
       d.notaInterna !== undefined,
     { message: "Nada que actualizar." },
   );
+
+export type RegistrarPagoInput = z.infer<typeof registrarPagoSchema>;
+export type ActualizarSuscripcionInput = z.infer<
+  typeof actualizarSuscripcionSchema
+>;

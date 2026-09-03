@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, getUserId } from "@/lib/api/guard";
+import { requireSession, getUserId, parseId } from "@/lib/api/guard";
 import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import { crearComentarioAlertaSchema } from "@/lib/validation/panico";
 import { nombreCompleto } from "@/lib/usuarios";
@@ -17,6 +17,10 @@ export async function POST(
   const { session } = guard;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const body = await req.json();
   const parsed = crearComentarioAlertaSchema.safeParse(body);
 
@@ -28,7 +32,7 @@ export async function POST(
   }
 
   const alerta = await prisma.alertaPanico.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
   });
 
   if (!alerta) {
@@ -48,7 +52,7 @@ export async function POST(
 
   const comentario = await prisma.comentarioAlerta.create({
     data: {
-      alertaId: parseInt(id),
+      alertaId: numId,
       usuarioId,
       texto: parsed.data.texto,
     },

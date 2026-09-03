@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, requireRole } from "@/lib/api/guard";
+import { requireSession, requireRole, parseId } from "@/lib/api/guard";
 import { GESTORES_REQUERIMIENTOS } from "@/lib/permisos";
 import { actualizarRequerimientoSchema } from "@/lib/validation/requerimientos";
 
@@ -12,9 +12,13 @@ export async function GET(_req: NextRequest, { params }: Params) {
   if (guard.response) return guard.response;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
 
   const requerimiento = await prisma.requerimiento.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     include: {
       usuario: {
         select: {
@@ -59,6 +63,10 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   if (roleError) return roleError;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const body = await req.json().catch(() => null);
   const parsed = actualizarRequerimientoSchema.safeParse(body);
 
@@ -82,7 +90,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const { estado, prioridad } = parsed.data;
 
   const existe = await prisma.requerimiento.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     select: { id: true },
   });
   if (!existe) {
@@ -90,7 +98,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 
   const requerimiento = await prisma.requerimiento.update({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     data: {
       ...(estado !== undefined ? { estado } : {}),
       ...(prioridad !== undefined ? { prioridad } : {}),

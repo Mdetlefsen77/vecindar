@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma/client";
 import { requireSession, getUserId } from "@/lib/api/guard";
 import { crearRequerimientoSchema } from "@/lib/validation/requerimientos";
 import { enviarPushBroadcast } from "@/lib/push/enviarPush";
-import type { CategoriaReq } from "@/generated/enums";
+import { CategoriaReq, EstadoRequerimiento } from "@/generated/enums";
+import { enumParam } from "@/lib/api/query";
 
 const CATEGORIA_REQ_LABEL: Record<CategoriaReq, string> = {
   ILUMINACION: "Iluminación",
@@ -27,14 +28,14 @@ export async function GET(req: NextRequest) {
 
   const { searchParams } = new URL(req.url);
   const mine = searchParams.get("mine") === "true";
-  const estado = searchParams.get("estado") ?? undefined;
-  const categoria = searchParams.get("categoria") ?? undefined;
+  const estado = enumParam(EstadoRequerimiento, searchParams.get("estado"));
+  const categoria = enumParam(CategoriaReq, searchParams.get("categoria"));
 
   const requerimientos = await prisma.requerimiento.findMany({
     where: {
       ...(mine ? { usuarioId: getUserId(session) } : {}),
-      ...(estado ? { estado: estado as never } : {}),
-      ...(categoria ? { categoria: categoria as CategoriaReq } : {}),
+      ...(estado ? { estado } : {}),
+      ...(categoria ? { categoria } : {}),
     },
     include: {
       usuario: {

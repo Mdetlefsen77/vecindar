@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const HomeIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
@@ -21,6 +22,7 @@ const HomeIcon = () => (
 
 const MapIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
@@ -36,6 +38,7 @@ const MapIcon = () => (
 );
 const SosIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
@@ -51,6 +54,7 @@ const SosIcon = () => (
 );
 const ClipboardIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6 sm:w-7 sm:h-7"
     fill="none"
     viewBox="0 0 24 24"
@@ -66,6 +70,7 @@ const ClipboardIcon = () => (
 );
 const PawIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-7 h-7"
     fill="none"
     viewBox="0 0 24 24"
@@ -92,7 +97,10 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 bottom-nav-safe">
+    <nav
+      aria-label="Navegación principal"
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 bottom-nav-safe"
+    >
       <div className="flex items-end justify-around h-bottom-nav">
         {NAV_ITEMS.map((item) => {
           const isActive =
@@ -103,6 +111,7 @@ export default function BottomNav() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive ? "page" : undefined}
                 className="flex flex-col items-center justify-center -mt-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-1 rounded-full"
               >
                 <div
@@ -123,6 +132,7 @@ export default function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
+              aria-current={isActive ? "page" : undefined}
               className="flex flex-col items-center justify-center flex-1 min-h-[44px] gap-1 transition-colors py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 rounded-md"
             >
               <span className={isActive ? "text-blue-600" : "text-gray-500"}>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
+import { respuestaValidacion } from "@/lib/api/validation";
 import { GESTORES_USUARIOS } from "@/lib/permisos";
 import { actualizarSuscripcionSchema } from "@/lib/validation/cobranza";
 
@@ -20,10 +21,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const body = await req.json().catch(() => null);
   const parsed = actualizarSuscripcionSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? "Datos inválidos." },
-      { status: 400 },
-    );
+    return respuestaValidacion(parsed.error);
   }
 
   const usuario = await prisma.usuario.findUnique({ where: { id: usuarioId } });
