@@ -46,6 +46,8 @@ export type UsuarioMinAggregateOutputType = {
   loteId: number | null
   verificado: boolean | null
   rol: $Enums.Rol | null
+  ultimoLoginAt: Date | null
+  ultimaActividadAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +62,8 @@ export type UsuarioMaxAggregateOutputType = {
   loteId: number | null
   verificado: boolean | null
   rol: $Enums.Rol | null
+  ultimoLoginAt: Date | null
+  ultimaActividadAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -74,6 +78,8 @@ export type UsuarioCountAggregateOutputType = {
   loteId: number
   verificado: number
   rol: number
+  ultimoLoginAt: number
+  ultimaActividadAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -100,6 +106,8 @@ export type UsuarioMinAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  ultimoLoginAt?: true
+  ultimaActividadAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -114,6 +122,8 @@ export type UsuarioMaxAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  ultimoLoginAt?: true
+  ultimaActividadAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -128,6 +138,8 @@ export type UsuarioCountAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  ultimoLoginAt?: true
+  ultimaActividadAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -229,6 +241,8 @@ export type UsuarioGroupByOutputType = {
   loteId: number
   verificado: boolean
   rol: $Enums.Rol
+  ultimoLoginAt: Date | null
+  ultimaActividadAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: UsuarioCountAggregateOutputType | null
@@ -266,6 +280,8 @@ export type UsuarioWhereInput = {
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
+  ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
   lote?: Prisma.XOR<Prisma.LoteScalarRelationFilter, Prisma.LoteWhereInput>
@@ -290,6 +306,8 @@ export type UsuarioOrderByWithRelationInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lote?: Prisma.LoteOrderByWithRelationInput
@@ -317,6 +335,8 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
+  ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
   lote?: Prisma.XOR<Prisma.LoteScalarRelationFilter, Prisma.LoteWhereInput>
@@ -341,6 +361,8 @@ export type UsuarioOrderByWithAggregationInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UsuarioCountOrderByAggregateInput
@@ -363,6 +385,8 @@ export type UsuarioScalarWhereWithAggregatesInput = {
   loteId?: Prisma.IntWithAggregatesFilter<"Usuario"> | number
   verificado?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolWithAggregatesFilter<"Usuario"> | $Enums.Rol
+  ultimoLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
+  ultimaActividadAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Usuario"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Usuario"> | Date | string
 }
@@ -375,6 +399,8 @@ export type UsuarioCreateInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -399,6 +425,8 @@ export type UsuarioUncheckedCreateInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -420,6 +448,8 @@ export type UsuarioUpdateInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -444,6 +474,8 @@ export type UsuarioUncheckedUpdateInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -467,6 +499,8 @@ export type UsuarioCreateManyInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -479,6 +513,8 @@ export type UsuarioUpdateManyMutationInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -493,6 +529,8 @@ export type UsuarioUncheckedUpdateManyInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -517,6 +555,8 @@ export type UsuarioCountOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  ultimoLoginAt?: Prisma.SortOrder
+  ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -536,6 +576,8 @@ export type UsuarioMaxOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  ultimoLoginAt?: Prisma.SortOrder
+  ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -550,6 +592,8 @@ export type UsuarioMinOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  ultimoLoginAt?: Prisma.SortOrder
+  ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -613,6 +657,10 @@ export type UsuarioUncheckedUpdateManyWithoutLoteNestedInput = {
 
 export type EnumRolFieldUpdateOperationsInput = {
   set?: $Enums.Rol
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type UsuarioCreateNestedOneWithoutVistasSeccionesInput = {
@@ -751,6 +799,8 @@ export type UsuarioCreateWithoutLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
@@ -773,6 +823,8 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -825,6 +877,8 @@ export type UsuarioScalarWhereInput = {
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
+  ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
 }
@@ -837,6 +891,8 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -860,6 +916,8 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -896,6 +954,8 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -919,6 +979,8 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -939,6 +1001,8 @@ export type UsuarioCreateWithoutIncidentesInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -962,6 +1026,8 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
@@ -998,6 +1064,8 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1021,6 +1089,8 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1041,6 +1111,8 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -1064,6 +1136,8 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -1089,6 +1163,8 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -1112,6 +1188,8 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -1148,6 +1226,8 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1171,6 +1251,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1202,6 +1284,8 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1225,6 +1309,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1245,6 +1331,8 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -1268,6 +1356,8 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -1304,6 +1394,8 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1327,6 +1419,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1347,6 +1441,8 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -1370,6 +1466,8 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -1406,6 +1504,8 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1429,6 +1529,8 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1449,6 +1551,8 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -1472,6 +1576,8 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -1508,6 +1614,8 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1531,6 +1639,8 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1551,6 +1661,8 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -1574,6 +1686,8 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -1610,6 +1724,8 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1633,6 +1749,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1653,6 +1771,8 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
@@ -1676,6 +1796,8 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
@@ -1712,6 +1834,8 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
@@ -1735,6 +1859,8 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1756,6 +1882,8 @@ export type UsuarioCreateManyLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1768,6 +1896,8 @@ export type UsuarioUpdateWithoutLoteInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
@@ -1790,6 +1920,8 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
@@ -1812,6 +1944,8 @@ export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1929,6 +2063,8 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  ultimoLoginAt?: boolean
+  ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
@@ -1954,6 +2090,8 @@ export type UsuarioSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  ultimoLoginAt?: boolean
+  ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
@@ -1969,6 +2107,8 @@ export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  ultimoLoginAt?: boolean
+  ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
@@ -1984,11 +2124,13 @@ export type UsuarioSelectScalar = {
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  ultimoLoginAt?: boolean
+  ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
+export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
 export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
   incidentes?: boolean | Prisma.Usuario$incidentesArgs<ExtArgs>
@@ -2033,6 +2175,8 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     loteId: number
     verificado: boolean
     rol: $Enums.Rol
+    ultimoLoginAt: Date | null
+    ultimaActividadAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["usuario"]>
@@ -2477,6 +2621,8 @@ export interface UsuarioFieldRefs {
   readonly loteId: Prisma.FieldRef<"Usuario", 'Int'>
   readonly verificado: Prisma.FieldRef<"Usuario", 'Boolean'>
   readonly rol: Prisma.FieldRef<"Usuario", 'Rol'>
+  readonly ultimoLoginAt: Prisma.FieldRef<"Usuario", 'DateTime'>
+  readonly ultimaActividadAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Usuario", 'DateTime'>
 }

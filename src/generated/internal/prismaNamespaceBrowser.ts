@@ -132,6 +132,8 @@ export const UsuarioScalarFieldEnum = {
   loteId: 'loteId',
   verificado: 'verificado',
   rol: 'rol',
+  ultimoLoginAt: 'ultimoLoginAt',
+  ultimaActividadAt: 'ultimaActividadAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

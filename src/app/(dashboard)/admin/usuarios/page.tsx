@@ -2,10 +2,12 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
+import { tiempoRelativo, enLinea } from "@/lib/fechas";
 import Link from "next/link";
 import { Suspense } from "react";
 import UsuariosFiltros from "./UsuariosFiltros";
 import { type Rol } from "@/generated/enums";
+import type { Prisma } from "@/generated/client";
 
 const ROL_CONFIG: Record<Rol, { label: string; bg: string; text: string }> = {
   VECINO: { label: "Vecino", bg: "bg-gray-100", text: "text-gray-600" },
@@ -22,7 +24,12 @@ const ROL_CONFIG: Record<Rol, { label: string; bg: string; text: string }> = {
   ADMIN: { label: "Admin", bg: "bg-purple-100", text: "text-purple-700" },
 };
 
-type SearchParams = Promise<{ rol?: string; verificado?: string; q?: string }>;
+type SearchParams = Promise<{
+  rol?: string;
+  verificado?: string;
+  q?: string;
+  actividad?: string;
+}>;
 
 export default async function AdminUsuariosPage({
   searchParams,
@@ -33,23 +40,42 @@ export default async function AdminUsuariosPage({
   if (!session?.user) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/");
 
-  const { rol, verificado, q } = await searchParams;
+  const { rol, verificado, q, actividad } = await searchParams;
+
+  // "ahora" es determinista para la request (react-hooks/purity apunta a cliente).
+  // eslint-disable-next-line react-hooks/purity
+  const ahora = Date.now();
+  const hace7d = new Date(ahora - 7 * 86_400_000);
+  const hace30d = new Date(ahora - 30 * 86_400_000);
+
+  // Cada filtro es un AND independiente para no pisar la clave `OR` entre sí
+  // (búsqueda de texto vs. "inactivos").
+  const filtros: Prisma.UsuarioWhereInput[] = [];
+  if (rol) filtros.push({ rol: rol as Rol });
+  if (verificado !== undefined)
+    filtros.push({ verificado: verificado === "true" });
+  if (q)
+    filtros.push({
+      OR: [
+        { nombre: { contains: q, mode: "insensitive" } },
+        { apellido: { contains: q, mode: "insensitive" } },
+        { email: { contains: q, mode: "insensitive" } },
+      ],
+    });
+  if (actividad === "7d")
+    filtros.push({ ultimaActividadAt: { gte: hace7d } });
+  else if (actividad === "30d")
+    filtros.push({ ultimaActividadAt: { gte: hace30d } });
+  else if (actividad === "inactivos")
+    filtros.push({
+      OR: [
+        { ultimaActividadAt: null },
+        { ultimaActividadAt: { lt: hace30d } },
+      ],
+    });
 
   const usuarios = await prisma.usuario.findMany({
-    where: {
-      ...(rol ? { rol: rol as Rol } : {}),
-      ...(verificado !== undefined
-        ? { verificado: verificado === "true" }
-        : {}),
-      ...(q
-        ? {
-            OR: [
-              { nombre: { contains: q, mode: "insensitive" } },
-              { email: { contains: q, mode: "insensitive" } },
-            ],
-          }
-        : {}),
-    },
+    where: filtros.length ? { AND: filtros } : {},
     select: {
       id: true,
       nombre: true,
@@ -59,6 +85,8 @@ export default async function AdminUsuariosPage({
       rol: true,
       verificado: true,
       createdAt: true,
+      ultimoLoginAt: true,
+      ultimaActividadAt: true,
       lote: {
         select: {
           numero: true,
@@ -109,12 +137,13 @@ export default async function AdminUsuariosPage({
       ) : (
         <div className="rounded-xl border border-gray-200 overflow-hidden">
           {/* Header — solo desktop */}
-          <div className="hidden sm:grid grid-cols-[1fr_1.5fr_auto_auto_auto] gap-4 px-4 py-2 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wide">
+          <div className="hidden sm:grid grid-cols-[1fr_1.4fr_auto_auto_auto_auto] gap-4 px-4 py-2 bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wide">
             <span>Nombre</span>
             <span>Email</span>
             <span>Lote</span>
             <span>Rol</span>
             <span>Estado</span>
+            <span>Actividad</span>
           </div>
 
           <div className="divide-y divide-gray-100">
@@ -124,7 +153,7 @@ export default async function AdminUsuariosPage({
                 <Link
                   key={u.id}
                   href={`/admin/usuarios/${u.id}`}
-                  className={`grid sm:grid-cols-[1fr_1.5fr_auto_auto_auto] gap-2 sm:gap-4 px-4 py-3 items-center hover:bg-gray-50 transition-colors ${
+                  className={`grid sm:grid-cols-[1fr_1.4fr_auto_auto_auto_auto] gap-2 sm:gap-4 px-4 py-3 items-center hover:bg-gray-50 transition-colors ${
                     !u.verificado
                       ? "bg-amber-50 hover:bg-amber-100"
                       : "bg-white"
@@ -133,6 +162,12 @@ export default async function AdminUsuariosPage({
                   {/* Nombre */}
                   <div>
                     <p className="font-medium text-sm text-gray-900">
+                      {enLinea(u.ultimaActividadAt) && (
+                        <span
+                          className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1.5 align-middle"
+                          title="En línea"
+                        />
+                      )}
                       {nombreCompleto(u)}
                     </p>
                     <p className="text-xs text-gray-400 sm:hidden">{u.email}</p>
@@ -140,6 +175,9 @@ export default async function AdminUsuariosPage({
                       {u._count.incidentes} incidente
                       {u._count.incidentes !== 1 ? "s" : ""} ·{" "}
                       {u._count.requerimientos} req.
+                    </p>
+                    <p className="text-xs text-gray-400 mt-0.5 sm:hidden">
+                      Última actividad: {tiempoRelativo(u.ultimaActividadAt)}
                     </p>
                   </div>
 
@@ -170,6 +208,18 @@ export default async function AdminUsuariosPage({
                       Pendiente
                     </span>
                   )}
+
+                  {/* Actividad — solo desktop (en mobile va bajo el nombre) */}
+                  <span
+                    className="hidden sm:block text-xs text-gray-500 whitespace-nowrap"
+                    title={
+                      u.ultimoLoginAt
+                        ? `Último login: ${new Date(u.ultimoLoginAt).toLocaleString("es-AR")}`
+                        : "Sin logins registrados"
+                    }
+                  >
+                    {tiempoRelativo(u.ultimaActividadAt)}
+                  </span>
                 </Link>
               );
             })}

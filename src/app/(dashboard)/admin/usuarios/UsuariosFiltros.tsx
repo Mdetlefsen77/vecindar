@@ -29,6 +29,7 @@ export default function UsuariosFiltros() {
   const q = searchParams.get("q") ?? "";
   const rol = searchParams.get("rol") ?? "";
   const verificado = searchParams.get("verificado") ?? "";
+  const actividad = searchParams.get("actividad") ?? "";
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -66,6 +67,28 @@ export default function UsuariosFiltros() {
             onClick={() => update("verificado", opt.value)}
             className={`px-3 py-2 transition-colors ${
               verificado === opt.value
+                ? "bg-blue-600 text-white font-medium"
+                : "bg-white text-gray-600 hover:bg-gray-50"
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Actividad */}
+      <div className="flex rounded-lg border border-gray-300 overflow-hidden text-sm">
+        {[
+          { value: "", label: "Actividad: todas" },
+          { value: "7d", label: "Activos 7d" },
+          { value: "30d", label: "Activos 30d" },
+          { value: "inactivos", label: "Inactivos +30d" },
+        ].map((opt) => (
+          <button
+            key={opt.value}
+            onClick={() => update("actividad", opt.value)}
+            className={`px-3 py-2 transition-colors ${
+              actividad === opt.value
                 ? "bg-blue-600 text-white font-medium"
                 : "bg-white text-gray-600 hover:bg-gray-50"
             }`}

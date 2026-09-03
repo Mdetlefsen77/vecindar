@@ -88,9 +88,16 @@ model Usuario {
   pushSubscriptions   PushSubscription[]
   vistasSecciones     VistaSeccion[]
 
+  // Uso de la cuenta (para cobranza / actividad — ver /admin/usuarios).
+  // ultimoLoginAt: última autenticación con credenciales.
+  // ultimaActividadAt: último request autenticado (throttle en requireSession).
+  ultimoLoginAt       DateTime?
+  ultimaActividadAt   DateTime?
+
   createdAt           DateTime            @default(now())
   updatedAt           DateTime            @updatedAt
 
+  @@index([ultimaActividadAt])
   @@map("usuarios")
 }
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { Session } from "next-auth";
 import { auth } from "@/lib/auth";
+import { registrarActividad } from "@/lib/actividad";
 
 export type AuthedSession = Session & { user: NonNullable<Session["user"]> };
 
@@ -27,6 +28,7 @@ export async function requireSession(
   if (!session?.user) {
     return { response: NextResponse.json({ error: message }, { status: 401 }) };
   }
+  registrarActividad(Number(session.user.id));
   return { session: session as AuthedSession };
 }
 
@@ -58,5 +60,6 @@ export async function requireRoleSession(
   if (!session?.user || !allowed.includes(session.user.role)) {
     return { response: NextResponse.json({ error: message }, { status: 403 }) };
   }
+  registrarActividad(Number(session.user.id));
   return { session: session as AuthedSession };
 }

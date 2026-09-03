@@ -41,6 +41,12 @@ const authConfig = {
             );
           }
 
+          // Marca de último login (y de actividad — loguearse cuenta como uso).
+          await prisma.usuario.update({
+            where: { id: usuario.id },
+            data: { ultimoLoginAt: new Date(), ultimaActividadAt: new Date() },
+          });
+
           return {
             id: usuario.id.toString(),
             email: usuario.email,
