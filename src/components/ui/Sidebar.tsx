@@ -109,6 +109,22 @@ const PawIcon = () => (
     />
   </svg>
 );
+const WalletIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3 10h18M7 15h1m4 0h1m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+    />
+  </svg>
+);
 const AdminIcon = () => (
   <svg
     aria-hidden="true"
@@ -175,6 +191,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/panico", label: "SOS", icon: <SosIcon /> },
   { href: "/requerimientos", label: "Requerimientos", icon: <ClipboardIcon /> },
   { href: "/mascotas", label: "Mascotas", icon: <PawIcon /> },
+  { href: "/mi-suscripcion", label: "Mi suscripción", icon: <WalletIcon /> },
   {
     href: "/seguridad",
     label: "Panel de Seguridad",

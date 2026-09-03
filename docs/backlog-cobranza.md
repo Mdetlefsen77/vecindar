@@ -3,7 +3,7 @@
 Vecindar cobra una suscripción mensual a los vecinos. Este documento lista lo
 hecho y lo pendiente del módulo de cobranza.
 
-**Última actualización:** 02/09/2026
+**Última actualización:** 03/09/2026
 
 ---
 
@@ -34,6 +34,31 @@ hecho y lo pendiente del módulo de cobranza.
   nota), exportar CSV.
 - `/admin/usuarios/[id]`: bloque "Suscripción" (estado, vigencia, últimos pagos).
 
+### Fase 3a — Vecino ve su suscripción + aviso de mora (hecha, rama `feat/mi-suscripcion`)
+
+- **`/mi-suscripcion`** (nueva, todos los roles): estado (al día / vencida / sin
+  registro / exento), cuota mensual, cobertura hasta, meses adeudados + deuda
+  estimada, bloque "Cómo pagar" (con `DATOS_PAGO`) e historial **completo** de
+  pagos (contador + lista con período, método, fecha, monto).
+- **`CobranzaBanner`** (`src/components/ui/CobranzaBanner.tsx`): aviso global en
+  el layout del dashboard, aparece solo si `estadoCobranza === "vencida"`. Link a
+  `/mi-suscripcion` + "recordar más tarde" (oculta hasta recargar la app, sin
+  persistencia). No se muestra en la propia página de detalle. **El botón de
+  pánico no se toca.**
+- `src/lib/cobranza.ts`: helpers `mesesVencidos()` y `deudaEstimada()`,
+  `METODO_PAGO_LABEL` centralizado (`CobranzaTabla` lo importa en vez de
+  duplicarlo), y config `DATOS_PAGO`.
+- Link "Mi suscripción" en `Sidebar` y `MobileHeader` para todos los roles.
+- El layout del dashboard hace un `findUnique` extra de `Suscripcion` (índice
+  único) por request para saber si mostrar el banner.
+- **Sin gate de solo-lectura todavía** (ver backlog #1).
+
+**Configuración nueva**
+
+- `DATOS_PAGO` en `src/lib/cobranza.ts`: alias / CBU / titular / nota que ve el
+  vecino en "Cómo pagar". Hoy solo tiene la nota; completar a mano hasta que
+  exista MercadoPago (backlog #4).
+
 **Decisiones tomadas**
 
 - Cobro **por cuenta de usuario** (no por lote).
@@ -50,11 +75,12 @@ hecho y lo pendiente del módulo de cobranza.
 
 ## Backlog (sin fecha)
 
-### 1. Aviso / gate para morosos
+### 1. Gate para morosos
 
-Banner "tu cuota venció" dentro de la app y/o modo solo-lectura (puede ver pero
-no crear incidentes, requerimientos, etc.). **El botón de pánico nunca se
-bloquea.**
+El **banner** de "tu cuota venció" ya está hecho (Fase 3a). Falta el **modo
+solo-lectura**: el moroso puede ver pero no crear incidentes, requerimientos,
+etc. **El botón de pánico nunca se bloquea.** Pendiente decidir si se hace o
+alcanza con el aviso.
 
 ### 2. Recordatorios push automáticos
 
@@ -62,10 +88,10 @@ Notificaciones de vencimiento ("vence en 3 días", "cuota vencida"). Necesita
 **Vercel Cron** — hoy no hay ningún cron configurado (`vercel.json` no existe).
 La infraestructura de push ya está lista (`src/lib/push/enviarPush.ts`).
 
-### 3. Página "Mi suscripción" para el vecino
+### 3. Página "Mi suscripción" para el vecino — ✅ hecha (Fase 3a)
 
-Estado, fecha de vigencia, historial de pagos, datos de transferencia / link de
-pago.
+Estado, vigencia, deuda estimada, historial de pagos y datos de transferencia
+ya están en `/mi-suscripcion`. Falta solo el "link de pago" (depende de #4).
 
 ### 4. Integración MercadoPago
 
