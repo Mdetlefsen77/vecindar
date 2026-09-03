@@ -55,6 +55,8 @@ export const ModelName = {
   Lote: 'Lote',
   Residente: 'Residente',
   Usuario: 'Usuario',
+  Suscripcion: 'Suscripcion',
+  Pago: 'Pago',
   VistaSeccion: 'VistaSeccion',
   Incidente: 'Incidente',
   ConfigSLA: 'ConfigSLA',
@@ -139,6 +141,35 @@ export const UsuarioScalarFieldEnum = {
 } as const
 
 export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
+
+
+export const SuscripcionScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  vigenteHasta: 'vigenteHasta',
+  montoMensual: 'montoMensual',
+  exento: 'exento',
+  notaInterna: 'notaInterna',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SuscripcionScalarFieldEnum = (typeof SuscripcionScalarFieldEnum)[keyof typeof SuscripcionScalarFieldEnum]
+
+
+export const PagoScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  periodo: 'periodo',
+  monto: 'monto',
+  metodo: 'metodo',
+  nota: 'nota',
+  fecha: 'fecha',
+  registradoPorId: 'registradoPorId',
+  createdAt: 'createdAt'
+} as const
+
+export type PagoScalarFieldEnum = (typeof PagoScalarFieldEnum)[keyof typeof PagoScalarFieldEnum]
 
 
 export const VistaSeccionScalarFieldEnum = {

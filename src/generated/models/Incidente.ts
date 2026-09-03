@@ -711,14 +711,6 @@ export type EnumPrioridadFieldUpdateOperationsInput = {
   set?: $Enums.Prioridad
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type IncidenteCreateWithoutLoteInput = {
   tipo: $Enums.TipoIncidente
   descripcion: string
