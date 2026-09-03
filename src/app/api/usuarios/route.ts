@@ -45,6 +45,8 @@ export async function GET(req: NextRequest) {
       rol: true,
       verificado: true,
       createdAt: true,
+      ultimoLoginAt: true,
+      ultimaActividadAt: true,
       lote: {
         select: {
           numero: true,

@@ -9,6 +9,12 @@ export default async function AdminPage() {
   if (!session?.user) redirect("/login");
   if (session.user.role !== "ADMIN") redirect("/");
 
+  // "ahora" es determinista para la request (react-hooks/purity apunta a cliente).
+  // eslint-disable-next-line react-hooks/purity
+  const ahora = Date.now();
+  const hace7d = new Date(ahora - 7 * 86_400_000);
+  const hace30d = new Date(ahora - 30 * 86_400_000);
+
   const [
     totalUsuarios,
     pendientesVerif,
@@ -17,6 +23,8 @@ export default async function AdminPage() {
     alertasPanico,
     totalLotes,
     lotesOcupados,
+    activos7d,
+    activos30d,
   ] = await Promise.all([
     prisma.usuario.count(),
     prisma.usuario.count({ where: { verificado: false } }),
@@ -29,6 +37,8 @@ export default async function AdminPage() {
     }),
     prisma.lote.count(),
     prisma.lote.count({ where: { usuarios: { some: {} } } }),
+    prisma.usuario.count({ where: { ultimaActividadAt: { gte: hace7d } } }),
+    prisma.usuario.count({ where: { ultimaActividadAt: { gte: hace30d } } }),
   ]);
 
   const stats = [
@@ -84,6 +94,24 @@ export default async function AdminPage() {
       href: "/mapa",
       color: "border-green-300 bg-green-50",
       icon: "🏘️",
+      urgent: false,
+    },
+    {
+      label: "Activos últimos 30 días",
+      value: activos30d,
+      total: totalUsuarios,
+      href: "/admin/usuarios?actividad=30d",
+      color: "border-gray-200 bg-white",
+      icon: "📈",
+      urgent: false,
+    },
+    {
+      label: "Activos últimos 7 días",
+      value: activos7d,
+      total: totalUsuarios,
+      href: "/admin/usuarios?actividad=7d",
+      color: "border-gray-200 bg-white",
+      icon: "⚡",
       urgent: false,
     },
   ];

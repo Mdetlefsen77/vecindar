@@ -624,10 +624,6 @@ export type EnumEstadoAlertaFieldUpdateOperationsInput = {
   set?: $Enums.EstadoAlerta
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
 export type AlertaPanicoCreateNestedOneWithoutComentariosInput = {
   create?: Prisma.XOR<Prisma.AlertaPanicoCreateWithoutComentariosInput, Prisma.AlertaPanicoUncheckedCreateWithoutComentariosInput>
   connectOrCreate?: Prisma.AlertaPanicoCreateOrConnectWithoutComentariosInput

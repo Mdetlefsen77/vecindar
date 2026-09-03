@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
+import { tiempoRelativo, enLinea } from "@/lib/fechas";
 import Link from "next/link";
 import AccionesUsuario from "./AccionesUsuario";
 
@@ -43,6 +44,8 @@ export default async function DetalleUsuarioPage({ params }: Params) {
       rol: true,
       verificado: true,
       createdAt: true,
+      ultimoLoginAt: true,
+      ultimaActividadAt: true,
       lote: {
         select: {
           id: true,
@@ -114,6 +117,18 @@ export default async function DetalleUsuarioPage({ params }: Params) {
           <p className="text-xs text-gray-400">
             Registrado el{" "}
             {new Date(usuario.createdAt).toLocaleDateString("es-AR")}
+          </p>
+          <p className="text-xs text-gray-400">
+            {enLinea(usuario.ultimaActividadAt) && (
+              <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1 align-middle" />
+            )}
+            Última actividad: {tiempoRelativo(usuario.ultimaActividadAt)}
+          </p>
+          <p className="text-xs text-gray-400">
+            Último login:{" "}
+            {usuario.ultimoLoginAt
+              ? new Date(usuario.ultimoLoginAt).toLocaleString("es-AR")
+              : "nunca"}
           </p>
           {!usuario.verificado && (
             <span className="inline-block text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">

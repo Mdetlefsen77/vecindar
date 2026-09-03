@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
+import { registrarActividad } from "@/lib/actividad";
 import Sidebar from "@/components/ui/Sidebar";
 import BottomNav from "@/components/ui/BottomNav";
 import MobileHeader from "@/components/ui/MobileHeader";
@@ -18,6 +19,8 @@ export default async function DashboardLayout({
   if (!session) {
     redirect("/login");
   }
+
+  registrarActividad(Number(session.user?.id));
 
   const userName = session.user?.name ?? "Usuario";
   const userEmail = session.user?.email ?? "";
