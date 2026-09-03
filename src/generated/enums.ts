@@ -9,6 +9,16 @@
 * 🟢 You can import this file directly.
 */
 
+export const MetodoPago = {
+  TRANSFERENCIA: 'TRANSFERENCIA',
+  EFECTIVO: 'EFECTIVO',
+  MERCADOPAGO: 'MERCADOPAGO',
+  OTRO: 'OTRO'
+} as const
+
+export type MetodoPago = (typeof MetodoPago)[keyof typeof MetodoPago]
+
+
 export const SeccionInicio = {
   INCIDENTES: 'INCIDENTES',
   REQUERIMIENTOS: 'REQUERIMIENTOS',

@@ -88,6 +88,10 @@ model Usuario {
   pushSubscriptions   PushSubscription[]
   vistasSecciones     VistaSeccion[]
 
+  suscripcion         Suscripcion?
+  pagos               Pago[]             @relation("PagosDelUsuario")
+  pagosRegistrados    Pago[]             @relation("PagoRegistradoPor")
+
   // Uso de la cuenta (para cobranza / actividad — ver /admin/usuarios).
   // ultimoLoginAt: última autenticación con credenciales.
   // ultimaActividadAt: último request autenticado (throttle en requireSession).
@@ -99,6 +103,57 @@ model Usuario {
 
   @@index([ultimaActividadAt])
   @@map("usuarios")
+}
+
+// ============================================
+// COBRANZA / SUSCRIPCIONES
+// ============================================
+
+// Estado de pago de la cuota mensual de cada usuario. La fila se crea al
+// registrar el primer pago o al marcar al usuario como exento; si no existe,
+// el usuario se muestra como "sin datos" en el panel de cobranza.
+model Suscripcion {
+  id           Int       @id @default(autoincrement())
+  usuarioId    Int       @unique
+  usuario      Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  // Última fecha cubierta por los pagos (fin del mes del último período pago).
+  // null = nunca pagó. "Vencida" = vigenteHasta < hoy.
+  vigenteHasta DateTime?
+  // Cuota mensual para este usuario en pesos. null = usar CUOTA_MENSUAL_DEFAULT.
+  montoMensual Int?
+  // Exento de pago (ej: admin, referente, caso especial) — no cuenta como deudor.
+  exento       Boolean   @default(false)
+  notaInterna  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@map("suscripciones")
+}
+
+// Un pago registrado a mano por un admin. Un pago por usuario y período.
+model Pago {
+  id              Int        @id @default(autoincrement())
+  usuarioId       Int
+  usuario         Usuario    @relation("PagosDelUsuario", fields: [usuarioId], references: [id], onDelete: Cascade)
+  periodo         String     // "YYYY-MM" — mes que cubre este pago
+  monto           Int        // pesos
+  metodo          MetodoPago @default(TRANSFERENCIA)
+  nota            String?
+  fecha           DateTime   @default(now())
+  registradoPorId Int
+  registradoPor   Usuario    @relation("PagoRegistradoPor", fields: [registradoPorId], references: [id])
+  createdAt       DateTime   @default(now())
+
+  @@unique([usuarioId, periodo])
+  @@index([periodo])
+  @@map("pagos")
+}
+
+enum MetodoPago {
+  TRANSFERENCIA
+  EFECTIVO
+  MERCADOPAGO
+  OTRO
 }
 
 // Última vez que cada usuario visitó una sección — usado para calcular

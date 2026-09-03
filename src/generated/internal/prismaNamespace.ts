@@ -388,6 +388,8 @@ export const ModelName = {
   Lote: 'Lote',
   Residente: 'Residente',
   Usuario: 'Usuario',
+  Suscripcion: 'Suscripcion',
+  Pago: 'Pago',
   VistaSeccion: 'VistaSeccion',
   Incidente: 'Incidente',
   ConfigSLA: 'ConfigSLA',
@@ -412,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -709,6 +711,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UsuarioCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UsuarioCountAggregateOutputType> | number
+        }
+      }
+    }
+    Suscripcion: {
+      payload: Prisma.$SuscripcionPayload<ExtArgs>
+      fields: Prisma.SuscripcionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SuscripcionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SuscripcionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>
+        }
+        findFirst: {
+          args: Prisma.SuscripcionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SuscripcionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>
+        }
+        findMany: {
+          args: Prisma.SuscripcionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>[]
+        }
+        create: {
+          args: Prisma.SuscripcionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>
+        }
+        createMany: {
+          args: Prisma.SuscripcionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SuscripcionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>[]
+        }
+        delete: {
+          args: Prisma.SuscripcionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>
+        }
+        update: {
+          args: Prisma.SuscripcionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>
+        }
+        deleteMany: {
+          args: Prisma.SuscripcionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SuscripcionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SuscripcionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>[]
+        }
+        upsert: {
+          args: Prisma.SuscripcionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SuscripcionPayload>
+        }
+        aggregate: {
+          args: Prisma.SuscripcionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSuscripcion>
+        }
+        groupBy: {
+          args: Prisma.SuscripcionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SuscripcionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SuscripcionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SuscripcionCountAggregateOutputType> | number
+        }
+      }
+    }
+    Pago: {
+      payload: Prisma.$PagoPayload<ExtArgs>
+      fields: Prisma.PagoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PagoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PagoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        findFirst: {
+          args: Prisma.PagoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PagoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        findMany: {
+          args: Prisma.PagoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>[]
+        }
+        create: {
+          args: Prisma.PagoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        createMany: {
+          args: Prisma.PagoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PagoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>[]
+        }
+        delete: {
+          args: Prisma.PagoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        update: {
+          args: Prisma.PagoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        deleteMany: {
+          args: Prisma.PagoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PagoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PagoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>[]
+        }
+        upsert: {
+          args: Prisma.PagoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PagoPayload>
+        }
+        aggregate: {
+          args: Prisma.PagoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePago>
+        }
+        groupBy: {
+          args: Prisma.PagoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PagoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PagoCountAggregateOutputType> | number
         }
       }
     }
@@ -1476,6 +1626,35 @@ export const UsuarioScalarFieldEnum = {
 export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
 
 
+export const SuscripcionScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  vigenteHasta: 'vigenteHasta',
+  montoMensual: 'montoMensual',
+  exento: 'exento',
+  notaInterna: 'notaInterna',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SuscripcionScalarFieldEnum = (typeof SuscripcionScalarFieldEnum)[keyof typeof SuscripcionScalarFieldEnum]
+
+
+export const PagoScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  periodo: 'periodo',
+  monto: 'monto',
+  metodo: 'metodo',
+  nota: 'nota',
+  fecha: 'fecha',
+  registradoPorId: 'registradoPorId',
+  createdAt: 'createdAt'
+} as const
+
+export type PagoScalarFieldEnum = (typeof PagoScalarFieldEnum)[keyof typeof PagoScalarFieldEnum]
+
+
 export const VistaSeccionScalarFieldEnum = {
   id: 'id',
   usuarioId: 'usuarioId',
@@ -1709,6 +1888,20 @@ export type ListEnumRolFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMo
 
 
 /**
+ * Reference to a field of type 'MetodoPago'
+ */
+export type EnumMetodoPagoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MetodoPago'>
+    
+
+
+/**
+ * Reference to a field of type 'MetodoPago[]'
+ */
+export type ListEnumMetodoPagoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MetodoPago[]'>
+    
+
+
+/**
  * Reference to a field of type 'SeccionInicio'
  */
 export type EnumSeccionInicioFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SeccionInicio'>
@@ -1918,6 +2111,8 @@ export type GlobalOmitConfig = {
   lote?: Prisma.LoteOmit
   residente?: Prisma.ResidenteOmit
   usuario?: Prisma.UsuarioOmit
+  suscripcion?: Prisma.SuscripcionOmit
+  pago?: Prisma.PagoOmit
   vistaSeccion?: Prisma.VistaSeccionOmit
   incidente?: Prisma.IncidenteOmit
   configSLA?: Prisma.ConfigSLAOmit

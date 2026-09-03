@@ -227,6 +227,7 @@ export default async function AdminPage() {
               href: "/admin/usuarios",
               icon: "👥",
             },
+            { label: "Cobranza", href: "/admin/cobranza", icon: "💰" },
             { label: "Ver incidentes", href: "/incidentes", icon: "🔍" },
             { label: "Requerimientos", href: "/requerimientos", icon: "📋" },
             { label: "Mapa del barrio", href: "/mapa", icon: "🗺️" },

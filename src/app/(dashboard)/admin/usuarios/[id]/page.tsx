@@ -3,6 +3,13 @@ import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
 import { tiempoRelativo, enLinea } from "@/lib/fechas";
+import {
+  estadoCobranza,
+  montoDeSuscripcion,
+  formatoPesos,
+  periodoLabel,
+  ESTADO_COBRANZA_LABEL,
+} from "@/lib/cobranza";
 import Link from "next/link";
 import AccionesUsuario from "./AccionesUsuario";
 
@@ -46,6 +53,19 @@ export default async function DetalleUsuarioPage({ params }: Params) {
       createdAt: true,
       ultimoLoginAt: true,
       ultimaActividadAt: true,
+      suscripcion: {
+        select: {
+          vigenteHasta: true,
+          montoMensual: true,
+          exento: true,
+          notaInterna: true,
+        },
+      },
+      pagos: {
+        orderBy: { periodo: "desc" },
+        take: 6,
+        select: { id: true, periodo: true, monto: true, metodo: true },
+      },
       lote: {
         select: {
           id: true,
@@ -200,6 +220,65 @@ export default async function DetalleUsuarioPage({ params }: Params) {
             <p className="text-xs text-gray-500 mt-0.5">{s.label}</p>
           </div>
         ))}
+      </div>
+
+      {/* Suscripción / cobranza */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="font-semibold text-gray-800">Suscripción</h2>
+          <Link
+            href={`/admin/cobranza?q=${encodeURIComponent(usuario.email)}`}
+            className="text-sm text-blue-600 hover:underline"
+          >
+            Gestionar en Cobranza →
+          </Link>
+        </div>
+        <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm space-y-2">
+          <div className="flex items-center gap-2">
+            {(() => {
+              const est = estadoCobranza(usuario.suscripcion);
+              const badge: Record<string, string> = {
+                al_dia: "bg-green-100 text-green-700",
+                vencida: "bg-red-100 text-red-700",
+                sin_datos: "bg-gray-100 text-gray-500",
+                exento: "bg-blue-100 text-blue-700",
+              };
+              return (
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${badge[est]}`}
+                >
+                  {ESTADO_COBRANZA_LABEL[est]}
+                </span>
+              );
+            })()}
+            <span className="text-gray-500">
+              Cuota: {formatoPesos(montoDeSuscripcion(usuario.suscripcion))}
+              {usuario.suscripcion?.montoMensual != null && " (propia)"}
+            </span>
+            {usuario.suscripcion?.vigenteHasta && (
+              <span className="text-gray-500">
+                · Vigente hasta{" "}
+                {new Date(
+                  usuario.suscripcion.vigenteHasta,
+                ).toLocaleDateString("es-AR")}
+              </span>
+            )}
+          </div>
+          {usuario.pagos.length > 0 ? (
+            <ul className="text-xs text-gray-500 divide-y divide-gray-100">
+              {usuario.pagos.map((p) => (
+                <li key={p.id} className="py-1 flex justify-between">
+                  <span>{periodoLabel(p.periodo)}</span>
+                  <span>
+                    {formatoPesos(p.monto)} · {p.metodo.toLowerCase()}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-xs text-gray-400">Sin pagos registrados.</p>
+          )}
+        </div>
       </div>
 
       {/* Panel de acciones — client component */}
