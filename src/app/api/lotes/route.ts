@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { auth } from "@/lib/auth";
+import { parseId } from "@/lib/api/guard";
 
 // Debe coincidir con el límite usado en /api/usuarios al registrar
 const MAX_USUARIOS_POR_LOTE = 2;
@@ -14,7 +15,7 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const soloDisponibles = searchParams.get("disponibles") === "true";
-    const manzanaId = searchParams.get("manzanaId");
+    const manzanaId = parseId(searchParams.get("manzanaId"));
 
     const session = await auth();
     const publico = !session?.user;
@@ -25,7 +26,7 @@ export async function GET(req: NextRequest) {
 
     const lotes = await prisma.lote.findMany({
       where: {
-        ...(manzanaId ? { manzanaId: parseInt(manzanaId) } : {}),
+        ...(manzanaId ? { manzanaId } : {}),
       },
       include: {
         manzana: { select: { numero: true, zona: true } },

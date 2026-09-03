@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
+import { parseId } from "@/lib/api/guard";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
 import Link from "next/link";
@@ -21,8 +22,10 @@ export default async function DetalleIncidentePage({ params }: Params) {
   if (!session?.user) redirect("/login");
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) notFound();
   const inc = await prisma.incidente.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     include: {
       reportadoPor: {
         select: {
@@ -67,9 +70,11 @@ export default async function DetalleIncidentePage({ params }: Params) {
       <div className="flex items-center gap-3 mb-6">
         <Link
           href="/incidentes"
+          aria-label="Volver"
           className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
         >
           <svg
+            aria-hidden="true"
             className="w-5 h-5"
             fill="none"
             viewBox="0 0 24 24"

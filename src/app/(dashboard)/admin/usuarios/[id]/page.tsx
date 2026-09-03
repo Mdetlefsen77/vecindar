@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { parseId } from "@/lib/api/guard";
 import { nombreCompleto } from "@/lib/usuarios";
 import { tiempoRelativo, enLinea } from "@/lib/fechas";
 import {
@@ -38,7 +39,8 @@ export default async function DetalleUsuarioPage({ params }: Params) {
   if (session.user.role !== "ADMIN") redirect("/");
 
   const { id } = await params;
-  const userId = parseInt(id);
+  const userId = parseId(id);
+  if (userId === null) notFound();
 
   const usuario = await prisma.usuario.findUnique({
     where: { id: userId },

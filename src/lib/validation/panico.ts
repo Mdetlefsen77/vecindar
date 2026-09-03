@@ -18,3 +18,11 @@ export const actualizarAlertaPanicoSchema = z
 export const crearComentarioAlertaSchema = z.object({
   texto: z.string().trim().min(1),
 });
+
+export type CrearAlertaPanicoInput = z.infer<typeof crearAlertaPanicoSchema>;
+export type ActualizarAlertaPanicoInput = z.infer<
+  typeof actualizarAlertaPanicoSchema
+>;
+export type CrearComentarioAlertaInput = z.infer<
+  typeof crearComentarioAlertaSchema
+>;

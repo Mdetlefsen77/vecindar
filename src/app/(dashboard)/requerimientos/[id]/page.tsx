@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect, notFound } from "next/navigation";
+import { parseId } from "@/lib/api/guard";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
 import Link from "next/link";
@@ -21,33 +22,39 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
   if (!session?.user) redirect("/login");
 
   const { id } = await params;
-  const r = await prisma.requerimiento.findUnique({
-    where: { id: parseInt(id) },
-    include: {
-      usuario: {
-        select: {
-          id: true,
-          nombre: true,
-          apellido: true,
-          lote: {
-            select: { numero: true, manzana: { select: { numero: true } } },
+  const numId = parseId(id);
+  if (numId === null) notFound();
+
+  // El requerimiento y la config de SLA son independientes — en paralelo.
+  const [r, slaRows] = await Promise.all([
+    prisma.requerimiento.findUnique({
+      where: { id: numId },
+      include: {
+        usuario: {
+          select: {
+            id: true,
+            nombre: true,
+            apellido: true,
+            lote: {
+              select: { numero: true, manzana: { select: { numero: true } } },
+            },
           },
         },
-      },
-      comentarios: {
-        include: {
-          usuario: {
-            select: { id: true, nombre: true, apellido: true, rol: true },
+        comentarios: {
+          include: {
+            usuario: {
+              select: { id: true, nombre: true, apellido: true, rol: true },
+            },
           },
+          orderBy: { createdAt: "asc" },
         },
-        orderBy: { createdAt: "asc" },
       },
-    },
-  });
+    }),
+    prisma.configSLA.findMany(),
+  ]);
 
   if (!r) notFound();
 
-  const slaRows = await prisma.configSLA.findMany();
   const slaConfig: ConfigSLAMap = Object.fromEntries(
     slaRows.map((row) => [row.prioridad, row.horasLimite]),
   ) as ConfigSLAMap;
@@ -72,9 +79,11 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
       <div className="flex items-center gap-3 mb-6">
         <Link
           href="/requerimientos"
+          aria-label="Volver"
           className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
         >
           <svg
+            aria-hidden="true"
             className="w-5 h-5"
             fill="none"
             viewBox="0 0 24 24"

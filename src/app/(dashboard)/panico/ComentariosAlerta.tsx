@@ -102,6 +102,7 @@ export default function ComentariosAlerta({
           <input
             value={texto}
             onChange={(e) => setTexto(e.target.value)}
+            aria-label="Escribir un mensaje"
             placeholder="Escribir un mensaje..."
             disabled={loading}
             className="flex-1 min-w-0 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:opacity-50"

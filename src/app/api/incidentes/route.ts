@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, getUserId } from "@/lib/api/guard";
+import { requireSession, getUserId, parseId } from "@/lib/api/guard";
+import { enumParam } from "@/lib/api/query";
 import { crearIncidenteSchema } from "@/lib/validation/incidentes";
-import type { TipoIncidente } from "@/generated/enums";
+import { TipoIncidente, EstadoIncidente } from "@/generated/enums";
 import { enviarPushBroadcast } from "@/lib/push/enviarPush";
 
 const TIPO_INCIDENTE_LABEL: Record<TipoIncidente, string> = {
@@ -21,10 +22,10 @@ export async function GET(req: NextRequest) {
   const { session } = guard;
 
   const { searchParams } = new URL(req.url);
-  const tipo = searchParams.get("tipo") ?? undefined;
-  const estado = searchParams.get("estado") ?? undefined;
+  const tipo = enumParam(TipoIncidente, searchParams.get("tipo"));
+  const estado = enumParam(EstadoIncidente, searchParams.get("estado"));
   const dias = parseInt(searchParams.get("dias") ?? "0") || 0;
-  const manzanaId = searchParams.get("manzanaId") ?? undefined;
+  const manzanaId = parseId(searchParams.get("manzanaId"));
 
   const fechaDesde =
     dias > 0 ? new Date(Date.now() - dias * 24 * 60 * 60 * 1000) : undefined;
@@ -34,10 +35,10 @@ export async function GET(req: NextRequest) {
 
   const incidentes = await prisma.incidente.findMany({
     where: {
-      ...(tipo ? { tipo: tipo as TipoIncidente } : {}),
-      ...(estado ? { estado: estado as never } : {}),
+      ...(tipo ? { tipo } : {}),
+      ...(estado ? { estado } : {}),
       ...(fechaDesde ? { fechaHora: { gte: fechaDesde } } : {}),
-      ...(manzanaId ? { lote: { manzanaId: parseInt(manzanaId) } } : {}),
+      ...(manzanaId ? { lote: { manzanaId } } : {}),
       ...(soloVisibles ? { visibleVecinos: true } : {}),
     },
     include: {
@@ -95,7 +96,7 @@ export async function POST(req: NextRequest) {
       latitud,
       longitud,
       ubicacionText: ubicacionText ?? null,
-      loteId: loteId ? parseInt(String(loteId), 10) : null,
+      loteId: loteId ?? null,
       visibleVecinos: visibleVecinos ?? true,
       imagenes: imagenes ?? [],
       prioridad: prioridad ?? "MEDIO",

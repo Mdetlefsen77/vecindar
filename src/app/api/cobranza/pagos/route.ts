@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
+import { Prisma } from "@/generated/client";
 import { requireRoleSession, getUserId } from "@/lib/api/guard";
+import { respuestaValidacion } from "@/lib/api/validation";
 import { GESTORES_USUARIOS } from "@/lib/permisos";
 import { registrarPagoSchema } from "@/lib/validation/cobranza";
 import { recalcularVigencia } from "@/lib/cobranzaServer";
@@ -15,10 +17,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const parsed = registrarPagoSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: parsed.error.issues[0]?.message ?? "Datos inválidos." },
-      { status: 400 },
-    );
+    return respuestaValidacion(parsed.error);
   }
 
   const { usuarioId, periodo, monto, metodo, nota } = parsed.data;
@@ -31,28 +30,36 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const yaExiste = await prisma.pago.findUnique({
-    where: { usuarioId_periodo: { usuarioId, periodo } },
-  });
-  if (yaExiste) {
-    return NextResponse.json(
-      { error: `Ya hay un pago registrado para ${periodo}.` },
-      { status: 409 },
-    );
+  // Crear el pago y recalcular la vigencia de forma atómica. El índice único
+  // (usuarioId, periodo) es la barrera real contra duplicados si dos requests
+  // entran a la vez: el segundo choca con P2002 y lo devolvemos como 409.
+  try {
+    const pago = await prisma.$transaction(async (tx) => {
+      const creado = await tx.pago.create({
+        data: {
+          usuarioId,
+          periodo,
+          monto,
+          metodo: metodo ?? "TRANSFERENCIA",
+          nota: nota || null,
+          registradoPorId: getUserId(session),
+        },
+      });
+      await recalcularVigencia(usuarioId, tx);
+      return creado;
+    });
+
+    return NextResponse.json(pago, { status: 201 });
+  } catch (err) {
+    if (
+      err instanceof Prisma.PrismaClientKnownRequestError &&
+      err.code === "P2002"
+    ) {
+      return NextResponse.json(
+        { error: `Ya hay un pago registrado para ${periodo}.` },
+        { status: 409 },
+      );
+    }
+    throw err;
   }
-
-  const pago = await prisma.pago.create({
-    data: {
-      usuarioId,
-      periodo,
-      monto,
-      metodo: metodo ?? "TRANSFERENCIA",
-      nota: nota || null,
-      registradoPorId: getUserId(session),
-    },
-  });
-
-  await recalcularVigencia(usuarioId);
-
-  return NextResponse.json(pago, { status: 201 });
 }

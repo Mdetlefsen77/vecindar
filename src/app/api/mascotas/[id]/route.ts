@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, getUserId } from "@/lib/api/guard";
+import { requireSession, getUserId, parseId } from "@/lib/api/guard";
 import { esGestor, GESTORES_MASCOTAS } from "@/lib/permisos";
 import { actualizarMascotaSchema } from "@/lib/validation/mascotas";
 
@@ -12,8 +12,12 @@ export async function GET(_req: NextRequest, { params }: Params) {
   if (guard.response) return guard.response;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const mascota = await prisma.mascotaPerdida.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     include: {
       usuario: {
         select: {
@@ -45,8 +49,12 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const { session } = guard;
 
   const { id } = await params;
+  const numId = parseId(id);
+  if (numId === null) {
+    return NextResponse.json({ error: "No encontrado" }, { status: 404 });
+  }
   const mascota = await prisma.mascotaPerdida.findUnique({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     select: { id: true, usuarioId: true, estado: true },
   });
 
@@ -74,7 +82,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const { estado } = parsed.data;
 
   const updated = await prisma.mascotaPerdida.update({
-    where: { id: parseInt(id) },
+    where: { id: numId },
     data: {
       estado,
       resueltaAt: estado === false ? new Date() : null,

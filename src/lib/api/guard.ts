@@ -13,6 +13,17 @@ export function getUserId(session: { user: { id: string } }): number {
   return Number(session.user.id);
 }
 
+/**
+ * Parsea un id numérico venido de la URL (`params` o query). Devuelve `null`
+ * si no es un entero positivo — así los handlers responden 404/400 en vez de
+ * pasar `NaN` a Prisma, que revienta con un 500.
+ */
+export function parseId(raw: string | undefined | null): number | null {
+  if (raw == null) return null;
+  const n = Number.parseInt(raw, 10);
+  return Number.isInteger(n) && n > 0 ? n : null;
+}
+
 type SessionResult =
   | { session: AuthedSession; response?: undefined }
   | { session?: undefined; response: NextResponse };

@@ -130,9 +130,11 @@ export default function NuevoIncidentePage() {
       <div className="flex items-center gap-3 mb-6">
         <Link
           href="/incidentes"
+          aria-label="Volver"
           className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
         >
           <svg
+            aria-hidden="true"
             className="w-5 h-5"
             fill="none"
             viewBox="0 0 24 24"
@@ -255,7 +257,7 @@ export default function NuevoIncidentePage() {
         </div>
 
         {error && (
-          <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2.5">
+          <p role="alert" className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2.5">
             {error}
           </p>
         )}

@@ -7,7 +7,7 @@ export const crearIncidenteSchema = z.object({
   latitud: z.number(),
   longitud: z.number(),
   ubicacionText: z.string().trim().optional().nullable(),
-  loteId: z.union([z.number(), z.string()]).optional().nullable(),
+  loteId: z.coerce.number().int().positive().nullish(),
   visibleVecinos: z.boolean().optional(),
   imagenes: z.array(z.string()).optional(),
   prioridad: z.enum(Prioridad).optional(),
@@ -18,3 +18,6 @@ export const actualizarIncidenteSchema = z.object({
   visibleVecinos: z.boolean().optional(),
   prioridad: z.enum(Prioridad).optional(),
 });
+
+export type CrearIncidenteInput = z.infer<typeof crearIncidenteSchema>;
+export type ActualizarIncidenteInput = z.infer<typeof actualizarIncidenteSchema>;

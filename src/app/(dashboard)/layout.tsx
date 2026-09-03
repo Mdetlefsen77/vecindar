@@ -28,6 +28,14 @@ export default async function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Saltar navegación — visible solo al enfocarlo con el teclado */}
+      <a
+        href="#contenido"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:rounded-lg focus:bg-brand focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+      >
+        Saltar al contenido
+      </a>
+
       {/* Sidebar — tablet/desktop */}
       <Sidebar userName={userName} userEmail={userEmail} userRole={userRole} />
 
@@ -41,7 +49,10 @@ export default async function DashboardLayout({
       {/* Contenido principal */}
       <div className="md:pl-64">
         {/* Espaciado superior móvil (header fijo h-16) + inferior con safe area (bottom nav 72px + home bar) */}
-        <main className="pt-16 main-mobile-padding md:pt-0 md:pb-0 min-h-screen">
+        <main
+          id="contenido"
+          className="pt-16 main-mobile-padding md:pt-0 md:pb-0 min-h-screen"
+        >
           {children}
         </main>
       </div>

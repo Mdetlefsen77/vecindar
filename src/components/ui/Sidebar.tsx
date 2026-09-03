@@ -15,6 +15,7 @@ interface NavItem {
 
 const HomeIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -30,6 +31,7 @@ const HomeIcon = () => (
 );
 const MapIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -45,6 +47,7 @@ const MapIcon = () => (
 );
 const ShieldIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -60,6 +63,7 @@ const ShieldIcon = () => (
 );
 const SosIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -75,6 +79,7 @@ const SosIcon = () => (
 );
 const ClipboardIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -90,6 +95,7 @@ const ClipboardIcon = () => (
 );
 const PawIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -105,6 +111,7 @@ const PawIcon = () => (
 );
 const AdminIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -125,6 +132,7 @@ const AdminIcon = () => (
 );
 const SeguridadIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-6 h-6"
     fill="none"
     viewBox="0 0 24 24"
@@ -145,6 +153,7 @@ const SeguridadIcon = () => (
 );
 const LogoutIcon = () => (
   <svg
+    aria-hidden="true"
     className="w-5 h-5"
     fill="none"
     viewBox="0 0 24 24"
@@ -212,7 +221,7 @@ export default function Sidebar({
       </div>
 
       {/* Nav links */}
-      <nav className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
+      <nav aria-label="Navegación principal" className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
         {visibleItems.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(item.href + "/");
@@ -223,6 +232,7 @@ export default function Sidebar({
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive ? "page" : undefined}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all min-h-[48px] ${
                   isActive
                     ? "bg-red-600 text-white"
@@ -239,6 +249,7 @@ export default function Sidebar({
             <Link
               key={item.href}
               href={item.href}
+              aria-current={isActive ? "page" : undefined}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                 isActive
                   ? "bg-blue-50 text-blue-700 border border-blue-200"

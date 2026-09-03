@@ -49,11 +49,16 @@ export default function ComentarioForm({
       <textarea
         value={texto}
         onChange={(e) => setTexto(e.target.value)}
+        aria-label="Escribí un comentario"
         placeholder="Escribí un comentario..."
         rows={3}
         className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300 resize-none"
       />
-      {error && <p className="text-xs text-red-600 mt-1">{error}</p>}
+      {error && (
+        <p role="alert" className="text-xs text-red-600 mt-1">
+          {error}
+        </p>
+      )}
       <div className="flex justify-end mt-2">
         <button
           type="submit"

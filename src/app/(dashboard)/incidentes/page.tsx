@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
 import { getUserId } from "@/lib/api/guard";
@@ -101,16 +102,13 @@ export default async function IncidentesPage({
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  await marcarSeccionVista(getUserId(session), "INCIDENTES");
+  // Resetear el badge de "nuevo" es una escritura no crítica: no debe bloquear
+  // el render de la página.
+  after(() => marcarSeccionVista(getUserId(session), "INCIDENTES"));
 
   const { tipo, estado, dias, prioridad } = await searchParams;
   const diasNum = parseInt(dias ?? "30") || 30;
   const soloVisibles = session.user.role === "VECINO";
-
-  const slaRows = await prisma.configSLA.findMany();
-  const slaConfig: ConfigSLAMap = Object.fromEntries(
-    slaRows.map((r) => [r.prioridad, r.horasLimite]),
-  ) as ConfigSLAMap;
 
   // Server Component asíncrono: se renderiza una sola vez en el servidor, así
   // que `Date.now()` acá es determinista para esta request (la regla
@@ -118,28 +116,38 @@ export default async function IncidentesPage({
   // eslint-disable-next-line react-hooks/purity
   const fechaDesde = new Date(Date.now() - diasNum * 24 * 60 * 60 * 1000);
 
-  const incidentes = await prisma.incidente.findMany({
-    where: {
-      ...(tipo ? { tipo: tipo as TipoIncidente } : {}),
-      ...(estado ? { estado: estado as EstadoIncidente } : {}),
-      ...(prioridad ? { prioridad: prioridad as never } : {}),
-      fechaHora: { gte: fechaDesde },
-      ...(soloVisibles ? { visibleVecinos: true } : {}),
-    },
-    include: {
-      reportadoPor: {
-        select: {
-          nombre: true,
-          apellido: true,
-          lote: {
-            select: { numero: true, manzana: { select: { numero: true } } },
+  // Las dos consultas son independientes — en paralelo.
+  const [slaRows, incidentes] = await Promise.all([
+    prisma.configSLA.findMany(),
+    prisma.incidente.findMany({
+      where: {
+        ...(tipo ? { tipo: tipo as TipoIncidente } : {}),
+        ...(estado ? { estado: estado as EstadoIncidente } : {}),
+        ...(prioridad ? { prioridad: prioridad as never } : {}),
+        fechaHora: { gte: fechaDesde },
+        ...(soloVisibles ? { visibleVecinos: true } : {}),
+      },
+      include: {
+        reportadoPor: {
+          select: {
+            nombre: true,
+            apellido: true,
+            lote: {
+              select: { numero: true, manzana: { select: { numero: true } } },
+            },
           },
         },
+        lote: {
+          select: { numero: true, manzana: { select: { numero: true } } },
+        },
       },
-      lote: { select: { numero: true, manzana: { select: { numero: true } } } },
-    },
-    orderBy: { fechaHora: "desc" },
-  });
+      orderBy: { fechaHora: "desc" },
+    }),
+  ]);
+
+  const slaConfig: ConfigSLAMap = Object.fromEntries(
+    slaRows.map((r) => [r.prioridad, r.horasLimite]),
+  ) as ConfigSLAMap;
 
   // Pins para el mapa (solo los con coordenadas)
   const pins = incidentes

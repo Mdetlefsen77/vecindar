@@ -27,3 +27,6 @@ export const actualizarUsuarioSchema = z.object({
   verificado: z.boolean().optional(),
   nuevaPassword: z.string().min(6).optional(),
 });
+
+export type RegistroUsuarioInput = z.infer<typeof registroUsuarioSchema>;
+export type ActualizarUsuarioInput = z.infer<typeof actualizarUsuarioSchema>;

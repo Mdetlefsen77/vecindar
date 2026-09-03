@@ -118,7 +118,10 @@ export default function RegistroPage() {
           {/* Formulario */}
           <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             {error && (
-              <div className="rounded-md bg-red-50 p-4 border border-red-200">
+              <div
+                role="alert"
+                className="rounded-md bg-red-50 p-4 border border-red-200"
+              >
                 <p className="text-sm text-red-800">{error}</p>
               </div>
             )}
