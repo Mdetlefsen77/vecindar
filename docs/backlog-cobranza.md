@@ -41,10 +41,10 @@ hecho y lo pendiente del módulo de cobranza.
 - **Sin consecuencia de impago**: el sistema solo muestra el estado, no cambia
   nada para el vecino.
 
-**Pendiente de configurar**
+**Configuración**
 
-- `CUOTA_MENSUAL_DEFAULT` en `src/lib/cobranza.ts` tiene el placeholder `3000` —
-  poner el valor real de la cuota.
+- `CUOTA_MENSUAL_DEFAULT` en `src/lib/cobranza.ts`: cuota mensual general (pesos).
+  Actual: `5000`. Se sobreescribe por usuario con `Suscripcion.montoMensual`.
 
 ---
 

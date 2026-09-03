@@ -1,6 +1,6 @@
 // Cuota mensual por defecto (pesos). Se usa cuando la suscripción del usuario
 // no tiene un `montoMensual` propio. Ajustá acá cuando cambie la cuota.
-export const CUOTA_MENSUAL_DEFAULT = 3000;
+export const CUOTA_MENSUAL_DEFAULT = 5000;
 
 export type EstadoCobranza = "exento" | "al_dia" | "vencida" | "sin_datos";
 
