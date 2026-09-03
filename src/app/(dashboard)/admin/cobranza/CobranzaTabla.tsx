@@ -10,6 +10,7 @@ import {
 } from "@headlessui/react";
 import {
   ESTADO_COBRANZA_LABEL,
+  METODO_PAGO_LABEL,
   formatoPesos,
   periodoLabel,
   type EstadoCobranza,
@@ -34,13 +35,6 @@ const BADGE: Record<EstadoCobranza, string> = {
   vencida: "bg-red-100 text-red-700",
   sin_datos: "bg-gray-100 text-gray-500",
   exento: "bg-blue-100 text-blue-700",
-};
-
-const METODO_LABEL: Record<string, string> = {
-  TRANSFERENCIA: "Transferencia",
-  EFECTIVO: "Efectivo",
-  MERCADOPAGO: "MercadoPago",
-  OTRO: "Otro",
 };
 
 function fmtFecha(iso: string | null): string {
@@ -303,7 +297,7 @@ function GestionDialog({
                   >
                     {Object.values(MetodoPago).map((m) => (
                       <option key={m} value={m}>
-                        {METODO_LABEL[m]}
+                        {METODO_PAGO_LABEL[m]}
                       </option>
                     ))}
                   </select>

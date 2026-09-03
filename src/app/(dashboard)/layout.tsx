@@ -2,11 +2,19 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import { registrarActividad } from "@/lib/actividad";
+import { prisma } from "@/lib/prisma/client";
+import {
+  estadoCobranza,
+  mesesVencidos,
+  deudaEstimada,
+  formatoPesos,
+} from "@/lib/cobranza";
 import Sidebar from "@/components/ui/Sidebar";
 import BottomNav from "@/components/ui/BottomNav";
 import MobileHeader from "@/components/ui/MobileHeader";
 import InstallPrompt from "@/components/ui/InstallPrompt";
 import PushOptInBanner from "@/components/ui/PushOptInBanner";
+import CobranzaBanner from "@/components/ui/CobranzaBanner";
 import SosAlertListener from "@/components/ui/SosAlertListener";
 
 export default async function DashboardLayout({
@@ -25,6 +33,12 @@ export default async function DashboardLayout({
   const userName = session.user?.name ?? "Usuario";
   const userEmail = session.user?.email ?? "";
   const userRole = session.user?.role ?? "VECINO";
+
+  const suscripcion = await prisma.suscripcion.findUnique({
+    where: { usuarioId: Number(session.user?.id) },
+    select: { vigenteHasta: true, montoMensual: true, exento: true },
+  });
+  const cobranzaVencida = estadoCobranza(suscripcion) === "vencida";
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -53,6 +67,12 @@ export default async function DashboardLayout({
           id="contenido"
           className="pt-16 main-mobile-padding md:pt-0 md:pb-0 min-h-screen"
         >
+          {cobranzaVencida && (
+            <CobranzaBanner
+              meses={mesesVencidos(suscripcion?.vigenteHasta)}
+              deuda={formatoPesos(deudaEstimada(suscripcion))}
+            />
+          )}
           {children}
         </main>
       </div>

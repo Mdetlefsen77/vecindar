@@ -22,6 +22,23 @@ const LogoutIcon = () => (
   </svg>
 );
 
+const WalletIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="w-5 h-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3 10h18M7 15h1m4 0h1m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+    />
+  </svg>
+);
+
 const PanelIcon = () => (
   <svg
     aria-hidden="true"
@@ -84,6 +101,15 @@ export default function MobileHeader({
               <PushNotificationToggle />
             </div>
           </div>
+          <MenuItem>
+            <Link
+              href="/mi-suscripcion"
+              className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 data-focus:bg-gray-50 data-focus:text-blue-600 transition-colors"
+            >
+              <WalletIcon />
+              Mi suscripción
+            </Link>
+          </MenuItem>
           {panel && (
             <MenuItem>
               <Link
