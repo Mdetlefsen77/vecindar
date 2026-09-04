@@ -3,7 +3,7 @@
 Vecindar cobra una suscripción mensual a los vecinos. Este documento lista lo
 hecho y lo pendiente del módulo de cobranza.
 
-**Última actualización:** 03/09/2026
+**Última actualización:** 04/09/2026
 
 ---
 
@@ -53,6 +53,22 @@ hecho y lo pendiente del módulo de cobranza.
   único) por request para saber si mostrar el banner.
 - **Sin gate de solo-lectura todavía** (ver backlog #1).
 
+### Fase 3b — Rol `TESORERO` (hecha)
+
+- `enum Rol` suma `TESORERO` (migración `add_rol_tesorero`).
+- `src/lib/permisos.ts`: nueva `GESTORES_COBRANZA = ["ADMIN", "TESORERO"]`.
+- `/admin/cobranza` y las 4 rutas de su API (`pagos`, `pagos/[id]`,
+  `suscripcion/[usuarioId]`, `export`) ahora gatean con `GESTORES_COBRANZA` en
+  vez de `GESTORES_USUARIOS` (ADMIN-only) — el tesorero puede registrar pagos,
+  ajustar suscripciones y exportar CSV, sin acceso al resto de `/admin`
+  (gestión de usuarios, verificaciones, stats generales, que siguen ADMIN-only).
+- Nav directa a `/admin/cobranza` ("Cobranza") en `Sidebar` y `MobileHeader`
+  para el rol `TESORERO`, igual que `/seguridad` para `SEGURIDAD`.
+- `TESORERO` sumado a los selectores de rol de `/admin/usuarios` (filtro,
+  badge, y el selector de `AccionesUsuario` para asignarlo).
+- `src/scripts/seed-usuario-staff.ts`: agrega `tesorero@vecindar.local` para
+  pruebas locales.
+
 **Configuración nueva**
 
 - `DATOS_PAGO` en `src/lib/cobranza.ts`: alias / CBU / titular / nota que ve el
@@ -69,7 +85,8 @@ hecho y lo pendiente del módulo de cobranza.
 **Configuración**
 
 - `CUOTA_MENSUAL_DEFAULT` en `src/lib/cobranza.ts`: cuota mensual general (pesos).
-  Actual: `5000`. Se sobreescribe por usuario con `Suscripcion.montoMensual`.
+  Actual: `35000` (incluye seguridad + app). Se sobreescribe por usuario con
+  `Suscripcion.montoMensual`.
 
 ---
 
@@ -99,7 +116,7 @@ Link de pago por período o `preapproval` (débito automático mensual), con web
 que actualiza `Suscripcion.vigenteHasta` automáticamente. Elimina la carga
 manual.
 
-### 5. Rol `TESORERO`
+### 5. Rol `TESORERO` — ✅ hecho (Fase 3b)
 
-Gestiona cobranza sin ser ADMIN completo. Hoy `/admin/cobranza` y su API son
-ADMIN-only (`GESTORES_USUARIOS`).
+Gestiona cobranza (`/admin/cobranza` + su API) sin ser ADMIN completo. Falta
+asignárselo a alguien real desde `/admin/usuarios/[id]`.

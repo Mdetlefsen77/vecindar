@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
-import { GESTORES_USUARIOS } from "@/lib/permisos";
+import { GESTORES_COBRANZA } from "@/lib/permisos";
 import { recalcularVigencia } from "@/lib/cobranzaServer";
 
 type Params = { params: Promise<{ id: string }> };
@@ -9,7 +9,7 @@ type Params = { params: Promise<{ id: string }> };
 // DELETE /api/cobranza/pagos/[id] — borra un pago mal cargado (solo ADMIN)
 // y recalcula la vigencia de la suscripción.
 export async function DELETE(_req: NextRequest, { params }: Params) {
-  const guard = await requireRoleSession(GESTORES_USUARIOS);
+  const guard = await requireRoleSession(GESTORES_COBRANZA);
   if (guard.response) return guard.response;
 
   const { id } = await params;

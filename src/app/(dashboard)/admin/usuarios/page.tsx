@@ -21,6 +21,11 @@ const ROL_CONFIG: Record<Rol, { label: string; bg: string; text: string }> = {
     bg: "bg-orange-100",
     text: "text-orange-700",
   },
+  TESORERO: {
+    label: "Tesorero",
+    bg: "bg-teal-100",
+    text: "text-teal-700",
+  },
   ADMIN: { label: "Admin", bg: "bg-purple-100", text: "text-purple-700" },
 };
 

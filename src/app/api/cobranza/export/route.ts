@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
-import { GESTORES_USUARIOS } from "@/lib/permisos";
+import { GESTORES_COBRANZA } from "@/lib/permisos";
 import { nombreCompleto } from "@/lib/usuarios";
 
 // GET /api/cobranza/export?anio=2026 — CSV de pagos (solo ADMIN).
 // Sin ?anio devuelve todos los pagos.
 export async function GET(req: NextRequest) {
-  const guard = await requireRoleSession(GESTORES_USUARIOS);
+  const guard = await requireRoleSession(GESTORES_COBRANZA);
   if (guard.response) return guard.response;
 
   const anio = new URL(req.url).searchParams.get("anio");

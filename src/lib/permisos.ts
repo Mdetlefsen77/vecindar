@@ -28,6 +28,9 @@ export const GESTORES_PANICO: readonly Rol[] = ["ADMIN", "SEGURIDAD"];
 /** Acceso al panel de administración y gestión de usuarios / configuración. */
 export const GESTORES_USUARIOS: readonly Rol[] = ["ADMIN"];
 
+/** Gestionan cobranza (panel `/admin/cobranza` y su API) sin ser ADMIN completo. */
+export const GESTORES_COBRANZA: readonly Rol[] = ["ADMIN", "TESORERO"];
+
 /** `true` si el rol de la sesión está dentro del conjunto permitido. */
 export function esGestor(
   rol: string | undefined | null,
