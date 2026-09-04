@@ -1,6 +1,6 @@
 // Cuota mensual por defecto (pesos). Se usa cuando la suscripción del usuario
 // no tiene un `montoMensual` propio. Ajustá acá cuando cambie la cuota.
-export const CUOTA_MENSUAL_DEFAULT = 5000;
+export const CUOTA_MENSUAL_DEFAULT = 35000;
 
 // Datos que ve el vecino en "Mi suscripción" para pagar la cuota. Se cargan a
 // mano acá hasta que exista una integración de pagos (MercadoPago). Dejá en ""
