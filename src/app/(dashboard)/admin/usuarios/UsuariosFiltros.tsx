@@ -8,6 +8,7 @@ const ROLES = [
   { value: "VECINO", label: "Vecino" },
   { value: "REFERENTE_MANZANA", label: "Referente" },
   { value: "SEGURIDAD", label: "Seguridad" },
+  { value: "TESORERO", label: "Tesorero" },
   { value: "ADMIN", label: "Admin" },
 ];
 

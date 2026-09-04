@@ -167,6 +167,22 @@ const SeguridadIcon = () => (
     />
   </svg>
 );
+const CoinsIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M12 8c-3.314 0-6-1.12-6-2.5S8.686 3 12 3s6 1.12 6 2.5S15.314 8 12 8zm0 0v3m-6-3.5V15c0 1.38 2.686 2.5 6 2.5s6-1.12 6-2.5V5.5M6 10c0 1.38 2.686 2.5 6 2.5s6-1.12 6-2.5m-12 5c0 1.38 2.686 2.5 6 2.5s6-1.12 6-2.5"
+    />
+  </svg>
+);
 const LogoutIcon = () => (
   <svg
     aria-hidden="true"
@@ -197,6 +213,12 @@ const NAV_ITEMS: NavItem[] = [
     label: "Panel de Seguridad",
     icon: <SeguridadIcon />,
     roles: ["SEGURIDAD"],
+  },
+  {
+    href: "/admin/cobranza",
+    label: "Cobranza",
+    icon: <CoinsIcon />,
+    roles: ["TESORERO"],
   },
   {
     href: "/admin",

@@ -4,11 +4,18 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { type Rol } from "@/generated/enums";
 
-const ROLES: Rol[] = ["VECINO", "REFERENTE_MANZANA", "SEGURIDAD", "ADMIN"];
+const ROLES: Rol[] = [
+  "VECINO",
+  "REFERENTE_MANZANA",
+  "SEGURIDAD",
+  "TESORERO",
+  "ADMIN",
+];
 const ROL_LABEL: Record<Rol, string> = {
   VECINO: "Vecino",
   REFERENTE_MANZANA: "Referente de manzana",
   SEGURIDAD: "Seguridad / Guardia",
+  TESORERO: "Tesorero",
   ADMIN: "Administrador",
 };
 

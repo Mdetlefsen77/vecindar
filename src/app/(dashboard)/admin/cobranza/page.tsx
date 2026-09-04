@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import { esGestor, GESTORES_COBRANZA } from "@/lib/permisos";
 import { nombreCompleto } from "@/lib/usuarios";
 import {
   estadoCobranza,
@@ -24,7 +25,7 @@ export default async function AdminCobranzaPage({
 }) {
   const session = await auth();
   if (!session?.user) redirect("/login");
-  if (session.user.role !== "ADMIN") redirect("/");
+  if (!esGestor(session.user.role, GESTORES_COBRANZA)) redirect("/");
 
   const { estado, q } = await searchParams;
 
@@ -130,8 +131,11 @@ export default async function AdminCobranzaPage({
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-5">
       <div>
-        <Link href="/admin" className="text-gray-400 hover:text-gray-600 text-sm">
-          ← Admin
+        <Link
+          href={session.user.role === "ADMIN" ? "/admin" : "/inicio"}
+          className="text-gray-400 hover:text-gray-600 text-sm"
+        >
+          ← {session.user.role === "ADMIN" ? "Admin" : "Inicio"}
         </Link>
         <h1 className="text-2xl font-bold text-gray-900 mt-1">Cobranza</h1>
         <p className="text-sm text-gray-500">

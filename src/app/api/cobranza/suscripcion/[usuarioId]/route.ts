@@ -2,14 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession } from "@/lib/api/guard";
 import { respuestaValidacion } from "@/lib/api/validation";
-import { GESTORES_USUARIOS } from "@/lib/permisos";
+import { GESTORES_COBRANZA } from "@/lib/permisos";
 import { actualizarSuscripcionSchema } from "@/lib/validation/cobranza";
 
 type Params = { params: Promise<{ usuarioId: string }> };
 
 // PATCH /api/cobranza/suscripcion/[usuarioId] — exento / monto / nota (solo ADMIN)
 export async function PATCH(req: NextRequest, { params }: Params) {
-  const guard = await requireRoleSession(GESTORES_USUARIOS);
+  const guard = await requireRoleSession(GESTORES_COBRANZA);
   if (guard.response) return guard.response;
 
   const { usuarioId: raw } = await params;

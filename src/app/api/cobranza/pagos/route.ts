@@ -3,14 +3,14 @@ import { prisma } from "@/lib/prisma/client";
 import { Prisma } from "@/generated/client";
 import { requireRoleSession, getUserId } from "@/lib/api/guard";
 import { respuestaValidacion } from "@/lib/api/validation";
-import { GESTORES_USUARIOS } from "@/lib/permisos";
+import { GESTORES_COBRANZA } from "@/lib/permisos";
 import { registrarPagoSchema } from "@/lib/validation/cobranza";
 import { recalcularVigencia } from "@/lib/cobranzaServer";
 
 // POST /api/cobranza/pagos — registrar un pago (solo ADMIN)
 // Body: { usuarioId, periodo "YYYY-MM", monto, metodo?, nota? }
 export async function POST(req: NextRequest) {
-  const guard = await requireRoleSession(GESTORES_USUARIOS);
+  const guard = await requireRoleSession(GESTORES_COBRANZA);
   if (guard.response) return guard.response;
   const { session } = guard;
 

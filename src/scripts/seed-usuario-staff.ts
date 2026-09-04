@@ -1,8 +1,8 @@
 /**
  * scripts/seed-usuario-staff.ts
  *
- * Crea (o actualiza) usuarios SEGURIDAD y REFERENTE_MANZANA para pruebas locales.
- * Usa upsert por email — seguro correr múltiples veces.
+ * Crea (o actualiza) usuarios SEGURIDAD, REFERENTE_MANZANA y TESORERO para
+ * pruebas locales. Usa upsert por email — seguro correr múltiples veces.
  *
  * Uso:
  *   npx tsx src/scripts/seed-usuario-staff.ts
@@ -26,11 +26,17 @@ const STAFF: { email: string; nombre: string; apellido: string; rol: Rol }[] = [
     apellido: "de Manzana",
     rol: "REFERENTE_MANZANA",
   },
+  {
+    email: "tesorero@vecindar.local",
+    nombre: "Tesorero",
+    apellido: "Local",
+    rol: "TESORERO",
+  },
 ];
 const PASSWORD = "staff123";
 
 async function main() {
-  console.log("🚀 Seed de usuarios SEGURIDAD / REFERENTE_MANZANA\n");
+  console.log("🚀 Seed de usuarios SEGURIDAD / REFERENTE_MANZANA / TESORERO\n");
 
   const passwordHash = await hash(PASSWORD, 10);
 

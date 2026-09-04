@@ -59,6 +59,7 @@ const PanelIcon = () => (
 const PANEL_POR_ROL: Record<string, { href: string; label: string }> = {
   ADMIN: { href: "/admin", label: "Panel de administración" },
   SEGURIDAD: { href: "/seguridad", label: "Panel de Seguridad" },
+  TESORERO: { href: "/admin/cobranza", label: "Cobranza" },
 };
 
 interface MobileHeaderProps {
