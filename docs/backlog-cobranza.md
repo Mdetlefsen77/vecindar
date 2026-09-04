@@ -3,7 +3,7 @@
 Vecindar cobra una suscripción mensual a los vecinos. Este documento lista lo
 hecho y lo pendiente del módulo de cobranza.
 
-**Última actualización:** 04/09/2026
+**Última actualización:** 04/09/2026 (tarde)
 
 ---
 
@@ -69,6 +69,27 @@ hecho y lo pendiente del módulo de cobranza.
 - `src/scripts/seed-usuario-staff.ts`: agrega `tesorero@vecindar.local` para
   pruebas locales.
 
+### Fase 3c — Recordatorios push automáticos (hecha)
+
+- `vercel.json` (nuevo — antes no existía ningún cron): `GET
+  /api/cron/recordatorios-cobranza` una vez por día, `0 12 * * *` UTC (9 AM
+  ART).
+- `src/app/api/cron/recordatorios-cobranza/route.ts`: recorre las
+  suscripciones no exentas con `vigenteHasta` y manda push (vía
+  `enviarPushUsuario`, ya existía) a:
+  - **3 días antes de vencer** (un solo aviso).
+  - **El primer día que queda vencida.**
+  - **Cada 7 días** mientras siga vencida.
+  - Solo a usuarios `verificado`. No manda nada a `sin_datos` (nunca se le
+    registró un pago — es un tema de alta, no de recordatorio).
+- Protegido con `CRON_SECRET` (header `Authorization: Bearer <secret>` — es el
+  que manda Vercel Cron automáticamente si la env var está seteada). **Falta
+  cargar `CRON_SECRET` en las env vars del proyecto en Vercel** (ya está en el
+  `.env` local, generado con `openssl rand -hex 32`) — sin eso el cron
+  responde 401 en producción.
+- Gate para decidir cuándo notifica: **no toca el gate de solo-lectura** (se
+  decidió no hacerlo por ahora, solo el banner + estos push).
+
 **Configuración nueva**
 
 - `DATOS_PAGO` en `src/lib/cobranza.ts`: alias / CBU / titular / nota que ve el
@@ -92,18 +113,19 @@ hecho y lo pendiente del módulo de cobranza.
 
 ## Backlog (sin fecha)
 
-### 1. Gate para morosos
+### 1. Gate para morosos — decidido: NO por ahora (04/09/2026)
 
-El **banner** de "tu cuota venció" ya está hecho (Fase 3a). Falta el **modo
-solo-lectura**: el moroso puede ver pero no crear incidentes, requerimientos,
-etc. **El botón de pánico nunca se bloquea.** Pendiente decidir si se hace o
-alcanza con el aviso.
+El **banner** (Fase 3a) + los **push automáticos** (Fase 3c) son la estrategia
+de aviso. Se evaluó agregar modo solo-lectura (bloquear crear incidentes /
+requerimientos, sin tocar nunca el botón de pánico) y se decidió **no
+implementarlo por ahora** — solo avisar, sin bloquear. Revisar si en algún
+momento hace falta.
 
-### 2. Recordatorios push automáticos
+### 2. Recordatorios push automáticos — ✅ hecho (Fase 3c)
 
-Notificaciones de vencimiento ("vence en 3 días", "cuota vencida"). Necesita
-**Vercel Cron** — hoy no hay ningún cron configurado (`vercel.json` no existe).
-La infraestructura de push ya está lista (`src/lib/push/enviarPush.ts`).
+Aviso 3 días antes de vencer + el día que vence + cada 7 días mientras siga
+vencida. **Falta cargar `CRON_SECRET` en Vercel** (env var del proyecto) para
+que funcione en producción — ver Fase 3c.
 
 ### 3. Página "Mi suscripción" para el vecino — ✅ hecha (Fase 3a)
 
