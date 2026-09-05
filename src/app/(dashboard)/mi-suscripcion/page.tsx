@@ -11,11 +11,33 @@ import {
   mesesVencidos,
   deudaEstimada,
   formatoPesos,
+  periodoActual,
   periodoLabel,
   type EstadoCobranza,
 } from "@/lib/cobranza";
+import { mpConfigurado } from "@/lib/mercadopago";
+import MpAcciones from "./MpAcciones";
 
 export const metadata = { title: "Mi suscripción" };
+
+const MP_NOTICE: Record<string, { txt: string; clase: string }> = {
+  ok: {
+    txt: "¡Pago recibido! Puede tardar unos minutos en verse reflejado acá.",
+    clase: "border-green-300 bg-green-50 text-green-800",
+  },
+  pendiente: {
+    txt: "Tu pago quedó pendiente. Cuando MercadoPago lo confirme se actualiza solo.",
+    clase: "border-amber-300 bg-amber-50 text-amber-900",
+  },
+  error: {
+    txt: "El pago no se completó. Podés intentarlo de nuevo.",
+    clase: "border-red-300 bg-red-50 text-red-800",
+  },
+  preapproval: {
+    txt: "Listo. Si autorizaste el débito automático, se activa en unos minutos.",
+    clase: "border-blue-200 bg-blue-50 text-blue-800",
+  },
+};
 
 const ESTADO_UI: Record<
   EstadoCobranza,
@@ -52,15 +74,27 @@ function fmtFecha(fecha: Date): string {
   });
 }
 
-export default async function MiSuscripcionPage() {
+export default async function MiSuscripcionPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ mp?: string }>;
+}) {
   const session = await auth();
   if (!session?.user) redirect("/login");
+
+  const { mp } = await searchParams;
+  const notice = mp ? MP_NOTICE[mp] : undefined;
 
   const usuario = await prisma.usuario.findUnique({
     where: { id: getUserId(session) },
     select: {
       suscripcion: {
-        select: { vigenteHasta: true, montoMensual: true, exento: true },
+        select: {
+          vigenteHasta: true,
+          montoMensual: true,
+          exento: true,
+          mpPreapprovalEstado: true,
+        },
       },
       pagos: {
         orderBy: { periodo: "desc" },
@@ -80,6 +114,9 @@ export default async function MiSuscripcionPage() {
   const deuda = deudaEstimada(suscripcion, ahora);
 
   const totalPagado = pagos.reduce((acc, p) => acc + p.monto, 0);
+  const periodoAct = periodoActual(ahora);
+  const periodoActualPagado = pagos.some((p) => p.periodo === periodoAct);
+  const mostrarMp = mpConfigurado() && estado !== "exento";
   const mostrarComoPagar = estado === "vencida" || estado === "sin_datos";
   const datosPago = [
     DATOS_PAGO.alias && { label: "Alias", valor: DATOS_PAGO.alias },
@@ -95,6 +132,15 @@ export default async function MiSuscripcionPage() {
           Cuota mensual del barrio: {formatoPesos(cuota)}
         </p>
       </div>
+
+      {notice && (
+        <div
+          role="status"
+          className={`rounded-2xl border p-3 text-sm ${notice.clase}`}
+        >
+          {notice.txt}
+        </div>
+      )}
 
       {/* Estado actual */}
       <div className={`rounded-2xl border-2 p-4 ${ui.clase}`}>
@@ -125,7 +171,16 @@ export default async function MiSuscripcionPage() {
         </dl>
       </div>
 
-      {/* Cómo pagar */}
+      {/* Pagar online (MercadoPago) */}
+      {mostrarMp && (
+        <MpAcciones
+          periodoActualLabel={periodoLabel(periodoAct)}
+          periodoActualPagado={periodoActualPagado}
+          preapprovalEstado={suscripcion?.mpPreapprovalEstado ?? null}
+        />
+      )}
+
+      {/* Cómo pagar (transferencia) */}
       {mostrarComoPagar && (
         <div className="rounded-2xl border border-gray-200 bg-white p-4">
           <h2 className="font-bold text-gray-900">Cómo pagar</h2>

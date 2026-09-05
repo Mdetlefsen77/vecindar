@@ -24,7 +24,17 @@ export const actualizarSuscripcionSchema = z
     { message: "Nada que actualizar." },
   );
 
+export const mpCheckoutSchema = z.object({
+  tipo: z.enum(["pago", "preapproval"]),
+  // Solo para tipo "pago"; si falta, se usa el período actual.
+  periodo: z
+    .string()
+    .refine(esPeriodoValido, "Período inválido (usar YYYY-MM).")
+    .optional(),
+});
+
 export type RegistrarPagoInput = z.infer<typeof registrarPagoSchema>;
 export type ActualizarSuscripcionInput = z.infer<
   typeof actualizarSuscripcionSchema
 >;
+export type MpCheckoutInput = z.infer<typeof mpCheckoutSchema>;

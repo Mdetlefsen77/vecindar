@@ -3,7 +3,7 @@
 Vecindar cobra una suscripción mensual a los vecinos. Este documento lista lo
 hecho y lo pendiente del módulo de cobranza.
 
-**Última actualización:** 04/09/2026 (tarde)
+**Última actualización:** 05/09/2026
 
 ---
 
@@ -90,18 +90,53 @@ hecho y lo pendiente del módulo de cobranza.
 - Gate para decidir cuándo notifica: **no toca el gate de solo-lectura** (se
   decidió no hacerlo por ahora, solo el banner + estos push).
 
+### Fase 3d — Integración MercadoPago (hecha, rama `feat/mercadopago-cobranza`)
+
+Se hicieron **las dos** modalidades: link de pago por período + débito
+automático (`preapproval`). El registro manual sigue igual como fallback.
+
+- Migración `add_mercadopago_cobranza`: `Pago.mpPaymentId` (único, dedupe de
+  reintentos del webhook), `Suscripcion.mpPreapprovalId` (único) +
+  `mpPreapprovalEstado`.
+- `src/lib/mercadopago.ts`: cliente REST directo (sin SDK). `mpConfigurado()`
+  = hay `MP_ACCESS_TOKEN`. Helpers `crearPreferenciaPago`, `crearPreapproval`,
+  `getPagoMP`, `getPreapprovalMP`, `validarFirmaWebhook` (HMAC del
+  `x-signature` contra `MP_WEBHOOK_SECRET`), `parseExternalReference`
+  (`pago:<uid>:<periodo>` / `preapproval:<uid>`).
+- `POST /api/cobranza/mp/checkout` (vecino logueado): genera el link de pago
+  del período actual o el alta de débito automático. 503 si MP no está
+  configurado; 409 si el período ya está pago.
+- `POST /api/cobranza/mp/webhook` (público, valida firma): pago `approved` →
+  crea/actualiza `Pago` (metodo `MERCADOPAGO`, `registradoPorId` = el propio
+  vecino) + `recalcularVigencia`, todo idempotente por `mpPaymentId`.
+  Preapproval → guarda estado en `Suscripcion`.
+- `/mi-suscripcion`: tarjeta "Pagar online" (`MpAcciones.tsx`, client) con
+  botón "Pagar <mes>" y "Activar débito automático". Se oculta si MP no está
+  configurado o el vecino es exento. Notice según `?mp=ok|pendiente|error|
+  preapproval` en la vuelta de MP.
+- **Falta para que funcione en prod** (todo del lado de Vercel + panel de MP):
+  1. Crear la app en mercadopago.com.ar/developers y cargar `MP_ACCESS_TOKEN`
+     en las env vars del proyecto en Vercel.
+  2. Dar de alta el webhook `https://<dominio>/api/cobranza/mp/webhook` en el
+     panel de MP y cargar su secreto como `MP_WEBHOOK_SECRET`.
+  3. Cargar `NEXT_PUBLIC_SITE_URL` con el dominio real (para back_urls /
+     notification_url).
+
 **Configuración nueva**
 
-- `DATOS_PAGO` en `src/lib/cobranza.ts`: alias / CBU / titular / nota que ve el
-  vecino en "Cómo pagar". Hoy solo tiene la nota; completar a mano hasta que
-  exista MercadoPago (backlog #4).
+- `DATOS_PAGO` en `src/lib/cobranza.ts`: alias / CBU / titular / nota para la
+  transferencia manual — ya cargado (rama `feat/datos-pago`): alias
+  `barriosegurou3s`, CVU `0000003100060817012883`, titular Miguel Esteban
+  Rodriguez.
+- Env vars nuevas: `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`,
+  `NEXT_PUBLIC_SITE_URL` (ver Fase 3d).
 
 **Decisiones tomadas**
 
 - Cobro **por cuenta de usuario** (no por lote).
-- Registro **manual** de pagos (sin integración de pago todavía).
-- **Sin consecuencia de impago**: el sistema solo muestra el estado, no cambia
-  nada para el vecino.
+- Registro manual de pagos + MercadoPago (link por mes y débito automático).
+- **Sin consecuencia de impago**: solo aviso (banner + push), sin gate de
+  acceso — decisión explícita del usuario (04/09/2026).
 
 **Configuración**
 
@@ -127,16 +162,16 @@ Aviso 3 días antes de vencer + el día que vence + cada 7 días mientras siga
 vencida. **Falta cargar `CRON_SECRET` en Vercel** (env var del proyecto) para
 que funcione en producción — ver Fase 3c.
 
-### 3. Página "Mi suscripción" para el vecino — ✅ hecha (Fase 3a)
+### 3. Página "Mi suscripción" para el vecino — ✅ hecha (Fase 3a + 3d)
 
-Estado, vigencia, deuda estimada, historial de pagos y datos de transferencia
-ya están en `/mi-suscripcion`. Falta solo el "link de pago" (depende de #4).
+Estado, vigencia, deuda, historial, datos de transferencia y pago online por
+MercadoPago (link por mes + débito automático) ya están en `/mi-suscripcion`.
 
-### 4. Integración MercadoPago
+### 4. Integración MercadoPago — ✅ hecha (Fase 3d)
 
-Link de pago por período o `preapproval` (débito automático mensual), con webhook
-que actualiza `Suscripcion.vigenteHasta` automáticamente. Elimina la carga
-manual.
+Link de pago por período + `preapproval`, con webhook que registra el `Pago` y
+recalcula la vigencia. **Falta configurar credenciales/webhook en Vercel + panel
+de MP** — ver Fase 3d.
 
 ### 5. Rol `TESORERO` — ✅ hecho (Fase 3b)
 

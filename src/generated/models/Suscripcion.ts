@@ -45,6 +45,8 @@ export type SuscripcionMinAggregateOutputType = {
   montoMensual: number | null
   exento: boolean | null
   notaInterna: string | null
+  mpPreapprovalId: string | null
+  mpPreapprovalEstado: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +58,8 @@ export type SuscripcionMaxAggregateOutputType = {
   montoMensual: number | null
   exento: boolean | null
   notaInterna: string | null
+  mpPreapprovalId: string | null
+  mpPreapprovalEstado: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -67,6 +71,8 @@ export type SuscripcionCountAggregateOutputType = {
   montoMensual: number
   exento: number
   notaInterna: number
+  mpPreapprovalId: number
+  mpPreapprovalEstado: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -92,6 +98,8 @@ export type SuscripcionMinAggregateInputType = {
   montoMensual?: true
   exento?: true
   notaInterna?: true
+  mpPreapprovalId?: true
+  mpPreapprovalEstado?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -103,6 +111,8 @@ export type SuscripcionMaxAggregateInputType = {
   montoMensual?: true
   exento?: true
   notaInterna?: true
+  mpPreapprovalId?: true
+  mpPreapprovalEstado?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -114,6 +124,8 @@ export type SuscripcionCountAggregateInputType = {
   montoMensual?: true
   exento?: true
   notaInterna?: true
+  mpPreapprovalId?: true
+  mpPreapprovalEstado?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -212,6 +224,8 @@ export type SuscripcionGroupByOutputType = {
   montoMensual: number | null
   exento: boolean
   notaInterna: string | null
+  mpPreapprovalId: string | null
+  mpPreapprovalEstado: string | null
   createdAt: Date
   updatedAt: Date
   _count: SuscripcionCountAggregateOutputType | null
@@ -246,6 +260,8 @@ export type SuscripcionWhereInput = {
   montoMensual?: Prisma.IntNullableFilter<"Suscripcion"> | number | null
   exento?: Prisma.BoolFilter<"Suscripcion"> | boolean
   notaInterna?: Prisma.StringNullableFilter<"Suscripcion"> | string | null
+  mpPreapprovalId?: Prisma.StringNullableFilter<"Suscripcion"> | string | null
+  mpPreapprovalEstado?: Prisma.StringNullableFilter<"Suscripcion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Suscripcion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Suscripcion"> | Date | string
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
@@ -258,6 +274,8 @@ export type SuscripcionOrderByWithRelationInput = {
   montoMensual?: Prisma.SortOrderInput | Prisma.SortOrder
   exento?: Prisma.SortOrder
   notaInterna?: Prisma.SortOrderInput | Prisma.SortOrder
+  mpPreapprovalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  mpPreapprovalEstado?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   usuario?: Prisma.UsuarioOrderByWithRelationInput
@@ -266,6 +284,7 @@ export type SuscripcionOrderByWithRelationInput = {
 export type SuscripcionWhereUniqueInput = Prisma.AtLeast<{
   id?: number
   usuarioId?: number
+  mpPreapprovalId?: string
   AND?: Prisma.SuscripcionWhereInput | Prisma.SuscripcionWhereInput[]
   OR?: Prisma.SuscripcionWhereInput[]
   NOT?: Prisma.SuscripcionWhereInput | Prisma.SuscripcionWhereInput[]
@@ -273,10 +292,11 @@ export type SuscripcionWhereUniqueInput = Prisma.AtLeast<{
   montoMensual?: Prisma.IntNullableFilter<"Suscripcion"> | number | null
   exento?: Prisma.BoolFilter<"Suscripcion"> | boolean
   notaInterna?: Prisma.StringNullableFilter<"Suscripcion"> | string | null
+  mpPreapprovalEstado?: Prisma.StringNullableFilter<"Suscripcion"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Suscripcion"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Suscripcion"> | Date | string
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
-}, "id" | "usuarioId">
+}, "id" | "usuarioId" | "mpPreapprovalId">
 
 export type SuscripcionOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -285,6 +305,8 @@ export type SuscripcionOrderByWithAggregationInput = {
   montoMensual?: Prisma.SortOrderInput | Prisma.SortOrder
   exento?: Prisma.SortOrder
   notaInterna?: Prisma.SortOrderInput | Prisma.SortOrder
+  mpPreapprovalId?: Prisma.SortOrderInput | Prisma.SortOrder
+  mpPreapprovalEstado?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.SuscripcionCountOrderByAggregateInput
@@ -304,6 +326,8 @@ export type SuscripcionScalarWhereWithAggregatesInput = {
   montoMensual?: Prisma.IntNullableWithAggregatesFilter<"Suscripcion"> | number | null
   exento?: Prisma.BoolWithAggregatesFilter<"Suscripcion"> | boolean
   notaInterna?: Prisma.StringNullableWithAggregatesFilter<"Suscripcion"> | string | null
+  mpPreapprovalId?: Prisma.StringNullableWithAggregatesFilter<"Suscripcion"> | string | null
+  mpPreapprovalEstado?: Prisma.StringNullableWithAggregatesFilter<"Suscripcion"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Suscripcion"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Suscripcion"> | Date | string
 }
@@ -313,6 +337,8 @@ export type SuscripcionCreateInput = {
   montoMensual?: number | null
   exento?: boolean
   notaInterna?: string | null
+  mpPreapprovalId?: string | null
+  mpPreapprovalEstado?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   usuario: Prisma.UsuarioCreateNestedOneWithoutSuscripcionInput
@@ -325,6 +351,8 @@ export type SuscripcionUncheckedCreateInput = {
   montoMensual?: number | null
   exento?: boolean
   notaInterna?: string | null
+  mpPreapprovalId?: string | null
+  mpPreapprovalEstado?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -334,6 +362,8 @@ export type SuscripcionUpdateInput = {
   montoMensual?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   exento?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notaInterna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutSuscripcionNestedInput
@@ -346,6 +376,8 @@ export type SuscripcionUncheckedUpdateInput = {
   montoMensual?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   exento?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notaInterna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -357,6 +389,8 @@ export type SuscripcionCreateManyInput = {
   montoMensual?: number | null
   exento?: boolean
   notaInterna?: string | null
+  mpPreapprovalId?: string | null
+  mpPreapprovalEstado?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -366,6 +400,8 @@ export type SuscripcionUpdateManyMutationInput = {
   montoMensual?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   exento?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notaInterna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -377,6 +413,8 @@ export type SuscripcionUncheckedUpdateManyInput = {
   montoMensual?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   exento?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notaInterna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -393,6 +431,8 @@ export type SuscripcionCountOrderByAggregateInput = {
   montoMensual?: Prisma.SortOrder
   exento?: Prisma.SortOrder
   notaInterna?: Prisma.SortOrder
+  mpPreapprovalId?: Prisma.SortOrder
+  mpPreapprovalEstado?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -410,6 +450,8 @@ export type SuscripcionMaxOrderByAggregateInput = {
   montoMensual?: Prisma.SortOrder
   exento?: Prisma.SortOrder
   notaInterna?: Prisma.SortOrder
+  mpPreapprovalId?: Prisma.SortOrder
+  mpPreapprovalEstado?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -421,6 +463,8 @@ export type SuscripcionMinOrderByAggregateInput = {
   montoMensual?: Prisma.SortOrder
   exento?: Prisma.SortOrder
   notaInterna?: Prisma.SortOrder
+  mpPreapprovalId?: Prisma.SortOrder
+  mpPreapprovalEstado?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -476,6 +520,8 @@ export type SuscripcionCreateWithoutUsuarioInput = {
   montoMensual?: number | null
   exento?: boolean
   notaInterna?: string | null
+  mpPreapprovalId?: string | null
+  mpPreapprovalEstado?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -486,6 +532,8 @@ export type SuscripcionUncheckedCreateWithoutUsuarioInput = {
   montoMensual?: number | null
   exento?: boolean
   notaInterna?: string | null
+  mpPreapprovalId?: string | null
+  mpPreapprovalEstado?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -511,6 +559,8 @@ export type SuscripcionUpdateWithoutUsuarioInput = {
   montoMensual?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   exento?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notaInterna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -521,6 +571,8 @@ export type SuscripcionUncheckedUpdateWithoutUsuarioInput = {
   montoMensual?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   exento?: Prisma.BoolFieldUpdateOperationsInput | boolean
   notaInterna?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mpPreapprovalEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -534,6 +586,8 @@ export type SuscripcionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   montoMensual?: boolean
   exento?: boolean
   notaInterna?: boolean
+  mpPreapprovalId?: boolean
+  mpPreapprovalEstado?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -546,6 +600,8 @@ export type SuscripcionSelectCreateManyAndReturn<ExtArgs extends runtime.Types.E
   montoMensual?: boolean
   exento?: boolean
   notaInterna?: boolean
+  mpPreapprovalId?: boolean
+  mpPreapprovalEstado?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -558,6 +614,8 @@ export type SuscripcionSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.E
   montoMensual?: boolean
   exento?: boolean
   notaInterna?: boolean
+  mpPreapprovalId?: boolean
+  mpPreapprovalEstado?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -570,11 +628,13 @@ export type SuscripcionSelectScalar = {
   montoMensual?: boolean
   exento?: boolean
   notaInterna?: boolean
+  mpPreapprovalId?: boolean
+  mpPreapprovalEstado?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type SuscripcionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "usuarioId" | "vigenteHasta" | "montoMensual" | "exento" | "notaInterna" | "createdAt" | "updatedAt", ExtArgs["result"]["suscripcion"]>
+export type SuscripcionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "usuarioId" | "vigenteHasta" | "montoMensual" | "exento" | "notaInterna" | "mpPreapprovalId" | "mpPreapprovalEstado" | "createdAt" | "updatedAt", ExtArgs["result"]["suscripcion"]>
 export type SuscripcionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
 }
@@ -597,6 +657,8 @@ export type $SuscripcionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     montoMensual: number | null
     exento: boolean
     notaInterna: string | null
+    mpPreapprovalId: string | null
+    mpPreapprovalEstado: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["suscripcion"]>
@@ -1029,6 +1091,8 @@ export interface SuscripcionFieldRefs {
   readonly montoMensual: Prisma.FieldRef<"Suscripcion", 'Int'>
   readonly exento: Prisma.FieldRef<"Suscripcion", 'Boolean'>
   readonly notaInterna: Prisma.FieldRef<"Suscripcion", 'String'>
+  readonly mpPreapprovalId: Prisma.FieldRef<"Suscripcion", 'String'>
+  readonly mpPreapprovalEstado: Prisma.FieldRef<"Suscripcion", 'String'>
   readonly createdAt: Prisma.FieldRef<"Suscripcion", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Suscripcion", 'DateTime'>
 }

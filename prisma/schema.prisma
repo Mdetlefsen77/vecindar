@@ -126,13 +126,17 @@ model Suscripcion {
   // Exento de pago (ej: admin, referente, caso especial) — no cuenta como deudor.
   exento       Boolean   @default(false)
   notaInterna  String?
+  // MercadoPago — débito automático (preapproval). null = el vecino no lo activó.
+  mpPreapprovalId     String? @unique
+  mpPreapprovalEstado String? // "authorized" | "paused" | "cancelled" | "pending"
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
   @@map("suscripciones")
 }
 
-// Un pago registrado a mano por un admin. Un pago por usuario y período.
+// Un pago de un usuario para un período. Lo registra un admin/tesorero a mano,
+// o entra solo por el webhook de MercadoPago. Un pago por usuario y período.
 model Pago {
   id              Int        @id @default(autoincrement())
   usuarioId       Int
@@ -142,8 +146,13 @@ model Pago {
   metodo          MetodoPago @default(TRANSFERENCIA)
   nota            String?
   fecha           DateTime   @default(now())
+  // Quién lo cargó. En pagos por MercadoPago es el propio vecino (se lo
+  // "autorregistró" al pagar).
   registradoPorId Int
   registradoPor   Usuario    @relation("PagoRegistradoPor", fields: [registradoPorId], references: [id])
+  // id del pago en MercadoPago si vino por ahí — evita duplicar en los
+  // reintentos del webhook.
+  mpPaymentId     String?    @unique
   createdAt       DateTime   @default(now())
 
   @@unique([usuarioId, periodo])

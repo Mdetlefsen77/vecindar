@@ -49,6 +49,7 @@ export type PagoMinAggregateOutputType = {
   nota: string | null
   fecha: Date | null
   registradoPorId: number | null
+  mpPaymentId: string | null
   createdAt: Date | null
 }
 
@@ -61,6 +62,7 @@ export type PagoMaxAggregateOutputType = {
   nota: string | null
   fecha: Date | null
   registradoPorId: number | null
+  mpPaymentId: string | null
   createdAt: Date | null
 }
 
@@ -73,6 +75,7 @@ export type PagoCountAggregateOutputType = {
   nota: number
   fecha: number
   registradoPorId: number
+  mpPaymentId: number
   createdAt: number
   _all: number
 }
@@ -101,6 +104,7 @@ export type PagoMinAggregateInputType = {
   nota?: true
   fecha?: true
   registradoPorId?: true
+  mpPaymentId?: true
   createdAt?: true
 }
 
@@ -113,6 +117,7 @@ export type PagoMaxAggregateInputType = {
   nota?: true
   fecha?: true
   registradoPorId?: true
+  mpPaymentId?: true
   createdAt?: true
 }
 
@@ -125,6 +130,7 @@ export type PagoCountAggregateInputType = {
   nota?: true
   fecha?: true
   registradoPorId?: true
+  mpPaymentId?: true
   createdAt?: true
   _all?: true
 }
@@ -224,6 +230,7 @@ export type PagoGroupByOutputType = {
   nota: string | null
   fecha: Date
   registradoPorId: number
+  mpPaymentId: string | null
   createdAt: Date
   _count: PagoCountAggregateOutputType | null
   _avg: PagoAvgAggregateOutputType | null
@@ -259,6 +266,7 @@ export type PagoWhereInput = {
   nota?: Prisma.StringNullableFilter<"Pago"> | string | null
   fecha?: Prisma.DateTimeFilter<"Pago"> | Date | string
   registradoPorId?: Prisma.IntFilter<"Pago"> | number
+  mpPaymentId?: Prisma.StringNullableFilter<"Pago"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pago"> | Date | string
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
   registradoPor?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
@@ -273,6 +281,7 @@ export type PagoOrderByWithRelationInput = {
   nota?: Prisma.SortOrderInput | Prisma.SortOrder
   fecha?: Prisma.SortOrder
   registradoPorId?: Prisma.SortOrder
+  mpPaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   usuario?: Prisma.UsuarioOrderByWithRelationInput
   registradoPor?: Prisma.UsuarioOrderByWithRelationInput
@@ -280,6 +289,7 @@ export type PagoOrderByWithRelationInput = {
 
 export type PagoWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  mpPaymentId?: string
   usuarioId_periodo?: Prisma.PagoUsuarioIdPeriodoCompoundUniqueInput
   AND?: Prisma.PagoWhereInput | Prisma.PagoWhereInput[]
   OR?: Prisma.PagoWhereInput[]
@@ -294,7 +304,7 @@ export type PagoWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Pago"> | Date | string
   usuario?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
   registradoPor?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
-}, "id" | "usuarioId_periodo">
+}, "id" | "mpPaymentId" | "usuarioId_periodo">
 
 export type PagoOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -305,6 +315,7 @@ export type PagoOrderByWithAggregationInput = {
   nota?: Prisma.SortOrderInput | Prisma.SortOrder
   fecha?: Prisma.SortOrder
   registradoPorId?: Prisma.SortOrder
+  mpPaymentId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.PagoCountOrderByAggregateInput
   _avg?: Prisma.PagoAvgOrderByAggregateInput
@@ -325,6 +336,7 @@ export type PagoScalarWhereWithAggregatesInput = {
   nota?: Prisma.StringNullableWithAggregatesFilter<"Pago"> | string | null
   fecha?: Prisma.DateTimeWithAggregatesFilter<"Pago"> | Date | string
   registradoPorId?: Prisma.IntWithAggregatesFilter<"Pago"> | number
+  mpPaymentId?: Prisma.StringNullableWithAggregatesFilter<"Pago"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Pago"> | Date | string
 }
 
@@ -334,6 +346,7 @@ export type PagoCreateInput = {
   metodo?: $Enums.MetodoPago
   nota?: string | null
   fecha?: Date | string
+  mpPaymentId?: string | null
   createdAt?: Date | string
   usuario: Prisma.UsuarioCreateNestedOneWithoutPagosInput
   registradoPor: Prisma.UsuarioCreateNestedOneWithoutPagosRegistradosInput
@@ -348,6 +361,7 @@ export type PagoUncheckedCreateInput = {
   nota?: string | null
   fecha?: Date | string
   registradoPorId: number
+  mpPaymentId?: string | null
   createdAt?: Date | string
 }
 
@@ -357,6 +371,7 @@ export type PagoUpdateInput = {
   metodo?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutPagosNestedInput
   registradoPor?: Prisma.UsuarioUpdateOneRequiredWithoutPagosRegistradosNestedInput
@@ -371,6 +386,7 @@ export type PagoUncheckedUpdateInput = {
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   registradoPorId?: Prisma.IntFieldUpdateOperationsInput | number
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -383,6 +399,7 @@ export type PagoCreateManyInput = {
   nota?: string | null
   fecha?: Date | string
   registradoPorId: number
+  mpPaymentId?: string | null
   createdAt?: Date | string
 }
 
@@ -392,6 +409,7 @@ export type PagoUpdateManyMutationInput = {
   metodo?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -404,6 +422,7 @@ export type PagoUncheckedUpdateManyInput = {
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   registradoPorId?: Prisma.IntFieldUpdateOperationsInput | number
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -431,6 +450,7 @@ export type PagoCountOrderByAggregateInput = {
   nota?: Prisma.SortOrder
   fecha?: Prisma.SortOrder
   registradoPorId?: Prisma.SortOrder
+  mpPaymentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -450,6 +470,7 @@ export type PagoMaxOrderByAggregateInput = {
   nota?: Prisma.SortOrder
   fecha?: Prisma.SortOrder
   registradoPorId?: Prisma.SortOrder
+  mpPaymentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -462,6 +483,7 @@ export type PagoMinOrderByAggregateInput = {
   nota?: Prisma.SortOrder
   fecha?: Prisma.SortOrder
   registradoPorId?: Prisma.SortOrder
+  mpPaymentId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -566,6 +588,7 @@ export type PagoCreateWithoutUsuarioInput = {
   metodo?: $Enums.MetodoPago
   nota?: string | null
   fecha?: Date | string
+  mpPaymentId?: string | null
   createdAt?: Date | string
   registradoPor: Prisma.UsuarioCreateNestedOneWithoutPagosRegistradosInput
 }
@@ -578,6 +601,7 @@ export type PagoUncheckedCreateWithoutUsuarioInput = {
   nota?: string | null
   fecha?: Date | string
   registradoPorId: number
+  mpPaymentId?: string | null
   createdAt?: Date | string
 }
 
@@ -597,6 +621,7 @@ export type PagoCreateWithoutRegistradoPorInput = {
   metodo?: $Enums.MetodoPago
   nota?: string | null
   fecha?: Date | string
+  mpPaymentId?: string | null
   createdAt?: Date | string
   usuario: Prisma.UsuarioCreateNestedOneWithoutPagosInput
 }
@@ -609,6 +634,7 @@ export type PagoUncheckedCreateWithoutRegistradoPorInput = {
   metodo?: $Enums.MetodoPago
   nota?: string | null
   fecha?: Date | string
+  mpPaymentId?: string | null
   createdAt?: Date | string
 }
 
@@ -650,6 +676,7 @@ export type PagoScalarWhereInput = {
   nota?: Prisma.StringNullableFilter<"Pago"> | string | null
   fecha?: Prisma.DateTimeFilter<"Pago"> | Date | string
   registradoPorId?: Prisma.IntFilter<"Pago"> | number
+  mpPaymentId?: Prisma.StringNullableFilter<"Pago"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Pago"> | Date | string
 }
 
@@ -677,6 +704,7 @@ export type PagoCreateManyUsuarioInput = {
   nota?: string | null
   fecha?: Date | string
   registradoPorId: number
+  mpPaymentId?: string | null
   createdAt?: Date | string
 }
 
@@ -688,6 +716,7 @@ export type PagoCreateManyRegistradoPorInput = {
   metodo?: $Enums.MetodoPago
   nota?: string | null
   fecha?: Date | string
+  mpPaymentId?: string | null
   createdAt?: Date | string
 }
 
@@ -697,6 +726,7 @@ export type PagoUpdateWithoutUsuarioInput = {
   metodo?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   registradoPor?: Prisma.UsuarioUpdateOneRequiredWithoutPagosRegistradosNestedInput
 }
@@ -709,6 +739,7 @@ export type PagoUncheckedUpdateWithoutUsuarioInput = {
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   registradoPorId?: Prisma.IntFieldUpdateOperationsInput | number
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -720,6 +751,7 @@ export type PagoUncheckedUpdateManyWithoutUsuarioInput = {
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   registradoPorId?: Prisma.IntFieldUpdateOperationsInput | number
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -729,6 +761,7 @@ export type PagoUpdateWithoutRegistradoPorInput = {
   metodo?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutPagosNestedInput
 }
@@ -741,6 +774,7 @@ export type PagoUncheckedUpdateWithoutRegistradoPorInput = {
   metodo?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -752,6 +786,7 @@ export type PagoUncheckedUpdateManyWithoutRegistradoPorInput = {
   metodo?: Prisma.EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
   nota?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   fecha?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  mpPaymentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -766,6 +801,7 @@ export type PagoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   nota?: boolean
   fecha?: boolean
   registradoPorId?: boolean
+  mpPaymentId?: boolean
   createdAt?: boolean
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   registradoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -780,6 +816,7 @@ export type PagoSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   nota?: boolean
   fecha?: boolean
   registradoPorId?: boolean
+  mpPaymentId?: boolean
   createdAt?: boolean
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   registradoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -794,6 +831,7 @@ export type PagoSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   nota?: boolean
   fecha?: boolean
   registradoPorId?: boolean
+  mpPaymentId?: boolean
   createdAt?: boolean
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   registradoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -808,10 +846,11 @@ export type PagoSelectScalar = {
   nota?: boolean
   fecha?: boolean
   registradoPorId?: boolean
+  mpPaymentId?: boolean
   createdAt?: boolean
 }
 
-export type PagoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "usuarioId" | "periodo" | "monto" | "metodo" | "nota" | "fecha" | "registradoPorId" | "createdAt", ExtArgs["result"]["pago"]>
+export type PagoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "usuarioId" | "periodo" | "monto" | "metodo" | "nota" | "fecha" | "registradoPorId" | "mpPaymentId" | "createdAt", ExtArgs["result"]["pago"]>
 export type PagoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   usuario?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
   registradoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
@@ -840,6 +879,7 @@ export type $PagoPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     nota: string | null
     fecha: Date
     registradoPorId: number
+    mpPaymentId: string | null
     createdAt: Date
   }, ExtArgs["result"]["pago"]>
   composites: {}
@@ -1274,6 +1314,7 @@ export interface PagoFieldRefs {
   readonly nota: Prisma.FieldRef<"Pago", 'String'>
   readonly fecha: Prisma.FieldRef<"Pago", 'DateTime'>
   readonly registradoPorId: Prisma.FieldRef<"Pago", 'Int'>
+  readonly mpPaymentId: Prisma.FieldRef<"Pago", 'String'>
   readonly createdAt: Prisma.FieldRef<"Pago", 'DateTime'>
 }
     
