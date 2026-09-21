@@ -6,9 +6,9 @@ export const CUOTA_MENSUAL_DEFAULT = 35000;
 // mano acá hasta que exista una integración de pagos (MercadoPago). Dejá en ""
 // los campos que no correspondan — la página oculta los vacíos.
 export const DATOS_PAGO = {
-  alias: "",
-  cbu: "",
-  titular: "",
+  alias: "barriosegurou3s",
+  cbu: "0000003100060817012883",
+  titular: "Miguel Esteban Rodriguez",
   // Texto libre: banco, horario de cobro en efectivo, a quién avisar, etc.
   nota: "Cuando pagues, enviá el comprobante al administrador del barrio para que registre el pago.",
 };
