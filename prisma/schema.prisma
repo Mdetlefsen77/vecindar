@@ -16,8 +16,8 @@ datasource db {
 
 model Manzana {
   id         Int         @id @default(autoincrement())
-  numero     String      // "1", "2", "3", etc.
-  zona       String      // "Norte" o "Sur"
+  numero     String // "1", "2", "3", etc.
+  zona       String // "Norte" o "Sur"
   lotes      Lote[]
   incidentes Incidente[]
   createdAt  DateTime    @default(now())
@@ -27,36 +27,36 @@ model Manzana {
 }
 
 model Lote {
-  id              Int         @id @default(autoincrement())
-  numero          String      // número del lote
-  manzanaId       Int
-  manzana         Manzana     @relation(fields: [manzanaId], references: [id])
-  calleFrente     String      // "CALLE PUBLICA A"
-  habitado        Boolean     @default(false)
-  latitud         Float?      // coordenadas para el mapa
-  longitud        Float?
-  area            Float?      // área en m2
-  residentes      Residente[]
-  incidentes      Incidente[]
+  id          Int         @id @default(autoincrement())
+  numero      String // número del lote
+  manzanaId   Int
+  manzana     Manzana     @relation(fields: [manzanaId], references: [id])
+  calleFrente String // "CALLE PUBLICA A"
+  habitado    Boolean     @default(false)
+  latitud     Float? // coordenadas para el mapa
+  longitud    Float?
+  area        Float? // área en m2
+  residentes  Residente[]
+  incidentes  Incidente[]
   // Hasta 2 cuentas por lote (ej: madre y padre) — el límite se controla
   // en la app (ver MAX_USUARIOS_POR_LOTE), no en la base.
-  usuarios        Usuario[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  usuarios    Usuario[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 
   @@unique([manzanaId, numero])
   @@map("lotes")
 }
 
 model Residente {
-  id                    Int      @id @default(autoincrement())
-  nombre                String
-  telefono              String?
-  loteId                Int
-  lote                  Lote     @relation(fields: [loteId], references: [id], onDelete: Cascade)
-  esContactoPrincipal   Boolean  @default(false)
-  createdAt             DateTime @default(now())
-  updatedAt             DateTime @updatedAt
+  id                  Int      @id @default(autoincrement())
+  nombre              String
+  telefono            String?
+  loteId              Int
+  lote                Lote     @relation(fields: [loteId], references: [id], onDelete: Cascade)
+  esContactoPrincipal Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@index([loteId])
   @@map("residentes")
@@ -67,39 +67,39 @@ model Residente {
 // ============================================
 
 model Usuario {
-  id                  Int                 @id @default(autoincrement())
-  email               String              @unique
-  password            String              // hash de bcrypt
-  nombre              String              // solo el nombre de pila
-  apellido            String
-  telefono            String?
-  loteId              Int
-  lote                Lote                @relation(fields: [loteId], references: [id])
-  verificado          Boolean             @default(false)
-  rol                 Rol                 @default(VECINO)
-  
-  // Relaciones
-  incidentes          Incidente[]
-  alertasPanico       AlertaPanico[]      @relation("UsuarioAlertas")
-  alertasAtendidas    AlertaPanico[]      @relation("AtiendeAlertas")
-  requerimientos      Requerimiento[]
-  comentariosReq      ComentarioReq[]
-  comentariosAlertas  ComentarioAlerta[]
-  mascotasPerdidas    MascotaPerdida[]
-  
-  pushSubscriptions   PushSubscription[]
-  vistasSecciones     VistaSeccion[]
+  id         Int     @id @default(autoincrement())
+  email      String  @unique
+  password   String // hash de bcrypt
+  nombre     String // solo el nombre de pila
+  apellido   String
+  telefono   String?
+  loteId     Int
+  lote       Lote    @relation(fields: [loteId], references: [id])
+  verificado Boolean @default(false)
+  rol        Rol     @default(VECINO)
 
-  suscripcion         Suscripcion?
-  pagos               Pago[]             @relation("PagosDelUsuario")
-  pagosRegistrados    Pago[]             @relation("PagoRegistradoPor")
+  // Relaciones
+  incidentes         Incidente[]
+  alertasPanico      AlertaPanico[]     @relation("UsuarioAlertas")
+  alertasAtendidas   AlertaPanico[]     @relation("AtiendeAlertas")
+  requerimientos     Requerimiento[]
+  comentariosReq     ComentarioReq[]
+  comentariosAlertas ComentarioAlerta[]
+  mascotasPerdidas   MascotaPerdida[]
+
+  pushSubscriptions PushSubscription[]
+  vistasSecciones   VistaSeccion[]
+
+  suscripcion      Suscripcion?
+  pagos            Pago[]       @relation("PagosDelUsuario")
+  pagosRegistrados Pago[]       @relation("PagoRegistradoPor")
 
   // Crecimiento / invitaciones entre vecinos — ver docs/proposal-crecimiento.md.
   // Sin incentivo económico en este MVP: solo atribución para reconocimiento.
-  invitadoPorId       Int?
-  invitadoPor         Usuario?           @relation("InvitacionesEntreVecinos", fields: [invitadoPorId], references: [id])
-  invitados           Usuario[]          @relation("InvitacionesEntreVecinos")
-  codigoInvitacion    CodigoInvitacion?  @relation("CodigoDelUsuario")
+  invitadoPorId    Int?
+  invitadoPor      Usuario?          @relation("InvitacionesEntreVecinos", fields: [invitadoPorId], references: [id])
+  invitados        Usuario[]         @relation("InvitacionesEntreVecinos")
+  codigoInvitacion CodigoInvitacion? @relation("CodigoDelUsuario")
 
   // Reportes — historial de transiciones que esta cuenta generó (Fase 0,
   // docs/proposal-reportes.md §1/§7). Prerequisito para tiempos de resolución
@@ -108,14 +108,26 @@ model Usuario {
   // Reportes que generó y archivó (Fase 3).
   reportesGenerados      Reporte[]
 
+  // Puente WhatsApp (Fase 0/1) — ver openspec/changes/whatsapp-bridge y
+  // docs/proposal-whatsapp-bridge.md. origenRegistro: de dónde vino el alta,
+  // para medir conversión del canal externo.
+  origenRegistro                    OrigenRegistro       @default(DIRECTO)
+  // D1 (docs/proposal-whatsapp-bridge.md §13): opt-out para no mostrar el
+  // nombre en el mensaje compartido — se ve como "Un vecino" en su lugar.
+  // Sin UI para cambiarlo todavía (ver tasks.md 4.1); default false = se
+  // muestra nombre + inicial, la recomendación aceptada por el dueño.
+  ocultarNombreEnPublicacionExterna Boolean              @default(false)
+  publicacionesExternas             PublicacionExterna[]
+  clicksLinks                       ClickLink[]
+
   // Uso de la cuenta (para cobranza / actividad — ver /admin/usuarios).
   // ultimoLoginAt: última autenticación con credenciales.
   // ultimaActividadAt: último request autenticado (throttle en requireSession).
-  ultimoLoginAt       DateTime?
-  ultimaActividadAt   DateTime?
+  ultimoLoginAt     DateTime?
+  ultimaActividadAt DateTime?
 
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([loteId])
   @@index([ultimaActividadAt])
@@ -130,22 +142,22 @@ model Usuario {
 // registrar el primer pago o al marcar al usuario como exento; si no existe,
 // el usuario se muestra como "sin datos" en el panel de cobranza.
 model Suscripcion {
-  id           Int       @id @default(autoincrement())
-  usuarioId    Int       @unique
-  usuario      Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  id                  Int       @id @default(autoincrement())
+  usuarioId           Int       @unique
+  usuario             Usuario   @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   // Última fecha cubierta por los pagos (fin del mes del último período pago).
   // null = nunca pagó. "Vencida" = vigenteHasta < hoy.
-  vigenteHasta DateTime?
+  vigenteHasta        DateTime?
   // Cuota mensual para este usuario en pesos. null = usar CUOTA_MENSUAL_DEFAULT.
-  montoMensual Int?
+  montoMensual        Int?
   // Exento de pago (ej: admin, referente, caso especial) — no cuenta como deudor.
-  exento       Boolean   @default(false)
-  notaInterna  String?
+  exento              Boolean   @default(false)
+  notaInterna         String?
   // MercadoPago — débito automático (preapproval). null = el vecino no lo activó.
-  mpPreapprovalId     String? @unique
+  mpPreapprovalId     String?   @unique
   mpPreapprovalEstado String? // "authorized" | "paused" | "cancelled" | "pending"
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 
   @@map("suscripciones")
 }
@@ -156,8 +168,8 @@ model Pago {
   id              Int        @id @default(autoincrement())
   usuarioId       Int
   usuario         Usuario    @relation("PagosDelUsuario", fields: [usuarioId], references: [id], onDelete: Cascade)
-  periodo         String     // "YYYY-MM" — mes que cubre este pago
-  monto           Int        // pesos
+  periodo         String // "YYYY-MM" — mes que cubre este pago
+  monto           Int // pesos
   metodo          MetodoPago @default(TRANSFERENCIA)
   nota            String?
   fecha           DateTime   @default(now())
@@ -186,11 +198,11 @@ enum MetodoPago {
 // Última vez que cada usuario visitó una sección — usado para calcular
 // el contador de "nuevo" en las tarjetas de inicio (badge tipo notificación).
 model VistaSeccion {
-  id        Int              @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   usuarioId Int
-  usuario   Usuario          @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  usuario   Usuario       @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
   seccion   SeccionInicio
-  vistoAt   DateTime         @default(now())
+  vistoAt   DateTime      @default(now())
 
   @@unique([usuarioId, seccion])
   @@map("vistas_secciones")
@@ -215,27 +227,27 @@ enum Rol {
 // ============================================
 
 model Incidente {
-  id              Int             @id @default(autoincrement())
-  tipo            TipoIncidente
-  descripcion     String
-  fechaHora       DateTime        @default(now())
-  loteId          Int?
-  lote            Lote?           @relation(fields: [loteId], references: [id])
+  id             Int             @id @default(autoincrement())
+  tipo           TipoIncidente
+  descripcion    String
+  fechaHora      DateTime        @default(now())
+  loteId         Int?
+  lote           Lote?           @relation(fields: [loteId], references: [id])
   // Resuelta al crear (por loteId o point-in-polygon) — ver docs/proposal-reportes.md
   // R9. Evita recalcular geometría en cada reporte.
-  manzanaId       Int?
-  manzana         Manzana?        @relation(fields: [manzanaId], references: [id])
-  ubicacionText   String?         // descripción textual de la ubicación
-  latitud         Float?
-  longitud        Float?
-  reportadoPorId  Int
-  reportadoPor    Usuario         @relation(fields: [reportadoPorId], references: [id])
-  imagenes        String[]        // array de URLs
-  estado          EstadoIncidente @default(ACTIVO)
-  prioridad       Prioridad       @default(MEDIO)
-  visibleVecinos  Boolean         @default(true) // control de visibilidad
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  manzanaId      Int?
+  manzana        Manzana?        @relation(fields: [manzanaId], references: [id])
+  ubicacionText  String? // descripción textual de la ubicación
+  latitud        Float?
+  longitud       Float?
+  reportadoPorId Int
+  reportadoPor   Usuario         @relation(fields: [reportadoPorId], references: [id])
+  imagenes       String[] // array de URLs
+  estado         EstadoIncidente @default(ACTIVO)
+  prioridad      Prioridad       @default(MEDIO)
+  visibleVecinos Boolean         @default(true) // control de visibilidad
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 
   @@index([loteId])
   @@index([manzanaId])
@@ -268,7 +280,7 @@ enum Prioridad {
 model ConfigSLA {
   id          Int       @id @default(autoincrement())
   prioridad   Prioridad @unique
-  horasLimite Int       // horas hasta vencimiento
+  horasLimite Int // horas hasta vencimiento
   updatedAt   DateTime  @updatedAt
 
   @@map("config_sla")
@@ -276,20 +288,20 @@ model ConfigSLA {
 
 // Botón de Pánico
 model AlertaPanico {
-  id              Int           @id @default(autoincrement())
-  usuarioId       Int
-  usuario         Usuario       @relation("UsuarioAlertas", fields: [usuarioId], references: [id])
-  latitud         Float
-  longitud        Float
-  estado          EstadoAlerta  @default(ENVIADO)
-  atendioPorId    Int?
-  atendioPor      Usuario?      @relation("AtiendeAlertas", fields: [atendioPorId], references: [id])
-  notas           String?       // Nota rápida del que atiende (legado, ver comentarios)
-  comentarios     ComentarioAlerta[]
-  createdAt       DateTime      @default(now())
-  recibidoAt      DateTime?
-  atendidoAt      DateTime?
-  cerradoAt       DateTime?
+  id           Int                @id @default(autoincrement())
+  usuarioId    Int
+  usuario      Usuario            @relation("UsuarioAlertas", fields: [usuarioId], references: [id])
+  latitud      Float
+  longitud     Float
+  estado       EstadoAlerta       @default(ENVIADO)
+  atendioPorId Int?
+  atendioPor   Usuario?           @relation("AtiendeAlertas", fields: [atendioPorId], references: [id])
+  notas        String? // Nota rápida del que atiende (legado, ver comentarios)
+  comentarios  ComentarioAlerta[]
+  createdAt    DateTime           @default(now())
+  recibidoAt   DateTime?
+  atendidoAt   DateTime?
+  cerradoAt    DateTime?
 
   @@index([usuarioId])
   @@index([atendioPorId])
@@ -298,13 +310,13 @@ model AlertaPanico {
 
 // Conversación entre el vecino que activó la alerta y admin/seguridad
 model ComentarioAlerta {
-  id         Int          @id @default(autoincrement())
-  alertaId   Int
-  alerta     AlertaPanico @relation(fields: [alertaId], references: [id], onDelete: Cascade)
-  usuarioId  Int
-  usuario    Usuario      @relation(fields: [usuarioId], references: [id])
-  texto      String
-  createdAt  DateTime     @default(now())
+  id        Int          @id @default(autoincrement())
+  alertaId  Int
+  alerta    AlertaPanico @relation(fields: [alertaId], references: [id], onDelete: Cascade)
+  usuarioId Int
+  usuario   Usuario      @relation(fields: [usuarioId], references: [id])
+  texto     String
+  createdAt DateTime     @default(now())
 
   @@index([alertaId])
   @@index([usuarioId])
@@ -337,31 +349,31 @@ model PushSubscription {
 // ============================================
 
 model Requerimiento {
-  id              Int                   @id @default(autoincrement())
-  categoria       CategoriaReq
-  titulo          String
-  descripcion     String
-  estado          EstadoRequerimiento   @default(NUEVO)
-  prioridad       Prioridad             @default(MEDIO)
-  usuarioId       Int
-  usuario         Usuario               @relation(fields: [usuarioId], references: [id])
-  imagenes        String[]
-  comentarios     ComentarioReq[]
-  createdAt       DateTime              @default(now())
-  updatedAt       DateTime              @updatedAt
+  id          Int                 @id @default(autoincrement())
+  categoria   CategoriaReq
+  titulo      String
+  descripcion String
+  estado      EstadoRequerimiento @default(NUEVO)
+  prioridad   Prioridad           @default(MEDIO)
+  usuarioId   Int
+  usuario     Usuario             @relation(fields: [usuarioId], references: [id])
+  imagenes    String[]
+  comentarios ComentarioReq[]
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 
   @@index([usuarioId])
   @@map("requerimientos")
 }
 
 model ComentarioReq {
-  id                Int             @id @default(autoincrement())
-  requerimientoId   Int
-  requerimiento     Requerimiento   @relation(fields: [requerimientoId], references: [id], onDelete: Cascade)
-  usuarioId         Int
-  usuario           Usuario         @relation(fields: [usuarioId], references: [id])
-  texto             String
-  createdAt         DateTime        @default(now())
+  id              Int           @id @default(autoincrement())
+  requerimientoId Int
+  requerimiento   Requerimiento @relation(fields: [requerimientoId], references: [id], onDelete: Cascade)
+  usuarioId       Int
+  usuario         Usuario       @relation(fields: [usuarioId], references: [id])
+  texto           String
+  createdAt       DateTime      @default(now())
 
   @@index([requerimientoId])
   @@index([usuarioId])
@@ -390,17 +402,17 @@ enum EstadoRequerimiento {
 // ============================================
 
 model MascotaPerdida {
-  id          Int                 @id @default(autoincrement())
+  id          Int               @id @default(autoincrement())
   tipo        TipoAlertaMascota
   nombre      String?
   descripcion String
   foto        String?
-  zona        String              // descripción de la zona
+  zona        String // descripción de la zona
   contacto    String
-  estado      Boolean             @default(true) // true = abierta, false = resuelta
+  estado      Boolean           @default(true) // true = abierta, false = resuelta
   usuarioId   Int
-  usuario     Usuario             @relation(fields: [usuarioId], references: [id])
-  createdAt   DateTime            @default(now())
+  usuario     Usuario           @relation(fields: [usuarioId], references: [id])
+  createdAt   DateTime          @default(now())
   resueltaAt  DateTime?
 
   @@index([usuarioId])
@@ -506,4 +518,101 @@ model Reporte {
   // (sin forzar recálculo) es servir el más reciente de estos, vía índice.
   @@index([periodoInicio, periodoFin, nivel, generadoAt])
   @@map("reportes")
+}
+
+// ============================================
+// NOTIFICACIONES EXTERNAS — PUENTE WHATSAPP (Fase 0/1)
+// ============================================
+// openspec/changes/whatsapp-bridge — docs/proposal-whatsapp-bridge.md.
+// Fase 1 es semi-manual: `modo` siempre MANUAL y `estado` siempre ENVIADA al
+// compartir (no hay cola ni reintentos todavía). Los campos que asumen
+// despacho automático (estado PENDIENTE/FALLIDA/OMITIDA, reintentos) quedan
+// listos para Fase 2 sin necesitar una migración nueva si se aprueba.
+
+enum CanalExterno {
+  WHATSAPP
+  TELEGRAM
+}
+
+enum TipoEventoPublicacion {
+  INCIDENTE
+  REQUERIMIENTO
+  MASCOTA
+  ALERTA_PANICO
+  RESUMEN
+}
+
+enum EstadoPublicacion {
+  PENDIENTE
+  ENVIADA
+  FALLIDA
+  OMITIDA
+}
+
+enum ModoPublicacion {
+  AUTOMATICA
+  MANUAL
+}
+
+enum OrigenRegistro {
+  DIRECTO
+  WHATSAPP
+}
+
+// Una fila por intento de compartir un evento hacia un canal externo. En
+// Fase 1, siempre `modo = MANUAL` y `estado = ENVIADA` (se crea ya resuelta,
+// no hay despacho asincrónico) — igual usa el mismo shape que Fase 2 para no
+// migrar de nuevo si se automatiza.
+model PublicacionExterna {
+  id                Int                   @id @default(autoincrement())
+  canal             CanalExterno
+  tipoEvento        TipoEventoPublicacion
+  entidadId         Int? // null para RESUMEN (Fase 2)
+  estado            EstadoPublicacion     @default(PENDIENTE)
+  // Deriva de canal + tipoEvento + entidadId — impide compartir el mismo
+  // evento dos veces por el mismo canal.
+  claveIdempotencia String                @unique
+  modo              ModoPublicacion
+  publicadaPorId    Int?
+  publicadaPor      Usuario?              @relation(fields: [publicadaPorId], references: [id])
+  intentos          Int                   @default(0)
+  ultimoError       String?
+  link              LinkRastreable?
+  creadaAt          DateTime              @default(now())
+  enviadaAt         DateTime?
+
+  @@index([estado])
+  @@index([tipoEvento, entidadId])
+  @@map("publicaciones_externas")
+}
+
+// Código corto no enumerable que redirige a la URL real del evento
+// compartido, y punto único de medición de clicks.
+model LinkRastreable {
+  id            Int                 @id @default(autoincrement())
+  codigo        String              @unique
+  urlDestino    String
+  publicacionId Int?                @unique
+  publicacion   PublicacionExterna? @relation(fields: [publicacionId], references: [id])
+  clicks        Int                 @default(0)
+  clicksLog     ClickLink[]
+  creadoAt      DateTime            @default(now())
+  expiraAt      DateTime?
+
+  @@map("links_rastreables")
+}
+
+// Una fila por click en un link rastreable. Sin IP ni user-agent completo a
+// propósito (no hace falta para las métricas del PoC).
+model ClickLink {
+  id          Int            @id @default(autoincrement())
+  linkId      Int
+  link        LinkRastreable @relation(fields: [linkId], references: [id], onDelete: Cascade)
+  ocurridoAt  DateTime       @default(now())
+  tenerSesion Boolean
+  usuarioId   Int?
+  usuario     Usuario?       @relation(fields: [usuarioId], references: [id])
+
+  @@index([linkId])
+  @@map("clicks_links")
 }

@@ -32,8 +32,28 @@ function BannerInvitacion() {
   );
 }
 
-export default function RegistroPage() {
+// Contexto para quien llega desde un link externo (HU-05, CA-05.1) — mismo
+// criterio de aislamiento que BannerInvitacion.
+function BannerLlegadaExterna() {
+  const searchParams = useSearchParams();
+  if (!searchParams.get("callbackUrl")) return null;
+  return (
+    <div className="rounded-md bg-blue-50 border border-blue-200 p-3 text-center">
+      <p className="text-sm text-blue-800">
+        👋 Registrate para ver el detalle que buscabas en Vecindar, la app de
+        seguridad y gestión de tu barrio.
+      </p>
+    </div>
+  );
+}
+
+function useCallbackUrl(): string | null {
+  return useSearchParams().get("callbackUrl");
+}
+
+function RegistroForm() {
   const router = useRouter();
+  const callbackUrl = useCallbackUrl();
 
   // Campos del formulario
   const [nombre, setNombre] = useState("");
