@@ -93,6 +93,13 @@ model Usuario {
   pagos               Pago[]             @relation("PagosDelUsuario")
   pagosRegistrados    Pago[]             @relation("PagoRegistradoPor")
 
+  // Crecimiento / invitaciones entre vecinos — ver docs/proposal-crecimiento.md.
+  // Sin incentivo económico en este MVP: solo atribución para reconocimiento.
+  invitadoPorId       Int?
+  invitadoPor         Usuario?           @relation("InvitacionesEntreVecinos", fields: [invitadoPorId], references: [id])
+  invitados           Usuario[]          @relation("InvitacionesEntreVecinos")
+  codigoInvitacion    CodigoInvitacion?  @relation("CodigoDelUsuario")
+
   // Uso de la cuenta (para cobranza / actividad — ver /admin/usuarios).
   // ultimoLoginAt: última autenticación con credenciales.
   // ultimaActividadAt: último request autenticado (throttle en requireSession).
@@ -390,4 +397,24 @@ model MascotaPerdida {
 enum TipoAlertaMascota {
   PERDIDA
   ENCONTRADA
+}
+
+// ============================================
+// CRECIMIENTO / INVITACIONES ENTRE VECINOS
+// ============================================
+
+// Código de invitación propio de cada vecino (uno por usuario, de por vida —
+// ver docs/proposal-crecimiento.md §4 y decisión C3). Sin incentivo económico
+// en este MVP: `registros` es solo para reconocimiento (contador visible al
+// usuario), no dispara ningún descuento.
+model CodigoInvitacion {
+  id        Int      @id @default(autoincrement())
+  codigo    String   @unique
+  usuarioId Int      @unique
+  usuario   Usuario  @relation("CodigoDelUsuario", fields: [usuarioId], references: [id], onDelete: Cascade)
+  clicks    Int      @default(0)
+  registros Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("codigos_invitacion")
 }

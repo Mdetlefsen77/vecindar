@@ -507,14 +507,6 @@ export type SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SuscripcionUpdateToOneWithWhereWithoutUsuarioInput, Prisma.SuscripcionUpdateWithoutUsuarioInput>, Prisma.SuscripcionUncheckedUpdateWithoutUsuarioInput>
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type SuscripcionCreateWithoutUsuarioInput = {
   vigenteHasta?: Date | string | null
   montoMensual?: number | null

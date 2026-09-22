@@ -398,7 +398,8 @@ export const ModelName = {
   PushSubscription: 'PushSubscription',
   Requerimiento: 'Requerimiento',
   ComentarioReq: 'ComentarioReq',
-  MascotaPerdida: 'MascotaPerdida'
+  MascotaPerdida: 'MascotaPerdida',
+  CodigoInvitacion: 'CodigoInvitacion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +415,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1528,6 +1529,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CodigoInvitacion: {
+      payload: Prisma.$CodigoInvitacionPayload<ExtArgs>
+      fields: Prisma.CodigoInvitacionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CodigoInvitacionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CodigoInvitacionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>
+        }
+        findFirst: {
+          args: Prisma.CodigoInvitacionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CodigoInvitacionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>
+        }
+        findMany: {
+          args: Prisma.CodigoInvitacionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>[]
+        }
+        create: {
+          args: Prisma.CodigoInvitacionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>
+        }
+        createMany: {
+          args: Prisma.CodigoInvitacionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CodigoInvitacionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>[]
+        }
+        delete: {
+          args: Prisma.CodigoInvitacionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>
+        }
+        update: {
+          args: Prisma.CodigoInvitacionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>
+        }
+        deleteMany: {
+          args: Prisma.CodigoInvitacionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CodigoInvitacionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CodigoInvitacionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>[]
+        }
+        upsert: {
+          args: Prisma.CodigoInvitacionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CodigoInvitacionPayload>
+        }
+        aggregate: {
+          args: Prisma.CodigoInvitacionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCodigoInvitacion>
+        }
+        groupBy: {
+          args: Prisma.CodigoInvitacionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CodigoInvitacionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CodigoInvitacionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CodigoInvitacionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1617,6 +1692,7 @@ export const UsuarioScalarFieldEnum = {
   loteId: 'loteId',
   verificado: 'verificado',
   rol: 'rol',
+  invitadoPorId: 'invitadoPorId',
   ultimoLoginAt: 'ultimoLoginAt',
   ultimaActividadAt: 'ultimaActividadAt',
   createdAt: 'createdAt',
@@ -1781,6 +1857,18 @@ export const MascotaPerdidaScalarFieldEnum = {
 } as const
 
 export type MascotaPerdidaScalarFieldEnum = (typeof MascotaPerdidaScalarFieldEnum)[keyof typeof MascotaPerdidaScalarFieldEnum]
+
+
+export const CodigoInvitacionScalarFieldEnum = {
+  id: 'id',
+  codigo: 'codigo',
+  usuarioId: 'usuarioId',
+  clicks: 'clicks',
+  registros: 'registros',
+  createdAt: 'createdAt'
+} as const
+
+export type CodigoInvitacionScalarFieldEnum = (typeof CodigoInvitacionScalarFieldEnum)[keyof typeof CodigoInvitacionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2125,6 +2213,7 @@ export type GlobalOmitConfig = {
   requerimiento?: Prisma.RequerimientoOmit
   comentarioReq?: Prisma.ComentarioReqOmit
   mascotaPerdida?: Prisma.MascotaPerdidaOmit
+  codigoInvitacion?: Prisma.CodigoInvitacionOmit
 }
 
 /* Types for Logging */

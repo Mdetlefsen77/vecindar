@@ -6,6 +6,7 @@ import { respuestaValidacion } from "@/lib/api/validation";
 import { GESTORES_COBRANZA } from "@/lib/permisos";
 import { registrarPagoSchema } from "@/lib/validation/cobranza";
 import { recalcularVigencia } from "@/lib/cobranzaServer";
+import { enviarReciboDeValor } from "@/lib/crecimiento/reciboDeValor";
 
 // POST /api/cobranza/pagos — registrar un pago (solo ADMIN)
 // Body: { usuarioId, periodo "YYYY-MM", monto, metodo?, nota? }
@@ -48,6 +49,8 @@ export async function POST(req: NextRequest) {
       await recalcularVigencia(usuarioId, tx);
       return creado;
     });
+
+    void enviarReciboDeValor(pago);
 
     return NextResponse.json(pago, { status: 201 });
   } catch (err) {

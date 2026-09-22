@@ -92,3 +92,8 @@ export type ComentarioReq = Prisma.ComentarioReqModel
  * 
  */
 export type MascotaPerdida = Prisma.MascotaPerdidaModel
+/**
+ * Model CodigoInvitacion
+ * 
+ */
+export type CodigoInvitacion = Prisma.CodigoInvitacionModel

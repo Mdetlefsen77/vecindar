@@ -5,6 +5,7 @@ import { nombreCompleto } from "@/lib/usuarios";
 import { getUserId } from "@/lib/api/guard";
 import Link from "next/link";
 import Image from "next/image";
+import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import type {
   TipoIncidente,
   CategoriaReq,
@@ -359,6 +360,8 @@ export default async function InicioPage() {
             pointer-events-none z-[9]"
         />
       </div>
+
+      <InvitarVecino />
 
       {/* Secciones principales — columna única mobile, 2 col en lg */}
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
