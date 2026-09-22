@@ -107,3 +107,18 @@ export type TransicionEstado = Prisma.TransicionEstadoModel
  * 
  */
 export type Reporte = Prisma.ReporteModel
+/**
+ * Model PublicacionExterna
+ * 
+ */
+export type PublicacionExterna = Prisma.PublicacionExternaModel
+/**
+ * Model LinkRastreable
+ * 
+ */
+export type LinkRastreable = Prisma.LinkRastreableModel
+/**
+ * Model ClickLink
+ * 
+ */
+export type ClickLink = Prisma.ClickLinkModel

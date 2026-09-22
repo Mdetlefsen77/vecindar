@@ -14,6 +14,8 @@ import {
 } from "@/lib/utils/sla";
 import ComentarioForm from "./ComentarioForm";
 import CambiarEstado from "./CambiarEstado";
+import CompartirBoton from "@/components/notificaciones-externas/CompartirBoton";
+import { obtenerCompartido } from "@/lib/notificaciones-externas/compartir";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -72,6 +74,10 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
   const puedeGestionar = ["ADMIN", "SEGURIDAD", "REFERENTE_MANZANA"].includes(
     session.user.role,
   );
+
+  const yaCompartido = puedeGestionar
+    ? await obtenerCompartido("WHATSAPP", "REQUERIMIENTO", r.id)
+    : null;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
@@ -181,6 +187,24 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
           estadoActual={r.estado}
           prioridadActual={r.prioridad}
         />
+      )}
+
+      {/* Compartir en el grupo (HU-07) */}
+      {puedeGestionar && (
+        <div className="mt-4">
+          <CompartirBoton
+            tipoEvento="REQUERIMIENTO"
+            entidadId={r.id}
+            yaCompartidoInicial={
+              yaCompartido
+                ? {
+                    publicadaPorNombre: yaCompartido.publicadaPorNombre,
+                    creadaAt: yaCompartido.creadaAt.toISOString(),
+                  }
+                : null
+            }
+          />
+        </div>
       )}
 
       {/* Comentarios */}

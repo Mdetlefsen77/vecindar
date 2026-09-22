@@ -49,6 +49,8 @@ export type UsuarioMinAggregateOutputType = {
   verificado: boolean | null
   rol: $Enums.Rol | null
   invitadoPorId: number | null
+  origenRegistro: $Enums.OrigenRegistro | null
+  ocultarNombreEnPublicacionExterna: boolean | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date | null
@@ -66,6 +68,8 @@ export type UsuarioMaxAggregateOutputType = {
   verificado: boolean | null
   rol: $Enums.Rol | null
   invitadoPorId: number | null
+  origenRegistro: $Enums.OrigenRegistro | null
+  ocultarNombreEnPublicacionExterna: boolean | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date | null
@@ -83,6 +87,8 @@ export type UsuarioCountAggregateOutputType = {
   verificado: number
   rol: number
   invitadoPorId: number
+  origenRegistro: number
+  ocultarNombreEnPublicacionExterna: number
   ultimoLoginAt: number
   ultimaActividadAt: number
   createdAt: number
@@ -114,6 +120,8 @@ export type UsuarioMinAggregateInputType = {
   verificado?: true
   rol?: true
   invitadoPorId?: true
+  origenRegistro?: true
+  ocultarNombreEnPublicacionExterna?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -131,6 +139,8 @@ export type UsuarioMaxAggregateInputType = {
   verificado?: true
   rol?: true
   invitadoPorId?: true
+  origenRegistro?: true
+  ocultarNombreEnPublicacionExterna?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -148,6 +158,8 @@ export type UsuarioCountAggregateInputType = {
   verificado?: true
   rol?: true
   invitadoPorId?: true
+  origenRegistro?: true
+  ocultarNombreEnPublicacionExterna?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -252,6 +264,8 @@ export type UsuarioGroupByOutputType = {
   verificado: boolean
   rol: $Enums.Rol
   invitadoPorId: number | null
+  origenRegistro: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna: boolean
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date
@@ -292,6 +306,8 @@ export type UsuarioWhereInput = {
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -314,6 +330,8 @@ export type UsuarioWhereInput = {
   codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
   transicionesRealizadas?: Prisma.TransicionEstadoListRelationFilter
   reportesGenerados?: Prisma.ReporteListRelationFilter
+  publicacionesExternas?: Prisma.PublicacionExternaListRelationFilter
+  clicksLinks?: Prisma.ClickLinkListRelationFilter
 }
 
 export type UsuarioOrderByWithRelationInput = {
@@ -327,6 +345,8 @@ export type UsuarioOrderByWithRelationInput = {
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  origenRegistro?: Prisma.SortOrder
+  ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -349,6 +369,8 @@ export type UsuarioOrderByWithRelationInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionOrderByWithRelationInput
   transicionesRealizadas?: Prisma.TransicionEstadoOrderByRelationAggregateInput
   reportesGenerados?: Prisma.ReporteOrderByRelationAggregateInput
+  publicacionesExternas?: Prisma.PublicacionExternaOrderByRelationAggregateInput
+  clicksLinks?: Prisma.ClickLinkOrderByRelationAggregateInput
 }
 
 export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -365,6 +387,8 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -387,6 +411,8 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
   transicionesRealizadas?: Prisma.TransicionEstadoListRelationFilter
   reportesGenerados?: Prisma.ReporteListRelationFilter
+  publicacionesExternas?: Prisma.PublicacionExternaListRelationFilter
+  clicksLinks?: Prisma.ClickLinkListRelationFilter
 }, "id" | "email">
 
 export type UsuarioOrderByWithAggregationInput = {
@@ -400,6 +426,8 @@ export type UsuarioOrderByWithAggregationInput = {
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
+  origenRegistro?: Prisma.SortOrder
+  ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -425,6 +453,8 @@ export type UsuarioScalarWhereWithAggregatesInput = {
   verificado?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolWithAggregatesFilter<"Usuario"> | $Enums.Rol
   invitadoPorId?: Prisma.IntNullableWithAggregatesFilter<"Usuario"> | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroWithAggregatesFilter<"Usuario"> | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
   ultimoLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Usuario"> | Date | string
@@ -439,6 +469,8 @@ export type UsuarioCreateInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -461,6 +493,8 @@ export type UsuarioCreateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateInput = {
@@ -474,6 +508,8 @@ export type UsuarioUncheckedCreateInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -494,6 +530,8 @@ export type UsuarioUncheckedCreateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUpdateInput = {
@@ -504,6 +542,8 @@ export type UsuarioUpdateInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -526,6 +566,8 @@ export type UsuarioUpdateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateInput = {
@@ -539,6 +581,8 @@ export type UsuarioUncheckedUpdateInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -559,6 +603,8 @@ export type UsuarioUncheckedUpdateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateManyInput = {
@@ -572,6 +618,8 @@ export type UsuarioCreateManyInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -586,6 +634,8 @@ export type UsuarioUpdateManyMutationInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -603,6 +653,8 @@ export type UsuarioUncheckedUpdateManyInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -635,6 +687,8 @@ export type UsuarioCountOrderByAggregateInput = {
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrder
+  origenRegistro?: Prisma.SortOrder
+  ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -658,6 +712,8 @@ export type UsuarioMaxOrderByAggregateInput = {
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrder
+  origenRegistro?: Prisma.SortOrder
+  ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -675,6 +731,8 @@ export type UsuarioMinOrderByAggregateInput = {
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrder
+  origenRegistro?: Prisma.SortOrder
+  ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -756,6 +814,10 @@ export type UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput = {
 
 export type EnumRolFieldUpdateOperationsInput = {
   set?: $Enums.Rol
+}
+
+export type EnumOrigenRegistroFieldUpdateOperationsInput = {
+  set?: $Enums.OrigenRegistro
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -1020,6 +1082,38 @@ export type UsuarioUpdateOneRequiredWithoutReportesGeneradosNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutReportesGeneradosInput, Prisma.UsuarioUpdateWithoutReportesGeneradosInput>, Prisma.UsuarioUncheckedUpdateWithoutReportesGeneradosInput>
 }
 
+export type UsuarioCreateNestedOneWithoutPublicacionesExternasInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutPublicacionesExternasInput, Prisma.UsuarioUncheckedCreateWithoutPublicacionesExternasInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutPublicacionesExternasInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneWithoutPublicacionesExternasNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutPublicacionesExternasInput, Prisma.UsuarioUncheckedCreateWithoutPublicacionesExternasInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutPublicacionesExternasInput
+  upsert?: Prisma.UsuarioUpsertWithoutPublicacionesExternasInput
+  disconnect?: Prisma.UsuarioWhereInput | boolean
+  delete?: Prisma.UsuarioWhereInput | boolean
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutPublicacionesExternasInput, Prisma.UsuarioUpdateWithoutPublicacionesExternasInput>, Prisma.UsuarioUncheckedUpdateWithoutPublicacionesExternasInput>
+}
+
+export type UsuarioCreateNestedOneWithoutClicksLinksInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutClicksLinksInput, Prisma.UsuarioUncheckedCreateWithoutClicksLinksInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutClicksLinksInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneWithoutClicksLinksNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutClicksLinksInput, Prisma.UsuarioUncheckedCreateWithoutClicksLinksInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutClicksLinksInput
+  upsert?: Prisma.UsuarioUpsertWithoutClicksLinksInput
+  disconnect?: Prisma.UsuarioWhereInput | boolean
+  delete?: Prisma.UsuarioWhereInput | boolean
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutClicksLinksInput, Prisma.UsuarioUpdateWithoutClicksLinksInput>, Prisma.UsuarioUncheckedUpdateWithoutClicksLinksInput>
+}
+
 export type UsuarioCreateWithoutLoteInput = {
   email: string
   password: string
@@ -1028,6 +1122,8 @@ export type UsuarioCreateWithoutLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1049,6 +1145,8 @@ export type UsuarioCreateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutLoteInput = {
@@ -1061,6 +1159,8 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1081,6 +1181,8 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutLoteInput = {
@@ -1123,6 +1225,8 @@ export type UsuarioScalarWhereInput = {
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -1137,6 +1241,8 @@ export type UsuarioCreateWithoutInvitadosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1158,6 +1264,8 @@ export type UsuarioCreateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutInvitadosInput = {
@@ -1171,6 +1279,8 @@ export type UsuarioUncheckedCreateWithoutInvitadosInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1190,6 +1300,8 @@ export type UsuarioUncheckedCreateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutInvitadosInput = {
@@ -1205,6 +1317,8 @@ export type UsuarioCreateWithoutInvitadoPorInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1226,6 +1340,8 @@ export type UsuarioCreateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
@@ -1238,6 +1354,8 @@ export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1258,6 +1376,8 @@ export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutInvitadoPorInput = {
@@ -1289,6 +1409,8 @@ export type UsuarioUpdateWithoutInvitadosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1310,6 +1432,8 @@ export type UsuarioUpdateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
@@ -1323,6 +1447,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1342,6 +1468,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithWhereUniqueWithoutInvitadoPorInput = {
@@ -1368,6 +1496,8 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1389,6 +1519,8 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
@@ -1402,6 +1534,8 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1421,6 +1555,8 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutSuscripcionInput = {
@@ -1447,6 +1583,8 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1468,6 +1606,8 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
@@ -1481,6 +1621,8 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1500,6 +1642,8 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutPagosInput = {
@@ -1510,6 +1654,8 @@ export type UsuarioCreateWithoutPagosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1531,6 +1677,8 @@ export type UsuarioCreateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPagosInput = {
@@ -1544,6 +1692,8 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1563,6 +1713,8 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPagosInput = {
@@ -1578,6 +1730,8 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1599,6 +1753,8 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
@@ -1612,6 +1768,8 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1631,6 +1789,8 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPagosRegistradosInput = {
@@ -1657,6 +1817,8 @@ export type UsuarioUpdateWithoutPagosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1678,6 +1840,8 @@ export type UsuarioUpdateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPagosInput = {
@@ -1691,6 +1855,8 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1710,6 +1876,8 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutPagosRegistradosInput = {
@@ -1731,6 +1899,8 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1752,6 +1922,8 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
@@ -1765,6 +1937,8 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1784,6 +1958,8 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutVistasSeccionesInput = {
@@ -1794,6 +1970,8 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1815,6 +1993,8 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
@@ -1828,6 +2008,8 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1847,6 +2029,8 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutVistasSeccionesInput = {
@@ -1873,6 +2057,8 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1894,6 +2080,8 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
@@ -1907,6 +2095,8 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1926,6 +2116,8 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutIncidentesInput = {
@@ -1936,6 +2128,8 @@ export type UsuarioCreateWithoutIncidentesInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1957,6 +2151,8 @@ export type UsuarioCreateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutIncidentesInput = {
@@ -1970,6 +2166,8 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1989,6 +2187,8 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutIncidentesInput = {
@@ -2015,6 +2215,8 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2036,6 +2238,8 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
@@ -2049,6 +2253,8 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2068,6 +2274,8 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutAlertasPanicoInput = {
@@ -2078,6 +2286,8 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2099,6 +2309,8 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
@@ -2112,6 +2324,8 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2131,6 +2345,8 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAlertasPanicoInput = {
@@ -2146,6 +2362,8 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2167,6 +2385,8 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
@@ -2180,6 +2400,8 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2199,6 +2421,8 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAlertasAtendidasInput = {
@@ -2225,6 +2449,8 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2246,6 +2472,8 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
@@ -2259,6 +2487,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2278,6 +2508,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutAlertasAtendidasInput = {
@@ -2299,6 +2531,8 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2320,6 +2554,8 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
@@ -2333,6 +2569,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2352,6 +2590,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutComentariosAlertasInput = {
@@ -2362,6 +2602,8 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2383,6 +2625,8 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
@@ -2396,6 +2640,8 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2415,6 +2661,8 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutComentariosAlertasInput = {
@@ -2441,6 +2689,8 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2462,6 +2712,8 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
@@ -2475,6 +2727,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2494,6 +2748,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutPushSubscriptionsInput = {
@@ -2504,6 +2760,8 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2525,6 +2783,8 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -2538,6 +2798,8 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2557,6 +2819,8 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -2583,6 +2847,8 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2604,6 +2870,8 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -2617,6 +2885,8 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2636,6 +2906,8 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutRequerimientosInput = {
@@ -2646,6 +2918,8 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2667,6 +2941,8 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
@@ -2680,6 +2956,8 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2699,6 +2977,8 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutRequerimientosInput = {
@@ -2725,6 +3005,8 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2746,6 +3028,8 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
@@ -2759,6 +3043,8 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2778,6 +3064,8 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutComentariosReqInput = {
@@ -2788,6 +3076,8 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2809,6 +3099,8 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
@@ -2822,6 +3114,8 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2841,6 +3135,8 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutComentariosReqInput = {
@@ -2867,6 +3163,8 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2888,6 +3186,8 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
@@ -2901,6 +3201,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2920,6 +3222,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutMascotasPerdidasInput = {
@@ -2930,6 +3234,8 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2951,6 +3257,8 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
@@ -2964,6 +3272,8 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2983,6 +3293,8 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutMascotasPerdidasInput = {
@@ -3009,6 +3321,8 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3030,6 +3344,8 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
@@ -3043,6 +3359,8 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3062,6 +3380,8 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutCodigoInvitacionInput = {
@@ -3072,6 +3392,8 @@ export type UsuarioCreateWithoutCodigoInvitacionInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3093,6 +3415,8 @@ export type UsuarioCreateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
@@ -3106,6 +3430,8 @@ export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3125,6 +3451,8 @@ export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutCodigoInvitacionInput = {
@@ -3151,6 +3479,8 @@ export type UsuarioUpdateWithoutCodigoInvitacionInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3172,6 +3502,8 @@ export type UsuarioUpdateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
@@ -3185,6 +3517,8 @@ export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3204,6 +3538,8 @@ export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutTransicionesRealizadasInput = {
@@ -3214,6 +3550,8 @@ export type UsuarioCreateWithoutTransicionesRealizadasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3235,6 +3573,8 @@ export type UsuarioCreateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
@@ -3248,6 +3588,8 @@ export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3267,6 +3609,8 @@ export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutTransicionesRealizadasInput = {
@@ -3293,6 +3637,8 @@ export type UsuarioUpdateWithoutTransicionesRealizadasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3314,6 +3660,8 @@ export type UsuarioUpdateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
@@ -3327,6 +3675,8 @@ export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3346,6 +3696,8 @@ export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutReportesGeneradosInput = {
@@ -3356,6 +3708,8 @@ export type UsuarioCreateWithoutReportesGeneradosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3377,6 +3731,8 @@ export type UsuarioCreateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutReportesGeneradosInput = {
@@ -3390,6 +3746,8 @@ export type UsuarioUncheckedCreateWithoutReportesGeneradosInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3409,6 +3767,8 @@ export type UsuarioUncheckedCreateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutReportesGeneradosInput = {
@@ -3435,6 +3795,8 @@ export type UsuarioUpdateWithoutReportesGeneradosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3456,6 +3818,8 @@ export type UsuarioUpdateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutReportesGeneradosInput = {
@@ -3469,6 +3833,8 @@ export type UsuarioUncheckedUpdateWithoutReportesGeneradosInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3488,6 +3854,324 @@ export type UsuarioUncheckedUpdateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutPublicacionesExternasInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutPublicacionesExternasInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutPublicacionesExternasInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutPublicacionesExternasInput, Prisma.UsuarioUncheckedCreateWithoutPublicacionesExternasInput>
+}
+
+export type UsuarioUpsertWithoutPublicacionesExternasInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutPublicacionesExternasInput, Prisma.UsuarioUncheckedUpdateWithoutPublicacionesExternasInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutPublicacionesExternasInput, Prisma.UsuarioUncheckedCreateWithoutPublicacionesExternasInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutPublicacionesExternasInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutPublicacionesExternasInput, Prisma.UsuarioUncheckedUpdateWithoutPublicacionesExternasInput>
+}
+
+export type UsuarioUpdateWithoutPublicacionesExternasInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutPublicacionesExternasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutClicksLinksInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+}
+
+export type UsuarioUncheckedCreateWithoutClicksLinksInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+}
+
+export type UsuarioCreateOrConnectWithoutClicksLinksInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutClicksLinksInput, Prisma.UsuarioUncheckedCreateWithoutClicksLinksInput>
+}
+
+export type UsuarioUpsertWithoutClicksLinksInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutClicksLinksInput, Prisma.UsuarioUncheckedUpdateWithoutClicksLinksInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutClicksLinksInput, Prisma.UsuarioUncheckedCreateWithoutClicksLinksInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutClicksLinksInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutClicksLinksInput, Prisma.UsuarioUncheckedUpdateWithoutClicksLinksInput>
+}
+
+export type UsuarioUpdateWithoutClicksLinksInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutClicksLinksInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
 }
 
 export type UsuarioCreateManyLoteInput = {
@@ -3500,6 +4184,8 @@ export type UsuarioCreateManyLoteInput = {
   verificado?: boolean
   rol?: $Enums.Rol
   invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3514,6 +4200,8 @@ export type UsuarioUpdateWithoutLoteInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3535,6 +4223,8 @@ export type UsuarioUpdateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutLoteInput = {
@@ -3547,6 +4237,8 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3567,6 +4259,8 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
@@ -3579,6 +4273,8 @@ export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3595,6 +4291,8 @@ export type UsuarioCreateManyInvitadoPorInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3609,6 +4307,8 @@ export type UsuarioUpdateWithoutInvitadoPorInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3630,6 +4330,8 @@ export type UsuarioUpdateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
@@ -3642,6 +4344,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3662,6 +4366,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateManyWithoutInvitadoPorInput = {
@@ -3674,6 +4380,8 @@ export type UsuarioUncheckedUpdateManyWithoutInvitadoPorInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3700,6 +4408,8 @@ export type UsuarioCountOutputType = {
   invitados: number
   transicionesRealizadas: number
   reportesGenerados: number
+  publicacionesExternas: number
+  clicksLinks: number
 }
 
 export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3717,6 +4427,8 @@ export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   invitados?: boolean | UsuarioCountOutputTypeCountInvitadosArgs
   transicionesRealizadas?: boolean | UsuarioCountOutputTypeCountTransicionesRealizadasArgs
   reportesGenerados?: boolean | UsuarioCountOutputTypeCountReportesGeneradosArgs
+  publicacionesExternas?: boolean | UsuarioCountOutputTypeCountPublicacionesExternasArgs
+  clicksLinks?: boolean | UsuarioCountOutputTypeCountClicksLinksArgs
 }
 
 /**
@@ -3827,6 +4539,20 @@ export type UsuarioCountOutputTypeCountReportesGeneradosArgs<ExtArgs extends run
   where?: Prisma.ReporteWhereInput
 }
 
+/**
+ * UsuarioCountOutputType without action
+ */
+export type UsuarioCountOutputTypeCountPublicacionesExternasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PublicacionExternaWhereInput
+}
+
+/**
+ * UsuarioCountOutputType without action
+ */
+export type UsuarioCountOutputTypeCountClicksLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClickLinkWhereInput
+}
+
 
 export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3839,6 +4565,8 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   verificado?: boolean
   rol?: boolean
   invitadoPorId?: boolean
+  origenRegistro?: boolean
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
@@ -3861,6 +4589,8 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
   transicionesRealizadas?: boolean | Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>
   reportesGenerados?: boolean | Prisma.Usuario$reportesGeneradosArgs<ExtArgs>
+  publicacionesExternas?: boolean | Prisma.Usuario$publicacionesExternasArgs<ExtArgs>
+  clicksLinks?: boolean | Prisma.Usuario$clicksLinksArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["usuario"]>
 
@@ -3875,6 +4605,8 @@ export type UsuarioSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   verificado?: boolean
   rol?: boolean
   invitadoPorId?: boolean
+  origenRegistro?: boolean
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
@@ -3894,6 +4626,8 @@ export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   verificado?: boolean
   rol?: boolean
   invitadoPorId?: boolean
+  origenRegistro?: boolean
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
@@ -3913,13 +4647,15 @@ export type UsuarioSelectScalar = {
   verificado?: boolean
   rol?: boolean
   invitadoPorId?: boolean
+  origenRegistro?: boolean
+  ocultarNombreEnPublicacionExterna?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "invitadoPorId" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
+export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "invitadoPorId" | "origenRegistro" | "ocultarNombreEnPublicacionExterna" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
 export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
   incidentes?: boolean | Prisma.Usuario$incidentesArgs<ExtArgs>
@@ -3939,6 +4675,8 @@ export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
   transicionesRealizadas?: boolean | Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>
   reportesGenerados?: boolean | Prisma.Usuario$reportesGeneradosArgs<ExtArgs>
+  publicacionesExternas?: boolean | Prisma.Usuario$publicacionesExternasArgs<ExtArgs>
+  clicksLinks?: boolean | Prisma.Usuario$clicksLinksArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3971,6 +4709,8 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     codigoInvitacion: Prisma.$CodigoInvitacionPayload<ExtArgs> | null
     transicionesRealizadas: Prisma.$TransicionEstadoPayload<ExtArgs>[]
     reportesGenerados: Prisma.$ReportePayload<ExtArgs>[]
+    publicacionesExternas: Prisma.$PublicacionExternaPayload<ExtArgs>[]
+    clicksLinks: Prisma.$ClickLinkPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -3983,6 +4723,8 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     verificado: boolean
     rol: $Enums.Rol
     invitadoPorId: number | null
+    origenRegistro: $Enums.OrigenRegistro
+    ocultarNombreEnPublicacionExterna: boolean
     ultimoLoginAt: Date | null
     ultimaActividadAt: Date | null
     createdAt: Date
@@ -4399,6 +5141,8 @@ export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends runtime.
   codigoInvitacion<T extends Prisma.Usuario$codigoInvitacionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$codigoInvitacionArgs<ExtArgs>>): Prisma.Prisma__CodigoInvitacionClient<runtime.Types.Result.GetResult<Prisma.$CodigoInvitacionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   transicionesRealizadas<T extends Prisma.Usuario$transicionesRealizadasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransicionEstadoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportesGenerados<T extends Prisma.Usuario$reportesGeneradosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$reportesGeneradosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  publicacionesExternas<T extends Prisma.Usuario$publicacionesExternasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$publicacionesExternasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicacionExternaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clicksLinks<T extends Prisma.Usuario$clicksLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$clicksLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClickLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4438,6 +5182,8 @@ export interface UsuarioFieldRefs {
   readonly verificado: Prisma.FieldRef<"Usuario", 'Boolean'>
   readonly rol: Prisma.FieldRef<"Usuario", 'Rol'>
   readonly invitadoPorId: Prisma.FieldRef<"Usuario", 'Int'>
+  readonly origenRegistro: Prisma.FieldRef<"Usuario", 'OrigenRegistro'>
+  readonly ocultarNombreEnPublicacionExterna: Prisma.FieldRef<"Usuario", 'Boolean'>
   readonly ultimoLoginAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly ultimaActividadAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Usuario", 'DateTime'>
@@ -5228,6 +5974,54 @@ export type Usuario$reportesGeneradosArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.ReporteScalarFieldEnum | Prisma.ReporteScalarFieldEnum[]
+}
+
+/**
+ * Usuario.publicacionesExternas
+ */
+export type Usuario$publicacionesExternasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PublicacionExterna
+   */
+  select?: Prisma.PublicacionExternaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PublicacionExterna
+   */
+  omit?: Prisma.PublicacionExternaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PublicacionExternaInclude<ExtArgs> | null
+  where?: Prisma.PublicacionExternaWhereInput
+  orderBy?: Prisma.PublicacionExternaOrderByWithRelationInput | Prisma.PublicacionExternaOrderByWithRelationInput[]
+  cursor?: Prisma.PublicacionExternaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PublicacionExternaScalarFieldEnum | Prisma.PublicacionExternaScalarFieldEnum[]
+}
+
+/**
+ * Usuario.clicksLinks
+ */
+export type Usuario$clicksLinksArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClickLink
+   */
+  select?: Prisma.ClickLinkSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClickLink
+   */
+  omit?: Prisma.ClickLinkOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClickLinkInclude<ExtArgs> | null
+  where?: Prisma.ClickLinkWhereInput
+  orderBy?: Prisma.ClickLinkOrderByWithRelationInput | Prisma.ClickLinkOrderByWithRelationInput[]
+  cursor?: Prisma.ClickLinkWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClickLinkScalarFieldEnum | Prisma.ClickLinkScalarFieldEnum[]
 }
 
 /**

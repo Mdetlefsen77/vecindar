@@ -7,6 +7,8 @@ import { esGestor, GESTORES_MASCOTAS } from "@/lib/permisos";
 import Link from "next/link";
 import Image from "next/image";
 import AccionesMascota from "./AccionesMascota";
+import CompartirBoton from "@/components/notificaciones-externas/CompartirBoton";
+import { obtenerCompartido } from "@/lib/notificaciones-externas/compartir";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -38,6 +40,10 @@ export default async function DetalleMascotaPage({ params }: Params) {
 
   const esDuenio = getUserId(session) === mascota.usuario.id;
   const puedeGestionar = esGestor(session.user.role, GESTORES_MASCOTAS);
+
+  const yaCompartido = puedeGestionar
+    ? await obtenerCompartido("WHATSAPP", "MASCOTA", mascota.id)
+    : null;
 
   return (
     <div className="max-w-lg mx-auto px-4 py-6 space-y-5">
@@ -177,6 +183,22 @@ export default async function DetalleMascotaPage({ params }: Params) {
         esDuenio={esDuenio}
         puedeGestionar={puedeGestionar}
       />
+
+      {/* Compartir en el grupo (HU-07) */}
+      {puedeGestionar && (
+        <CompartirBoton
+          tipoEvento="MASCOTA"
+          entidadId={mascota.id}
+          yaCompartidoInicial={
+            yaCompartido
+              ? {
+                  publicadaPorNombre: yaCompartido.publicadaPorNombre,
+                  creadaAt: yaCompartido.creadaAt.toISOString(),
+                }
+              : null
+          }
+        />
+      )}
     </div>
   );
 }

@@ -135,3 +135,48 @@ export const PeriodoTipo = {
 } as const
 
 export type PeriodoTipo = (typeof PeriodoTipo)[keyof typeof PeriodoTipo]
+
+
+export const CanalExterno = {
+  WHATSAPP: 'WHATSAPP',
+  TELEGRAM: 'TELEGRAM'
+} as const
+
+export type CanalExterno = (typeof CanalExterno)[keyof typeof CanalExterno]
+
+
+export const TipoEventoPublicacion = {
+  INCIDENTE: 'INCIDENTE',
+  REQUERIMIENTO: 'REQUERIMIENTO',
+  MASCOTA: 'MASCOTA',
+  ALERTA_PANICO: 'ALERTA_PANICO',
+  RESUMEN: 'RESUMEN'
+} as const
+
+export type TipoEventoPublicacion = (typeof TipoEventoPublicacion)[keyof typeof TipoEventoPublicacion]
+
+
+export const EstadoPublicacion = {
+  PENDIENTE: 'PENDIENTE',
+  ENVIADA: 'ENVIADA',
+  FALLIDA: 'FALLIDA',
+  OMITIDA: 'OMITIDA'
+} as const
+
+export type EstadoPublicacion = (typeof EstadoPublicacion)[keyof typeof EstadoPublicacion]
+
+
+export const ModoPublicacion = {
+  AUTOMATICA: 'AUTOMATICA',
+  MANUAL: 'MANUAL'
+} as const
+
+export type ModoPublicacion = (typeof ModoPublicacion)[keyof typeof ModoPublicacion]
+
+
+export const OrigenRegistro = {
+  DIRECTO: 'DIRECTO',
+  WHATSAPP: 'WHATSAPP'
+} as const
+
+export type OrigenRegistro = (typeof OrigenRegistro)[keyof typeof OrigenRegistro]

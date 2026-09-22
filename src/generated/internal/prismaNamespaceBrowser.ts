@@ -68,7 +68,10 @@ export const ModelName = {
   MascotaPerdida: 'MascotaPerdida',
   CodigoInvitacion: 'CodigoInvitacion',
   TransicionEstado: 'TransicionEstado',
-  Reporte: 'Reporte'
+  Reporte: 'Reporte',
+  PublicacionExterna: 'PublicacionExterna',
+  LinkRastreable: 'LinkRastreable',
+  ClickLink: 'ClickLink'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -138,6 +141,8 @@ export const UsuarioScalarFieldEnum = {
   verificado: 'verificado',
   rol: 'rol',
   invitadoPorId: 'invitadoPorId',
+  origenRegistro: 'origenRegistro',
+  ocultarNombreEnPublicacionExterna: 'ocultarNombreEnPublicacionExterna',
   ultimoLoginAt: 'ultimoLoginAt',
   ultimaActividadAt: 'ultimaActividadAt',
   createdAt: 'createdAt',
@@ -344,6 +349,48 @@ export const ReporteScalarFieldEnum = {
 } as const
 
 export type ReporteScalarFieldEnum = (typeof ReporteScalarFieldEnum)[keyof typeof ReporteScalarFieldEnum]
+
+
+export const PublicacionExternaScalarFieldEnum = {
+  id: 'id',
+  canal: 'canal',
+  tipoEvento: 'tipoEvento',
+  entidadId: 'entidadId',
+  estado: 'estado',
+  claveIdempotencia: 'claveIdempotencia',
+  modo: 'modo',
+  publicadaPorId: 'publicadaPorId',
+  intentos: 'intentos',
+  ultimoError: 'ultimoError',
+  creadaAt: 'creadaAt',
+  enviadaAt: 'enviadaAt'
+} as const
+
+export type PublicacionExternaScalarFieldEnum = (typeof PublicacionExternaScalarFieldEnum)[keyof typeof PublicacionExternaScalarFieldEnum]
+
+
+export const LinkRastreableScalarFieldEnum = {
+  id: 'id',
+  codigo: 'codigo',
+  urlDestino: 'urlDestino',
+  publicacionId: 'publicacionId',
+  clicks: 'clicks',
+  creadoAt: 'creadoAt',
+  expiraAt: 'expiraAt'
+} as const
+
+export type LinkRastreableScalarFieldEnum = (typeof LinkRastreableScalarFieldEnum)[keyof typeof LinkRastreableScalarFieldEnum]
+
+
+export const ClickLinkScalarFieldEnum = {
+  id: 'id',
+  linkId: 'linkId',
+  ocurridoAt: 'ocurridoAt',
+  tenerSesion: 'tenerSesion',
+  usuarioId: 'usuarioId'
+} as const
+
+export type ClickLinkScalarFieldEnum = (typeof ClickLinkScalarFieldEnum)[keyof typeof ClickLinkScalarFieldEnum]
 
 
 export const SortOrder = {

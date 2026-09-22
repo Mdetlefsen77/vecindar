@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const callbackUrl = useSearchParams().get("callbackUrl");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -26,7 +27,10 @@ export default function LoginPage() {
       if (result?.error) {
         setError("Email o contraseña incorrectos");
       } else {
-        router.push("/inicio");
+        // Preserva el destino original si se llegó desde un link externo
+        // (ver src/proxy.ts, que ya setea callbackUrl) — antes se ignoraba
+        // y siempre mandaba a /inicio.
+        router.push(callbackUrl || "/inicio");
         router.refresh();
       }
     } catch {
@@ -35,6 +39,10 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  const hrefRegistro = callbackUrl
+    ? `/registro?callbackUrl=${encodeURIComponent(callbackUrl)}`
+    : "/registro";
 
   return (
     <div className="min-h-dvh flex items-center justify-center bg-brand-surface px-4 py-12">
@@ -51,6 +59,17 @@ export default function LoginPage() {
           </h1>
           <p className="mt-1 text-sm text-gray-500">Tu barrio conectado</p>
         </div>
+
+        {/* Contexto para quien llega desde un link externo (HU-05, CA-05.1) —
+            en vez de un login pelado sin explicación. */}
+        {callbackUrl && (
+          <div className="mb-4 rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-center">
+            <p className="text-sm text-blue-800">
+              👋 Vecindar es la app de seguridad y gestión de tu barrio.
+              Iniciá sesión (o registrate) para ver el detalle que buscabas.
+            </p>
+          </div>
+        )}
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
@@ -117,7 +136,7 @@ export default function LoginPage() {
         <p className="mt-6 text-center text-sm text-gray-500">
           ¿No tenés cuenta?{" "}
           <a
-            href="/registro"
+            href={hrefRegistro}
             className="font-semibold text-brand hover:text-brand-dark transition-colors duration-150"
           >
             Registrate aquí
@@ -125,5 +144,13 @@ export default function LoginPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginForm />
+    </Suspense>
   );
 }

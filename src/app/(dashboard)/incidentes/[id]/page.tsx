@@ -14,6 +14,8 @@ import {
 } from "@/lib/utils/sla";
 import CambiarEstadoIncidente from "./CambiarEstadoIncidente";
 import DetalleMapaMini from "./DetalleMapaMiniLazy";
+import CompartirBoton from "@/components/notificaciones-externas/CompartirBoton";
+import { obtenerCompartido } from "@/lib/notificaciones-externas/compartir";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -63,6 +65,10 @@ export default async function DetalleIncidentePage({ params }: Params) {
     : null;
   const puedeGestionar =
     session.user.role === "ADMIN" || session.user.role === "SEGURIDAD";
+
+  const yaCompartido = puedeGestionar
+    ? await obtenerCompartido("WHATSAPP", "INCIDENTE", inc.id)
+    : null;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
@@ -214,6 +220,24 @@ export default async function DetalleIncidentePage({ params }: Params) {
           prioridadActual={inc.prioridad}
           visibleVecinos={inc.visibleVecinos}
         />
+      )}
+
+      {/* Compartir en el grupo (HU-07) — solo incidentes visibles a vecinos */}
+      {puedeGestionar && inc.visibleVecinos && (
+        <div className="mt-4">
+          <CompartirBoton
+            tipoEvento="INCIDENTE"
+            entidadId={inc.id}
+            yaCompartidoInicial={
+              yaCompartido
+                ? {
+                    publicadaPorNombre: yaCompartido.publicadaPorNombre,
+                    creadaAt: yaCompartido.creadaAt.toISOString(),
+                  }
+                : null
+            }
+          />
+        </div>
       )}
     </div>
   );
