@@ -5,7 +5,11 @@ import type { Periodo, PeriodoTipo } from "./periodo";
 import { periodoAnterior, ultimos12Meses, etiquetaPeriodo } from "./periodo";
 import { variacion, insuficiente } from "./estadistica";
 import { aplicarNivel } from "./nivel";
-import type { NivelReporte, ReporteModelo, ItemRequiereAtencion } from "./tipos";
+import type {
+  NivelReporte,
+  ReporteModelo,
+  ItemRequiereAtencion,
+} from "./tipos";
 import { calcularIncidentes, contarReportados } from "./metricas/incidentes";
 import { calcularPanico, contarAlertas } from "./metricas/panico";
 import {
@@ -45,7 +49,9 @@ async function contarResueltosTotal(p: Periodo): Promise<number> {
 async function contarBacklogAbierto(): Promise<number> {
   const [incidentes, requerimientos] = await Promise.all([
     prisma.incidente.count({ where: { estado: "ACTIVO" } }),
-    prisma.requerimiento.count({ where: { estado: { in: ["NUEVO", "EN_PROGRESO"] } } }),
+    prisma.requerimiento.count({
+      where: { estado: { in: ["NUEVO", "EN_PROGRESO"] } },
+    }),
   ]);
   return incidentes + requerimientos;
 }
@@ -64,34 +70,39 @@ async function construirRequiereAtencion(): Promise<ItemRequiereAtencion[]> {
   const hace7d = new Date(ahora.getTime() - 7 * 86_400_000);
   const hace30d = new Date(ahora.getTime() - 30 * 86_400_000);
 
-  const [incidentesAbiertos, requerimientosAbiertos, alertasAbiertas, pendientes] =
-    await Promise.all([
-      prisma.incidente.findMany({
-        where: { estado: "ACTIVO" },
-        select: { id: true, tipo: true, prioridad: true, createdAt: true },
-      }),
-      prisma.requerimiento.findMany({
-        where: { estado: { in: ["NUEVO", "EN_PROGRESO"] } },
-        select: { id: true, categoria: true, prioridad: true, createdAt: true },
-      }),
-      prisma.alertaPanico.findMany({
-        where: { estado: { not: "CERRADO" } },
-        select: {
-          id: true,
-          createdAt: true,
-          atendioPor: { select: { nombre: true, apellido: true } },
-        },
-      }),
-      prisma.usuario.findMany({
-        where: { verificado: false, createdAt: { lt: hace7d } },
-        select: { id: true, nombre: true, apellido: true, createdAt: true },
-      }),
-    ]);
+  const [
+    incidentesAbiertos,
+    requerimientosAbiertos,
+    alertasAbiertas,
+    pendientes,
+  ] = await Promise.all([
+    prisma.incidente.findMany({
+      where: { estado: "ACTIVO" },
+      select: { id: true, tipo: true, prioridad: true, createdAt: true },
+    }),
+    prisma.requerimiento.findMany({
+      where: { estado: { in: ["NUEVO", "EN_PROGRESO"] } },
+      select: { id: true, categoria: true, prioridad: true, createdAt: true },
+    }),
+    prisma.alertaPanico.findMany({
+      where: { estado: { not: "CERRADO" } },
+      select: {
+        id: true,
+        createdAt: true,
+        atendioPor: { select: { nombre: true, apellido: true } },
+      },
+    }),
+    prisma.usuario.findMany({
+      where: { verificado: false, createdAt: { lt: hace7d } },
+      select: { id: true, nombre: true, apellido: true, createdAt: true },
+    }),
+  ]);
 
   const items: ItemRequiereAtencion[] = [];
 
   for (const inc of incidentesAbiertos) {
-    const vencido = calcularEstadoSLA(inc.createdAt, inc.prioridad) === "VENCIDO";
+    const vencido =
+      calcularEstadoSLA(inc.createdAt, inc.prioridad) === "VENCIDO";
     const diasAbierto = Math.round(
       (ahora.getTime() - inc.createdAt.getTime()) / 86_400_000,
     );
@@ -107,7 +118,8 @@ async function construirRequiereAtencion(): Promise<ItemRequiereAtencion[]> {
   }
 
   for (const req of requerimientosAbiertos) {
-    const vencido = calcularEstadoSLA(req.createdAt, req.prioridad) === "VENCIDO";
+    const vencido =
+      calcularEstadoSLA(req.createdAt, req.prioridad) === "VENCIDO";
     const diasAbierto = Math.round(
       (ahora.getTime() - req.createdAt.getTime()) / 86_400_000,
     );
@@ -153,8 +165,6 @@ export interface ConstruirReporteParams {
   periodo: Periodo;
   periodoTipo: PeriodoTipo;
   nivel: NivelReporte;
-  /** D6: SEGURIDAD no ve la sección de adopción. */
-  ocultarAdopcion?: boolean;
 }
 
 export async function construirReporte(
@@ -213,7 +223,11 @@ export async function construirReporte(
   ]);
 
   const modeloSinNivel: ReporteModelo = {
-    periodo: { ...periodo, tipo: periodoTipo, etiqueta: etiquetaPeriodo(periodo, periodoTipo) },
+    periodo: {
+      ...periodo,
+      tipo: periodoTipo,
+      etiqueta: etiquetaPeriodo(periodo, periodoTipo),
+    },
     periodoAnterior: anterior,
     nivel,
     generadoAt: new Date().toISOString(),
@@ -279,7 +293,12 @@ export async function construirReporte(
     panico,
     requerimientos,
     mascotas,
-    adopcion: params.ocultarAdopcion ? null : adopcionCompleta,
+    // Siempre completo acá — D6 (SEGURIDAD no ve adopción) es un filtro de
+    // quién está MIRANDO el reporte, no de qué contiene el documento. Si se
+    // horneara acá, un reporte archivado por SEGURIDAD perdería adopción
+    // para siempre, incluso para un ADMIN que lo abra después. Se aplica en
+    // la página, sobre datos en vivo o archivados por igual.
+    adopcion: adopcionCompleta,
     requiereAtencion: { items: requiereAtencion },
   };
 

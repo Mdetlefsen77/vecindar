@@ -105,6 +105,8 @@ model Usuario {
   // docs/proposal-reportes.md §1/§7). Prerequisito para tiempos de resolución
   // y cumplimiento de SLA; ver auditoría de métricas de esa propuesta.
   transicionesRealizadas TransicionEstado[]
+  // Reportes que generó y archivó (Fase 3).
+  reportesGenerados      Reporte[]
 
   // Uso de la cuenta (para cobranza / actividad — ver /admin/usuarios).
   // ultimoLoginAt: última autenticación con credenciales.
@@ -458,4 +460,50 @@ model TransicionEstado {
 
   @@index([entidadTipo, entidadId, ocurridoAt])
   @@map("transiciones_estado")
+}
+
+// ============================================
+// REPORTES — ARCHIVO (Fase 3)
+// ============================================
+
+enum NivelReporte {
+  INTERNO
+  INSTITUCIONAL
+  DIFUSION
+}
+
+enum PeriodoTipo {
+  MENSUAL
+  SEMANAL
+  PERSONALIZADO
+}
+
+// Un reporte generado y congelado — docs/proposal-reportes.md §7.2/HU-06.
+// `datos` es el `ReporteModelo` completo tal como se calculó al generar; un
+// período+nivel ya archivado se sirve desde acá, nunca se recalcula (evita
+// que dos personas que generan "septiembre" en momentos distintos vean
+// números distintos). Sin campo de PDF binario a propósito: la Fase 2 elige
+// impresión del navegador (sin renderer en el servidor), así que no hay un
+// archivo que guardar — el PDF se genera on-demand, incluso viendo un
+// reporte ya archivado, desde estos mismos datos congelados.
+model Reporte {
+  id            Int          @id @default(autoincrement())
+  numero        Int          @unique @default(autoincrement())
+  nivel         NivelReporte
+  periodoTipo   PeriodoTipo
+  periodoInicio DateTime
+  periodoFin    DateTime
+  generadoPorId Int
+  generadoPor   Usuario      @relation(fields: [generadoPorId], references: [id])
+  generadoAt    DateTime     @default(now())
+  nota          String?
+  datos         Json
+
+  // Sin @@unique a propósito: "recalcular" explícito (§7.2 de la propuesta)
+  // emite un Reporte nuevo para el mismo período+nivel sin pisar el
+  // anterior — la inmutabilidad la garantiza la aplicación (nunca actualiza
+  // ni borra una fila existente), no una constraint de la base. El default
+  // (sin forzar recálculo) es servir el más reciente de estos, vía índice.
+  @@index([periodoInicio, periodoFin, nivel, generadoAt])
+  @@map("reportes")
 }

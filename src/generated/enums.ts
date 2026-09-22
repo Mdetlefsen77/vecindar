@@ -117,3 +117,21 @@ export const EntidadTransicion = {
 } as const
 
 export type EntidadTransicion = (typeof EntidadTransicion)[keyof typeof EntidadTransicion]
+
+
+export const NivelReporte = {
+  INTERNO: 'INTERNO',
+  INSTITUCIONAL: 'INSTITUCIONAL',
+  DIFUSION: 'DIFUSION'
+} as const
+
+export type NivelReporte = (typeof NivelReporte)[keyof typeof NivelReporte]
+
+
+export const PeriodoTipo = {
+  MENSUAL: 'MENSUAL',
+  SEMANAL: 'SEMANAL',
+  PERSONALIZADO: 'PERSONALIZADO'
+} as const
+
+export type PeriodoTipo = (typeof PeriodoTipo)[keyof typeof PeriodoTipo]

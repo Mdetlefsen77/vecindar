@@ -124,3 +124,8 @@ export type CodigoInvitacion = Prisma.CodigoInvitacionModel
  * 
  */
 export type TransicionEstado = Prisma.TransicionEstadoModel
+/**
+ * Model Reporte
+ * 
+ */
+export type Reporte = Prisma.ReporteModel
