@@ -9,7 +9,8 @@ const INSTALL_DISMISSED_KEY = "vecindar-install-dismissed";
 function isStandalone() {
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
-    (window.navigator as unknown as { standalone?: boolean }).standalone === true
+    (window.navigator as unknown as { standalone?: boolean }).standalone ===
+      true
   );
 }
 
@@ -70,7 +71,7 @@ export default function PushOptInBanner() {
   };
 
   return (
-    <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom,0px)+12px)] md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50 bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+    <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom,0px)+12px)] md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50 bg-white rounded-2xl shadow-lg border border-gray-200 p-4 print:hidden">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center flex-shrink-0">
           <span className="text-white text-lg" aria-hidden>

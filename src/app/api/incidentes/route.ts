@@ -5,6 +5,7 @@ import { enumParam } from "@/lib/api/query";
 import { crearIncidenteSchema } from "@/lib/validation/incidentes";
 import { TipoIncidente, EstadoIncidente } from "@/generated/enums";
 import { enviarPushBroadcast } from "@/lib/push/enviarPush";
+import { resolverManzana } from "@/lib/reportes/manzana";
 
 const TIPO_INCIDENTE_LABEL: Record<TipoIncidente, string> = {
   ROBO: "Robo",
@@ -89,6 +90,8 @@ export async function POST(req: NextRequest) {
     prioridad,
   } = parsed.data;
 
+  const manzanaId = await resolverManzana({ latitud, longitud, loteId });
+
   const incidente = await prisma.incidente.create({
     data: {
       tipo,
@@ -97,6 +100,7 @@ export async function POST(req: NextRequest) {
       longitud,
       ubicacionText: ubicacionText ?? null,
       loteId: loteId ?? null,
+      manzanaId,
       visibleVecinos: visibleVecinos ?? true,
       imagenes: imagenes ?? [],
       prioridad: prioridad ?? "MEDIO",

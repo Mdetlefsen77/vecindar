@@ -200,6 +200,23 @@ const LogoutIcon = () => (
   </svg>
 );
 
+const ReportesIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9 17v-6m4 6V7m4 10v-3M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
+    />
+  </svg>
+);
+
 const NAV_ITEMS: NavItem[] = [
   { href: "/inicio", label: "Inicio", icon: <HomeIcon /> },
   { href: "/mapa", label: "Mapa", icon: <MapIcon /> },
@@ -219,6 +236,12 @@ const NAV_ITEMS: NavItem[] = [
     label: "Cobranza",
     icon: <CoinsIcon />,
     roles: ["TESORERO"],
+  },
+  {
+    href: "/reportes",
+    label: "Reportes",
+    icon: <ReportesIcon />,
+    roles: ["ADMIN", "SEGURIDAD"],
   },
   {
     href: "/admin",
@@ -246,7 +269,7 @@ export default function Sidebar({
   );
 
   return (
-    <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-white border-r border-gray-200 z-40">
+    <aside className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-white border-r border-gray-200 z-40 print:hidden">
       {/* Logo */}
       <div className="flex items-center h-16 px-6 border-b border-gray-200 flex-shrink-0">
         <div className="flex items-center gap-2.5">
@@ -260,7 +283,10 @@ export default function Sidebar({
       </div>
 
       {/* Nav links */}
-      <nav aria-label="Navegación principal" className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto">
+      <nav
+        aria-label="Navegación principal"
+        className="flex-1 px-4 py-4 space-y-1.5 overflow-y-auto"
+      >
         {visibleItems.map((item) => {
           const isActive =
             pathname === item.href || pathname.startsWith(item.href + "/");

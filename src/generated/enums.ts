@@ -108,3 +108,30 @@ export const TipoAlertaMascota = {
 } as const
 
 export type TipoAlertaMascota = (typeof TipoAlertaMascota)[keyof typeof TipoAlertaMascota]
+
+
+export const EntidadTransicion = {
+  INCIDENTE: 'INCIDENTE',
+  REQUERIMIENTO: 'REQUERIMIENTO',
+  ALERTA_PANICO: 'ALERTA_PANICO'
+} as const
+
+export type EntidadTransicion = (typeof EntidadTransicion)[keyof typeof EntidadTransicion]
+
+
+export const NivelReporte = {
+  INTERNO: 'INTERNO',
+  INSTITUCIONAL: 'INSTITUCIONAL',
+  DIFUSION: 'DIFUSION'
+} as const
+
+export type NivelReporte = (typeof NivelReporte)[keyof typeof NivelReporte]
+
+
+export const PeriodoTipo = {
+  MENSUAL: 'MENSUAL',
+  SEMANAL: 'SEMANAL',
+  PERSONALIZADO: 'PERSONALIZADO'
+} as const
+
+export type PeriodoTipo = (typeof PeriodoTipo)[keyof typeof PeriodoTipo]

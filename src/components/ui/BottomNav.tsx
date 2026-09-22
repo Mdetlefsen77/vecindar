@@ -99,7 +99,7 @@ export default function BottomNav() {
   return (
     <nav
       aria-label="Navegación principal"
-      className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 bottom-nav-safe"
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 bottom-nav-safe print:hidden"
     >
       <div className="flex items-end justify-around h-bottom-nav">
         {NAV_ITEMS.map((item) => {

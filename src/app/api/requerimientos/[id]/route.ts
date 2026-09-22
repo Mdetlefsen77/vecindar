@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, requireRole, parseId } from "@/lib/api/guard";
+import { requireSession, requireRole, getUserId, parseId } from "@/lib/api/guard";
 import { GESTORES_REQUERIMIENTOS } from "@/lib/permisos";
 import { actualizarRequerimientoSchema } from "@/lib/validation/requerimientos";
+import { registrarTransicion } from "@/lib/reportes/transiciones";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -91,18 +92,33 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   const existe = await prisma.requerimiento.findUnique({
     where: { id: numId },
-    select: { id: true },
+    select: { id: true, estado: true },
   });
   if (!existe) {
     return NextResponse.json({ error: "No encontrado" }, { status: 404 });
   }
 
-  const requerimiento = await prisma.requerimiento.update({
-    where: { id: numId },
-    data: {
-      ...(estado !== undefined ? { estado } : {}),
-      ...(prioridad !== undefined ? { prioridad } : {}),
-    },
+  const requerimiento = await prisma.$transaction(async (tx) => {
+    const actualizado = await tx.requerimiento.update({
+      where: { id: numId },
+      data: {
+        ...(estado !== undefined ? { estado } : {}),
+        ...(prioridad !== undefined ? { prioridad } : {}),
+      },
+    });
+    if (estado !== undefined) {
+      await registrarTransicion(
+        {
+          entidadTipo: "REQUERIMIENTO",
+          entidadId: numId,
+          estadoAnterior: existe.estado,
+          estadoNuevo: estado,
+          usuarioId: getUserId(session),
+        },
+        tx,
+      );
+    }
+    return actualizado;
   });
 
   return NextResponse.json(requerimiento);

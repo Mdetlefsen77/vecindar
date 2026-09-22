@@ -76,11 +76,14 @@ export default function MobileHeader({
   const panel = PANEL_POR_ROL[userRole];
 
   return (
-    <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 shadow-sm">
+    <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 shadow-sm print:hidden">
       <span className="text-xl font-bold text-brand">Vecindar</span>
 
       <Menu as="div" className="relative">
-        <MenuButton aria-label="Abrir menú de cuenta" className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1">
+        <MenuButton
+          aria-label="Abrir menú de cuenta"
+          className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
+        >
           <span className="text-blue-700 font-semibold text-base">
             {userName.charAt(0).toUpperCase()}
           </span>

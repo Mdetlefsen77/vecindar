@@ -4,6 +4,7 @@ import { requireSession, getUserId, parseId } from "@/lib/api/guard";
 import { respuestaValidacion } from "@/lib/api/validation";
 import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
 import { actualizarAlertaPanicoSchema } from "@/lib/validation/panico";
+import { registrarTransicion } from "@/lib/reportes/transiciones";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -70,36 +71,53 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     timestamps.cerradoAt = new Date();
   }
 
-  const updated = await prisma.alertaPanico.update({
-    where: { id: numId },
-    data: {
-      ...(estado ? { estado } : {}),
-      ...(notas !== undefined ? { notas } : {}),
-      ...(esAdmin && estado && estado !== "ENVIADO"
-        ? { atendioPorId: getUserId(session) }
-        : {}),
-      ...timestamps,
-    },
-    include: {
-      usuario: {
-        select: {
-          nombre: true,
-          apellido: true,
-          lote: {
-            select: { numero: true, manzana: { select: { numero: true } } },
+  const updated = await prisma.$transaction(async (tx) => {
+    const actualizada = await tx.alertaPanico.update({
+      where: { id: numId },
+      data: {
+        ...(estado ? { estado } : {}),
+        ...(notas !== undefined ? { notas } : {}),
+        ...(esAdmin && estado && estado !== "ENVIADO"
+          ? { atendioPorId: getUserId(session) }
+          : {}),
+        ...timestamps,
+      },
+      include: {
+        usuario: {
+          select: {
+            nombre: true,
+            apellido: true,
+            lote: {
+              select: { numero: true, manzana: { select: { numero: true } } },
+            },
           },
         },
-      },
-      atendioPor: { select: { nombre: true, apellido: true } },
-      comentarios: {
-        include: {
-          usuario: {
-            select: { id: true, nombre: true, apellido: true, rol: true },
+        atendioPor: { select: { nombre: true, apellido: true } },
+        comentarios: {
+          include: {
+            usuario: {
+              select: { id: true, nombre: true, apellido: true, rol: true },
+            },
           },
+          orderBy: { createdAt: "asc" },
         },
-        orderBy: { createdAt: "asc" },
       },
-    },
+    });
+
+    if (estado !== undefined) {
+      await registrarTransicion(
+        {
+          entidadTipo: "ALERTA_PANICO",
+          entidadId: numId,
+          estadoAnterior: alerta.estado,
+          estadoNuevo: estado,
+          usuarioId: getUserId(session),
+        },
+        tx,
+      );
+    }
+
+    return actualizada;
   });
 
   return NextResponse.json(updated);

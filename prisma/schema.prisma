@@ -15,12 +15,13 @@ datasource db {
 // ============================================
 
 model Manzana {
-  id        Int       @id @default(autoincrement())
-  numero    String    // "1", "2", "3", etc.
-  zona      String    // "Norte" o "Sur"
-  lotes     Lote[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id         Int         @id @default(autoincrement())
+  numero     String      // "1", "2", "3", etc.
+  zona       String      // "Norte" o "Sur"
+  lotes      Lote[]
+  incidentes Incidente[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@map("manzanas")
 }
@@ -99,6 +100,13 @@ model Usuario {
   invitadoPor         Usuario?           @relation("InvitacionesEntreVecinos", fields: [invitadoPorId], references: [id])
   invitados           Usuario[]          @relation("InvitacionesEntreVecinos")
   codigoInvitacion    CodigoInvitacion?  @relation("CodigoDelUsuario")
+
+  // Reportes — historial de transiciones que esta cuenta generó (Fase 0,
+  // docs/proposal-reportes.md §1/§7). Prerequisito para tiempos de resolución
+  // y cumplimiento de SLA; ver auditoría de métricas de esa propuesta.
+  transicionesRealizadas TransicionEstado[]
+  // Reportes que generó y archivó (Fase 3).
+  reportesGenerados      Reporte[]
 
   // Uso de la cuenta (para cobranza / actividad — ver /admin/usuarios).
   // ultimoLoginAt: última autenticación con credenciales.
@@ -213,6 +221,10 @@ model Incidente {
   fechaHora       DateTime        @default(now())
   loteId          Int?
   lote            Lote?           @relation(fields: [loteId], references: [id])
+  // Resuelta al crear (por loteId o point-in-polygon) — ver docs/proposal-reportes.md
+  // R9. Evita recalcular geometría en cada reporte.
+  manzanaId       Int?
+  manzana         Manzana?        @relation(fields: [manzanaId], references: [id])
   ubicacionText   String?         // descripción textual de la ubicación
   latitud         Float?
   longitud        Float?
@@ -226,6 +238,7 @@ model Incidente {
   updatedAt       DateTime        @updatedAt
 
   @@index([loteId])
+  @@index([manzanaId])
   @@index([reportadoPorId])
   @@index([fechaHora])
   @@map("incidentes")
@@ -417,4 +430,80 @@ model CodigoInvitacion {
   createdAt DateTime @default(now())
 
   @@map("codigos_invitacion")
+}
+
+// ============================================
+// REPORTES — HISTORIAL DE TRANSICIONES (Fase 0)
+// ============================================
+
+enum EntidadTransicion {
+  INCIDENTE
+  REQUERIMIENTO
+  ALERTA_PANICO
+}
+
+// Una fila por cada cambio de estado de una entidad con flujo. Prerequisito
+// de docs/proposal-reportes.md (R8): sin esto no son calculables el tiempo de
+// resolución ni el cumplimiento de SLA de incidentes/requerimientos. No
+// reemplaza los campos recibidoAt/atendidoAt/cerradoAt de AlertaPanico (que ya
+// existen y siguen siendo la fuente rápida para /panico) — para esa entidad
+// esta tabla es aditiva, solo para registrar quién hizo cada paso.
+model TransicionEstado {
+  id             Int               @id @default(autoincrement())
+  entidadTipo    EntidadTransicion
+  entidadId      Int
+  estadoAnterior String
+  estadoNuevo    String
+  usuarioId      Int
+  usuario        Usuario           @relation(fields: [usuarioId], references: [id])
+  ocurridoAt     DateTime          @default(now())
+
+  @@index([entidadTipo, entidadId, ocurridoAt])
+  @@map("transiciones_estado")
+}
+
+// ============================================
+// REPORTES — ARCHIVO (Fase 3)
+// ============================================
+
+enum NivelReporte {
+  INTERNO
+  INSTITUCIONAL
+  DIFUSION
+}
+
+enum PeriodoTipo {
+  MENSUAL
+  SEMANAL
+  PERSONALIZADO
+}
+
+// Un reporte generado y congelado — docs/proposal-reportes.md §7.2/HU-06.
+// `datos` es el `ReporteModelo` completo tal como se calculó al generar; un
+// período+nivel ya archivado se sirve desde acá, nunca se recalcula (evita
+// que dos personas que generan "septiembre" en momentos distintos vean
+// números distintos). Sin campo de PDF binario a propósito: la Fase 2 elige
+// impresión del navegador (sin renderer en el servidor), así que no hay un
+// archivo que guardar — el PDF se genera on-demand, incluso viendo un
+// reporte ya archivado, desde estos mismos datos congelados.
+model Reporte {
+  id            Int          @id @default(autoincrement())
+  numero        Int          @unique @default(autoincrement())
+  nivel         NivelReporte
+  periodoTipo   PeriodoTipo
+  periodoInicio DateTime
+  periodoFin    DateTime
+  generadoPorId Int
+  generadoPor   Usuario      @relation(fields: [generadoPorId], references: [id])
+  generadoAt    DateTime     @default(now())
+  nota          String?
+  datos         Json
+
+  // Sin @@unique a propósito: "recalcular" explícito (§7.2 de la propuesta)
+  // emite un Reporte nuevo para el mismo período+nivel sin pisar el
+  // anterior — la inmutabilidad la garantiza la aplicación (nunca actualiza
+  // ni borra una fila existente), no una constraint de la base. El default
+  // (sin forzar recálculo) es servir el más reciente de estos, vía índice.
+  @@index([periodoInicio, periodoFin, nivel, generadoAt])
+  @@map("reportes")
 }

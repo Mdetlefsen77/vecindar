@@ -399,7 +399,9 @@ export const ModelName = {
   Requerimiento: 'Requerimiento',
   ComentarioReq: 'ComentarioReq',
   MascotaPerdida: 'MascotaPerdida',
-  CodigoInvitacion: 'CodigoInvitacion'
+  CodigoInvitacion: 'CodigoInvitacion',
+  TransicionEstado: 'TransicionEstado',
+  Reporte: 'Reporte'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1603,6 +1605,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TransicionEstado: {
+      payload: Prisma.$TransicionEstadoPayload<ExtArgs>
+      fields: Prisma.TransicionEstadoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TransicionEstadoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TransicionEstadoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        findFirst: {
+          args: Prisma.TransicionEstadoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TransicionEstadoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        findMany: {
+          args: Prisma.TransicionEstadoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>[]
+        }
+        create: {
+          args: Prisma.TransicionEstadoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        createMany: {
+          args: Prisma.TransicionEstadoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TransicionEstadoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>[]
+        }
+        delete: {
+          args: Prisma.TransicionEstadoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        update: {
+          args: Prisma.TransicionEstadoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        deleteMany: {
+          args: Prisma.TransicionEstadoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TransicionEstadoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TransicionEstadoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>[]
+        }
+        upsert: {
+          args: Prisma.TransicionEstadoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        aggregate: {
+          args: Prisma.TransicionEstadoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransicionEstado>
+        }
+        groupBy: {
+          args: Prisma.TransicionEstadoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransicionEstadoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TransicionEstadoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransicionEstadoCountAggregateOutputType> | number
+        }
+      }
+    }
+    Reporte: {
+      payload: Prisma.$ReportePayload<ExtArgs>
+      fields: Prisma.ReporteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReporteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReporteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>
+        }
+        findFirst: {
+          args: Prisma.ReporteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReporteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>
+        }
+        findMany: {
+          args: Prisma.ReporteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>[]
+        }
+        create: {
+          args: Prisma.ReporteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>
+        }
+        createMany: {
+          args: Prisma.ReporteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReporteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>[]
+        }
+        delete: {
+          args: Prisma.ReporteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>
+        }
+        update: {
+          args: Prisma.ReporteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>
+        }
+        deleteMany: {
+          args: Prisma.ReporteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReporteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReporteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>[]
+        }
+        upsert: {
+          args: Prisma.ReporteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportePayload>
+        }
+        aggregate: {
+          args: Prisma.ReporteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReporte>
+        }
+        groupBy: {
+          args: Prisma.ReporteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReporteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReporteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReporteCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1750,6 +1900,7 @@ export const IncidenteScalarFieldEnum = {
   descripcion: 'descripcion',
   fechaHora: 'fechaHora',
   loteId: 'loteId',
+  manzanaId: 'manzanaId',
   ubicacionText: 'ubicacionText',
   latitud: 'latitud',
   longitud: 'longitud',
@@ -1871,12 +2022,48 @@ export const CodigoInvitacionScalarFieldEnum = {
 export type CodigoInvitacionScalarFieldEnum = (typeof CodigoInvitacionScalarFieldEnum)[keyof typeof CodigoInvitacionScalarFieldEnum]
 
 
+export const TransicionEstadoScalarFieldEnum = {
+  id: 'id',
+  entidadTipo: 'entidadTipo',
+  entidadId: 'entidadId',
+  estadoAnterior: 'estadoAnterior',
+  estadoNuevo: 'estadoNuevo',
+  usuarioId: 'usuarioId',
+  ocurridoAt: 'ocurridoAt'
+} as const
+
+export type TransicionEstadoScalarFieldEnum = (typeof TransicionEstadoScalarFieldEnum)[keyof typeof TransicionEstadoScalarFieldEnum]
+
+
+export const ReporteScalarFieldEnum = {
+  id: 'id',
+  numero: 'numero',
+  nivel: 'nivel',
+  periodoTipo: 'periodoTipo',
+  periodoInicio: 'periodoInicio',
+  periodoFin: 'periodoFin',
+  generadoPorId: 'generadoPorId',
+  generadoAt: 'generadoAt',
+  nota: 'nota',
+  datos: 'datos'
+} as const
+
+export type ReporteScalarFieldEnum = (typeof ReporteScalarFieldEnum)[keyof typeof ReporteScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1893,6 +2080,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -2103,6 +2299,62 @@ export type EnumTipoAlertaMascotaFieldRefInput<$PrismaModel> = FieldRefInputType
 export type ListEnumTipoAlertaMascotaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoAlertaMascota[]'>
     
 
+
+/**
+ * Reference to a field of type 'EntidadTransicion'
+ */
+export type EnumEntidadTransicionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EntidadTransicion'>
+    
+
+
+/**
+ * Reference to a field of type 'EntidadTransicion[]'
+ */
+export type ListEnumEntidadTransicionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EntidadTransicion[]'>
+    
+
+
+/**
+ * Reference to a field of type 'NivelReporte'
+ */
+export type EnumNivelReporteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NivelReporte'>
+    
+
+
+/**
+ * Reference to a field of type 'NivelReporte[]'
+ */
+export type ListEnumNivelReporteFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NivelReporte[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PeriodoTipo'
+ */
+export type EnumPeriodoTipoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodoTipo'>
+    
+
+
+/**
+ * Reference to a field of type 'PeriodoTipo[]'
+ */
+export type ListEnumPeriodoTipoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PeriodoTipo[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2214,6 +2466,8 @@ export type GlobalOmitConfig = {
   comentarioReq?: Prisma.ComentarioReqOmit
   mascotaPerdida?: Prisma.MascotaPerdidaOmit
   codigoInvitacion?: Prisma.CodigoInvitacionOmit
+  transicionEstado?: Prisma.TransicionEstadoOmit
+  reporte?: Prisma.ReporteOmit
 }
 
 /* Types for Logging */

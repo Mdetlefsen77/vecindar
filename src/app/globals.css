@@ -132,6 +132,16 @@ textarea::placeholder {
   color: #9ca3af;
 }
 
+/* ── Impresión de reportes (docs/proposal-reportes.md §10) ──────────────── */
+/* El encabezado/pie repetido en cada página usa <table>/<thead>/<tfoot>
+   semánticos de verdad (ver src/app/(dashboard)/reportes/page.tsx) — Chrome
+   solo repite por página con elementos de tabla reales, no con `display:
+   table-header-group` puesto por CSS sobre <div>. */
+@page {
+  size: A4;
+  margin: 2cm 1.5cm;
+}
+
 /* Leaflet overrides */
 .leaflet-container {
   font-family: inherit;

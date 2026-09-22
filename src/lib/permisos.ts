@@ -31,6 +31,23 @@ export const GESTORES_USUARIOS: readonly Rol[] = ["ADMIN"];
 /** Gestionan cobranza (panel `/admin/cobranza` y su API) sin ser ADMIN completo. */
 export const GESTORES_COBRANZA: readonly Rol[] = ["ADMIN", "TESORERO"];
 
+/** Ven y generan el reporte periódico, niveles interno y difusión (docs/proposal-reportes.md §9). */
+export const GESTORES_REPORTES: readonly Rol[] = ["ADMIN", "SEGURIDAD"];
+
+/**
+ * El nivel institucional (para la comisión directiva) queda solo para ADMIN
+ * (CA-03.3) — es una restricción más fina que "quién gestiona el módulo",
+ * por eso vive aparte de `GESTORES_REPORTES` en vez de mezclarse ahí.
+ */
+export function puedeGenerarNivel(
+  rol: string | undefined | null,
+  nivel: "INTERNO" | "INSTITUCIONAL" | "DIFUSION",
+): boolean {
+  if (!esGestor(rol, GESTORES_REPORTES)) return false;
+  if (nivel === "INSTITUCIONAL") return rol === "ADMIN";
+  return true;
+}
+
 /** `true` si el rol de la sesión está dentro del conjunto permitido. */
 export function esGestor(
   rol: string | undefined | null,

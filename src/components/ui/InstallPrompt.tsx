@@ -13,7 +13,8 @@ function isStandalone() {
   return (
     window.matchMedia("(display-mode: standalone)").matches ||
     // iOS Safari
-    (window.navigator as unknown as { standalone?: boolean }).standalone === true
+    (window.navigator as unknown as { standalone?: boolean }).standalone ===
+      true
   );
 }
 
@@ -73,11 +74,10 @@ export default function InstallPrompt() {
     dismiss();
   };
 
-  if (!eligible || dismissed || (!deferredPrompt && !showIosHint))
-    return null;
+  if (!eligible || dismissed || (!deferredPrompt && !showIosHint)) return null;
 
   return (
-    <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom,0px)+12px)] md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50 bg-white rounded-2xl shadow-lg border border-gray-200 p-4">
+    <div className="fixed bottom-[calc(72px+env(safe-area-inset-bottom,0px)+12px)] md:bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-50 bg-white rounded-2xl shadow-lg border border-gray-200 p-4 print:hidden">
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 bg-brand rounded-xl flex items-center justify-center flex-shrink-0">
           <span className="text-white text-base font-black tracking-tight">
@@ -90,16 +90,15 @@ export default function InstallPrompt() {
           </p>
           {showIosHint ? (
             <p className="mt-1 text-sm text-gray-600">
-              Tocá{" "}
-              <span className="font-medium">Compartir</span> (
+              Tocá <span className="font-medium">Compartir</span> (
               <span aria-hidden>⬆️</span>) y luego{" "}
-              <span className="font-medium">&quot;Agregar a inicio&quot;</span>
-              . Así recibís notificaciones y no tenés que loguearte cada vez.
+              <span className="font-medium">&quot;Agregar a inicio&quot;</span>.
+              Así recibís notificaciones y no tenés que loguearte cada vez.
             </p>
           ) : (
             <p className="mt-1 text-sm text-gray-600">
-              Se abre como una app aparte, recibís notificaciones y no tenés
-              que loguearte cada vez.
+              Se abre como una app aparte, recibís notificaciones y no tenés que
+              loguearte cada vez.
             </p>
           )}
           <div className="mt-3 flex items-center gap-2">
