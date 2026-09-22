@@ -29,11 +29,13 @@ export type AggregateUsuario = {
 export type UsuarioAvgAggregateOutputType = {
   id: number | null
   loteId: number | null
+  invitadoPorId: number | null
 }
 
 export type UsuarioSumAggregateOutputType = {
   id: number | null
   loteId: number | null
+  invitadoPorId: number | null
 }
 
 export type UsuarioMinAggregateOutputType = {
@@ -46,6 +48,7 @@ export type UsuarioMinAggregateOutputType = {
   loteId: number | null
   verificado: boolean | null
   rol: $Enums.Rol | null
+  invitadoPorId: number | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date | null
@@ -62,6 +65,7 @@ export type UsuarioMaxAggregateOutputType = {
   loteId: number | null
   verificado: boolean | null
   rol: $Enums.Rol | null
+  invitadoPorId: number | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date | null
@@ -78,6 +82,7 @@ export type UsuarioCountAggregateOutputType = {
   loteId: number
   verificado: number
   rol: number
+  invitadoPorId: number
   ultimoLoginAt: number
   ultimaActividadAt: number
   createdAt: number
@@ -89,11 +94,13 @@ export type UsuarioCountAggregateOutputType = {
 export type UsuarioAvgAggregateInputType = {
   id?: true
   loteId?: true
+  invitadoPorId?: true
 }
 
 export type UsuarioSumAggregateInputType = {
   id?: true
   loteId?: true
+  invitadoPorId?: true
 }
 
 export type UsuarioMinAggregateInputType = {
@@ -106,6 +113,7 @@ export type UsuarioMinAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  invitadoPorId?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -122,6 +130,7 @@ export type UsuarioMaxAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  invitadoPorId?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -138,6 +147,7 @@ export type UsuarioCountAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  invitadoPorId?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -241,6 +251,7 @@ export type UsuarioGroupByOutputType = {
   loteId: number
   verificado: boolean
   rol: $Enums.Rol
+  invitadoPorId: number | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date
@@ -280,6 +291,7 @@ export type UsuarioWhereInput = {
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -297,6 +309,9 @@ export type UsuarioWhereInput = {
   suscripcion?: Prisma.XOR<Prisma.SuscripcionNullableScalarRelationFilter, Prisma.SuscripcionWhereInput> | null
   pagos?: Prisma.PagoListRelationFilter
   pagosRegistrados?: Prisma.PagoListRelationFilter
+  invitadoPor?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
+  invitados?: Prisma.UsuarioListRelationFilter
+  codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
 }
 
 export type UsuarioOrderByWithRelationInput = {
@@ -309,6 +324,7 @@ export type UsuarioOrderByWithRelationInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -326,6 +342,9 @@ export type UsuarioOrderByWithRelationInput = {
   suscripcion?: Prisma.SuscripcionOrderByWithRelationInput
   pagos?: Prisma.PagoOrderByRelationAggregateInput
   pagosRegistrados?: Prisma.PagoOrderByRelationAggregateInput
+  invitadoPor?: Prisma.UsuarioOrderByWithRelationInput
+  invitados?: Prisma.UsuarioOrderByRelationAggregateInput
+  codigoInvitacion?: Prisma.CodigoInvitacionOrderByWithRelationInput
 }
 
 export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -341,6 +360,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -358,6 +378,9 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   suscripcion?: Prisma.XOR<Prisma.SuscripcionNullableScalarRelationFilter, Prisma.SuscripcionWhereInput> | null
   pagos?: Prisma.PagoListRelationFilter
   pagosRegistrados?: Prisma.PagoListRelationFilter
+  invitadoPor?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
+  invitados?: Prisma.UsuarioListRelationFilter
+  codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
 }, "id" | "email">
 
 export type UsuarioOrderByWithAggregationInput = {
@@ -370,6 +393,7 @@ export type UsuarioOrderByWithAggregationInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -394,6 +418,7 @@ export type UsuarioScalarWhereWithAggregatesInput = {
   loteId?: Prisma.IntWithAggregatesFilter<"Usuario"> | number
   verificado?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolWithAggregatesFilter<"Usuario"> | $Enums.Rol
+  invitadoPorId?: Prisma.IntNullableWithAggregatesFilter<"Usuario"> | number | null
   ultimoLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Usuario"> | Date | string
@@ -425,6 +450,9 @@ export type UsuarioCreateInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateInput = {
@@ -437,6 +465,7 @@ export type UsuarioUncheckedCreateInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -453,6 +482,8 @@ export type UsuarioUncheckedCreateInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUpdateInput = {
@@ -480,6 +511,9 @@ export type UsuarioUpdateInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateInput = {
@@ -492,6 +526,7 @@ export type UsuarioUncheckedUpdateInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -508,6 +543,8 @@ export type UsuarioUncheckedUpdateInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateManyInput = {
@@ -520,6 +557,7 @@ export type UsuarioCreateManyInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -550,6 +588,7 @@ export type UsuarioUncheckedUpdateManyInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -566,6 +605,11 @@ export type UsuarioOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type UsuarioNullableScalarRelationFilter = {
+  is?: Prisma.UsuarioWhereInput | null
+  isNot?: Prisma.UsuarioWhereInput | null
+}
+
 export type UsuarioCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -576,6 +620,7 @@ export type UsuarioCountOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  invitadoPorId?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -585,6 +630,7 @@ export type UsuarioCountOrderByAggregateInput = {
 export type UsuarioAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
+  invitadoPorId?: Prisma.SortOrder
 }
 
 export type UsuarioMaxOrderByAggregateInput = {
@@ -597,6 +643,7 @@ export type UsuarioMaxOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  invitadoPorId?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -613,6 +660,7 @@ export type UsuarioMinOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  invitadoPorId?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -622,16 +670,12 @@ export type UsuarioMinOrderByAggregateInput = {
 export type UsuarioSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
+  invitadoPorId?: Prisma.SortOrder
 }
 
 export type UsuarioScalarRelationFilter = {
   is?: Prisma.UsuarioWhereInput
   isNot?: Prisma.UsuarioWhereInput
-}
-
-export type UsuarioNullableScalarRelationFilter = {
-  is?: Prisma.UsuarioWhereInput | null
-  isNot?: Prisma.UsuarioWhereInput | null
 }
 
 export type UsuarioCreateNestedManyWithoutLoteInput = {
@@ -676,12 +720,78 @@ export type UsuarioUncheckedUpdateManyWithoutLoteNestedInput = {
   deleteMany?: Prisma.UsuarioScalarWhereInput | Prisma.UsuarioScalarWhereInput[]
 }
 
+export type UsuarioCreateNestedOneWithoutInvitadosInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadosInput, Prisma.UsuarioUncheckedCreateWithoutInvitadosInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutInvitadosInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioCreateNestedManyWithoutInvitadoPorInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput> | Prisma.UsuarioCreateWithoutInvitadoPorInput[] | Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput | Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput[]
+  createMany?: Prisma.UsuarioCreateManyInvitadoPorInputEnvelope
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+}
+
+export type UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput> | Prisma.UsuarioCreateWithoutInvitadoPorInput[] | Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput | Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput[]
+  createMany?: Prisma.UsuarioCreateManyInvitadoPorInputEnvelope
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+}
+
 export type EnumRolFieldUpdateOperationsInput = {
   set?: $Enums.Rol
 }
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type UsuarioUpdateOneWithoutInvitadosNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadosInput, Prisma.UsuarioUncheckedCreateWithoutInvitadosInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutInvitadosInput
+  upsert?: Prisma.UsuarioUpsertWithoutInvitadosInput
+  disconnect?: Prisma.UsuarioWhereInput | boolean
+  delete?: Prisma.UsuarioWhereInput | boolean
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutInvitadosInput, Prisma.UsuarioUpdateWithoutInvitadosInput>, Prisma.UsuarioUncheckedUpdateWithoutInvitadosInput>
+}
+
+export type UsuarioUpdateManyWithoutInvitadoPorNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput> | Prisma.UsuarioCreateWithoutInvitadoPorInput[] | Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput | Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput[]
+  upsert?: Prisma.UsuarioUpsertWithWhereUniqueWithoutInvitadoPorInput | Prisma.UsuarioUpsertWithWhereUniqueWithoutInvitadoPorInput[]
+  createMany?: Prisma.UsuarioCreateManyInvitadoPorInputEnvelope
+  set?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  disconnect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  delete?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  update?: Prisma.UsuarioUpdateWithWhereUniqueWithoutInvitadoPorInput | Prisma.UsuarioUpdateWithWhereUniqueWithoutInvitadoPorInput[]
+  updateMany?: Prisma.UsuarioUpdateManyWithWhereWithoutInvitadoPorInput | Prisma.UsuarioUpdateManyWithWhereWithoutInvitadoPorInput[]
+  deleteMany?: Prisma.UsuarioScalarWhereInput | Prisma.UsuarioScalarWhereInput[]
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput> | Prisma.UsuarioCreateWithoutInvitadoPorInput[] | Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput[]
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput | Prisma.UsuarioCreateOrConnectWithoutInvitadoPorInput[]
+  upsert?: Prisma.UsuarioUpsertWithWhereUniqueWithoutInvitadoPorInput | Prisma.UsuarioUpsertWithWhereUniqueWithoutInvitadoPorInput[]
+  createMany?: Prisma.UsuarioCreateManyInvitadoPorInputEnvelope
+  set?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  disconnect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  delete?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  connect?: Prisma.UsuarioWhereUniqueInput | Prisma.UsuarioWhereUniqueInput[]
+  update?: Prisma.UsuarioUpdateWithWhereUniqueWithoutInvitadoPorInput | Prisma.UsuarioUpdateWithWhereUniqueWithoutInvitadoPorInput[]
+  updateMany?: Prisma.UsuarioUpdateManyWithWhereWithoutInvitadoPorInput | Prisma.UsuarioUpdateManyWithWhereWithoutInvitadoPorInput[]
+  deleteMany?: Prisma.UsuarioScalarWhereInput | Prisma.UsuarioScalarWhereInput[]
 }
 
 export type UsuarioCreateNestedOneWithoutSuscripcionInput = {
@@ -854,6 +964,20 @@ export type UsuarioUpdateOneRequiredWithoutMascotasPerdidasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutMascotasPerdidasInput, Prisma.UsuarioUpdateWithoutMascotasPerdidasInput>, Prisma.UsuarioUncheckedUpdateWithoutMascotasPerdidasInput>
 }
 
+export type UsuarioCreateNestedOneWithoutCodigoInvitacionInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutCodigoInvitacionInput, Prisma.UsuarioUncheckedCreateWithoutCodigoInvitacionInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutCodigoInvitacionInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneRequiredWithoutCodigoInvitacionNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutCodigoInvitacionInput, Prisma.UsuarioUncheckedCreateWithoutCodigoInvitacionInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutCodigoInvitacionInput
+  upsert?: Prisma.UsuarioUpsertWithoutCodigoInvitacionInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutCodigoInvitacionInput, Prisma.UsuarioUpdateWithoutCodigoInvitacionInput>, Prisma.UsuarioUncheckedUpdateWithoutCodigoInvitacionInput>
+}
+
 export type UsuarioCreateWithoutLoteInput = {
   email: string
   password: string
@@ -878,6 +1002,9 @@ export type UsuarioCreateWithoutLoteInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutLoteInput = {
@@ -889,6 +1016,7 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -905,6 +1033,8 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutLoteInput = {
@@ -946,10 +1076,230 @@ export type UsuarioScalarWhereInput = {
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
+}
+
+export type UsuarioCreateWithoutInvitadosInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutInvitadosInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutInvitadosInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadosInput, Prisma.UsuarioUncheckedCreateWithoutInvitadosInput>
+}
+
+export type UsuarioCreateWithoutInvitadoPorInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutInvitadoPorInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput>
+}
+
+export type UsuarioCreateManyInvitadoPorInputEnvelope = {
+  data: Prisma.UsuarioCreateManyInvitadoPorInput | Prisma.UsuarioCreateManyInvitadoPorInput[]
+  skipDuplicates?: boolean
+}
+
+export type UsuarioUpsertWithoutInvitadosInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutInvitadosInput, Prisma.UsuarioUncheckedUpdateWithoutInvitadosInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadosInput, Prisma.UsuarioUncheckedCreateWithoutInvitadosInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutInvitadosInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutInvitadosInput, Prisma.UsuarioUncheckedUpdateWithoutInvitadosInput>
+}
+
+export type UsuarioUpdateWithoutInvitadosInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+}
+
+export type UsuarioUpsertWithWhereUniqueWithoutInvitadoPorInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedUpdateWithoutInvitadoPorInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedCreateWithoutInvitadoPorInput>
+}
+
+export type UsuarioUpdateWithWhereUniqueWithoutInvitadoPorInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutInvitadoPorInput, Prisma.UsuarioUncheckedUpdateWithoutInvitadoPorInput>
+}
+
+export type UsuarioUpdateManyWithWhereWithoutInvitadoPorInput = {
+  where: Prisma.UsuarioScalarWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateManyMutationInput, Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorInput>
 }
 
 export type UsuarioCreateWithoutSuscripcionInput = {
@@ -976,6 +1326,9 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
@@ -988,6 +1341,7 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1003,6 +1357,8 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutSuscripcionInput = {
@@ -1045,6 +1401,9 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
@@ -1057,6 +1416,7 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1072,6 +1432,8 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutPagosInput = {
@@ -1098,6 +1460,9 @@ export type UsuarioCreateWithoutPagosInput = {
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPagosInput = {
@@ -1110,6 +1475,7 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1125,6 +1491,8 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPagosInput = {
@@ -1156,6 +1524,9 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
@@ -1168,6 +1539,7 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1183,6 +1555,8 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPagosRegistradosInput = {
@@ -1225,6 +1599,9 @@ export type UsuarioUpdateWithoutPagosInput = {
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPagosInput = {
@@ -1237,6 +1614,7 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1252,6 +1630,8 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutPagosRegistradosInput = {
@@ -1289,6 +1669,9 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
@@ -1301,6 +1684,7 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1316,6 +1700,8 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutVistasSeccionesInput = {
@@ -1342,6 +1728,9 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
@@ -1354,6 +1743,7 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1369,6 +1759,8 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutVistasSeccionesInput = {
@@ -1411,6 +1803,9 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
@@ -1423,6 +1818,7 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1438,6 +1834,8 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutIncidentesInput = {
@@ -1464,6 +1862,9 @@ export type UsuarioCreateWithoutIncidentesInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutIncidentesInput = {
@@ -1476,6 +1877,7 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1491,6 +1893,8 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutIncidentesInput = {
@@ -1533,6 +1937,9 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
@@ -1545,6 +1952,7 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1560,6 +1968,8 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutAlertasPanicoInput = {
@@ -1586,6 +1996,9 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
@@ -1598,6 +2011,7 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1613,6 +2027,8 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAlertasPanicoInput = {
@@ -1644,6 +2060,9 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
@@ -1656,6 +2075,7 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1671,6 +2091,8 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAlertasAtendidasInput = {
@@ -1713,6 +2135,9 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
@@ -1725,6 +2150,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1740,6 +2166,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutAlertasAtendidasInput = {
@@ -1777,6 +2205,9 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
@@ -1789,6 +2220,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1804,6 +2236,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutComentariosAlertasInput = {
@@ -1830,6 +2264,9 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
@@ -1842,6 +2279,7 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1857,6 +2295,8 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutComentariosAlertasInput = {
@@ -1899,6 +2339,9 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
@@ -1911,6 +2354,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1926,6 +2370,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutPushSubscriptionsInput = {
@@ -1952,6 +2398,9 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -1964,6 +2413,7 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1979,6 +2429,8 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -2021,6 +2473,9 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -2033,6 +2488,7 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2048,6 +2504,8 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutRequerimientosInput = {
@@ -2074,6 +2532,9 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
@@ -2086,6 +2547,7 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2101,6 +2563,8 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutRequerimientosInput = {
@@ -2143,6 +2607,9 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
@@ -2155,6 +2622,7 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2170,6 +2638,8 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutComentariosReqInput = {
@@ -2196,6 +2666,9 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
@@ -2208,6 +2681,7 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2223,6 +2697,8 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutComentariosReqInput = {
@@ -2265,6 +2741,9 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
@@ -2277,6 +2756,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2292,6 +2772,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutMascotasPerdidasInput = {
@@ -2318,6 +2800,9 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
@@ -2330,6 +2815,7 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2345,6 +2831,8 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutMascotasPerdidasInput = {
@@ -2387,6 +2875,9 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
@@ -2399,6 +2890,7 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2414,6 +2906,142 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutCodigoInvitacionInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+}
+
+export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+}
+
+export type UsuarioCreateOrConnectWithoutCodigoInvitacionInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutCodigoInvitacionInput, Prisma.UsuarioUncheckedCreateWithoutCodigoInvitacionInput>
+}
+
+export type UsuarioUpsertWithoutCodigoInvitacionInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutCodigoInvitacionInput, Prisma.UsuarioUncheckedUpdateWithoutCodigoInvitacionInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutCodigoInvitacionInput, Prisma.UsuarioUncheckedCreateWithoutCodigoInvitacionInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutCodigoInvitacionInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutCodigoInvitacionInput, Prisma.UsuarioUncheckedUpdateWithoutCodigoInvitacionInput>
+}
+
+export type UsuarioUpdateWithoutCodigoInvitacionInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
 }
 
 export type UsuarioCreateManyLoteInput = {
@@ -2425,6 +3053,7 @@ export type UsuarioCreateManyLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  invitadoPorId?: number | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2455,6 +3084,9 @@ export type UsuarioUpdateWithoutLoteInput = {
   suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutLoteInput = {
@@ -2464,6 +3096,98 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type UsuarioCreateManyInvitadoPorInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type UsuarioUpdateWithoutInvitadoPorInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2482,15 +3206,18 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
-export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
+export type UsuarioUncheckedUpdateManyWithoutInvitadoPorInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   email?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   apellido?: Prisma.StringFieldUpdateOperationsInput | string
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2516,6 +3243,7 @@ export type UsuarioCountOutputType = {
   vistasSecciones: number
   pagos: number
   pagosRegistrados: number
+  invitados: number
 }
 
 export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2530,6 +3258,7 @@ export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   vistasSecciones?: boolean | UsuarioCountOutputTypeCountVistasSeccionesArgs
   pagos?: boolean | UsuarioCountOutputTypeCountPagosArgs
   pagosRegistrados?: boolean | UsuarioCountOutputTypeCountPagosRegistradosArgs
+  invitados?: boolean | UsuarioCountOutputTypeCountInvitadosArgs
 }
 
 /**
@@ -2619,6 +3348,13 @@ export type UsuarioCountOutputTypeCountPagosRegistradosArgs<ExtArgs extends runt
   where?: Prisma.PagoWhereInput
 }
 
+/**
+ * UsuarioCountOutputType without action
+ */
+export type UsuarioCountOutputTypeCountInvitadosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.UsuarioWhereInput
+}
+
 
 export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2630,6 +3366,7 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  invitadoPorId?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
@@ -2647,6 +3384,9 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   suscripcion?: boolean | Prisma.Usuario$suscripcionArgs<ExtArgs>
   pagos?: boolean | Prisma.Usuario$pagosArgs<ExtArgs>
   pagosRegistrados?: boolean | Prisma.Usuario$pagosRegistradosArgs<ExtArgs>
+  invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
+  invitados?: boolean | Prisma.Usuario$invitadosArgs<ExtArgs>
+  codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["usuario"]>
 
@@ -2660,11 +3400,13 @@ export type UsuarioSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  invitadoPorId?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
+  invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
 }, ExtArgs["result"]["usuario"]>
 
 export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2677,11 +3419,13 @@ export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  invitadoPorId?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
+  invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
 }, ExtArgs["result"]["usuario"]>
 
 export type UsuarioSelectScalar = {
@@ -2694,13 +3438,14 @@ export type UsuarioSelectScalar = {
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  invitadoPorId?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
+export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "invitadoPorId" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
 export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
   incidentes?: boolean | Prisma.Usuario$incidentesArgs<ExtArgs>
@@ -2715,13 +3460,18 @@ export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   suscripcion?: boolean | Prisma.Usuario$suscripcionArgs<ExtArgs>
   pagos?: boolean | Prisma.Usuario$pagosArgs<ExtArgs>
   pagosRegistrados?: boolean | Prisma.Usuario$pagosRegistradosArgs<ExtArgs>
+  invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
+  invitados?: boolean | Prisma.Usuario$invitadosArgs<ExtArgs>
+  codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
+  invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
 }
 export type UsuarioIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
+  invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
 }
 
 export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2740,6 +3490,9 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     suscripcion: Prisma.$SuscripcionPayload<ExtArgs> | null
     pagos: Prisma.$PagoPayload<ExtArgs>[]
     pagosRegistrados: Prisma.$PagoPayload<ExtArgs>[]
+    invitadoPor: Prisma.$UsuarioPayload<ExtArgs> | null
+    invitados: Prisma.$UsuarioPayload<ExtArgs>[]
+    codigoInvitacion: Prisma.$CodigoInvitacionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -2751,6 +3504,7 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     loteId: number
     verificado: boolean
     rol: $Enums.Rol
+    invitadoPorId: number | null
     ultimoLoginAt: Date | null
     ultimaActividadAt: Date | null
     createdAt: Date
@@ -3162,6 +3916,9 @@ export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends runtime.
   suscripcion<T extends Prisma.Usuario$suscripcionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$suscripcionArgs<ExtArgs>>): Prisma.Prisma__SuscripcionClient<runtime.Types.Result.GetResult<Prisma.$SuscripcionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   pagos<T extends Prisma.Usuario$pagosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$pagosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PagoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   pagosRegistrados<T extends Prisma.Usuario$pagosRegistradosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$pagosRegistradosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PagoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  invitadoPor<T extends Prisma.Usuario$invitadoPorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$invitadoPorArgs<ExtArgs>>): Prisma.Prisma__UsuarioClient<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  invitados<T extends Prisma.Usuario$invitadosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$invitadosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  codigoInvitacion<T extends Prisma.Usuario$codigoInvitacionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$codigoInvitacionArgs<ExtArgs>>): Prisma.Prisma__CodigoInvitacionClient<runtime.Types.Result.GetResult<Prisma.$CodigoInvitacionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3200,6 +3957,7 @@ export interface UsuarioFieldRefs {
   readonly loteId: Prisma.FieldRef<"Usuario", 'Int'>
   readonly verificado: Prisma.FieldRef<"Usuario", 'Boolean'>
   readonly rol: Prisma.FieldRef<"Usuario", 'Rol'>
+  readonly invitadoPorId: Prisma.FieldRef<"Usuario", 'Int'>
   readonly ultimoLoginAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly ultimaActividadAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Usuario", 'DateTime'>
@@ -3880,6 +4638,68 @@ export type Usuario$pagosRegistradosArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.PagoScalarFieldEnum | Prisma.PagoScalarFieldEnum[]
+}
+
+/**
+ * Usuario.invitadoPor
+ */
+export type Usuario$invitadoPorArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Usuario
+   */
+  select?: Prisma.UsuarioSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Usuario
+   */
+  omit?: Prisma.UsuarioOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UsuarioInclude<ExtArgs> | null
+  where?: Prisma.UsuarioWhereInput
+}
+
+/**
+ * Usuario.invitados
+ */
+export type Usuario$invitadosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Usuario
+   */
+  select?: Prisma.UsuarioSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Usuario
+   */
+  omit?: Prisma.UsuarioOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UsuarioInclude<ExtArgs> | null
+  where?: Prisma.UsuarioWhereInput
+  orderBy?: Prisma.UsuarioOrderByWithRelationInput | Prisma.UsuarioOrderByWithRelationInput[]
+  cursor?: Prisma.UsuarioWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.UsuarioScalarFieldEnum | Prisma.UsuarioScalarFieldEnum[]
+}
+
+/**
+ * Usuario.codigoInvitacion
+ */
+export type Usuario$codigoInvitacionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CodigoInvitacion
+   */
+  select?: Prisma.CodigoInvitacionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CodigoInvitacion
+   */
+  omit?: Prisma.CodigoInvitacionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CodigoInvitacionInclude<ExtArgs> | null
+  where?: Prisma.CodigoInvitacionWhereInput
 }
 
 /**

@@ -10,6 +10,11 @@ import { nombreCompleto } from "@/lib/usuarios";
 import { Rol } from "@/generated/enums";
 import { enumParam } from "@/lib/api/query";
 import { enviarPushSoloAdmin } from "@/lib/push/enviarPush";
+import {
+  resolverCodigo,
+  registrarConversion,
+  COOKIE_INVITACION,
+} from "@/lib/crecimiento/invitaciones";
 
 // Máximo de cuentas de usuario por lote (ej: madre y padre en la misma casa)
 const MAX_USUARIOS_POR_LOTE = 2;
@@ -116,6 +121,13 @@ export async function POST(req: NextRequest) {
     // y no debe mantener la transacción (ni el lock del lote) abierta.
     const hashedPassword = await hash(password, 12);
 
+    // Invitación entre vecinos (docs/proposal-crecimiento.md §4) — cookie que
+    // dejó /i/[codigo]. Sin incentivo monetario: solo atribución para el
+    // contador de "invitaste a N vecinos". Un código inválido/vencido no
+    // bloquea el registro, simplemente no atribuye.
+    const codigoCookie = req.cookies.get(COOKIE_INVITACION)?.value;
+    const invitacion = codigoCookie ? await resolverCodigo(codigoCookie) : null;
+
     // El límite de cuentas por lote ("madre y padre") no es un constraint de
     // la base, así que dos registros simultáneos para el último lugar podrían
     // pasar los dos el chequeo. Un advisory lock por `loteId` serializa el
@@ -148,6 +160,7 @@ export async function POST(req: NextRequest) {
             loteId: loteId,
             verificado: false,
             rol: "VECINO",
+            ...(invitacion ? { invitadoPorId: invitacion.usuarioId } : {}),
           },
           select: {
             id: true,
@@ -172,6 +185,8 @@ export async function POST(req: NextRequest) {
         url: "/admin/usuarios?verificado=false",
         tag: `nuevo-usuario-${nuevoUsuario.id}`,
       });
+
+      if (invitacion) void registrarConversion(invitacion.codigoId);
 
       return NextResponse.json(
         {
