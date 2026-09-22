@@ -61,11 +61,11 @@ export default async function DashboardLayout({
       />
 
       {/* Contenido principal */}
-      <div className="md:pl-64">
+      <div className="md:pl-64 print:pl-0">
         {/* Espaciado superior móvil (header fijo h-16) + inferior con safe area (bottom nav 72px + home bar) */}
         <main
           id="contenido"
-          className="pt-16 main-mobile-padding md:pt-0 md:pb-0 min-h-screen"
+          className="pt-16 main-mobile-padding md:pt-0 md:pb-0 min-h-screen print:pt-0 print:pb-0"
         >
           {cobranzaVencida && (
             <CobranzaBanner

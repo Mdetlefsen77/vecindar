@@ -25,7 +25,7 @@ export default function CobranzaBanner({
   return (
     <div
       role="alert"
-      className="mx-3 mt-3 sm:mx-4 sm:mt-4 md:mx-6 md:mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-4"
+      className="mx-3 mt-3 sm:mx-4 sm:mt-4 md:mx-6 md:mt-6 rounded-2xl border border-amber-300 bg-amber-50 p-4 print:hidden"
     >
       <div className="flex items-start gap-3">
         <span className="text-xl leading-none" aria-hidden>
