@@ -65,7 +65,8 @@ export const ModelName = {
   PushSubscription: 'PushSubscription',
   Requerimiento: 'Requerimiento',
   ComentarioReq: 'ComentarioReq',
-  MascotaPerdida: 'MascotaPerdida'
+  MascotaPerdida: 'MascotaPerdida',
+  CodigoInvitacion: 'CodigoInvitacion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -134,6 +135,7 @@ export const UsuarioScalarFieldEnum = {
   loteId: 'loteId',
   verificado: 'verificado',
   rol: 'rol',
+  invitadoPorId: 'invitadoPorId',
   ultimoLoginAt: 'ultimoLoginAt',
   ultimaActividadAt: 'ultimaActividadAt',
   createdAt: 'createdAt',
@@ -298,6 +300,18 @@ export const MascotaPerdidaScalarFieldEnum = {
 } as const
 
 export type MascotaPerdidaScalarFieldEnum = (typeof MascotaPerdidaScalarFieldEnum)[keyof typeof MascotaPerdidaScalarFieldEnum]
+
+
+export const CodigoInvitacionScalarFieldEnum = {
+  id: 'id',
+  codigo: 'codigo',
+  usuarioId: 'usuarioId',
+  clicks: 'clicks',
+  registros: 'registros',
+  createdAt: 'createdAt'
+} as const
+
+export type CodigoInvitacionScalarFieldEnum = (typeof CodigoInvitacionScalarFieldEnum)[keyof typeof CodigoInvitacionScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
   Dialog,
@@ -16,6 +16,20 @@ interface Lote {
   numero: string;
   calleFrente: string;
   manzana: { numero: string; zona: string };
+}
+
+// Banner "te invitó un vecino" — aparte para no forzar el resto de la página
+// (que no depende de query params) a esperar el Suspense de useSearchParams.
+function BannerInvitacion() {
+  const searchParams = useSearchParams();
+  if (searchParams.get("invitacion") !== "1") return null;
+  return (
+    <div className="rounded-md bg-blue-50 border border-blue-200 p-3 text-center">
+      <p className="text-sm text-blue-800">
+        👋 Te invitó un vecino a sumarse a Vecindar
+      </p>
+    </div>
+  );
 }
 
 export default function RegistroPage() {
@@ -114,6 +128,10 @@ export default function RegistroPage() {
               Registrate para unirte a tu barrio
             </p>
           </div>
+
+          <Suspense fallback={null}>
+            <BannerInvitacion />
+          </Suspense>
 
           {/* Formulario */}
           <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
