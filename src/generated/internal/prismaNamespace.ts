@@ -1633,6 +1633,8 @@ export const SuscripcionScalarFieldEnum = {
   montoMensual: 'montoMensual',
   exento: 'exento',
   notaInterna: 'notaInterna',
+  mpPreapprovalId: 'mpPreapprovalId',
+  mpPreapprovalEstado: 'mpPreapprovalEstado',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1649,6 +1651,7 @@ export const PagoScalarFieldEnum = {
   nota: 'nota',
   fecha: 'fecha',
   registradoPorId: 'registradoPorId',
+  mpPaymentId: 'mpPaymentId',
   createdAt: 'createdAt'
 } as const
 
