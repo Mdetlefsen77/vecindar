@@ -66,7 +66,8 @@ export const ModelName = {
   Requerimiento: 'Requerimiento',
   ComentarioReq: 'ComentarioReq',
   MascotaPerdida: 'MascotaPerdida',
-  CodigoInvitacion: 'CodigoInvitacion'
+  CodigoInvitacion: 'CodigoInvitacion',
+  TransicionEstado: 'TransicionEstado'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -193,6 +194,7 @@ export const IncidenteScalarFieldEnum = {
   descripcion: 'descripcion',
   fechaHora: 'fechaHora',
   loteId: 'loteId',
+  manzanaId: 'manzanaId',
   ubicacionText: 'ubicacionText',
   latitud: 'latitud',
   longitud: 'longitud',
@@ -312,6 +314,19 @@ export const CodigoInvitacionScalarFieldEnum = {
 } as const
 
 export type CodigoInvitacionScalarFieldEnum = (typeof CodigoInvitacionScalarFieldEnum)[keyof typeof CodigoInvitacionScalarFieldEnum]
+
+
+export const TransicionEstadoScalarFieldEnum = {
+  id: 'id',
+  entidadTipo: 'entidadTipo',
+  entidadId: 'entidadId',
+  estadoAnterior: 'estadoAnterior',
+  estadoNuevo: 'estadoNuevo',
+  usuarioId: 'usuarioId',
+  ocurridoAt: 'ocurridoAt'
+} as const
+
+export type TransicionEstadoScalarFieldEnum = (typeof TransicionEstadoScalarFieldEnum)[keyof typeof TransicionEstadoScalarFieldEnum]
 
 
 export const SortOrder = {

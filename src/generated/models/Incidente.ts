@@ -29,6 +29,7 @@ export type AggregateIncidente = {
 export type IncidenteAvgAggregateOutputType = {
   id: number | null
   loteId: number | null
+  manzanaId: number | null
   latitud: number | null
   longitud: number | null
   reportadoPorId: number | null
@@ -37,6 +38,7 @@ export type IncidenteAvgAggregateOutputType = {
 export type IncidenteSumAggregateOutputType = {
   id: number | null
   loteId: number | null
+  manzanaId: number | null
   latitud: number | null
   longitud: number | null
   reportadoPorId: number | null
@@ -48,6 +50,7 @@ export type IncidenteMinAggregateOutputType = {
   descripcion: string | null
   fechaHora: Date | null
   loteId: number | null
+  manzanaId: number | null
   ubicacionText: string | null
   latitud: number | null
   longitud: number | null
@@ -65,6 +68,7 @@ export type IncidenteMaxAggregateOutputType = {
   descripcion: string | null
   fechaHora: Date | null
   loteId: number | null
+  manzanaId: number | null
   ubicacionText: string | null
   latitud: number | null
   longitud: number | null
@@ -82,6 +86,7 @@ export type IncidenteCountAggregateOutputType = {
   descripcion: number
   fechaHora: number
   loteId: number
+  manzanaId: number
   ubicacionText: number
   latitud: number
   longitud: number
@@ -99,6 +104,7 @@ export type IncidenteCountAggregateOutputType = {
 export type IncidenteAvgAggregateInputType = {
   id?: true
   loteId?: true
+  manzanaId?: true
   latitud?: true
   longitud?: true
   reportadoPorId?: true
@@ -107,6 +113,7 @@ export type IncidenteAvgAggregateInputType = {
 export type IncidenteSumAggregateInputType = {
   id?: true
   loteId?: true
+  manzanaId?: true
   latitud?: true
   longitud?: true
   reportadoPorId?: true
@@ -118,6 +125,7 @@ export type IncidenteMinAggregateInputType = {
   descripcion?: true
   fechaHora?: true
   loteId?: true
+  manzanaId?: true
   ubicacionText?: true
   latitud?: true
   longitud?: true
@@ -135,6 +143,7 @@ export type IncidenteMaxAggregateInputType = {
   descripcion?: true
   fechaHora?: true
   loteId?: true
+  manzanaId?: true
   ubicacionText?: true
   latitud?: true
   longitud?: true
@@ -152,6 +161,7 @@ export type IncidenteCountAggregateInputType = {
   descripcion?: true
   fechaHora?: true
   loteId?: true
+  manzanaId?: true
   ubicacionText?: true
   latitud?: true
   longitud?: true
@@ -257,6 +267,7 @@ export type IncidenteGroupByOutputType = {
   descripcion: string
   fechaHora: Date
   loteId: number | null
+  manzanaId: number | null
   ubicacionText: string | null
   latitud: number | null
   longitud: number | null
@@ -298,6 +309,7 @@ export type IncidenteWhereInput = {
   descripcion?: Prisma.StringFilter<"Incidente"> | string
   fechaHora?: Prisma.DateTimeFilter<"Incidente"> | Date | string
   loteId?: Prisma.IntNullableFilter<"Incidente"> | number | null
+  manzanaId?: Prisma.IntNullableFilter<"Incidente"> | number | null
   ubicacionText?: Prisma.StringNullableFilter<"Incidente"> | string | null
   latitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
   longitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
@@ -309,6 +321,7 @@ export type IncidenteWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
   lote?: Prisma.XOR<Prisma.LoteNullableScalarRelationFilter, Prisma.LoteWhereInput> | null
+  manzana?: Prisma.XOR<Prisma.ManzanaNullableScalarRelationFilter, Prisma.ManzanaWhereInput> | null
   reportadoPor?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
 }
 
@@ -318,6 +331,7 @@ export type IncidenteOrderByWithRelationInput = {
   descripcion?: Prisma.SortOrder
   fechaHora?: Prisma.SortOrder
   loteId?: Prisma.SortOrderInput | Prisma.SortOrder
+  manzanaId?: Prisma.SortOrderInput | Prisma.SortOrder
   ubicacionText?: Prisma.SortOrderInput | Prisma.SortOrder
   latitud?: Prisma.SortOrderInput | Prisma.SortOrder
   longitud?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -329,6 +343,7 @@ export type IncidenteOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lote?: Prisma.LoteOrderByWithRelationInput
+  manzana?: Prisma.ManzanaOrderByWithRelationInput
   reportadoPor?: Prisma.UsuarioOrderByWithRelationInput
 }
 
@@ -341,6 +356,7 @@ export type IncidenteWhereUniqueInput = Prisma.AtLeast<{
   descripcion?: Prisma.StringFilter<"Incidente"> | string
   fechaHora?: Prisma.DateTimeFilter<"Incidente"> | Date | string
   loteId?: Prisma.IntNullableFilter<"Incidente"> | number | null
+  manzanaId?: Prisma.IntNullableFilter<"Incidente"> | number | null
   ubicacionText?: Prisma.StringNullableFilter<"Incidente"> | string | null
   latitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
   longitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
@@ -352,6 +368,7 @@ export type IncidenteWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
   lote?: Prisma.XOR<Prisma.LoteNullableScalarRelationFilter, Prisma.LoteWhereInput> | null
+  manzana?: Prisma.XOR<Prisma.ManzanaNullableScalarRelationFilter, Prisma.ManzanaWhereInput> | null
   reportadoPor?: Prisma.XOR<Prisma.UsuarioScalarRelationFilter, Prisma.UsuarioWhereInput>
 }, "id">
 
@@ -361,6 +378,7 @@ export type IncidenteOrderByWithAggregationInput = {
   descripcion?: Prisma.SortOrder
   fechaHora?: Prisma.SortOrder
   loteId?: Prisma.SortOrderInput | Prisma.SortOrder
+  manzanaId?: Prisma.SortOrderInput | Prisma.SortOrder
   ubicacionText?: Prisma.SortOrderInput | Prisma.SortOrder
   latitud?: Prisma.SortOrderInput | Prisma.SortOrder
   longitud?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -387,6 +405,7 @@ export type IncidenteScalarWhereWithAggregatesInput = {
   descripcion?: Prisma.StringWithAggregatesFilter<"Incidente"> | string
   fechaHora?: Prisma.DateTimeWithAggregatesFilter<"Incidente"> | Date | string
   loteId?: Prisma.IntNullableWithAggregatesFilter<"Incidente"> | number | null
+  manzanaId?: Prisma.IntNullableWithAggregatesFilter<"Incidente"> | number | null
   ubicacionText?: Prisma.StringNullableWithAggregatesFilter<"Incidente"> | string | null
   latitud?: Prisma.FloatNullableWithAggregatesFilter<"Incidente"> | number | null
   longitud?: Prisma.FloatNullableWithAggregatesFilter<"Incidente"> | number | null
@@ -413,6 +432,7 @@ export type IncidenteCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lote?: Prisma.LoteCreateNestedOneWithoutIncidentesInput
+  manzana?: Prisma.ManzanaCreateNestedOneWithoutIncidentesInput
   reportadoPor: Prisma.UsuarioCreateNestedOneWithoutIncidentesInput
 }
 
@@ -422,6 +442,7 @@ export type IncidenteUncheckedCreateInput = {
   descripcion: string
   fechaHora?: Date | string
   loteId?: number | null
+  manzanaId?: number | null
   ubicacionText?: string | null
   latitud?: number | null
   longitud?: number | null
@@ -448,6 +469,7 @@ export type IncidenteUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneWithoutIncidentesNestedInput
+  manzana?: Prisma.ManzanaUpdateOneWithoutIncidentesNestedInput
   reportadoPor?: Prisma.UsuarioUpdateOneRequiredWithoutIncidentesNestedInput
 }
 
@@ -457,6 +479,7 @@ export type IncidenteUncheckedUpdateInput = {
   descripcion?: Prisma.StringFieldUpdateOperationsInput | string
   fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   loteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  manzanaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -475,6 +498,7 @@ export type IncidenteCreateManyInput = {
   descripcion: string
   fechaHora?: Date | string
   loteId?: number | null
+  manzanaId?: number | null
   ubicacionText?: string | null
   latitud?: number | null
   longitud?: number | null
@@ -508,6 +532,7 @@ export type IncidenteUncheckedUpdateManyInput = {
   descripcion?: Prisma.StringFieldUpdateOperationsInput | string
   fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   loteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  manzanaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -544,6 +569,7 @@ export type IncidenteCountOrderByAggregateInput = {
   descripcion?: Prisma.SortOrder
   fechaHora?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
+  manzanaId?: Prisma.SortOrder
   ubicacionText?: Prisma.SortOrder
   latitud?: Prisma.SortOrder
   longitud?: Prisma.SortOrder
@@ -559,6 +585,7 @@ export type IncidenteCountOrderByAggregateInput = {
 export type IncidenteAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
+  manzanaId?: Prisma.SortOrder
   latitud?: Prisma.SortOrder
   longitud?: Prisma.SortOrder
   reportadoPorId?: Prisma.SortOrder
@@ -570,6 +597,7 @@ export type IncidenteMaxOrderByAggregateInput = {
   descripcion?: Prisma.SortOrder
   fechaHora?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
+  manzanaId?: Prisma.SortOrder
   ubicacionText?: Prisma.SortOrder
   latitud?: Prisma.SortOrder
   longitud?: Prisma.SortOrder
@@ -587,6 +615,7 @@ export type IncidenteMinOrderByAggregateInput = {
   descripcion?: Prisma.SortOrder
   fechaHora?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
+  manzanaId?: Prisma.SortOrder
   ubicacionText?: Prisma.SortOrder
   latitud?: Prisma.SortOrder
   longitud?: Prisma.SortOrder
@@ -601,9 +630,52 @@ export type IncidenteMinOrderByAggregateInput = {
 export type IncidenteSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   loteId?: Prisma.SortOrder
+  manzanaId?: Prisma.SortOrder
   latitud?: Prisma.SortOrder
   longitud?: Prisma.SortOrder
   reportadoPorId?: Prisma.SortOrder
+}
+
+export type IncidenteCreateNestedManyWithoutManzanaInput = {
+  create?: Prisma.XOR<Prisma.IncidenteCreateWithoutManzanaInput, Prisma.IncidenteUncheckedCreateWithoutManzanaInput> | Prisma.IncidenteCreateWithoutManzanaInput[] | Prisma.IncidenteUncheckedCreateWithoutManzanaInput[]
+  connectOrCreate?: Prisma.IncidenteCreateOrConnectWithoutManzanaInput | Prisma.IncidenteCreateOrConnectWithoutManzanaInput[]
+  createMany?: Prisma.IncidenteCreateManyManzanaInputEnvelope
+  connect?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+}
+
+export type IncidenteUncheckedCreateNestedManyWithoutManzanaInput = {
+  create?: Prisma.XOR<Prisma.IncidenteCreateWithoutManzanaInput, Prisma.IncidenteUncheckedCreateWithoutManzanaInput> | Prisma.IncidenteCreateWithoutManzanaInput[] | Prisma.IncidenteUncheckedCreateWithoutManzanaInput[]
+  connectOrCreate?: Prisma.IncidenteCreateOrConnectWithoutManzanaInput | Prisma.IncidenteCreateOrConnectWithoutManzanaInput[]
+  createMany?: Prisma.IncidenteCreateManyManzanaInputEnvelope
+  connect?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+}
+
+export type IncidenteUpdateManyWithoutManzanaNestedInput = {
+  create?: Prisma.XOR<Prisma.IncidenteCreateWithoutManzanaInput, Prisma.IncidenteUncheckedCreateWithoutManzanaInput> | Prisma.IncidenteCreateWithoutManzanaInput[] | Prisma.IncidenteUncheckedCreateWithoutManzanaInput[]
+  connectOrCreate?: Prisma.IncidenteCreateOrConnectWithoutManzanaInput | Prisma.IncidenteCreateOrConnectWithoutManzanaInput[]
+  upsert?: Prisma.IncidenteUpsertWithWhereUniqueWithoutManzanaInput | Prisma.IncidenteUpsertWithWhereUniqueWithoutManzanaInput[]
+  createMany?: Prisma.IncidenteCreateManyManzanaInputEnvelope
+  set?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  disconnect?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  delete?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  connect?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  update?: Prisma.IncidenteUpdateWithWhereUniqueWithoutManzanaInput | Prisma.IncidenteUpdateWithWhereUniqueWithoutManzanaInput[]
+  updateMany?: Prisma.IncidenteUpdateManyWithWhereWithoutManzanaInput | Prisma.IncidenteUpdateManyWithWhereWithoutManzanaInput[]
+  deleteMany?: Prisma.IncidenteScalarWhereInput | Prisma.IncidenteScalarWhereInput[]
+}
+
+export type IncidenteUncheckedUpdateManyWithoutManzanaNestedInput = {
+  create?: Prisma.XOR<Prisma.IncidenteCreateWithoutManzanaInput, Prisma.IncidenteUncheckedCreateWithoutManzanaInput> | Prisma.IncidenteCreateWithoutManzanaInput[] | Prisma.IncidenteUncheckedCreateWithoutManzanaInput[]
+  connectOrCreate?: Prisma.IncidenteCreateOrConnectWithoutManzanaInput | Prisma.IncidenteCreateOrConnectWithoutManzanaInput[]
+  upsert?: Prisma.IncidenteUpsertWithWhereUniqueWithoutManzanaInput | Prisma.IncidenteUpsertWithWhereUniqueWithoutManzanaInput[]
+  createMany?: Prisma.IncidenteCreateManyManzanaInputEnvelope
+  set?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  disconnect?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  delete?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  connect?: Prisma.IncidenteWhereUniqueInput | Prisma.IncidenteWhereUniqueInput[]
+  update?: Prisma.IncidenteUpdateWithWhereUniqueWithoutManzanaInput | Prisma.IncidenteUpdateWithWhereUniqueWithoutManzanaInput[]
+  updateMany?: Prisma.IncidenteUpdateManyWithWhereWithoutManzanaInput | Prisma.IncidenteUpdateManyWithWhereWithoutManzanaInput[]
+  deleteMany?: Prisma.IncidenteScalarWhereInput | Prisma.IncidenteScalarWhereInput[]
 }
 
 export type IncidenteCreateNestedManyWithoutLoteInput = {
@@ -711,6 +783,89 @@ export type EnumPrioridadFieldUpdateOperationsInput = {
   set?: $Enums.Prioridad
 }
 
+export type IncidenteCreateWithoutManzanaInput = {
+  tipo: $Enums.TipoIncidente
+  descripcion: string
+  fechaHora?: Date | string
+  ubicacionText?: string | null
+  latitud?: number | null
+  longitud?: number | null
+  imagenes?: Prisma.IncidenteCreateimagenesInput | string[]
+  estado?: $Enums.EstadoIncidente
+  prioridad?: $Enums.Prioridad
+  visibleVecinos?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote?: Prisma.LoteCreateNestedOneWithoutIncidentesInput
+  reportadoPor: Prisma.UsuarioCreateNestedOneWithoutIncidentesInput
+}
+
+export type IncidenteUncheckedCreateWithoutManzanaInput = {
+  id?: number
+  tipo: $Enums.TipoIncidente
+  descripcion: string
+  fechaHora?: Date | string
+  loteId?: number | null
+  ubicacionText?: string | null
+  latitud?: number | null
+  longitud?: number | null
+  reportadoPorId: number
+  imagenes?: Prisma.IncidenteCreateimagenesInput | string[]
+  estado?: $Enums.EstadoIncidente
+  prioridad?: $Enums.Prioridad
+  visibleVecinos?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type IncidenteCreateOrConnectWithoutManzanaInput = {
+  where: Prisma.IncidenteWhereUniqueInput
+  create: Prisma.XOR<Prisma.IncidenteCreateWithoutManzanaInput, Prisma.IncidenteUncheckedCreateWithoutManzanaInput>
+}
+
+export type IncidenteCreateManyManzanaInputEnvelope = {
+  data: Prisma.IncidenteCreateManyManzanaInput | Prisma.IncidenteCreateManyManzanaInput[]
+  skipDuplicates?: boolean
+}
+
+export type IncidenteUpsertWithWhereUniqueWithoutManzanaInput = {
+  where: Prisma.IncidenteWhereUniqueInput
+  update: Prisma.XOR<Prisma.IncidenteUpdateWithoutManzanaInput, Prisma.IncidenteUncheckedUpdateWithoutManzanaInput>
+  create: Prisma.XOR<Prisma.IncidenteCreateWithoutManzanaInput, Prisma.IncidenteUncheckedCreateWithoutManzanaInput>
+}
+
+export type IncidenteUpdateWithWhereUniqueWithoutManzanaInput = {
+  where: Prisma.IncidenteWhereUniqueInput
+  data: Prisma.XOR<Prisma.IncidenteUpdateWithoutManzanaInput, Prisma.IncidenteUncheckedUpdateWithoutManzanaInput>
+}
+
+export type IncidenteUpdateManyWithWhereWithoutManzanaInput = {
+  where: Prisma.IncidenteScalarWhereInput
+  data: Prisma.XOR<Prisma.IncidenteUpdateManyMutationInput, Prisma.IncidenteUncheckedUpdateManyWithoutManzanaInput>
+}
+
+export type IncidenteScalarWhereInput = {
+  AND?: Prisma.IncidenteScalarWhereInput | Prisma.IncidenteScalarWhereInput[]
+  OR?: Prisma.IncidenteScalarWhereInput[]
+  NOT?: Prisma.IncidenteScalarWhereInput | Prisma.IncidenteScalarWhereInput[]
+  id?: Prisma.IntFilter<"Incidente"> | number
+  tipo?: Prisma.EnumTipoIncidenteFilter<"Incidente"> | $Enums.TipoIncidente
+  descripcion?: Prisma.StringFilter<"Incidente"> | string
+  fechaHora?: Prisma.DateTimeFilter<"Incidente"> | Date | string
+  loteId?: Prisma.IntNullableFilter<"Incidente"> | number | null
+  manzanaId?: Prisma.IntNullableFilter<"Incidente"> | number | null
+  ubicacionText?: Prisma.StringNullableFilter<"Incidente"> | string | null
+  latitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
+  longitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
+  reportadoPorId?: Prisma.IntFilter<"Incidente"> | number
+  imagenes?: Prisma.StringNullableListFilter<"Incidente">
+  estado?: Prisma.EnumEstadoIncidenteFilter<"Incidente"> | $Enums.EstadoIncidente
+  prioridad?: Prisma.EnumPrioridadFilter<"Incidente"> | $Enums.Prioridad
+  visibleVecinos?: Prisma.BoolFilter<"Incidente"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
+}
+
 export type IncidenteCreateWithoutLoteInput = {
   tipo: $Enums.TipoIncidente
   descripcion: string
@@ -724,6 +879,7 @@ export type IncidenteCreateWithoutLoteInput = {
   visibleVecinos?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  manzana?: Prisma.ManzanaCreateNestedOneWithoutIncidentesInput
   reportadoPor: Prisma.UsuarioCreateNestedOneWithoutIncidentesInput
 }
 
@@ -732,6 +888,7 @@ export type IncidenteUncheckedCreateWithoutLoteInput = {
   tipo: $Enums.TipoIncidente
   descripcion: string
   fechaHora?: Date | string
+  manzanaId?: number | null
   ubicacionText?: string | null
   latitud?: number | null
   longitud?: number | null
@@ -770,27 +927,6 @@ export type IncidenteUpdateManyWithWhereWithoutLoteInput = {
   data: Prisma.XOR<Prisma.IncidenteUpdateManyMutationInput, Prisma.IncidenteUncheckedUpdateManyWithoutLoteInput>
 }
 
-export type IncidenteScalarWhereInput = {
-  AND?: Prisma.IncidenteScalarWhereInput | Prisma.IncidenteScalarWhereInput[]
-  OR?: Prisma.IncidenteScalarWhereInput[]
-  NOT?: Prisma.IncidenteScalarWhereInput | Prisma.IncidenteScalarWhereInput[]
-  id?: Prisma.IntFilter<"Incidente"> | number
-  tipo?: Prisma.EnumTipoIncidenteFilter<"Incidente"> | $Enums.TipoIncidente
-  descripcion?: Prisma.StringFilter<"Incidente"> | string
-  fechaHora?: Prisma.DateTimeFilter<"Incidente"> | Date | string
-  loteId?: Prisma.IntNullableFilter<"Incidente"> | number | null
-  ubicacionText?: Prisma.StringNullableFilter<"Incidente"> | string | null
-  latitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
-  longitud?: Prisma.FloatNullableFilter<"Incidente"> | number | null
-  reportadoPorId?: Prisma.IntFilter<"Incidente"> | number
-  imagenes?: Prisma.StringNullableListFilter<"Incidente">
-  estado?: Prisma.EnumEstadoIncidenteFilter<"Incidente"> | $Enums.EstadoIncidente
-  prioridad?: Prisma.EnumPrioridadFilter<"Incidente"> | $Enums.Prioridad
-  visibleVecinos?: Prisma.BoolFilter<"Incidente"> | boolean
-  createdAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Incidente"> | Date | string
-}
-
 export type IncidenteCreateWithoutReportadoPorInput = {
   tipo: $Enums.TipoIncidente
   descripcion: string
@@ -805,6 +941,7 @@ export type IncidenteCreateWithoutReportadoPorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lote?: Prisma.LoteCreateNestedOneWithoutIncidentesInput
+  manzana?: Prisma.ManzanaCreateNestedOneWithoutIncidentesInput
 }
 
 export type IncidenteUncheckedCreateWithoutReportadoPorInput = {
@@ -813,6 +950,7 @@ export type IncidenteUncheckedCreateWithoutReportadoPorInput = {
   descripcion: string
   fechaHora?: Date | string
   loteId?: number | null
+  manzanaId?: number | null
   ubicacionText?: string | null
   latitud?: number | null
   longitud?: number | null
@@ -850,11 +988,83 @@ export type IncidenteUpdateManyWithWhereWithoutReportadoPorInput = {
   data: Prisma.XOR<Prisma.IncidenteUpdateManyMutationInput, Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorInput>
 }
 
+export type IncidenteCreateManyManzanaInput = {
+  id?: number
+  tipo: $Enums.TipoIncidente
+  descripcion: string
+  fechaHora?: Date | string
+  loteId?: number | null
+  ubicacionText?: string | null
+  latitud?: number | null
+  longitud?: number | null
+  reportadoPorId: number
+  imagenes?: Prisma.IncidenteCreateimagenesInput | string[]
+  estado?: $Enums.EstadoIncidente
+  prioridad?: $Enums.Prioridad
+  visibleVecinos?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type IncidenteUpdateWithoutManzanaInput = {
+  tipo?: Prisma.EnumTipoIncidenteFieldUpdateOperationsInput | $Enums.TipoIncidente
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  imagenes?: Prisma.IncidenteUpdateimagenesInput | string[]
+  estado?: Prisma.EnumEstadoIncidenteFieldUpdateOperationsInput | $Enums.EstadoIncidente
+  prioridad?: Prisma.EnumPrioridadFieldUpdateOperationsInput | $Enums.Prioridad
+  visibleVecinos?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneWithoutIncidentesNestedInput
+  reportadoPor?: Prisma.UsuarioUpdateOneRequiredWithoutIncidentesNestedInput
+}
+
+export type IncidenteUncheckedUpdateWithoutManzanaInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.EnumTipoIncidenteFieldUpdateOperationsInput | $Enums.TipoIncidente
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  loteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reportadoPorId?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenes?: Prisma.IncidenteUpdateimagenesInput | string[]
+  estado?: Prisma.EnumEstadoIncidenteFieldUpdateOperationsInput | $Enums.EstadoIncidente
+  prioridad?: Prisma.EnumPrioridadFieldUpdateOperationsInput | $Enums.Prioridad
+  visibleVecinos?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type IncidenteUncheckedUpdateManyWithoutManzanaInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.EnumTipoIncidenteFieldUpdateOperationsInput | $Enums.TipoIncidente
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  loteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  reportadoPorId?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenes?: Prisma.IncidenteUpdateimagenesInput | string[]
+  estado?: Prisma.EnumEstadoIncidenteFieldUpdateOperationsInput | $Enums.EstadoIncidente
+  prioridad?: Prisma.EnumPrioridadFieldUpdateOperationsInput | $Enums.Prioridad
+  visibleVecinos?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type IncidenteCreateManyLoteInput = {
   id?: number
   tipo: $Enums.TipoIncidente
   descripcion: string
   fechaHora?: Date | string
+  manzanaId?: number | null
   ubicacionText?: string | null
   latitud?: number | null
   longitud?: number | null
@@ -880,6 +1090,7 @@ export type IncidenteUpdateWithoutLoteInput = {
   visibleVecinos?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  manzana?: Prisma.ManzanaUpdateOneWithoutIncidentesNestedInput
   reportadoPor?: Prisma.UsuarioUpdateOneRequiredWithoutIncidentesNestedInput
 }
 
@@ -888,6 +1099,7 @@ export type IncidenteUncheckedUpdateWithoutLoteInput = {
   tipo?: Prisma.EnumTipoIncidenteFieldUpdateOperationsInput | $Enums.TipoIncidente
   descripcion?: Prisma.StringFieldUpdateOperationsInput | string
   fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  manzanaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -905,6 +1117,7 @@ export type IncidenteUncheckedUpdateManyWithoutLoteInput = {
   tipo?: Prisma.EnumTipoIncidenteFieldUpdateOperationsInput | $Enums.TipoIncidente
   descripcion?: Prisma.StringFieldUpdateOperationsInput | string
   fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  manzanaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -923,6 +1136,7 @@ export type IncidenteCreateManyReportadoPorInput = {
   descripcion: string
   fechaHora?: Date | string
   loteId?: number | null
+  manzanaId?: number | null
   ubicacionText?: string | null
   latitud?: number | null
   longitud?: number | null
@@ -948,6 +1162,7 @@ export type IncidenteUpdateWithoutReportadoPorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lote?: Prisma.LoteUpdateOneWithoutIncidentesNestedInput
+  manzana?: Prisma.ManzanaUpdateOneWithoutIncidentesNestedInput
 }
 
 export type IncidenteUncheckedUpdateWithoutReportadoPorInput = {
@@ -956,6 +1171,7 @@ export type IncidenteUncheckedUpdateWithoutReportadoPorInput = {
   descripcion?: Prisma.StringFieldUpdateOperationsInput | string
   fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   loteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  manzanaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -973,6 +1189,7 @@ export type IncidenteUncheckedUpdateManyWithoutReportadoPorInput = {
   descripcion?: Prisma.StringFieldUpdateOperationsInput | string
   fechaHora?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   loteId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  manzanaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   ubicacionText?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   latitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitud?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -992,6 +1209,7 @@ export type IncidenteSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   descripcion?: boolean
   fechaHora?: boolean
   loteId?: boolean
+  manzanaId?: boolean
   ubicacionText?: boolean
   latitud?: boolean
   longitud?: boolean
@@ -1003,6 +1221,7 @@ export type IncidenteSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.Incidente$loteArgs<ExtArgs>
+  manzana?: boolean | Prisma.Incidente$manzanaArgs<ExtArgs>
   reportadoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["incidente"]>
 
@@ -1012,6 +1231,7 @@ export type IncidenteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   descripcion?: boolean
   fechaHora?: boolean
   loteId?: boolean
+  manzanaId?: boolean
   ubicacionText?: boolean
   latitud?: boolean
   longitud?: boolean
@@ -1023,6 +1243,7 @@ export type IncidenteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.Incidente$loteArgs<ExtArgs>
+  manzana?: boolean | Prisma.Incidente$manzanaArgs<ExtArgs>
   reportadoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["incidente"]>
 
@@ -1032,6 +1253,7 @@ export type IncidenteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   descripcion?: boolean
   fechaHora?: boolean
   loteId?: boolean
+  manzanaId?: boolean
   ubicacionText?: boolean
   latitud?: boolean
   longitud?: boolean
@@ -1043,6 +1265,7 @@ export type IncidenteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   createdAt?: boolean
   updatedAt?: boolean
   lote?: boolean | Prisma.Incidente$loteArgs<ExtArgs>
+  manzana?: boolean | Prisma.Incidente$manzanaArgs<ExtArgs>
   reportadoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["incidente"]>
 
@@ -1052,6 +1275,7 @@ export type IncidenteSelectScalar = {
   descripcion?: boolean
   fechaHora?: boolean
   loteId?: boolean
+  manzanaId?: boolean
   ubicacionText?: boolean
   latitud?: boolean
   longitud?: boolean
@@ -1064,17 +1288,20 @@ export type IncidenteSelectScalar = {
   updatedAt?: boolean
 }
 
-export type IncidenteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tipo" | "descripcion" | "fechaHora" | "loteId" | "ubicacionText" | "latitud" | "longitud" | "reportadoPorId" | "imagenes" | "estado" | "prioridad" | "visibleVecinos" | "createdAt" | "updatedAt", ExtArgs["result"]["incidente"]>
+export type IncidenteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tipo" | "descripcion" | "fechaHora" | "loteId" | "manzanaId" | "ubicacionText" | "latitud" | "longitud" | "reportadoPorId" | "imagenes" | "estado" | "prioridad" | "visibleVecinos" | "createdAt" | "updatedAt", ExtArgs["result"]["incidente"]>
 export type IncidenteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.Incidente$loteArgs<ExtArgs>
+  manzana?: boolean | Prisma.Incidente$manzanaArgs<ExtArgs>
   reportadoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
 }
 export type IncidenteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.Incidente$loteArgs<ExtArgs>
+  manzana?: boolean | Prisma.Incidente$manzanaArgs<ExtArgs>
   reportadoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
 }
 export type IncidenteIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.Incidente$loteArgs<ExtArgs>
+  manzana?: boolean | Prisma.Incidente$manzanaArgs<ExtArgs>
   reportadoPor?: boolean | Prisma.UsuarioDefaultArgs<ExtArgs>
 }
 
@@ -1082,6 +1309,7 @@ export type $IncidentePayload<ExtArgs extends runtime.Types.Extensions.InternalA
   name: "Incidente"
   objects: {
     lote: Prisma.$LotePayload<ExtArgs> | null
+    manzana: Prisma.$ManzanaPayload<ExtArgs> | null
     reportadoPor: Prisma.$UsuarioPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1090,6 +1318,7 @@ export type $IncidentePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     descripcion: string
     fechaHora: Date
     loteId: number | null
+    manzanaId: number | null
     ubicacionText: string | null
     latitud: number | null
     longitud: number | null
@@ -1495,6 +1724,7 @@ readonly fields: IncidenteFieldRefs;
 export interface Prisma__IncidenteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   lote<T extends Prisma.Incidente$loteArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Incidente$loteArgs<ExtArgs>>): Prisma.Prisma__LoteClient<runtime.Types.Result.GetResult<Prisma.$LotePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  manzana<T extends Prisma.Incidente$manzanaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Incidente$manzanaArgs<ExtArgs>>): Prisma.Prisma__ManzanaClient<runtime.Types.Result.GetResult<Prisma.$ManzanaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   reportadoPor<T extends Prisma.UsuarioDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UsuarioDefaultArgs<ExtArgs>>): Prisma.Prisma__UsuarioClient<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1530,6 +1760,7 @@ export interface IncidenteFieldRefs {
   readonly descripcion: Prisma.FieldRef<"Incidente", 'String'>
   readonly fechaHora: Prisma.FieldRef<"Incidente", 'DateTime'>
   readonly loteId: Prisma.FieldRef<"Incidente", 'Int'>
+  readonly manzanaId: Prisma.FieldRef<"Incidente", 'Int'>
   readonly ubicacionText: Prisma.FieldRef<"Incidente", 'String'>
   readonly latitud: Prisma.FieldRef<"Incidente", 'Float'>
   readonly longitud: Prisma.FieldRef<"Incidente", 'Float'>
@@ -1952,6 +2183,25 @@ export type Incidente$loteArgs<ExtArgs extends runtime.Types.Extensions.Internal
    */
   include?: Prisma.LoteInclude<ExtArgs> | null
   where?: Prisma.LoteWhereInput
+}
+
+/**
+ * Incidente.manzana
+ */
+export type Incidente$manzanaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Manzana
+   */
+  select?: Prisma.ManzanaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Manzana
+   */
+  omit?: Prisma.ManzanaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ManzanaInclude<ExtArgs> | null
+  where?: Prisma.ManzanaWhereInput
 }
 
 /**

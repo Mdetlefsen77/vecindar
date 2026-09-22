@@ -312,6 +312,7 @@ export type UsuarioWhereInput = {
   invitadoPor?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
   invitados?: Prisma.UsuarioListRelationFilter
   codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
+  transicionesRealizadas?: Prisma.TransicionEstadoListRelationFilter
 }
 
 export type UsuarioOrderByWithRelationInput = {
@@ -345,6 +346,7 @@ export type UsuarioOrderByWithRelationInput = {
   invitadoPor?: Prisma.UsuarioOrderByWithRelationInput
   invitados?: Prisma.UsuarioOrderByRelationAggregateInput
   codigoInvitacion?: Prisma.CodigoInvitacionOrderByWithRelationInput
+  transicionesRealizadas?: Prisma.TransicionEstadoOrderByRelationAggregateInput
 }
 
 export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -381,6 +383,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   invitadoPor?: Prisma.XOR<Prisma.UsuarioNullableScalarRelationFilter, Prisma.UsuarioWhereInput> | null
   invitados?: Prisma.UsuarioListRelationFilter
   codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
+  transicionesRealizadas?: Prisma.TransicionEstadoListRelationFilter
 }, "id" | "email">
 
 export type UsuarioOrderByWithAggregationInput = {
@@ -453,6 +456,7 @@ export type UsuarioCreateInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateInput = {
@@ -484,6 +488,7 @@ export type UsuarioUncheckedCreateInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUpdateInput = {
@@ -514,6 +519,7 @@ export type UsuarioUpdateInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateInput = {
@@ -545,6 +551,7 @@ export type UsuarioUncheckedUpdateInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateManyInput = {
@@ -978,6 +985,20 @@ export type UsuarioUpdateOneRequiredWithoutCodigoInvitacionNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutCodigoInvitacionInput, Prisma.UsuarioUpdateWithoutCodigoInvitacionInput>, Prisma.UsuarioUncheckedUpdateWithoutCodigoInvitacionInput>
 }
 
+export type UsuarioCreateNestedOneWithoutTransicionesRealizadasInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutTransicionesRealizadasInput, Prisma.UsuarioUncheckedCreateWithoutTransicionesRealizadasInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutTransicionesRealizadasInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneRequiredWithoutTransicionesRealizadasNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutTransicionesRealizadasInput, Prisma.UsuarioUncheckedCreateWithoutTransicionesRealizadasInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutTransicionesRealizadasInput
+  upsert?: Prisma.UsuarioUpsertWithoutTransicionesRealizadasInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutTransicionesRealizadasInput, Prisma.UsuarioUpdateWithoutTransicionesRealizadasInput>, Prisma.UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput>
+}
+
 export type UsuarioCreateWithoutLoteInput = {
   email: string
   password: string
@@ -1005,6 +1026,7 @@ export type UsuarioCreateWithoutLoteInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutLoteInput = {
@@ -1035,6 +1057,7 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutLoteInput = {
@@ -1110,6 +1133,7 @@ export type UsuarioCreateWithoutInvitadosInput = {
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutInvitadosInput = {
@@ -1140,6 +1164,7 @@ export type UsuarioUncheckedCreateWithoutInvitadosInput = {
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutInvitadosInput = {
@@ -1174,6 +1199,7 @@ export type UsuarioCreateWithoutInvitadoPorInput = {
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
@@ -1204,6 +1230,7 @@ export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutInvitadoPorInput = {
@@ -1254,6 +1281,7 @@ export type UsuarioUpdateWithoutInvitadosInput = {
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
@@ -1284,6 +1312,7 @@ export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithWhereUniqueWithoutInvitadoPorInput = {
@@ -1329,6 +1358,7 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
@@ -1359,6 +1389,7 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutSuscripcionInput = {
@@ -1404,6 +1435,7 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
@@ -1434,6 +1466,7 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutPagosInput = {
@@ -1463,6 +1496,7 @@ export type UsuarioCreateWithoutPagosInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPagosInput = {
@@ -1493,6 +1527,7 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPagosInput = {
@@ -1527,6 +1562,7 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
@@ -1557,6 +1593,7 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPagosRegistradosInput = {
@@ -1602,6 +1639,7 @@ export type UsuarioUpdateWithoutPagosInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPagosInput = {
@@ -1632,6 +1670,7 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutPagosRegistradosInput = {
@@ -1672,6 +1711,7 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
@@ -1702,6 +1742,7 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutVistasSeccionesInput = {
@@ -1731,6 +1772,7 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
@@ -1761,6 +1803,7 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutVistasSeccionesInput = {
@@ -1806,6 +1849,7 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
@@ -1836,6 +1880,7 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutIncidentesInput = {
@@ -1865,6 +1910,7 @@ export type UsuarioCreateWithoutIncidentesInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutIncidentesInput = {
@@ -1895,6 +1941,7 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutIncidentesInput = {
@@ -1940,6 +1987,7 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
@@ -1970,6 +2018,7 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutAlertasPanicoInput = {
@@ -1999,6 +2048,7 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
@@ -2029,6 +2079,7 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAlertasPanicoInput = {
@@ -2063,6 +2114,7 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
@@ -2093,6 +2145,7 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAlertasAtendidasInput = {
@@ -2138,6 +2191,7 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
@@ -2168,6 +2222,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutAlertasAtendidasInput = {
@@ -2208,6 +2263,7 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
@@ -2238,6 +2294,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutComentariosAlertasInput = {
@@ -2267,6 +2324,7 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
@@ -2297,6 +2355,7 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutComentariosAlertasInput = {
@@ -2342,6 +2401,7 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
@@ -2372,6 +2432,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutPushSubscriptionsInput = {
@@ -2401,6 +2462,7 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
@@ -2431,6 +2493,7 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutPushSubscriptionsInput = {
@@ -2476,6 +2539,7 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
@@ -2506,6 +2570,7 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutRequerimientosInput = {
@@ -2535,6 +2600,7 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
@@ -2565,6 +2631,7 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutRequerimientosInput = {
@@ -2610,6 +2677,7 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
@@ -2640,6 +2708,7 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutComentariosReqInput = {
@@ -2669,6 +2738,7 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
@@ -2699,6 +2769,7 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutComentariosReqInput = {
@@ -2744,6 +2815,7 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
@@ -2774,6 +2846,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutMascotasPerdidasInput = {
@@ -2803,6 +2876,7 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
@@ -2833,6 +2907,7 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutMascotasPerdidasInput = {
@@ -2878,6 +2953,7 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
@@ -2908,6 +2984,7 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutCodigoInvitacionInput = {
@@ -2937,6 +3014,7 @@ export type UsuarioCreateWithoutCodigoInvitacionInput = {
   pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
   invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
@@ -2967,6 +3045,7 @@ export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
   pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
   pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutCodigoInvitacionInput = {
@@ -3012,6 +3091,7 @@ export type UsuarioUpdateWithoutCodigoInvitacionInput = {
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
@@ -3042,6 +3122,145 @@ export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
   pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutTransicionesRealizadasInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutTransicionesRealizadasInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutTransicionesRealizadasInput, Prisma.UsuarioUncheckedCreateWithoutTransicionesRealizadasInput>
+}
+
+export type UsuarioUpsertWithoutTransicionesRealizadasInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutTransicionesRealizadasInput, Prisma.UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutTransicionesRealizadasInput, Prisma.UsuarioUncheckedCreateWithoutTransicionesRealizadasInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutTransicionesRealizadasInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutTransicionesRealizadasInput, Prisma.UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput>
+}
+
+export type UsuarioUpdateWithoutTransicionesRealizadasInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateManyLoteInput = {
@@ -3087,6 +3306,7 @@ export type UsuarioUpdateWithoutLoteInput = {
   invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutLoteInput = {
@@ -3117,6 +3337,7 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
@@ -3178,6 +3399,7 @@ export type UsuarioUpdateWithoutInvitadoPorInput = {
   pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
@@ -3208,6 +3430,7 @@ export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
   pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateManyWithoutInvitadoPorInput = {
@@ -3244,6 +3467,7 @@ export type UsuarioCountOutputType = {
   pagos: number
   pagosRegistrados: number
   invitados: number
+  transicionesRealizadas: number
 }
 
 export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3259,6 +3483,7 @@ export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   pagos?: boolean | UsuarioCountOutputTypeCountPagosArgs
   pagosRegistrados?: boolean | UsuarioCountOutputTypeCountPagosRegistradosArgs
   invitados?: boolean | UsuarioCountOutputTypeCountInvitadosArgs
+  transicionesRealizadas?: boolean | UsuarioCountOutputTypeCountTransicionesRealizadasArgs
 }
 
 /**
@@ -3355,6 +3580,13 @@ export type UsuarioCountOutputTypeCountInvitadosArgs<ExtArgs extends runtime.Typ
   where?: Prisma.UsuarioWhereInput
 }
 
+/**
+ * UsuarioCountOutputType without action
+ */
+export type UsuarioCountOutputTypeCountTransicionesRealizadasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransicionEstadoWhereInput
+}
+
 
 export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3387,6 +3619,7 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
   invitados?: boolean | Prisma.Usuario$invitadosArgs<ExtArgs>
   codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
+  transicionesRealizadas?: boolean | Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["usuario"]>
 
@@ -3463,6 +3696,7 @@ export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   invitadoPor?: boolean | Prisma.Usuario$invitadoPorArgs<ExtArgs>
   invitados?: boolean | Prisma.Usuario$invitadosArgs<ExtArgs>
   codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
+  transicionesRealizadas?: boolean | Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3493,6 +3727,7 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     invitadoPor: Prisma.$UsuarioPayload<ExtArgs> | null
     invitados: Prisma.$UsuarioPayload<ExtArgs>[]
     codigoInvitacion: Prisma.$CodigoInvitacionPayload<ExtArgs> | null
+    transicionesRealizadas: Prisma.$TransicionEstadoPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -3919,6 +4154,7 @@ export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends runtime.
   invitadoPor<T extends Prisma.Usuario$invitadoPorArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$invitadoPorArgs<ExtArgs>>): Prisma.Prisma__UsuarioClient<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   invitados<T extends Prisma.Usuario$invitadosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$invitadosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   codigoInvitacion<T extends Prisma.Usuario$codigoInvitacionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$codigoInvitacionArgs<ExtArgs>>): Prisma.Prisma__CodigoInvitacionClient<runtime.Types.Result.GetResult<Prisma.$CodigoInvitacionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  transicionesRealizadas<T extends Prisma.Usuario$transicionesRealizadasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransicionEstadoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4700,6 +4936,30 @@ export type Usuario$codigoInvitacionArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.CodigoInvitacionInclude<ExtArgs> | null
   where?: Prisma.CodigoInvitacionWhereInput
+}
+
+/**
+ * Usuario.transicionesRealizadas
+ */
+export type Usuario$transicionesRealizadasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransicionEstado
+   */
+  select?: Prisma.TransicionEstadoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TransicionEstado
+   */
+  omit?: Prisma.TransicionEstadoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransicionEstadoInclude<ExtArgs> | null
+  where?: Prisma.TransicionEstadoWhereInput
+  orderBy?: Prisma.TransicionEstadoOrderByWithRelationInput | Prisma.TransicionEstadoOrderByWithRelationInput[]
+  cursor?: Prisma.TransicionEstadoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransicionEstadoScalarFieldEnum | Prisma.TransicionEstadoScalarFieldEnum[]
 }
 
 /**

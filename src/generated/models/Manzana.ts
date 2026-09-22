@@ -217,6 +217,7 @@ export type ManzanaWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Manzana"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Manzana"> | Date | string
   lotes?: Prisma.LoteListRelationFilter
+  incidentes?: Prisma.IncidenteListRelationFilter
 }
 
 export type ManzanaOrderByWithRelationInput = {
@@ -226,6 +227,7 @@ export type ManzanaOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   lotes?: Prisma.LoteOrderByRelationAggregateInput
+  incidentes?: Prisma.IncidenteOrderByRelationAggregateInput
 }
 
 export type ManzanaWhereUniqueInput = Prisma.AtLeast<{
@@ -238,6 +240,7 @@ export type ManzanaWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"Manzana"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Manzana"> | Date | string
   lotes?: Prisma.LoteListRelationFilter
+  incidentes?: Prisma.IncidenteListRelationFilter
 }, "id">
 
 export type ManzanaOrderByWithAggregationInput = {
@@ -270,6 +273,7 @@ export type ManzanaCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lotes?: Prisma.LoteCreateNestedManyWithoutManzanaInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutManzanaInput
 }
 
 export type ManzanaUncheckedCreateInput = {
@@ -279,6 +283,7 @@ export type ManzanaUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   lotes?: Prisma.LoteUncheckedCreateNestedManyWithoutManzanaInput
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutManzanaInput
 }
 
 export type ManzanaUpdateInput = {
@@ -287,6 +292,7 @@ export type ManzanaUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lotes?: Prisma.LoteUpdateManyWithoutManzanaNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutManzanaNestedInput
 }
 
 export type ManzanaUncheckedUpdateInput = {
@@ -296,6 +302,7 @@ export type ManzanaUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   lotes?: Prisma.LoteUncheckedUpdateManyWithoutManzanaNestedInput
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutManzanaNestedInput
 }
 
 export type ManzanaCreateManyInput = {
@@ -358,6 +365,11 @@ export type ManzanaScalarRelationFilter = {
   isNot?: Prisma.ManzanaWhereInput
 }
 
+export type ManzanaNullableScalarRelationFilter = {
+  is?: Prisma.ManzanaWhereInput | null
+  isNot?: Prisma.ManzanaWhereInput | null
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -388,11 +400,28 @@ export type ManzanaUpdateOneRequiredWithoutLotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ManzanaUpdateToOneWithWhereWithoutLotesInput, Prisma.ManzanaUpdateWithoutLotesInput>, Prisma.ManzanaUncheckedUpdateWithoutLotesInput>
 }
 
+export type ManzanaCreateNestedOneWithoutIncidentesInput = {
+  create?: Prisma.XOR<Prisma.ManzanaCreateWithoutIncidentesInput, Prisma.ManzanaUncheckedCreateWithoutIncidentesInput>
+  connectOrCreate?: Prisma.ManzanaCreateOrConnectWithoutIncidentesInput
+  connect?: Prisma.ManzanaWhereUniqueInput
+}
+
+export type ManzanaUpdateOneWithoutIncidentesNestedInput = {
+  create?: Prisma.XOR<Prisma.ManzanaCreateWithoutIncidentesInput, Prisma.ManzanaUncheckedCreateWithoutIncidentesInput>
+  connectOrCreate?: Prisma.ManzanaCreateOrConnectWithoutIncidentesInput
+  upsert?: Prisma.ManzanaUpsertWithoutIncidentesInput
+  disconnect?: Prisma.ManzanaWhereInput | boolean
+  delete?: Prisma.ManzanaWhereInput | boolean
+  connect?: Prisma.ManzanaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ManzanaUpdateToOneWithWhereWithoutIncidentesInput, Prisma.ManzanaUpdateWithoutIncidentesInput>, Prisma.ManzanaUncheckedUpdateWithoutIncidentesInput>
+}
+
 export type ManzanaCreateWithoutLotesInput = {
   numero: string
   zona: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutManzanaInput
 }
 
 export type ManzanaUncheckedCreateWithoutLotesInput = {
@@ -401,6 +430,7 @@ export type ManzanaUncheckedCreateWithoutLotesInput = {
   zona: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutManzanaInput
 }
 
 export type ManzanaCreateOrConnectWithoutLotesInput = {
@@ -424,6 +454,7 @@ export type ManzanaUpdateWithoutLotesInput = {
   zona?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUpdateManyWithoutManzanaNestedInput
 }
 
 export type ManzanaUncheckedUpdateWithoutLotesInput = {
@@ -432,6 +463,57 @@ export type ManzanaUncheckedUpdateWithoutLotesInput = {
   zona?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutManzanaNestedInput
+}
+
+export type ManzanaCreateWithoutIncidentesInput = {
+  numero: string
+  zona: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lotes?: Prisma.LoteCreateNestedManyWithoutManzanaInput
+}
+
+export type ManzanaUncheckedCreateWithoutIncidentesInput = {
+  id?: number
+  numero: string
+  zona: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lotes?: Prisma.LoteUncheckedCreateNestedManyWithoutManzanaInput
+}
+
+export type ManzanaCreateOrConnectWithoutIncidentesInput = {
+  where: Prisma.ManzanaWhereUniqueInput
+  create: Prisma.XOR<Prisma.ManzanaCreateWithoutIncidentesInput, Prisma.ManzanaUncheckedCreateWithoutIncidentesInput>
+}
+
+export type ManzanaUpsertWithoutIncidentesInput = {
+  update: Prisma.XOR<Prisma.ManzanaUpdateWithoutIncidentesInput, Prisma.ManzanaUncheckedUpdateWithoutIncidentesInput>
+  create: Prisma.XOR<Prisma.ManzanaCreateWithoutIncidentesInput, Prisma.ManzanaUncheckedCreateWithoutIncidentesInput>
+  where?: Prisma.ManzanaWhereInput
+}
+
+export type ManzanaUpdateToOneWithWhereWithoutIncidentesInput = {
+  where?: Prisma.ManzanaWhereInput
+  data: Prisma.XOR<Prisma.ManzanaUpdateWithoutIncidentesInput, Prisma.ManzanaUncheckedUpdateWithoutIncidentesInput>
+}
+
+export type ManzanaUpdateWithoutIncidentesInput = {
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  zona?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lotes?: Prisma.LoteUpdateManyWithoutManzanaNestedInput
+}
+
+export type ManzanaUncheckedUpdateWithoutIncidentesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  numero?: Prisma.StringFieldUpdateOperationsInput | string
+  zona?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lotes?: Prisma.LoteUncheckedUpdateManyWithoutManzanaNestedInput
 }
 
 
@@ -441,10 +523,12 @@ export type ManzanaUncheckedUpdateWithoutLotesInput = {
 
 export type ManzanaCountOutputType = {
   lotes: number
+  incidentes: number
 }
 
 export type ManzanaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lotes?: boolean | ManzanaCountOutputTypeCountLotesArgs
+  incidentes?: boolean | ManzanaCountOutputTypeCountIncidentesArgs
 }
 
 /**
@@ -464,6 +548,13 @@ export type ManzanaCountOutputTypeCountLotesArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.LoteWhereInput
 }
 
+/**
+ * ManzanaCountOutputType without action
+ */
+export type ManzanaCountOutputTypeCountIncidentesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.IncidenteWhereInput
+}
+
 
 export type ManzanaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -472,6 +563,7 @@ export type ManzanaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   createdAt?: boolean
   updatedAt?: boolean
   lotes?: boolean | Prisma.Manzana$lotesArgs<ExtArgs>
+  incidentes?: boolean | Prisma.Manzana$incidentesArgs<ExtArgs>
   _count?: boolean | Prisma.ManzanaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["manzana"]>
 
@@ -502,6 +594,7 @@ export type ManzanaSelectScalar = {
 export type ManzanaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "numero" | "zona" | "createdAt" | "updatedAt", ExtArgs["result"]["manzana"]>
 export type ManzanaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lotes?: boolean | Prisma.Manzana$lotesArgs<ExtArgs>
+  incidentes?: boolean | Prisma.Manzana$incidentesArgs<ExtArgs>
   _count?: boolean | Prisma.ManzanaCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ManzanaIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -511,6 +604,7 @@ export type $ManzanaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   name: "Manzana"
   objects: {
     lotes: Prisma.$LotePayload<ExtArgs>[]
+    incidentes: Prisma.$IncidentePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -913,6 +1007,7 @@ readonly fields: ManzanaFieldRefs;
 export interface Prisma__ManzanaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   lotes<T extends Prisma.Manzana$lotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Manzana$lotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  incidentes<T extends Prisma.Manzana$incidentesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Manzana$incidentesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$IncidentePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1356,6 +1451,30 @@ export type Manzana$lotesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.LoteScalarFieldEnum | Prisma.LoteScalarFieldEnum[]
+}
+
+/**
+ * Manzana.incidentes
+ */
+export type Manzana$incidentesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Incidente
+   */
+  select?: Prisma.IncidenteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Incidente
+   */
+  omit?: Prisma.IncidenteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.IncidenteInclude<ExtArgs> | null
+  where?: Prisma.IncidenteWhereInput
+  orderBy?: Prisma.IncidenteOrderByWithRelationInput | Prisma.IncidenteOrderByWithRelationInput[]
+  cursor?: Prisma.IncidenteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.IncidenteScalarFieldEnum | Prisma.IncidenteScalarFieldEnum[]
 }
 
 /**

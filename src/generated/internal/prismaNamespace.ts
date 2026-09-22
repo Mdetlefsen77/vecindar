@@ -399,7 +399,8 @@ export const ModelName = {
   Requerimiento: 'Requerimiento',
   ComentarioReq: 'ComentarioReq',
   MascotaPerdida: 'MascotaPerdida',
-  CodigoInvitacion: 'CodigoInvitacion'
+  CodigoInvitacion: 'CodigoInvitacion',
+  TransicionEstado: 'TransicionEstado'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -415,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1603,6 +1604,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    TransicionEstado: {
+      payload: Prisma.$TransicionEstadoPayload<ExtArgs>
+      fields: Prisma.TransicionEstadoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TransicionEstadoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TransicionEstadoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        findFirst: {
+          args: Prisma.TransicionEstadoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TransicionEstadoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        findMany: {
+          args: Prisma.TransicionEstadoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>[]
+        }
+        create: {
+          args: Prisma.TransicionEstadoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        createMany: {
+          args: Prisma.TransicionEstadoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TransicionEstadoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>[]
+        }
+        delete: {
+          args: Prisma.TransicionEstadoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        update: {
+          args: Prisma.TransicionEstadoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        deleteMany: {
+          args: Prisma.TransicionEstadoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TransicionEstadoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TransicionEstadoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>[]
+        }
+        upsert: {
+          args: Prisma.TransicionEstadoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TransicionEstadoPayload>
+        }
+        aggregate: {
+          args: Prisma.TransicionEstadoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTransicionEstado>
+        }
+        groupBy: {
+          args: Prisma.TransicionEstadoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransicionEstadoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TransicionEstadoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TransicionEstadoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1750,6 +1825,7 @@ export const IncidenteScalarFieldEnum = {
   descripcion: 'descripcion',
   fechaHora: 'fechaHora',
   loteId: 'loteId',
+  manzanaId: 'manzanaId',
   ubicacionText: 'ubicacionText',
   latitud: 'latitud',
   longitud: 'longitud',
@@ -1869,6 +1945,19 @@ export const CodigoInvitacionScalarFieldEnum = {
 } as const
 
 export type CodigoInvitacionScalarFieldEnum = (typeof CodigoInvitacionScalarFieldEnum)[keyof typeof CodigoInvitacionScalarFieldEnum]
+
+
+export const TransicionEstadoScalarFieldEnum = {
+  id: 'id',
+  entidadTipo: 'entidadTipo',
+  entidadId: 'entidadId',
+  estadoAnterior: 'estadoAnterior',
+  estadoNuevo: 'estadoNuevo',
+  usuarioId: 'usuarioId',
+  ocurridoAt: 'ocurridoAt'
+} as const
+
+export type TransicionEstadoScalarFieldEnum = (typeof TransicionEstadoScalarFieldEnum)[keyof typeof TransicionEstadoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2103,6 +2192,20 @@ export type EnumTipoAlertaMascotaFieldRefInput<$PrismaModel> = FieldRefInputType
 export type ListEnumTipoAlertaMascotaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoAlertaMascota[]'>
     
 
+
+/**
+ * Reference to a field of type 'EntidadTransicion'
+ */
+export type EnumEntidadTransicionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EntidadTransicion'>
+    
+
+
+/**
+ * Reference to a field of type 'EntidadTransicion[]'
+ */
+export type ListEnumEntidadTransicionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EntidadTransicion[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2214,6 +2317,7 @@ export type GlobalOmitConfig = {
   comentarioReq?: Prisma.ComentarioReqOmit
   mascotaPerdida?: Prisma.MascotaPerdidaOmit
   codigoInvitacion?: Prisma.CodigoInvitacionOmit
+  transicionEstado?: Prisma.TransicionEstadoOmit
 }
 
 /* Types for Logging */

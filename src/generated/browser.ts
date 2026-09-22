@@ -97,3 +97,8 @@ export type MascotaPerdida = Prisma.MascotaPerdidaModel
  * 
  */
 export type CodigoInvitacion = Prisma.CodigoInvitacionModel
+/**
+ * Model TransicionEstado
+ * 
+ */
+export type TransicionEstado = Prisma.TransicionEstadoModel

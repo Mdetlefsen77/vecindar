@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
-import { requireSession, requireRole, parseId } from "@/lib/api/guard";
+import { requireSession, requireRole, getUserId, parseId } from "@/lib/api/guard";
 import { GESTORES_INCIDENTES } from "@/lib/permisos";
 import { actualizarIncidenteSchema } from "@/lib/validation/incidentes";
+import { registrarTransicion } from "@/lib/reportes/transiciones";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -86,19 +87,34 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   const existe = await prisma.incidente.findUnique({
     where: { id: numId },
-    select: { id: true },
+    select: { id: true, estado: true },
   });
   if (!existe) {
     return NextResponse.json({ error: "No encontrado" }, { status: 404 });
   }
 
-  const incidente = await prisma.incidente.update({
-    where: { id: numId },
-    data: {
-      ...(estado !== undefined ? { estado } : {}),
-      ...(visibleVecinos !== undefined ? { visibleVecinos } : {}),
-      ...(prioridad !== undefined ? { prioridad } : {}),
-    },
+  const incidente = await prisma.$transaction(async (tx) => {
+    const actualizado = await tx.incidente.update({
+      where: { id: numId },
+      data: {
+        ...(estado !== undefined ? { estado } : {}),
+        ...(visibleVecinos !== undefined ? { visibleVecinos } : {}),
+        ...(prioridad !== undefined ? { prioridad } : {}),
+      },
+    });
+    if (estado !== undefined) {
+      await registrarTransicion(
+        {
+          entidadTipo: "INCIDENTE",
+          entidadId: numId,
+          estadoAnterior: existe.estado,
+          estadoNuevo: estado,
+          usuarioId: getUserId(session),
+        },
+        tx,
+      );
+    }
+    return actualizado;
   });
 
   return NextResponse.json(incidente);

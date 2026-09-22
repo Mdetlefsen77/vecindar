@@ -426,6 +426,23 @@ export type EnumTipoAlertaMascotaWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumTipoAlertaMascotaFilter<$PrismaModel>
 }
 
+export type EnumEntidadTransicionFilter<$PrismaModel = never> = {
+  equals?: $Enums.EntidadTransicion | Prisma.EnumEntidadTransicionFieldRefInput<$PrismaModel>
+  in?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEntidadTransicionFilter<$PrismaModel> | $Enums.EntidadTransicion
+}
+
+export type EnumEntidadTransicionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EntidadTransicion | Prisma.EnumEntidadTransicionFieldRefInput<$PrismaModel>
+  in?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEntidadTransicionWithAggregatesFilter<$PrismaModel> | $Enums.EntidadTransicion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEntidadTransicionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEntidadTransicionFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -827,6 +844,23 @@ export type NestedEnumTipoAlertaMascotaWithAggregatesFilter<$PrismaModel = never
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumTipoAlertaMascotaFilter<$PrismaModel>
   _max?: Prisma.NestedEnumTipoAlertaMascotaFilter<$PrismaModel>
+}
+
+export type NestedEnumEntidadTransicionFilter<$PrismaModel = never> = {
+  equals?: $Enums.EntidadTransicion | Prisma.EnumEntidadTransicionFieldRefInput<$PrismaModel>
+  in?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEntidadTransicionFilter<$PrismaModel> | $Enums.EntidadTransicion
+}
+
+export type NestedEnumEntidadTransicionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EntidadTransicion | Prisma.EnumEntidadTransicionFieldRefInput<$PrismaModel>
+  in?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EntidadTransicion[] | Prisma.ListEnumEntidadTransicionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEntidadTransicionWithAggregatesFilter<$PrismaModel> | $Enums.EntidadTransicion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEntidadTransicionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEntidadTransicionFilter<$PrismaModel>
 }
 
 
