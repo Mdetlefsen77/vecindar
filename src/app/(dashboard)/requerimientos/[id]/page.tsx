@@ -168,7 +168,7 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
           </div>
         )}
 
-        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+        <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
           <span>
             {nombreCompleto(r.usuario)}
             {loteInfo && ` · ${loteInfo}`}
@@ -217,7 +217,7 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
         </h2>
 
         {r.comentarios.length === 0 ? (
-          <p className="text-sm text-gray-400 text-center py-6">
+          <p className="text-sm text-gray-500 text-center py-6">
             Aún no hay comentarios.
           </p>
         ) : (
@@ -242,7 +242,7 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
                         Admin
                       </span>
                     )}
-                    <span className="ml-auto text-xs text-gray-400">
+                    <span className="ml-auto text-xs text-gray-500">
                       {new Date(c.createdAt).toLocaleDateString("es-AR", {
                         day: "numeric",
                         month: "short",

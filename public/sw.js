@@ -1,7 +1,12 @@
 // Service Worker — Vecindar
 // Necesario para que el sitio sea instalable como PWA (Android/Chrome) y
-// para recibir Web Push. Maneja eventos push, clicks de notificaciones y
-// deja pasar los fetch sin cachear (sin soporte offline por ahora).
+// para recibir Web Push. Maneja eventos push y clicks de notificaciones.
+//
+// A propósito NO tiene listener de "fetch": uno que solo reenvía
+// (`respondWith(fetch(req))`) no cachea nada y obliga a que cada request —
+// navegaciones, API, assets — pase por el SW, que en celular muchas veces
+// tiene que arrancar primero. Sin listener, el navegador va directo a la
+// red. Chrome ya no exige un fetch handler para ofrecer la instalación.
 
 self.addEventListener("install", () => {
   self.skipWaiting();
@@ -9,10 +14,6 @@ self.addEventListener("install", () => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
-});
-
-self.addEventListener("fetch", (event) => {
-  event.respondWith(fetch(event.request));
 });
 
 self.addEventListener("push", (event) => {

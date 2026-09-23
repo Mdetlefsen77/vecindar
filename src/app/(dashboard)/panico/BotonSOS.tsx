@@ -229,7 +229,7 @@ export default function BotonSOS({ alertaActivaInicial }: Props) {
         </div>
 
         {/* Cuándo se envió */}
-        <p className="text-xs text-gray-400">
+        <p className="text-xs text-gray-500">
           Enviada a las{" "}
           {new Date(alerta.createdAt).toLocaleTimeString("es-AR", {
             hour: "2-digit",
@@ -335,7 +335,7 @@ export default function BotonSOS({ alertaActivaInicial }: Props) {
       )}
 
       {!sending && !holding && (
-        <p className="text-gray-400 text-xs">
+        <p className="text-gray-500 text-xs">
           Mantené presionado 2 segundos para activar
         </p>
       )}

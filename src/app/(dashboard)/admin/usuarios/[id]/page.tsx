@@ -118,7 +118,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-gray-400">
+      <div className="flex items-center gap-2 text-sm text-gray-500">
         <Link href="/admin" className="hover:text-gray-600">
           Admin
         </Link>
@@ -142,17 +142,17 @@ export default async function DetalleUsuarioPage({ params }: Params) {
           )}
         </div>
         <div className="text-right space-y-1 shrink-0">
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Registrado el{" "}
             {new Date(usuario.createdAt).toLocaleDateString("es-AR")}
           </p>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             {enLinea(usuario.ultimaActividadAt) && (
               <span className="inline-block w-2 h-2 rounded-full bg-green-500 mr-1 align-middle" />
             )}
             Última actividad: {tiempoRelativo(usuario.ultimaActividadAt)}
           </p>
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Último login:{" "}
             {usuario.ultimoLoginAt
               ? new Date(usuario.ultimoLoginAt).toLocaleString("es-AR")
@@ -168,7 +168,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
 
       {/* Origen del registro — de dónde llegó (invitación / link de WhatsApp) */}
       <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm space-y-1">
-        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+        <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
           Cómo llegó a Vecindar
         </p>
         {usuario.invitadoPor && (
@@ -192,7 +192,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
           <p className="text-gray-700">Registro directo, sin link.</p>
         )}
         {usuario.pruebaIniciadaAt && (
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Tuvo prueba desde el {fmtFechaHora(usuario.pruebaIniciadaAt)}
             {prueba === "definitivo" && " · ya es definitivo"}
           </p>
@@ -202,22 +202,22 @@ export default async function DetalleUsuarioPage({ params }: Params) {
       {/* Info lote */}
       <div className="bg-gray-50 rounded-xl p-4 grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
         <div>
-          <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+          <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
             Manzana
           </p>
           <p className="font-semibold mt-0.5">
             MZ {usuario.lote.manzana.numero}
           </p>
-          <p className="text-xs text-gray-400">{usuario.lote.manzana.zona}</p>
+          <p className="text-xs text-gray-500">{usuario.lote.manzana.zona}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+          <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
             Lote
           </p>
           <p className="font-semibold mt-0.5">#{usuario.lote.numero}</p>
         </div>
         <div>
-          <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+          <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
             Calle
           </p>
           <p className="font-semibold mt-0.5 text-xs">
@@ -226,7 +226,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
         </div>
         {usuario.lote.area && (
           <div>
-            <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
               Área
             </p>
             <p className="font-semibold mt-0.5">{usuario.lote.area} m²</p>
@@ -317,7 +317,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
               ))}
             </ul>
           ) : (
-            <p className="text-xs text-gray-400">Sin pagos registrados.</p>
+            <p className="text-xs text-gray-500">Sin pagos registrados.</p>
           )}
         </div>
       </div>
@@ -357,12 +357,12 @@ export default async function DetalleUsuarioPage({ params }: Params) {
                   <p className="text-sm font-medium text-gray-900 truncate">
                     {inc.tipo.replace("_", " ")}
                   </p>
-                  <p className="text-xs text-gray-400 truncate">
+                  <p className="text-xs text-gray-500 truncate">
                     {inc.descripcion}
                   </p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     {new Date(inc.fechaHora).toLocaleDateString("es-AR")}
                   </p>
                   <span
@@ -401,7 +401,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
                   <p className="text-sm font-medium text-gray-900 truncate">
                     {req.titulo}
                   </p>
-                  <p className="text-xs text-gray-400">{req.categoria}</p>
+                  <p className="text-xs text-gray-500">{req.categoria}</p>
                 </div>
                 <span
                   className={`text-xs px-2 py-0.5 rounded-full font-medium shrink-0 ${

@@ -20,7 +20,9 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Monoespaciada del sistema: se usa en 3 lugares (lotes, CBU) y no
+     justifica descargar una fuente web en cada pantalla. */
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --color-app-danger: var(--color-danger);
   --color-app-warning: var(--color-warning);
   --color-app-info: var(--color-info);

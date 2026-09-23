@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { OSM_TILE_URL } from "@/lib/barrio/constantes";
 import ManzanasLayer from "./ManzanasLayer";
 import LotesLayer, { type EstadoLote } from "./LotesLayer";
 import IncidentesLayer, { type IncidentePin } from "./IncidentesLayer";
@@ -105,7 +106,7 @@ export default function MapView({
       maxZoom: BARRIO_ZOOM_MAX,
     }).setView(BARRIO_CENTER, BARRIO_ZOOM);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer(OSM_TILE_URL, {
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
       maxZoom: BARRIO_ZOOM_MAX,

@@ -57,7 +57,7 @@ export default function NuevaMascotaPage() {
       <div>
         <button
           onClick={() => router.back()}
-          className="text-sm text-gray-400 hover:text-gray-600 mb-2"
+          className="text-sm text-gray-500 hover:text-gray-600 mb-2"
         >
           ← Volver
         </button>
@@ -109,7 +109,7 @@ export default function NuevaMascotaPage() {
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Nombre de la mascota{" "}
-            <span className="text-gray-400 font-normal">(opcional)</span>
+            <span className="text-gray-500 font-normal">(opcional)</span>
           </label>
           <input
             type="text"

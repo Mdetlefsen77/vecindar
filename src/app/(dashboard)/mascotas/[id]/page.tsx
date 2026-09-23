@@ -56,7 +56,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
       {/* Breadcrumb */}
       <Link
         href="/mascotas"
-        className="text-sm text-gray-400 hover:text-gray-600"
+        className="text-sm text-gray-500 hover:text-gray-600"
       >
         ← Mascotas
       </Link>
@@ -102,7 +102,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
                 ? "Sin nombre"
                 : "Mascota encontrada")}
           </h1>
-          <p className="text-sm text-gray-400 mt-0.5">
+          <p className="text-sm text-gray-500 mt-0.5">
             Publicado el{" "}
             {new Date(mascota.createdAt).toLocaleDateString("es-AR", {
               day: "numeric",
@@ -114,7 +114,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
 
         {/* Descripción */}
         <div className="bg-gray-50 rounded-xl p-4">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
+          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
             Descripción
           </p>
           <p className="text-sm text-gray-800 whitespace-pre-line">
@@ -126,7 +126,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
         <div className="flex items-start gap-2 p-4 rounded-xl bg-gray-50">
           <span className="text-xl">📍</span>
           <div>
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+            <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
               {mascota.tipo === "PERDIDA"
                 ? "Última vez vista en"
                 : "Encontrada en"}
@@ -157,7 +157,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
             <p className="text-sm font-medium text-gray-900">
               {nombreCompleto(mascota.usuario)}
             </p>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-500">
               MZ {mascota.usuario.lote.manzana.numero} – Lote{" "}
               {mascota.usuario.lote.numero}
             </p>
@@ -171,7 +171,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
 
         {/* Fecha resolución */}
         {mascota.resueltaAt && (
-          <p className="text-xs text-center text-gray-400">
+          <p className="text-xs text-center text-gray-500">
             Resuelta el{" "}
             {new Date(mascota.resueltaAt).toLocaleDateString("es-AR", {
               day: "numeric",

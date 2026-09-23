@@ -216,7 +216,7 @@ export default async function PanicoPage() {
                       />
                       {badge.label}
                     </span>
-                    <p className="text-xs text-gray-400 mt-1">
+                    <p className="text-xs text-gray-500 mt-1">
                       hace{" "}
                       {tiempoTranscurrido === 0
                         ? "menos de 1 min"
@@ -283,14 +283,14 @@ export default async function PanicoPage() {
                   <p className="text-sm font-medium text-gray-900">
                     {nombreCompleto(a.usuario)}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     MZ {a.usuario.lote.manzana.numero} – Lote{" "}
                     {a.usuario.lote.numero}
                     {a.atendioPor &&
                       ` · Atendida por ${nombreCompleto(a.atendioPor)}`}
                   </p>
                 </div>
-                <p className="text-xs text-gray-400 shrink-0">
+                <p className="text-xs text-gray-500 shrink-0">
                   {a.cerradoAt
                     ? new Date(a.cerradoAt).toLocaleDateString("es-AR", {
                         day: "numeric",

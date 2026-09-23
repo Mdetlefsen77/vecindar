@@ -68,7 +68,7 @@ export default function ArchivarReporteForm({
         <button
           onClick={() => archivar(true)}
           disabled={cargando}
-          className="text-xs text-gray-400 hover:text-gray-600 underline disabled:opacity-50"
+          className="text-xs text-gray-500 hover:text-gray-600 underline disabled:opacity-50"
         >
           {cargando ? "Generando…" : "Generar de nuevo (número nuevo)"}
         </button>

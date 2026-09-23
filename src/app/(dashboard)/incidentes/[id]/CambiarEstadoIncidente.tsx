@@ -127,7 +127,7 @@ export default function CambiarEstadoIncidente({
             <p className="text-sm font-medium text-gray-700">
               Visible para vecinos
             </p>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-gray-500">
               Si está desactivado, solo lo ve administración y seguridad
             </p>
           </div>

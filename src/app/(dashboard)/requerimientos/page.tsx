@@ -162,7 +162,7 @@ export default async function RequerimientosPage({
 
       {/* Lista */}
       {requerimientos.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-gray-500">
           <svg
             className="w-12 h-12 mx-auto mb-3 opacity-40"
             fill="none"

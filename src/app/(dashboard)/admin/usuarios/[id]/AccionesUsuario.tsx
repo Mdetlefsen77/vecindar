@@ -104,7 +104,7 @@ export default function AccionesUsuario({
           )}
         </p>
         {verificado && estadoPrueba !== "definitivo" && (
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             Pasa a definitivo solo cuando se registra su primer pago.
           </p>
         )}
@@ -145,7 +145,7 @@ export default function AccionesUsuario({
           )}
         </div>
         {esUnoMismo && (
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             No podés modificar tu propio acceso.
           </p>
         )}
@@ -173,7 +173,7 @@ export default function AccionesUsuario({
           ))}
         </div>
         {esUnoMismo && (
-          <p className="text-xs text-gray-400">
+          <p className="text-xs text-gray-500">
             No podés cambiar tu propio rol.
           </p>
         )}
