@@ -15,6 +15,7 @@ import {
   registrarConversion,
   COOKIE_INVITACION,
 } from "@/lib/crecimiento/invitaciones";
+import { COOKIE_ORIGEN_WHATSAPP } from "@/lib/notificaciones-externas/links";
 
 // Máximo de cuentas de usuario por lote (ej: madre y padre en la misma casa)
 const MAX_USUARIOS_POR_LOTE = 2;
@@ -128,6 +129,11 @@ export async function POST(req: NextRequest) {
     const codigoCookie = req.cookies.get(COOKIE_INVITACION)?.value;
     const invitacion = codigoCookie ? await resolverCodigo(codigoCookie) : null;
 
+    // Atribución de origen (docs/proposal-whatsapp-bridge.md, tarea 5.2) —
+    // cookie que dejó /r/[codigo]/ir si el registro empezó desde un link
+    // compartido hacia un canal externo. No bloquea nada si no está.
+    const origenWhatsapp = req.cookies.get(COOKIE_ORIGEN_WHATSAPP)?.value === "1";
+
     // El límite de cuentas por lote ("madre y padre") no es un constraint de
     // la base, así que dos registros simultáneos para el último lugar podrían
     // pasar los dos el chequeo. Un advisory lock por `loteId` serializa el
@@ -161,6 +167,7 @@ export async function POST(req: NextRequest) {
             verificado: false,
             rol: "VECINO",
             ...(invitacion ? { invitadoPorId: invitacion.usuarioId } : {}),
+            ...(origenWhatsapp ? { origenRegistro: "WHATSAPP" } : {}),
           },
           select: {
             id: true,

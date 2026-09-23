@@ -228,6 +228,11 @@ export default async function AdminPage() {
               icon: "👥",
             },
             { label: "Cobranza", href: "/admin/cobranza", icon: "💰" },
+            {
+              label: "Puente WhatsApp",
+              href: "/admin/notificaciones-externas",
+              icon: "📤",
+            },
             { label: "Ver incidentes", href: "/incidentes", icon: "🔍" },
             { label: "Requerimientos", href: "/requerimientos", icon: "📋" },
             { label: "Mapa del barrio", href: "/mapa", icon: "🗺️" },
