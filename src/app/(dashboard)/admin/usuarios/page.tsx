@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
 import { tiempoRelativo, enLinea } from "@/lib/fechas";
+import { estadoPrueba } from "@/lib/prueba";
 import Link from "next/link";
 import { Suspense } from "react";
 import UsuariosFiltros from "./UsuariosFiltros";
@@ -89,6 +90,9 @@ export default async function AdminUsuariosPage({
       telefono: true,
       rol: true,
       verificado: true,
+      pruebaHasta: true,
+      origenRegistro: true,
+      invitadoPor: { select: { nombre: true, apellido: true } },
       createdAt: true,
       ultimoLoginAt: true,
       ultimaActividadAt: true,
@@ -154,6 +158,7 @@ export default async function AdminUsuariosPage({
           <div className="divide-y divide-gray-100">
             {usuarios.map((u) => {
               const rol = ROL_CONFIG[u.rol];
+              const prueba = estadoPrueba(u.pruebaHasta);
               return (
                 <Link
                   key={u.id}
@@ -184,6 +189,13 @@ export default async function AdminUsuariosPage({
                     <p className="text-xs text-gray-400 mt-0.5 sm:hidden">
                       Última actividad: {tiempoRelativo(u.ultimaActividadAt)}
                     </p>
+                    {(u.invitadoPor || u.origenRegistro === "WHATSAPP") && (
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {u.invitadoPor
+                          ? `🤝 Invitado por ${nombreCompleto(u.invitadoPor)}`
+                          : "💬 Llegó por link de WhatsApp"}
+                      </p>
+                    )}
                   </div>
 
                   {/* Email — solo desktop */}
@@ -204,7 +216,15 @@ export default async function AdminUsuariosPage({
                   </span>
 
                   {/* Estado */}
-                  {u.verificado ? (
+                  {u.verificado && prueba === "en_prueba" ? (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-700 font-medium whitespace-nowrap">
+                      En prueba
+                    </span>
+                  ) : u.verificado && prueba === "vencida" ? (
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-red-100 text-red-700 font-medium whitespace-nowrap">
+                      Prueba vencida
+                    </span>
+                  ) : u.verificado ? (
                     <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium whitespace-nowrap">
                       Activo
                     </span>

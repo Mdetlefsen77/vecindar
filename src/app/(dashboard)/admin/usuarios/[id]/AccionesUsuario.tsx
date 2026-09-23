@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { type Rol } from "@/generated/enums";
+import { HORAS_PRUEBA, type EstadoPrueba } from "@/lib/prueba";
 
 const ROLES: Rol[] = [
   "VECINO",
@@ -23,6 +24,9 @@ interface Props {
   usuarioId: number;
   rolActual: Rol;
   verificado: boolean;
+  estadoPrueba: EstadoPrueba;
+  /** Fin de la prueba ya formateado por el servidor (hora de Argentina). */
+  finPrueba: string | null;
   esUnoMismo: boolean;
 }
 
@@ -30,6 +34,8 @@ export default function AccionesUsuario({
   usuarioId,
   rolActual,
   verificado,
+  estadoPrueba,
+  finPrueba,
   esUnoMismo,
 }: Props) {
   const router = useRouter();
@@ -81,20 +87,51 @@ export default function AccionesUsuario({
         <h3 className="font-semibold text-gray-800">Acceso al barrio</h3>
         <p className="text-sm text-gray-500">
           Estado actual:{" "}
-          <span
-            className={`font-medium ${verificado ? "text-green-600" : "text-amber-600"}`}
-          >
-            {verificado ? "Activo" : "Pendiente de aprobación"}
-          </span>
+          {!verificado ? (
+            <span className="font-medium text-amber-600">
+              Pendiente de aprobación
+            </span>
+          ) : estadoPrueba === "en_prueba" ? (
+            <span className="font-medium text-blue-600">
+              En prueba hasta el {finPrueba}
+            </span>
+          ) : estadoPrueba === "vencida" ? (
+            <span className="font-medium text-red-600">
+              Prueba vencida el {finPrueba} — sin acceso
+            </span>
+          ) : (
+            <span className="font-medium text-green-600">Activo</span>
+          )}
         </p>
+        {verificado && estadoPrueba !== "definitivo" && (
+          <p className="text-xs text-gray-400">
+            Pasa a definitivo solo cuando se registra su primer pago.
+          </p>
+        )}
         <div className="flex gap-2 flex-wrap">
-          {!verificado && (
+          {(!verificado || estadoPrueba === "vencida") && (
             <button
               disabled={loading || esUnoMismo}
-              onClick={() => patch({ verificado: true }, "Usuario aprobado.")}
+              onClick={() =>
+                patch(
+                  { aprobacion: "PRUEBA" },
+                  `Aprobado con ${HORAS_PRUEBA} hs de prueba.`,
+                )
+              }
+              className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+            >
+              ⏳ {verificado ? `Dar otras ${HORAS_PRUEBA} hs` : `Aprobar con ${HORAS_PRUEBA} hs de prueba`}
+            </button>
+          )}
+          {(!verificado || estadoPrueba !== "definitivo") && (
+            <button
+              disabled={loading || esUnoMismo}
+              onClick={() =>
+                patch({ aprobacion: "DEFINITIVA" }, "Aprobado como definitivo.")
+              }
               className="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 disabled:opacity-50 transition-colors"
             >
-              ✅ Aprobar acceso
+              ✅ Aprobar definitivo
             </button>
           )}
           {verificado && (

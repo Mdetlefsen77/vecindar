@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Description,
 } from "@headlessui/react";
+import { AVISO_SUSCRIPCION } from "@/lib/prueba";
 
 interface Lote {
   id: number;
@@ -159,6 +160,11 @@ function RegistroForm() {
           <Suspense fallback={null}>
             <BannerLlegadaExterna />
           </Suspense>
+
+          {/* La app es paga: se avisa siempre, venga de donde venga. */}
+          <div className="rounded-md bg-amber-50 border border-amber-200 p-3 text-center">
+            <p className="text-sm text-amber-900">💳 {AVISO_SUSCRIPCION}</p>
+          </div>
 
           {/* Formulario */}
           <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
@@ -371,7 +377,7 @@ function RegistroForm() {
             <Description className="text-gray-600">
               Tu cuenta está en estado de revisión para ser activada por el
               administrador. Podés intentar iniciar sesión más tarde para ver si
-              ya fue aprobada.
+              ya fue aprobada. {AVISO_SUSCRIPCION}
             </Description>
             <button
               onClick={() => router.push(hrefLogin)}

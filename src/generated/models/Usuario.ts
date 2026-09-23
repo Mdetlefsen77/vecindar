@@ -51,6 +51,8 @@ export type UsuarioMinAggregateOutputType = {
   invitadoPorId: number | null
   origenRegistro: $Enums.OrigenRegistro | null
   ocultarNombreEnPublicacionExterna: boolean | null
+  pruebaIniciadaAt: Date | null
+  pruebaHasta: Date | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date | null
@@ -70,6 +72,8 @@ export type UsuarioMaxAggregateOutputType = {
   invitadoPorId: number | null
   origenRegistro: $Enums.OrigenRegistro | null
   ocultarNombreEnPublicacionExterna: boolean | null
+  pruebaIniciadaAt: Date | null
+  pruebaHasta: Date | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date | null
@@ -89,6 +93,8 @@ export type UsuarioCountAggregateOutputType = {
   invitadoPorId: number
   origenRegistro: number
   ocultarNombreEnPublicacionExterna: number
+  pruebaIniciadaAt: number
+  pruebaHasta: number
   ultimoLoginAt: number
   ultimaActividadAt: number
   createdAt: number
@@ -122,6 +128,8 @@ export type UsuarioMinAggregateInputType = {
   invitadoPorId?: true
   origenRegistro?: true
   ocultarNombreEnPublicacionExterna?: true
+  pruebaIniciadaAt?: true
+  pruebaHasta?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -141,6 +149,8 @@ export type UsuarioMaxAggregateInputType = {
   invitadoPorId?: true
   origenRegistro?: true
   ocultarNombreEnPublicacionExterna?: true
+  pruebaIniciadaAt?: true
+  pruebaHasta?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -160,6 +170,8 @@ export type UsuarioCountAggregateInputType = {
   invitadoPorId?: true
   origenRegistro?: true
   ocultarNombreEnPublicacionExterna?: true
+  pruebaIniciadaAt?: true
+  pruebaHasta?: true
   ultimoLoginAt?: true
   ultimaActividadAt?: true
   createdAt?: true
@@ -266,6 +278,8 @@ export type UsuarioGroupByOutputType = {
   invitadoPorId: number | null
   origenRegistro: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna: boolean
+  pruebaIniciadaAt: Date | null
+  pruebaHasta: Date | null
   ultimoLoginAt: Date | null
   ultimaActividadAt: Date | null
   createdAt: Date
@@ -308,6 +322,8 @@ export type UsuarioWhereInput = {
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
+  pruebaIniciadaAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
+  pruebaHasta?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -347,6 +363,8 @@ export type UsuarioOrderByWithRelationInput = {
   invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
+  pruebaIniciadaAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pruebaHasta?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -389,6 +407,8 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
+  pruebaIniciadaAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
+  pruebaHasta?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -428,6 +448,8 @@ export type UsuarioOrderByWithAggregationInput = {
   invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
+  pruebaIniciadaAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pruebaHasta?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrderInput | Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -455,6 +477,8 @@ export type UsuarioScalarWhereWithAggregatesInput = {
   invitadoPorId?: Prisma.IntNullableWithAggregatesFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroWithAggregatesFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
+  pruebaIniciadaAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
+  pruebaHasta?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   ultimoLoginAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Usuario"> | Date | string
@@ -471,6 +495,8 @@ export type UsuarioCreateInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -510,6 +536,8 @@ export type UsuarioUncheckedCreateInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -544,6 +572,8 @@ export type UsuarioUpdateInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -583,6 +613,8 @@ export type UsuarioUncheckedUpdateInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -620,6 +652,8 @@ export type UsuarioCreateManyInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -636,6 +670,8 @@ export type UsuarioUpdateManyMutationInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -655,6 +691,8 @@ export type UsuarioUncheckedUpdateManyInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -689,6 +727,8 @@ export type UsuarioCountOrderByAggregateInput = {
   invitadoPorId?: Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
+  pruebaIniciadaAt?: Prisma.SortOrder
+  pruebaHasta?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -714,6 +754,8 @@ export type UsuarioMaxOrderByAggregateInput = {
   invitadoPorId?: Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
+  pruebaIniciadaAt?: Prisma.SortOrder
+  pruebaHasta?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -733,6 +775,8 @@ export type UsuarioMinOrderByAggregateInput = {
   invitadoPorId?: Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
+  pruebaIniciadaAt?: Prisma.SortOrder
+  pruebaHasta?: Prisma.SortOrder
   ultimoLoginAt?: Prisma.SortOrder
   ultimaActividadAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -1124,6 +1168,8 @@ export type UsuarioCreateWithoutLoteInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1161,6 +1207,8 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1227,6 +1275,8 @@ export type UsuarioScalarWhereInput = {
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
+  pruebaIniciadaAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
+  pruebaHasta?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimoLoginAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   ultimaActividadAt?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Usuario"> | Date | string
@@ -1243,6 +1293,8 @@ export type UsuarioCreateWithoutInvitadosInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1281,6 +1333,8 @@ export type UsuarioUncheckedCreateWithoutInvitadosInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1319,6 +1373,8 @@ export type UsuarioCreateWithoutInvitadoPorInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1356,6 +1412,8 @@ export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1411,6 +1469,8 @@ export type UsuarioUpdateWithoutInvitadosInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1449,6 +1509,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1498,6 +1560,8 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1536,6 +1600,8 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1585,6 +1651,8 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1623,6 +1691,8 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1656,6 +1726,8 @@ export type UsuarioCreateWithoutPagosInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1694,6 +1766,8 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1732,6 +1806,8 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1770,6 +1846,8 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -1819,6 +1897,8 @@ export type UsuarioUpdateWithoutPagosInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1857,6 +1937,8 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1901,6 +1983,8 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1939,6 +2023,8 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1972,6 +2058,8 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2010,6 +2098,8 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2059,6 +2149,8 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2097,6 +2189,8 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2130,6 +2224,8 @@ export type UsuarioCreateWithoutIncidentesInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2168,6 +2264,8 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2217,6 +2315,8 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2255,6 +2355,8 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2288,6 +2390,8 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2326,6 +2430,8 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2364,6 +2470,8 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2402,6 +2510,8 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2451,6 +2561,8 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2489,6 +2601,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2533,6 +2647,8 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2571,6 +2687,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2604,6 +2722,8 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2642,6 +2762,8 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2691,6 +2813,8 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2729,6 +2853,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2762,6 +2888,8 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2800,6 +2928,8 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2849,6 +2979,8 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2887,6 +3019,8 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2920,6 +3054,8 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -2958,6 +3094,8 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3007,6 +3145,8 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3045,6 +3185,8 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3078,6 +3220,8 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3116,6 +3260,8 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3165,6 +3311,8 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3203,6 +3351,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3236,6 +3386,8 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3274,6 +3426,8 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3323,6 +3477,8 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3361,6 +3517,8 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3394,6 +3552,8 @@ export type UsuarioCreateWithoutCodigoInvitacionInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3432,6 +3592,8 @@ export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3481,6 +3643,8 @@ export type UsuarioUpdateWithoutCodigoInvitacionInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3519,6 +3683,8 @@ export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3552,6 +3718,8 @@ export type UsuarioCreateWithoutTransicionesRealizadasInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3590,6 +3758,8 @@ export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3639,6 +3809,8 @@ export type UsuarioUpdateWithoutTransicionesRealizadasInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3677,6 +3849,8 @@ export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3710,6 +3884,8 @@ export type UsuarioCreateWithoutReportesGeneradosInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3748,6 +3924,8 @@ export type UsuarioUncheckedCreateWithoutReportesGeneradosInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3797,6 +3975,8 @@ export type UsuarioUpdateWithoutReportesGeneradosInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3835,6 +4015,8 @@ export type UsuarioUncheckedUpdateWithoutReportesGeneradosInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3868,6 +4050,8 @@ export type UsuarioCreateWithoutPublicacionesExternasInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3906,6 +4090,8 @@ export type UsuarioUncheckedCreateWithoutPublicacionesExternasInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -3955,6 +4141,8 @@ export type UsuarioUpdateWithoutPublicacionesExternasInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3993,6 +4181,8 @@ export type UsuarioUncheckedUpdateWithoutPublicacionesExternasInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4026,6 +4216,8 @@ export type UsuarioCreateWithoutClicksLinksInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -4064,6 +4256,8 @@ export type UsuarioUncheckedCreateWithoutClicksLinksInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -4113,6 +4307,8 @@ export type UsuarioUpdateWithoutClicksLinksInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4151,6 +4347,8 @@ export type UsuarioUncheckedUpdateWithoutClicksLinksInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4186,6 +4384,8 @@ export type UsuarioCreateManyLoteInput = {
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -4202,6 +4402,8 @@ export type UsuarioUpdateWithoutLoteInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4239,6 +4441,8 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4275,6 +4479,8 @@ export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4293,6 +4499,8 @@ export type UsuarioCreateManyInvitadoPorInput = {
   rol?: $Enums.Rol
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
   ultimoLoginAt?: Date | string | null
   ultimaActividadAt?: Date | string | null
   createdAt?: Date | string
@@ -4309,6 +4517,8 @@ export type UsuarioUpdateWithoutInvitadoPorInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4346,6 +4556,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4382,6 +4594,8 @@ export type UsuarioUncheckedUpdateManyWithoutInvitadoPorInput = {
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -4567,6 +4781,8 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: boolean
+  pruebaHasta?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
@@ -4607,6 +4823,8 @@ export type UsuarioSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: boolean
+  pruebaHasta?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
@@ -4628,6 +4846,8 @@ export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: boolean
+  pruebaHasta?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
@@ -4649,13 +4869,15 @@ export type UsuarioSelectScalar = {
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: boolean
+  pruebaHasta?: boolean
   ultimoLoginAt?: boolean
   ultimaActividadAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "invitadoPorId" | "origenRegistro" | "ocultarNombreEnPublicacionExterna" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
+export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "invitadoPorId" | "origenRegistro" | "ocultarNombreEnPublicacionExterna" | "pruebaIniciadaAt" | "pruebaHasta" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
 export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
   incidentes?: boolean | Prisma.Usuario$incidentesArgs<ExtArgs>
@@ -4725,6 +4947,8 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     invitadoPorId: number | null
     origenRegistro: $Enums.OrigenRegistro
     ocultarNombreEnPublicacionExterna: boolean
+    pruebaIniciadaAt: Date | null
+    pruebaHasta: Date | null
     ultimoLoginAt: Date | null
     ultimaActividadAt: Date | null
     createdAt: Date
@@ -5184,6 +5408,8 @@ export interface UsuarioFieldRefs {
   readonly invitadoPorId: Prisma.FieldRef<"Usuario", 'Int'>
   readonly origenRegistro: Prisma.FieldRef<"Usuario", 'OrigenRegistro'>
   readonly ocultarNombreEnPublicacionExterna: Prisma.FieldRef<"Usuario", 'Boolean'>
+  readonly pruebaIniciadaAt: Prisma.FieldRef<"Usuario", 'DateTime'>
+  readonly pruebaHasta: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly ultimoLoginAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly ultimaActividadAt: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Usuario", 'DateTime'>

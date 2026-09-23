@@ -30,4 +30,13 @@ export async function recalcularVigencia(
     update: { vigenteHasta },
     create: { usuarioId, vigenteHasta },
   });
+
+  // Con al menos un pago, la cuenta deja de estar en prueba (src/lib/prueba.ts).
+  // Borrar el pago después no la devuelve a prueba: eso lo decide un admin.
+  if (vigenteHasta) {
+    await db.usuario.updateMany({
+      where: { id: usuarioId, pruebaHasta: { not: null } },
+      data: { pruebaHasta: null },
+    });
+  }
 }

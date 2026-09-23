@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma/client";
 import { requireRoleSession, parseId } from "@/lib/api/guard";
 import { GESTORES_USUARIOS } from "@/lib/permisos";
 import { actualizarUsuarioSchema } from "@/lib/validation/usuarios";
+import { finDePrueba } from "@/lib/prueba";
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -70,7 +71,7 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 // PATCH /api/usuarios/[id] — solo ADMIN
-// Body: { rol?, verificado?, resetPassword? }
+// Body: { rol?, verificado?, aprobacion?: "PRUEBA" | "DEFINITIVA", nuevaPassword? }
 export async function PATCH(req: NextRequest, { params }: Params) {
   const guard = await requireRoleSession(GESTORES_USUARIOS);
   if (guard.response) return guard.response;
@@ -105,11 +106,20 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     );
   }
 
-  const { rol, verificado, nuevaPassword } = parsed.data;
+  const { rol, verificado, aprobacion, nuevaPassword } = parsed.data;
 
   const updateData: Record<string, unknown> = {};
   if (rol !== undefined) updateData.rol = rol;
   if (verificado !== undefined) updateData.verificado = verificado;
+  if (aprobacion === "PRUEBA") {
+    const ahora = new Date();
+    updateData.verificado = true;
+    updateData.pruebaIniciadaAt = ahora;
+    updateData.pruebaHasta = finDePrueba(ahora);
+  } else if (aprobacion === "DEFINITIVA") {
+    updateData.verificado = true;
+    updateData.pruebaHasta = null;
+  }
   if (nuevaPassword) {
     updateData.password = await hash(nuevaPassword, 12);
   }
@@ -124,6 +134,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
       email: true,
       rol: true,
       verificado: true,
+      pruebaHasta: true,
     },
   });
 

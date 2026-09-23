@@ -12,6 +12,7 @@ import {
   ESTADO_COBRANZA_LABEL,
 } from "@/lib/cobranza";
 import Link from "next/link";
+import { estadoPrueba, fmtFechaHora } from "@/lib/prueba";
 import AccionesUsuario from "./AccionesUsuario";
 
 const TIPO_ICON: Record<string, string> = {
@@ -52,6 +53,10 @@ export default async function DetalleUsuarioPage({ params }: Params) {
       telefono: true,
       rol: true,
       verificado: true,
+      pruebaHasta: true,
+      pruebaIniciadaAt: true,
+      origenRegistro: true,
+      invitadoPor: { select: { id: true, nombre: true, apellido: true } },
       createdAt: true,
       ultimoLoginAt: true,
       ultimaActividadAt: true,
@@ -108,6 +113,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
   if (!usuario) notFound();
 
   const esUnoMismo = session.user.id === String(usuario.id);
+  const prueba = estadoPrueba(usuario.pruebaHasta);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
@@ -158,6 +164,39 @@ export default async function DetalleUsuarioPage({ params }: Params) {
             </span>
           )}
         </div>
+      </div>
+
+      {/* Origen del registro — de dónde llegó (invitación / link de WhatsApp) */}
+      <div className="bg-white border border-gray-200 rounded-xl p-4 text-sm space-y-1">
+        <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
+          Cómo llegó a Vecindar
+        </p>
+        {usuario.invitadoPor && (
+          <p className="text-gray-700">
+            🤝 Invitado por{" "}
+            <Link
+              href={`/admin/usuarios/${usuario.invitadoPor.id}`}
+              className="font-medium text-blue-600 hover:underline"
+            >
+              {nombreCompleto(usuario.invitadoPor)}
+            </Link>{" "}
+            (link de invitación)
+          </p>
+        )}
+        {usuario.origenRegistro === "WHATSAPP" && (
+          <p className="text-gray-700">
+            💬 Llegó desde un link compartido en el grupo de WhatsApp
+          </p>
+        )}
+        {!usuario.invitadoPor && usuario.origenRegistro !== "WHATSAPP" && (
+          <p className="text-gray-700">Registro directo, sin link.</p>
+        )}
+        {usuario.pruebaIniciadaAt && (
+          <p className="text-xs text-gray-400">
+            Tuvo prueba desde el {fmtFechaHora(usuario.pruebaIniciadaAt)}
+            {prueba === "definitivo" && " · ya es definitivo"}
+          </p>
+        )}
       </div>
 
       {/* Info lote */}
@@ -292,6 +331,10 @@ export default async function DetalleUsuarioPage({ params }: Params) {
           usuarioId={usuario.id}
           rolActual={usuario.rol}
           verificado={usuario.verificado}
+          estadoPrueba={prueba}
+          finPrueba={
+            usuario.pruebaHasta ? fmtFechaHora(usuario.pruebaHasta) : null
+          }
           esUnoMismo={esUnoMismo}
         />
       </div>

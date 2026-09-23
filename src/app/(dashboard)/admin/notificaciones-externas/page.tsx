@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
+import Link from "next/link";
+import { nombreCompleto } from "@/lib/usuarios";
+import { HORAS_PRUEBA } from "@/lib/prueba";
 
 const TIPO_LABEL: Record<string, string> = {
   INCIDENTE: "Incidentes",
@@ -51,6 +54,67 @@ export default async function NotificacionesExternasPage() {
     prisma.usuario.count({ where: { ultimaActividadAt: { gte: hace30d } } }),
   ]);
 
+  // Embudo de altas por canal: clicks → cuentas → aprobadas → con pago.
+  // "Aprobada" = verificado (con prueba o definitiva); "con pago" = al menos
+  // un pago registrado. No hay forma de saber cuántos *recibieron* el link,
+  // solo cuántos lo abrieron.
+  const porInvitacion = { invitadoPorId: { not: null } };
+  const porWhatsapp = { origenRegistro: "WHATSAPP" as const };
+  const conPrueba = { pruebaIniciadaAt: { not: null } };
+  const conPago = { pagos: { some: {} } };
+  const ahoraFecha = new Date(ahora);
+  const [
+    clicksInvitacion,
+    altasInvitacion,
+    aprobadasInvitacion,
+    pagoInvitacion,
+    aprobadasWhatsapp,
+    pagoWhatsapp,
+    pruebasTotales,
+    pruebasConPago,
+    pruebasEnCurso,
+    pruebasVencidas,
+    topInvitadores,
+  ] = await Promise.all([
+    prisma.codigoInvitacion.aggregate({ _sum: { clicks: true } }),
+    prisma.usuario.count({ where: porInvitacion }),
+    prisma.usuario.count({ where: { ...porInvitacion, verificado: true } }),
+    prisma.usuario.count({ where: { ...porInvitacion, ...conPago } }),
+    prisma.usuario.count({ where: { ...porWhatsapp, verificado: true } }),
+    prisma.usuario.count({ where: { ...porWhatsapp, ...conPago } }),
+    prisma.usuario.count({ where: conPrueba }),
+    prisma.usuario.count({ where: { ...conPrueba, ...conPago } }),
+    prisma.usuario.count({ where: { pruebaHasta: { gt: ahoraFecha } } }),
+    prisma.usuario.count({ where: { pruebaHasta: { lte: ahoraFecha } } }),
+    prisma.codigoInvitacion.findMany({
+      where: { clicks: { gt: 0 } },
+      orderBy: [{ registros: "desc" }, { clicks: "desc" }],
+      take: 10,
+      select: {
+        clicks: true,
+        registros: true,
+        usuario: { select: { id: true, nombre: true, apellido: true } },
+      },
+    }),
+  ]);
+
+  const embudo = [
+    {
+      canal: "🤝 Invitación entre vecinos",
+      clicks: clicksInvitacion._sum.clicks ?? 0,
+      cuentas: altasInvitacion,
+      aprobadas: aprobadasInvitacion,
+      conPago: pagoInvitacion,
+    },
+    {
+      canal: "💬 Links en el grupo de WhatsApp",
+      clicks: clicksSinSesion,
+      cuentas: altasWhatsapp,
+      aprobadas: aprobadasWhatsapp,
+      conPago: pagoWhatsapp,
+    },
+  ];
+
   const clicksPorTipo = new Map<string, number>();
   for (const link of linksConPublicacion) {
     const tipo = link.publicacion?.tipoEvento;
@@ -77,7 +141,7 @@ export default async function NotificacionesExternasPage() {
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">
-          Puente WhatsApp — métricas
+          Links compartidos y altas — métricas
         </h1>
         <p className="text-gray-500 text-sm mt-1">
           Fase 1 (compartido manual). Umbrales de éxito en{" "}
@@ -87,6 +151,97 @@ export default async function NotificacionesExternasPage() {
           (D7).
         </p>
       </div>
+
+      {/* Embudo de altas por canal */}
+      <div>
+        <h2 className="font-semibold text-gray-800 mb-1">
+          De link a cuenta paga
+        </h2>
+        <p className="text-xs text-gray-500 mb-3">
+          Clicks sin sesión → cuentas creadas → aprobadas → con al menos un
+          pago. Cada usuario muestra su origen en su ficha.
+        </p>
+        <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden bg-white">
+          {embudo.map((e) => (
+            <div key={e.canal} className="p-3">
+              <p className="text-sm font-medium text-gray-900">{e.canal}</p>
+              <div className="mt-2 grid grid-cols-4 gap-2 text-center">
+                {[
+                  { label: "Clicks", valor: e.clicks },
+                  { label: "Cuentas", valor: e.cuentas },
+                  { label: "Aprobadas", valor: e.aprobadas },
+                  { label: "Con pago", valor: e.conPago },
+                ].map((paso) => (
+                  <div key={paso.label}>
+                    <p className="text-xl font-bold text-gray-900">
+                      {paso.valor}
+                    </p>
+                    <p className="text-xs text-gray-500">{paso.label}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-1 text-xs text-gray-400">
+                {e.clicks > 0
+                  ? `${((e.cuentas / e.clicks) * 100).toFixed(0)}% de los clicks creó cuenta`
+                  : "Sin clicks todavía"}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Período de prueba */}
+      <div>
+        <h2 className="font-semibold text-gray-800 mb-3">
+          Aprobados con prueba de {HORAS_PRUEBA} hs
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { label: "Tuvieron prueba", valor: pruebasTotales },
+            { label: "En prueba ahora", valor: pruebasEnCurso },
+            { label: "Vencidos sin pagar", valor: pruebasVencidas },
+            { label: "Pagaron", valor: pruebasConPago },
+          ].map((m) => (
+            <div
+              key={m.label}
+              className="border-2 border-gray-200 bg-white rounded-xl p-4"
+            >
+              <p className="text-3xl font-bold text-gray-900 leading-none">
+                {m.valor}
+              </p>
+              <p className="text-xs text-gray-600 font-medium mt-1">
+                {m.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Quién invita */}
+      {topInvitadores.length > 0 && (
+        <div>
+          <h2 className="font-semibold text-gray-800 mb-3">
+            Vecinos que más invitan
+          </h2>
+          <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden bg-white">
+            {topInvitadores.map((t) => (
+              <Link
+                key={t.usuario.id}
+                href={`/admin/usuarios/${t.usuario.id}`}
+                className="flex items-center justify-between p-3 hover:bg-gray-50"
+              >
+                <p className="text-sm font-medium text-gray-900">
+                  {nombreCompleto(t.usuario)}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {t.clicks} clicks · {t.registros} cuenta
+                  {t.registros === 1 ? "" : "s"}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* CTR por tipo de evento */}
       <div>

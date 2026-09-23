@@ -1,8 +1,18 @@
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma/client";
+
+/**
+ * Contraseña correcta pero cuenta sin aprobar. Viaja al cliente como
+ * `result.code` para mostrar "pendiente de aprobación" en vez de "email o
+ * contraseña incorrectos". Solo se lanza tras validar la contraseña, así que
+ * no permite averiguar qué emails están registrados.
+ */
+class CuentaNoVerificada extends CredentialsSignin {
+  code = "no_verificado";
+}
 
 const authConfig = {
   providers: [
@@ -36,9 +46,7 @@ const authConfig = {
           }
 
           if (!usuario.verificado) {
-            throw new Error(
-              "Tu cuenta aún no ha sido verificada por un administrador",
-            );
+            throw new CuentaNoVerificada();
           }
 
           // Marca de último login (y de actividad — loguearse cuenta como uso).

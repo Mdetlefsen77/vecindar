@@ -15,6 +15,8 @@ import MobileHeader from "@/components/ui/MobileHeader";
 import InstallPrompt from "@/components/ui/InstallPrompt";
 import PushOptInBanner from "@/components/ui/PushOptInBanner";
 import CobranzaBanner from "@/components/ui/CobranzaBanner";
+import PruebaBanner from "@/components/ui/PruebaBanner";
+import { estadoPrueba, horasRestantes, fmtFechaHora } from "@/lib/prueba";
 import SosAlertListener from "@/components/ui/SosAlertListener";
 
 export default async function DashboardLayout({
@@ -34,11 +36,23 @@ export default async function DashboardLayout({
   const userEmail = session.user?.email ?? "";
   const userRole = session.user?.role ?? "VECINO";
 
-  const suscripcion = await prisma.suscripcion.findUnique({
-    where: { usuarioId: Number(session.user?.id) },
-    select: { vigenteHasta: true, montoMensual: true, exento: true },
-  });
+  const [suscripcion, cuenta] = await Promise.all([
+    prisma.suscripcion.findUnique({
+      where: { usuarioId: Number(session.user?.id) },
+      select: { vigenteHasta: true, montoMensual: true, exento: true },
+    }),
+    prisma.usuario.findUnique({
+      where: { id: Number(session.user?.id) },
+      select: { pruebaHasta: true },
+    }),
+  ]);
   const cobranzaVencida = estadoCobranza(suscripcion) === "vencida";
+
+  // Prueba vencida = bloqueo total hasta que pague o un admin lo apruebe
+  // definitivo (src/lib/prueba.ts). Se lee de la base y no del JWT para que
+  // el desbloqueo sea inmediato.
+  const prueba = estadoPrueba(cuenta?.pruebaHasta);
+  if (prueba === "vencida") redirect("/prueba-finalizada");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -67,6 +81,12 @@ export default async function DashboardLayout({
           id="contenido"
           className="pt-16 main-mobile-padding md:pt-0 md:pb-0 min-h-screen print:pt-0 print:pb-0"
         >
+          {prueba === "en_prueba" && cuenta?.pruebaHasta && (
+            <PruebaBanner
+              horas={horasRestantes(cuenta.pruebaHasta)}
+              vence={fmtFechaHora(cuenta.pruebaHasta)}
+            />
+          )}
           {cobranzaVencida && (
             <CobranzaBanner
               meses={mesesVencidos(suscripcion?.vigenteHasta)}

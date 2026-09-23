@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AVISO_SUSCRIPCION } from "@/lib/prueba";
 
-const MENSAJE =
-  "Te invito a sumarte a Vecindar, la app de seguridad y gestión de nuestro barrio 🏘️";
+const MENSAJE = `Te invito a sumarte a Vecindar, la app de seguridad y gestión de nuestro barrio 🏘️ ${AVISO_SUSCRIPCION}`;
 
 export default function InvitarVecino() {
   const [codigo, setCodigo] = useState<string | null>(null);
