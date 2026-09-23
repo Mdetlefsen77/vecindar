@@ -25,6 +25,9 @@ export const registroUsuarioSchema = z.object({
 export const actualizarUsuarioSchema = z.object({
   rol: z.enum(Rol).optional(),
   verificado: z.boolean().optional(),
+  // Aprobar con período de prueba (src/lib/prueba.ts) o de forma definitiva.
+  // Implica verificado = true.
+  aprobacion: z.enum(["PRUEBA", "DEFINITIVA"]).optional(),
   nuevaPassword: z.string().min(6).optional(),
 });
 

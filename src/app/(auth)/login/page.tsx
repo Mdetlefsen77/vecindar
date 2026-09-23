@@ -24,7 +24,11 @@ function LoginForm() {
         redirect: false,
       });
 
-      if (result?.error) {
+      if (result?.code === "no_verificado") {
+        setError(
+          "Tu cuenta todavía está pendiente de aprobación. Un administrador del barrio la va a revisar.",
+        );
+      } else if (result?.error) {
         setError("Email o contraseña incorrectos");
       } else {
         // Preserva el destino original si se llegó desde un link externo

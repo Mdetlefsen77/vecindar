@@ -229,7 +229,7 @@ export default async function AdminPage() {
             },
             { label: "Cobranza", href: "/admin/cobranza", icon: "💰" },
             {
-              label: "Puente WhatsApp",
+              label: "Links y altas",
               href: "/admin/notificaciones-externas",
               icon: "📤",
             },

@@ -120,6 +120,13 @@ model Usuario {
   publicacionesExternas             PublicacionExterna[]
   clicksLinks                       ClickLink[]
 
+  // Período de prueba (ver src/lib/prueba.ts). El admin aprueba "con 48 hs"
+  // o "definitivo". pruebaHasta: null = acceso definitivo; si ya pasó, la
+  // cuenta queda bloqueada hasta que pague o un admin la apruebe definitiva.
+  // pruebaIniciadaAt nunca se limpia — permite medir prueba → pago.
+  pruebaIniciadaAt DateTime?
+  pruebaHasta      DateTime?
+
   // Uso de la cuenta (para cobranza / actividad — ver /admin/usuarios).
   // ultimoLoginAt: última autenticación con credenciales.
   // ultimaActividadAt: último request autenticado (throttle en requireSession).

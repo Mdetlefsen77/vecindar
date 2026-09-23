@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import type { Session } from "next-auth";
 import { auth } from "@/lib/auth";
 import { registrarActividad } from "@/lib/actividad";
+import { prisma } from "@/lib/prisma/client";
+import { estadoPrueba } from "@/lib/prueba";
 
 export type AuthedSession = Session & { user: NonNullable<Session["user"]> };
 
@@ -24,6 +26,29 @@ export function parseId(raw: string | undefined | null): number | null {
   return Number.isInteger(n) && n > 0 ? n : null;
 }
 
+/**
+ * 403 si la prueba de la cuenta venció (src/lib/prueba.ts): mismo bloqueo
+ * total que aplica el layout del dashboard, para que una sesión abierta no
+ * pueda seguir usando la API. Se lee de la base (una búsqueda por id) y no
+ * del JWT, así el desbloqueo por pago es inmediato.
+ */
+async function bloqueoPorPrueba(
+  usuarioId: number,
+): Promise<NextResponse | null> {
+  const cuenta = await prisma.usuario.findUnique({
+    where: { id: usuarioId },
+    select: { pruebaHasta: true },
+  });
+  if (estadoPrueba(cuenta?.pruebaHasta) !== "vencida") return null;
+  return NextResponse.json(
+    {
+      error:
+        "Tu período de prueba terminó. Suscribite para seguir usando Vecindar.",
+    },
+    { status: 403 },
+  );
+}
+
 type SessionResult =
   | { session: AuthedSession; response?: undefined }
   | { session?: undefined; response: NextResponse };
@@ -39,6 +64,8 @@ export async function requireSession(
   if (!session?.user) {
     return { response: NextResponse.json({ error: message }, { status: 401 }) };
   }
+  const bloqueo = await bloqueoPorPrueba(Number(session.user.id));
+  if (bloqueo) return { response: bloqueo };
   registrarActividad(Number(session.user.id));
   return { session: session as AuthedSession };
 }
@@ -71,6 +98,8 @@ export async function requireRoleSession(
   if (!session?.user || !allowed.includes(session.user.role)) {
     return { response: NextResponse.json({ error: message }, { status: 403 }) };
   }
+  const bloqueo = await bloqueoPorPrueba(Number(session.user.id));
+  if (bloqueo) return { response: bloqueo };
   registrarActividad(Number(session.user.id));
   return { session: session as AuthedSession };
 }

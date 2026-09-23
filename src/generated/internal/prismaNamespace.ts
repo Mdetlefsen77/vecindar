@@ -2070,6 +2070,8 @@ export const UsuarioScalarFieldEnum = {
   invitadoPorId: 'invitadoPorId',
   origenRegistro: 'origenRegistro',
   ocultarNombreEnPublicacionExterna: 'ocultarNombreEnPublicacionExterna',
+  pruebaIniciadaAt: 'pruebaIniciadaAt',
+  pruebaHasta: 'pruebaHasta',
   ultimoLoginAt: 'ultimoLoginAt',
   ultimaActividadAt: 'ultimaActividadAt',
   createdAt: 'createdAt',
