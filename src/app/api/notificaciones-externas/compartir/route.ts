@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireRoleSession, getUserId } from "@/lib/api/guard";
-import {
-  GESTORES_INCIDENTES,
-  GESTORES_REQUERIMIENTOS,
-  GESTORES_MASCOTAS,
-} from "@/lib/permisos";
+import { COMPARTIDORES_EXTERNOS } from "@/lib/permisos";
 import { prisma } from "@/lib/prisma/client";
 import { compartirEvento } from "@/lib/notificaciones-externas/compartir";
 import {
@@ -14,15 +10,6 @@ import {
   type AutorPlantilla,
 } from "@/lib/notificaciones-externas/plantillas";
 import { compartirEventoSchema } from "@/lib/validation/notificacionesExternas";
-
-// Config por tipo de evento: quién puede compartirlo (mismos GESTORES_* que
-// ya gestionan esa entidad — sin rol nuevo, ver design.md decisión "Reutilizar
-// los conjuntos de gestores existentes") y cómo resolver autor/destino/mensaje.
-const CONFIG_POR_TIPO = {
-  INCIDENTE: { gestores: GESTORES_INCIDENTES },
-  REQUERIMIENTO: { gestores: GESTORES_REQUERIMIENTOS },
-  MASCOTA: { gestores: GESTORES_MASCOTAS },
-} as const;
 
 async function resolverIncidente(entidadId: number) {
   const inc = await prisma.incidente.findUnique({
@@ -71,7 +58,11 @@ async function resolverRequerimiento(entidadId: number) {
   return {
     urlDestino: `/requerimientos/${req.id}`,
     construirMensaje: (link: string) =>
-      plantillaRequerimiento(req.usuario as AutorPlantilla, req.categoria, link),
+      plantillaRequerimiento(
+        req.usuario as AutorPlantilla,
+        req.categoria,
+        link,
+      ),
   };
 }
 
@@ -120,8 +111,10 @@ export async function POST(req: NextRequest) {
   }
   const { tipoEvento, entidadId } = parsed.data;
 
+  // Cualquier rol puede compartir (COMPARTIDORES_EXTERNOS); lo que se
+  // restringe es qué evento, en cada resolver (ej. incidentes no visibles).
   const guard = await requireRoleSession(
-    CONFIG_POR_TIPO[tipoEvento].gestores,
+    COMPARTIDORES_EXTERNOS,
     "No tenés permiso para compartir este tipo de evento.",
   );
   if (guard.response) return guard.response;
