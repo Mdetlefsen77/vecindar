@@ -70,10 +70,10 @@ function FilaCopiable({ label, valor }: { label: string; valor: string }) {
             <DocumentDuplicateIcon className="w-5 h-5" aria-hidden />
           )}
         </button>
+        <span className="sr-only" aria-live="polite">
+          {copiado ? `${label} copiado al portapapeles` : ""}
+        </span>
       </dd>
-      <span className="sr-only" aria-live="polite">
-        {copiado ? `${label} copiado al portapapeles` : ""}
-      </span>
     </div>
   );
 }
