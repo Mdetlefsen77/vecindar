@@ -116,7 +116,7 @@ export default async function AdminUsuariosPage({
           <div className="flex items-center gap-2">
             <Link
               href="/admin"
-              className="text-gray-400 hover:text-gray-600 text-sm"
+              className="text-gray-500 hover:text-gray-600 text-sm"
             >
               ← Admin
             </Link>
@@ -140,7 +140,7 @@ export default async function AdminUsuariosPage({
 
       {/* Tabla */}
       {usuarios.length === 0 ? (
-        <div className="text-center py-12 text-gray-400">
+        <div className="text-center py-12 text-gray-500">
           No se encontraron usuarios con esos filtros.
         </div>
       ) : (
@@ -180,13 +180,13 @@ export default async function AdminUsuariosPage({
                       )}
                       {nombreCompleto(u)}
                     </p>
-                    <p className="text-xs text-gray-400 sm:hidden">{u.email}</p>
-                    <p className="text-xs text-gray-400 mt-0.5">
+                    <p className="text-xs text-gray-500 sm:hidden">{u.email}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">
                       {u._count.incidentes} incidente
                       {u._count.incidentes !== 1 ? "s" : ""} ·{" "}
                       {u._count.requerimientos} req.
                     </p>
-                    <p className="text-xs text-gray-400 mt-0.5 sm:hidden">
+                    <p className="text-xs text-gray-500 mt-0.5 sm:hidden">
                       Última actividad: {tiempoRelativo(u.ultimaActividadAt)}
                     </p>
                     {(u.invitadoPor || u.origenRegistro === "WHATSAPP") && (

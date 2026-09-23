@@ -82,7 +82,7 @@ export default function ComentariosAlerta({
                   {c.texto}
                 </p>
                 <p
-                  className={`text-xs mt-0.5 ${esStaff ? "text-blue-400" : "text-gray-400"}`}
+                  className={`text-xs mt-0.5 ${esStaff ? "text-blue-400" : "text-gray-500"}`}
                 >
                   — {nombreCompleto(c.usuario)}
                   {esStaff ? " (equipo)" : ""} ·{" "}

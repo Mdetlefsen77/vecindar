@@ -57,7 +57,7 @@ export default function CobranzaTabla({
 
   if (filas.length === 0) {
     return (
-      <div className="text-center py-12 text-gray-400">
+      <div className="text-center py-12 text-gray-500">
         No hay usuarios con ese filtro.
       </div>
     );
@@ -83,7 +83,7 @@ export default function CobranzaTabla({
             >
               <div>
                 <p className="font-medium text-sm text-gray-900">{f.nombre}</p>
-                <p className="text-xs text-gray-400 font-mono">{f.lote}</p>
+                <p className="text-xs text-gray-500 font-mono">{f.lote}</p>
               </div>
 
               <span
@@ -93,22 +93,22 @@ export default function CobranzaTabla({
               </span>
 
               <span className="text-sm text-gray-600 whitespace-nowrap">
-                <span className="sm:hidden text-gray-400">Vigente: </span>
+                <span className="sm:hidden text-gray-500">Vigente: </span>
                 {fmtFecha(f.vigenteHasta)}
               </span>
 
               <span className="text-sm text-gray-600 whitespace-nowrap">
-                <span className="sm:hidden text-gray-400">Últ. pago: </span>
+                <span className="sm:hidden text-gray-500">Últ. pago: </span>
                 {f.ultimoPago
                   ? `${periodoLabel(f.ultimoPago.periodo)} · ${formatoPesos(f.ultimoPago.monto)}`
                   : "—"}
               </span>
 
               <span className="text-sm text-gray-600 whitespace-nowrap">
-                <span className="sm:hidden text-gray-400">Cuota: </span>
+                <span className="sm:hidden text-gray-500">Cuota: </span>
                 {formatoPesos(f.montoMensual)}
                 {f.montoPropio != null && (
-                  <span className="text-xs text-gray-400"> (propia)</span>
+                  <span className="text-xs text-gray-500"> (propia)</span>
                 )}
               </span>
 

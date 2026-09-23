@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { preconnect, preload } from "react-dom";
+import { OSM_TILE_ORIGIN, mosaicoCentralUrl } from "@/lib/barrio/constantes";
 import type { IncidentePin } from "@/components/map/IncidentesLayer";
 import type { AlertaPin } from "@/components/map/AlertasLayer";
 
@@ -27,6 +29,10 @@ const LAYER_LABELS: Record<LayerKey, string> = {
 };
 
 export default function MapaPage() {
+  // Abre la conexión a los mosaicos y precarga el central (LCP) mientras
+  // todavía baja Leaflet.
+  preconnect(OSM_TILE_ORIGIN);
+  preload(mosaicoCentralUrl(), { as: "image", fetchPriority: "high" });
   const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
     manzanas: true,
     incidentes: true,
@@ -124,7 +130,7 @@ export default function MapaPage() {
                       ? isAlerta
                         ? "bg-red-100 border border-red-400 text-red-700"
                         : "bg-blue-100 border border-blue-400 text-blue-700"
-                      : "bg-white border border-gray-300 text-gray-400 hover:bg-gray-50"
+                      : "bg-white border border-gray-300 text-gray-500 hover:bg-gray-50"
                   }`}
                 >
                   {LAYER_LABELS[key]}
@@ -134,7 +140,7 @@ export default function MapaPage() {
             })}
 
             {loading && (
-              <span className="text-xs text-gray-400 ml-2 animate-pulse">
+              <span className="text-xs text-gray-500 ml-2 animate-pulse">
                 Cargando datos…
               </span>
             )}
@@ -154,7 +160,7 @@ export default function MapaPage() {
 
         {/* Leyenda */}
         <div className="p-4 bg-gray-50 border-t border-gray-200">
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Leyenda</h3>
+          <h2 className="text-sm font-semibold text-gray-700 mb-2">Leyenda</h2>
           <div className="flex gap-4 flex-wrap text-sm">
             {layers.manzanas && (
               <>

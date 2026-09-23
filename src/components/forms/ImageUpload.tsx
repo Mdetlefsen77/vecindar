@@ -95,7 +95,7 @@ export default function ImageUpload(props: Props) {
       {props.label && (
         <label className="block text-sm font-medium text-gray-700 mb-1.5">
           {props.label}{" "}
-          <span className="text-gray-400 font-normal">(opcional)</span>
+          <span className="text-gray-500 font-normal">(opcional)</span>
         </label>
       )}
 
@@ -131,7 +131,7 @@ export default function ImageUpload(props: Props) {
           {uploading && (
             <div className="w-24 h-24 rounded-xl border border-gray-200 bg-gray-100 flex items-center justify-center flex-shrink-0">
               <svg
-                className="w-5 h-5 text-gray-400 animate-spin"
+                className="w-5 h-5 text-gray-500 animate-spin"
                 fill="none"
                 viewBox="0 0 24 24"
               >
@@ -156,7 +156,7 @@ export default function ImageUpload(props: Props) {
 
       {/* Add button — shown when there are no images yet (with spinner) or when canAdd */}
       {urls.length === 0 && uploading ? (
-        <div className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-blue-300 rounded-xl text-sm text-blue-500 w-full">
+        <div className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-blue-300 rounded-xl text-sm text-blue-600 w-full">
           <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
             <circle
               className="opacity-25"

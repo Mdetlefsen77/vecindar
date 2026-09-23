@@ -143,7 +143,7 @@ export default async function DetalleIncidentePage({ params }: Params) {
         {inc.ubicacionText && (
           <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
             <svg
-              className="w-4 h-4 text-gray-400 shrink-0"
+              className="w-4 h-4 text-gray-500 shrink-0"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -159,7 +159,7 @@ export default async function DetalleIncidentePage({ params }: Params) {
           </div>
         )}
 
-        <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
+        <div className="pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
           <span>
             {nombreCompleto(inc.reportadoPor)}
             {loteInfo && ` · ${loteInfo}`}

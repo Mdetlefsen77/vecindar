@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
+import { useEffect, useId, useRef, useState } from "react";
 import { signOut } from "next-auth/react";
 import PushNotificationToggle from "./PushNotificationToggle";
 import { esGestor, GESTORES_REPORTES } from "@/lib/permisos";
@@ -86,6 +86,9 @@ interface MobileHeaderProps {
   userRole: string;
 }
 
+const ITEM_CLASS =
+  "w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 focus-visible:outline-none focus-visible:bg-gray-50 focus-visible:text-blue-600 transition-colors";
+
 export default function MobileHeader({
   userName,
   userEmail,
@@ -93,23 +96,56 @@ export default function MobileHeader({
 }: MobileHeaderProps) {
   const panel = PANEL_POR_ROL[userRole];
 
+  // Desplegable propio (patrón "disclosure": botón + panel) en vez del Menu
+  // de Headless UI: este header se monta en todas las pantallas del panel y
+  // la librería sumaba ~30 kB de JS solo para esto.
+  const [abierto, setAbierto] = useState(false);
+  const contenedorRef = useRef<HTMLDivElement>(null);
+  const botonRef = useRef<HTMLButtonElement>(null);
+  const panelId = useId();
+
+  useEffect(() => {
+    if (!abierto) return;
+    const alTocarAfuera = (e: PointerEvent) => {
+      if (!contenedorRef.current?.contains(e.target as Node)) setAbierto(false);
+    };
+    const alTeclear = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setAbierto(false);
+        botonRef.current?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", alTocarAfuera);
+    document.addEventListener("keydown", alTeclear);
+    return () => {
+      document.removeEventListener("pointerdown", alTocarAfuera);
+      document.removeEventListener("keydown", alTeclear);
+    };
+  }, [abierto]);
+
   return (
     <header className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 h-16 flex items-center justify-between px-4 shadow-sm print:hidden">
       <span className="text-xl font-bold text-brand">Vecindar</span>
 
-      <Menu as="div" className="relative">
-        <MenuButton
+      <div ref={contenedorRef} className="relative">
+        <button
+          ref={botonRef}
+          type="button"
           aria-label="Abrir menú de cuenta"
+          aria-expanded={abierto}
+          aria-controls={panelId}
+          onClick={() => setAbierto((v) => !v)}
           className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1"
         >
           <span className="text-blue-700 font-semibold text-base">
             {userName.charAt(0).toUpperCase()}
           </span>
-        </MenuButton>
+        </button>
 
-        <MenuItems
-          anchor="bottom end"
-          className="w-64 rounded-xl bg-white border border-gray-200 shadow-lg z-50 focus:outline-none"
+        <div
+          id={panelId}
+          hidden={!abierto}
+          className="absolute right-0 top-full mt-2 w-64 rounded-xl bg-white border border-gray-200 shadow-lg z-50"
         >
           <div className="px-4 py-3 border-b border-gray-100">
             <p className="text-base font-medium text-gray-900 truncate">
@@ -123,48 +159,40 @@ export default function MobileHeader({
               <PushNotificationToggle />
             </div>
           </div>
-          <MenuItem>
-            <Link
-              href="/mi-suscripcion"
-              className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 data-focus:bg-gray-50 data-focus:text-blue-600 transition-colors"
-            >
+          {/* Cerrar al tocar cualquier link, aunque lleve a la pantalla actual. */}
+          <nav
+            aria-label="Cuenta"
+            onClick={(e) => {
+              if ((e.target as HTMLElement).closest("a")) setAbierto(false);
+            }}
+          >
+            <Link href="/mi-suscripcion" className={ITEM_CLASS}>
               <WalletIcon />
               Mi suscripción
             </Link>
-          </MenuItem>
-          {panel && (
-            <MenuItem>
-              <Link
-                href={panel.href}
-                className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 data-focus:bg-gray-50 data-focus:text-blue-600 transition-colors"
-              >
+            {panel && (
+              <Link href={panel.href} className={ITEM_CLASS}>
                 <PanelIcon />
                 {panel.label}
               </Link>
-            </MenuItem>
-          )}
-          {esGestor(userRole, GESTORES_REPORTES) && (
-            <MenuItem>
-              <Link
-                href="/reportes"
-                className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 data-focus:bg-gray-50 data-focus:text-blue-600 transition-colors"
-              >
+            )}
+            {esGestor(userRole, GESTORES_REPORTES) && (
+              <Link href="/reportes" className={ITEM_CLASS}>
                 <ReportesIcon />
                 Reportes
               </Link>
-            </MenuItem>
-          )}
-          <MenuItem>
+            )}
             <button
+              type="button"
               onClick={() => signOut({ callbackUrl: "/login" })}
-              className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 data-focus:bg-gray-50 data-focus:text-red-600 transition-colors"
+              className={ITEM_CLASS.replaceAll("text-blue-600", "text-red-600")}
             >
               <LogoutIcon />
               Salir
             </button>
-          </MenuItem>
-        </MenuItems>
-      </Menu>
+          </nav>
+        </div>
+      </div>
     </header>
   );
 }

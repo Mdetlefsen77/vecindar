@@ -93,7 +93,7 @@ export default async function MiSuscripcionPage() {
 
       {/* Estado actual */}
       <div className={`rounded-2xl border-2 p-4 ${ui.clase}`}>
-        <p className="text-xs font-semibold uppercase tracking-wide opacity-70">
+        <p className="text-xs font-semibold uppercase tracking-wide opacity-80">
           Estado
         </p>
         <p className="text-2xl font-bold mt-0.5">{ui.titulo}</p>
@@ -101,7 +101,7 @@ export default async function MiSuscripcionPage() {
 
         <dl className="mt-3 grid grid-cols-2 gap-3 text-sm">
           <div>
-            <dt className="opacity-70">Cobertura hasta</dt>
+            <dt className="opacity-80">Cobertura hasta</dt>
             <dd className="font-semibold">
               {suscripcion?.vigenteHasta
                 ? fmtFecha(suscripcion.vigenteHasta)
@@ -110,7 +110,7 @@ export default async function MiSuscripcionPage() {
           </div>
           {estado === "vencida" && (
             <div>
-              <dt className="opacity-70">Adeudás</dt>
+              <dt className="opacity-80">Adeudás</dt>
               <dd className="font-semibold">
                 {meses === 1 ? "1 mes" : `${meses} meses`} ·{" "}
                 {formatoPesos(deuda)}
@@ -140,7 +140,7 @@ export default async function MiSuscripcionPage() {
         </div>
 
         {pagos.length === 0 ? (
-          <p className="text-center text-gray-400 py-8 text-sm">
+          <p className="text-center text-gray-500 py-8 text-sm">
             Todavía no hay pagos registrados a tu nombre.
           </p>
         ) : (
@@ -168,7 +168,7 @@ export default async function MiSuscripcionPage() {
         )}
       </div>
 
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-gray-500">
         Los pagos los registra el administrador del barrio. Si ves algo que no
         coincide, escribile.
       </p>

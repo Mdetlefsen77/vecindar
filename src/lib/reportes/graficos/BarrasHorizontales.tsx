@@ -38,7 +38,7 @@ export default function BarrasHorizontales({ datos }: { datos: Dato[] }) {
   const max = Math.max(1, ...ordenadas.map((d) => d.valor));
 
   if (ordenadas.every((d) => d.valor === 0)) {
-    return <p className="text-sm text-gray-400 py-2">Sin datos en el período.</p>;
+    return <p className="text-sm text-gray-500 py-2">Sin datos en el período.</p>;
   }
 
   return (

@@ -3,7 +3,11 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { BARRIO_CENTER, BARRIO_ZOOM } from "@/lib/barrio/manzanas";
+import {
+  BARRIO_CENTER,
+  BARRIO_ZOOM,
+  OSM_TILE_URL,
+} from "@/lib/barrio/constantes";
 import IncidentesLayer, {
   type IncidentePin,
 } from "@/components/map/IncidentesLayer";
@@ -38,7 +42,7 @@ export default function IncidentesMapaView({
       BARRIO_ZOOM,
     );
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer(OSM_TILE_URL, {
       attribution: "&copy; OpenStreetMap",
       maxZoom: 19,
     }).addTo(m);

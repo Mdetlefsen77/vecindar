@@ -180,7 +180,7 @@ export default async function NotificacionesExternasPage() {
                   </div>
                 ))}
               </div>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="mt-1 text-xs text-gray-500">
                 {e.clicks > 0
                   ? `${((e.cuentas / e.clicks) * 100).toFixed(0)}% de los clicks creó cuenta`
                   : "Sin clicks todavía"}
@@ -249,7 +249,7 @@ export default async function NotificacionesExternasPage() {
           CTR por tipo de evento
         </h2>
         {filas.length === 0 ? (
-          <div className="bg-gray-50 rounded-xl p-6 text-center text-gray-400 text-sm">
+          <div className="bg-gray-50 rounded-xl p-6 text-center text-gray-500 text-sm">
             Todavía no se compartió nada.
           </div>
         ) : (
@@ -264,7 +264,7 @@ export default async function NotificacionesExternasPage() {
                   <p className="text-sm font-semibold text-gray-900">
                     {f.ctr.toFixed(0)}% CTR
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-gray-500">
                     {f.clicks} clicks / {f.publicados} publicados
                   </p>
                 </div>
@@ -280,7 +280,7 @@ export default async function NotificacionesExternasPage() {
           <p className="text-2xl">👆</p>
           <p className="text-3xl font-bold text-gray-900 leading-none mt-1">
             {clicksSinSesion}
-            <span className="text-base font-normal text-gray-400">
+            <span className="text-base font-normal text-gray-500">
               {" "}
               / {clicksTotales}
             </span>
@@ -318,7 +318,7 @@ export default async function NotificacionesExternasPage() {
           <div className="border-2 border-gray-200 bg-white rounded-xl p-4">
             <p className="text-3xl font-bold text-gray-900 leading-none">
               {activos7d}
-              <span className="text-base font-normal text-gray-400">
+              <span className="text-base font-normal text-gray-500">
                 {" "}
                 / {totalUsuarios}
               </span>
@@ -330,7 +330,7 @@ export default async function NotificacionesExternasPage() {
           <div className="border-2 border-gray-200 bg-white rounded-xl p-4">
             <p className="text-3xl font-bold text-gray-900 leading-none">
               {activos30d}
-              <span className="text-base font-normal text-gray-400">
+              <span className="text-base font-normal text-gray-500">
                 {" "}
                 / {totalUsuarios}
               </span>

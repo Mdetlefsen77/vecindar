@@ -11,10 +11,12 @@ import {
   getManzanaBoundsByFid,
 } from "./data/geojson";
 
-export const BARRIO_CENTER: [number, number] = [-31.495963, -64.277734];
-export const BARRIO_ZOOM = 15;
-export const BARRIO_ZOOM_MIN = 14;
-export const BARRIO_ZOOM_MAX = 19;
+export {
+  BARRIO_CENTER,
+  BARRIO_ZOOM,
+  BARRIO_ZOOM_MIN,
+  BARRIO_ZOOM_MAX,
+} from "./constantes";
 export type Zona = "Norte" | "Sur";
 export type TipoZona = "manzana" | "espacio_verde" | "uso_comunitario";
 export interface ManzanaConfig {

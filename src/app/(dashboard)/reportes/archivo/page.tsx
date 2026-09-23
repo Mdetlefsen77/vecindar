@@ -35,7 +35,7 @@ export default async function ArchivoReportesPage() {
       </div>
 
       {reportes.length === 0 ? (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center text-gray-400 text-sm">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center text-gray-500 text-sm">
           Todavía no se archivó ningún reporte.
         </div>
       ) : (
@@ -64,7 +64,7 @@ export default async function ArchivoReportesPage() {
                     {r.generadoAt.toLocaleDateString("es-AR")}
                   </p>
                   {r.nota && (
-                    <p className="text-xs text-gray-400 truncate mt-0.5">
+                    <p className="text-xs text-gray-500 truncate mt-0.5">
                       &quot;{r.nota}&quot;
                     </p>
                   )}

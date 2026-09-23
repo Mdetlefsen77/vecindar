@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { OSM_TILE_URL } from "@/lib/barrio/constantes";
 
 const TIPO_COLORES: Record<string, string> = {
   ROBO: "#dc2626",
@@ -37,7 +38,7 @@ export default function DetalleMapaMini({
       scrollWheelZoom: false,
     }).setView([latitud, longitud], 17);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    L.tileLayer(OSM_TILE_URL, {
       attribution: "&copy; OpenStreetMap",
       maxZoom: 19,
     }).addTo(map);

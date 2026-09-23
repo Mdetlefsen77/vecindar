@@ -1,6 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import { preconnect, preload } from "react-dom";
+import { OSM_TILE_ORIGIN, mosaicoCentralUrl } from "@/lib/barrio/constantes";
 import type { IncidentePin } from "@/components/map/IncidentesLayer";
 
 // El dynamic con ssr:false debe vivir en un Client Component
@@ -18,5 +20,9 @@ export default function IncidentesMapaLazy({
 }: {
   incidentes: IncidentePin[];
 }) {
+  // Abre la conexión a los mosaicos y precarga el central (LCP) mientras
+  // todavía baja Leaflet.
+  preconnect(OSM_TILE_ORIGIN);
+  preload(mosaicoCentralUrl(), { as: "image", fetchPriority: "high" });
   return <IncidentesMapaView incidentes={incidentes} />;
 }

@@ -61,7 +61,7 @@ function LoginForm() {
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
             Vecindar
           </h1>
-          <p className="mt-1 text-sm text-gray-500">Tu barrio conectado</p>
+          <p className="mt-1 text-sm text-gray-600">Tu barrio conectado</p>
         </div>
 
         {/* Contexto para quien llega desde un link externo (HU-05, CA-05.1) —
@@ -137,7 +137,7 @@ function LoginForm() {
           </form>
         </div>
 
-        <p className="mt-6 text-center text-sm text-gray-500">
+        <p className="mt-6 text-center text-sm text-gray-600">
           ¿No tenés cuenta?{" "}
           <a
             href={hrefRegistro}

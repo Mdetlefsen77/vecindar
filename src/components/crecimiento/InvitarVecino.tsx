@@ -1,48 +1,40 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AVISO_SUSCRIPCION } from "@/lib/prueba";
 
 const MENSAJE = `Te invito a sumarte a Vecindar, la app de seguridad y gestión de nuestro barrio 🏘️ ${AVISO_SUSCRIPCION}`;
 
-export default function InvitarVecino() {
-  const [codigo, setCodigo] = useState<string | null>(null);
-  const [registros, setRegistros] = useState(0);
+export default function InvitarVecino({
+  codigo,
+  registros,
+}: {
+  codigo: string;
+  registros: number;
+}) {
   const [copiado, setCopiado] = useState(false);
 
-  useEffect(() => {
-    fetch("/api/invitaciones/mi-codigo")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!data) return;
-        setCodigo(data.codigo);
-        setRegistros(data.registros ?? 0);
-      })
-      .catch(() => {});
-  }, []);
-
-  if (!codigo) return null;
-
-  const link = `${window.location.origin}/i/${codigo}`;
+  // Se arma en el click (no en el render) porque necesita window.
+  const link = () => `${window.location.origin}/i/${codigo}`;
 
   const compartir = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title: "Vecindar", text: MENSAJE, url: link });
+        await navigator.share({ title: "Vecindar", text: MENSAJE, url: link() });
       } catch {
         // el usuario canceló el share nativo — no es un error a mostrar
       }
       return;
     }
     window.open(
-      `https://wa.me/?text=${encodeURIComponent(`${MENSAJE} ${link}`)}`,
+      `https://wa.me/?text=${encodeURIComponent(`${MENSAJE} ${link()}`)}`,
       "_blank",
     );
   };
 
   const copiarLink = async () => {
     try {
-      await navigator.clipboard.writeText(link);
+      await navigator.clipboard.writeText(link());
       setCopiado(true);
       setTimeout(() => setCopiado(false), 2000);
     } catch {

@@ -12,7 +12,7 @@ export default function ExportarPdfBoton() {
       >
         Exportar a PDF
       </button>
-      <p className="text-xs text-gray-400 max-w-[220px] text-right">
+      <p className="text-xs text-gray-500 max-w-[220px] text-right">
         En el diálogo de impresión, desactivá &quot;Encabezados y pies de
         página&quot; para un PDF más prolijo.
       </p>

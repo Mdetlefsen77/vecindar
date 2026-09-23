@@ -6,6 +6,7 @@ import { getUserId } from "@/lib/api/guard";
 import Link from "next/link";
 import Image from "next/image";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
+import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
 import type {
   TipoIncidente,
   CategoriaReq,
@@ -181,25 +182,20 @@ export default async function InicioPage() {
   const nombre = session.user.name?.split(" ")[0] ?? "Vecino";
   const usuarioId = getUserId(session);
 
-  // Última visita a cada sección — determina qué se cuenta como "nuevo"
-  const usuarioConVistas = await prisma.usuario.findUnique({
-    where: { id: usuarioId },
-    select: { createdAt: true, vistasSecciones: true },
-  });
-  const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
-    usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
-      ?.vistoAt ??
-    usuarioConVistas?.createdAt ??
-    new Date(0);
-
+  // Primer viaje a la base, todo en paralelo: última visita a cada sección
+  // (determina qué cuenta como "nuevo"), los listados y la invitación.
   const [
+    usuarioConVistas,
     incidentes,
     requerimientos,
     mascotas,
-    nuevosIncidentes,
-    nuevosRequerimientos,
-    nuevasMascotas,
+    codigoInvitacion,
+    invitados,
   ] = await Promise.all([
+    prisma.usuario.findUnique({
+      where: { id: usuarioId },
+      select: { createdAt: true, vistasSecciones: true },
+    }),
     prisma.incidente.findMany({
       where: {
         estado: "ACTIVO",
@@ -230,26 +226,39 @@ export default async function InicioPage() {
       orderBy: { createdAt: "desc" },
       take: 3,
     }),
-    prisma.incidente.count({
-      where: {
-        createdAt: { gt: vistoAt("INCIDENTES") },
-        reportadoPorId: { not: usuarioId },
-        ...(isVecino ? { visibleVecinos: true } : {}),
-      },
-    }),
-    prisma.requerimiento.count({
-      where: {
-        createdAt: { gt: vistoAt("REQUERIMIENTOS") },
-        usuarioId: { not: usuarioId },
-      },
-    }),
-    prisma.mascotaPerdida.count({
-      where: {
-        createdAt: { gt: vistoAt("MASCOTAS") },
-        usuarioId: { not: usuarioId },
-      },
-    }),
+    // Se resuelve acá y no en el cliente: si el cuadro "Invitá a un vecino"
+    // aparece después de cargar, empuja el resto de la página (CLS).
+    obtenerOCrearCodigo(usuarioId),
+    prisma.usuario.count({ where: { invitadoPorId: usuarioId } }),
   ]);
+  const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
+    usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
+      ?.vistoAt ??
+    usuarioConVistas?.createdAt ??
+    new Date(0);
+
+  const [nuevosIncidentes, nuevosRequerimientos, nuevasMascotas] =
+    await Promise.all([
+      prisma.incidente.count({
+        where: {
+          createdAt: { gt: vistoAt("INCIDENTES") },
+          reportadoPorId: { not: usuarioId },
+          ...(isVecino ? { visibleVecinos: true } : {}),
+        },
+      }),
+      prisma.requerimiento.count({
+        where: {
+          createdAt: { gt: vistoAt("REQUERIMIENTOS") },
+          usuarioId: { not: usuarioId },
+        },
+      }),
+      prisma.mascotaPerdida.count({
+        where: {
+          createdAt: { gt: vistoAt("MASCOTAS") },
+          usuarioId: { not: usuarioId },
+        },
+      }),
+    ]);
 
   return (
     <div className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-6 space-y-3 sm:space-y-4 max-w-7xl mx-auto">
@@ -286,7 +295,7 @@ export default async function InicioPage() {
         {/* REQUERIMIENTOS — arriba derecha */}
         <Link
           href="/requerimientos"
-          className="relative bg-amber-500 hover:bg-amber-600 active:scale-[0.97] transition-all
+          className="relative bg-amber-700 hover:bg-amber-800 active:scale-[0.97] transition-all
             rounded-tl-2xl rounded-tr-2xl rounded-br-2xl rounded-bl-[3.5rem]
             text-white shadow-sm h-40
             flex flex-col items-center justify-center gap-3"
@@ -303,7 +312,7 @@ export default async function InicioPage() {
         {/* MASCOTAS — abajo izquierda */}
         <Link
           href="/mascotas"
-          className="relative bg-teal-600 hover:bg-teal-700 active:scale-[0.97] transition-all
+          className="relative bg-teal-700 hover:bg-teal-800 active:scale-[0.97] transition-all
             rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr-[3.5rem]
             text-white shadow-sm h-40
             flex flex-col items-center justify-center gap-3"
@@ -318,7 +327,7 @@ export default async function InicioPage() {
         {/* INCIDENTES — abajo derecha */}
         <Link
           href="/incidentes"
-          className="relative bg-orange-600 hover:bg-orange-700 active:scale-[0.97] transition-all
+          className="relative bg-orange-700 hover:bg-orange-800 active:scale-[0.97] transition-all
             rounded-bl-2xl rounded-br-2xl rounded-tr-2xl rounded-tl-[3.5rem]
             text-white shadow-sm h-40
             flex flex-col items-center justify-center gap-3"
@@ -346,7 +355,7 @@ export default async function InicioPage() {
           <span className="text-[28px] sm:text-[44px] lg:text-[56px] font-black tracking-[0.15em] leading-tight">
             SOS
           </span>
-          <span className="text-[10px] sm:text-xs lg:text-sm font-medium opacity-75 leading-tight">
+          <span className="text-[10px] sm:text-xs lg:text-sm font-medium leading-tight">
             3 seg
           </span>
         </Link>
@@ -361,7 +370,7 @@ export default async function InicioPage() {
         />
       </div>
 
-      <InvitarVecino />
+      <InvitarVecino codigo={codigoInvitacion} registros={invitados} />
 
       {/* Secciones principales — columna única mobile, 2 col en lg */}
       <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
@@ -385,7 +394,7 @@ export default async function InicioPage() {
           </div>
 
           {incidentes.length === 0 ? (
-            <p className="text-center text-gray-400 py-8 text-sm">
+            <p className="text-center text-gray-500 py-8 text-sm">
               Sin incidentes activos
             </p>
           ) : (
@@ -424,7 +433,7 @@ export default async function InicioPage() {
                         <p className="text-sm text-gray-500 truncate mt-1">
                           {ubicacion}
                         </p>
-                        <p className="text-sm text-gray-400 mt-0.5">
+                        <p className="text-sm text-gray-500 mt-0.5">
                           {timeAgo(inc.createdAt)}
                         </p>
                       </div>
@@ -468,7 +477,7 @@ export default async function InicioPage() {
           </div>
 
           {requerimientos.length === 0 ? (
-            <p className="text-center text-gray-400 py-8 text-sm">
+            <p className="text-center text-gray-500 py-8 text-sm">
               Sin requerimientos abiertos
             </p>
           ) : (
@@ -545,7 +554,7 @@ export default async function InicioPage() {
           </div>
 
           {mascotas.length === 0 ? (
-            <p className="text-center text-gray-400 py-8 text-sm">
+            <p className="text-center text-gray-500 py-8 text-sm">
               Sin alertas de mascotas activas
             </p>
           ) : (
@@ -604,7 +613,7 @@ export default async function InicioPage() {
                       <p className="text-sm text-gray-500 truncate mt-1">
                         {m.descripcion}
                       </p>
-                      <p className="text-sm text-gray-400 mt-0.5">
+                      <p className="text-sm text-gray-500 mt-0.5">
                         {timeAgo(m.createdAt)}
                       </p>
                     </div>

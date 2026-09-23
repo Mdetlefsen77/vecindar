@@ -133,7 +133,7 @@ export default async function AdminCobranzaPage({
       <div>
         <Link
           href={session.user.role === "ADMIN" ? "/admin" : "/inicio"}
-          className="text-gray-400 hover:text-gray-600 text-sm"
+          className="text-gray-500 hover:text-gray-600 text-sm"
         >
           ← {session.user.role === "ADMIN" ? "Admin" : "Inicio"}
         </Link>

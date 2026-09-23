@@ -61,7 +61,7 @@ function FilaCopiable({ label, valor }: { label: string; valor: string }) {
           className={`shrink-0 min-w-[40px] min-h-[40px] inline-flex items-center justify-center rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
             copiado
               ? "text-green-600 bg-green-50"
-              : "text-gray-400 hover:text-blue-600 hover:bg-blue-50"
+              : "text-gray-500 hover:text-blue-600 hover:bg-blue-50"
           }`}
         >
           {copiado ? (
@@ -100,7 +100,7 @@ export default function DatosPago() {
           href={DATOS_PAGO.linkMercadoPago}
           target="_blank"
           rel="noopener noreferrer"
-          className="w-full min-h-[52px] inline-flex items-center justify-center gap-2 rounded-xl bg-[#009EE3] hover:bg-[#0089c7] px-4 py-3 text-base font-bold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#009EE3] focus-visible:ring-offset-2"
+          className="w-full min-h-[52px] inline-flex items-center justify-center gap-2 rounded-xl bg-[#0077B6] hover:bg-[#00649A] px-4 py-3 text-base font-bold text-white shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0077B6] focus-visible:ring-offset-2"
         >
           Pagá con Mercado Pago
           <ArrowTopRightOnSquareIcon className="w-5 h-5" aria-hidden />
@@ -108,7 +108,7 @@ export default function DatosPago() {
       )}
 
       {DATOS_PAGO.linkMercadoPago && DATOS.length > 0 && (
-        <div className="flex items-center gap-3 text-xs text-gray-400">
+        <div className="flex items-center gap-3 text-xs text-gray-500">
           <span className="h-px flex-1 bg-gray-200" />o por transferencia
           <span className="h-px flex-1 bg-gray-200" />
         </div>

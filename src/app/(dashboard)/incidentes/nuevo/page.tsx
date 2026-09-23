@@ -1,24 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { BARRIO_CENTER, BARRIO_ZOOM } from "@/lib/barrio/manzanas";
 import ImageUpload from "@/components/forms/ImageUpload";
-
-// Fix iconos Leaflet
-type IconDefaultWithGetUrl = L.Icon.Default & { _getIconUrl?: string };
-delete (L.Icon.Default.prototype as IconDefaultWithGetUrl)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl:
-    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
+import SelectorUbicacion from "./SelectorUbicacionLazy";
 
 const TIPOS = [
   { value: "ROBO", label: "🔴 Robo" },
@@ -30,10 +16,6 @@ const TIPOS = [
 
 export default function NuevoIncidentePage() {
   const router = useRouter();
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef<L.Map | null>(null);
-  const pinRef = useRef<L.Marker | null>(null);
-
   const [tipo, setTipo] = useState("ROBO");
   const [descripcion, setDescripcion] = useState("");
   const [ubicacionText, setUbicacionText] = useState("");
@@ -44,43 +26,6 @@ export default function NuevoIncidentePage() {
   const [imagenes, setImagenes] = useState<string[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (!mapContainerRef.current || mapRef.current) return;
-
-    const map = L.map(mapContainerRef.current).setView(
-      BARRIO_CENTER,
-      BARRIO_ZOOM,
-    );
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      attribution: "&copy; OpenStreetMap",
-      maxZoom: 19,
-    }).addTo(map);
-
-    // Click en el mapa coloca / mueve el pin
-    map.on("click", (e: L.LeafletMouseEvent) => {
-      const { lat, lng } = e.latlng;
-      setCoordenadas({ lat, lng });
-
-      if (pinRef.current) {
-        pinRef.current.setLatLng([lat, lng]);
-      } else {
-        const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
-        marker.on("dragend", () => {
-          const pos = marker.getLatLng();
-          setCoordenadas({ lat: pos.lat, lng: pos.lng });
-        });
-        pinRef.current = marker;
-      }
-    });
-
-    mapRef.current = map;
-    return () => {
-      mapRef.current?.remove();
-      mapRef.current = null;
-      pinRef.current = null;
-    };
-  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -161,24 +106,20 @@ export default function NuevoIncidentePage() {
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-1.5">
             Ubicación <span className="text-red-500">*</span>
-            <span className="font-normal text-gray-400 ml-1">
+            <span className="font-normal text-gray-500 ml-1">
               — tocá el mapa para marcar
             </span>
           </label>
-          <div
-            ref={mapContainerRef}
-            className="rounded-xl overflow-hidden border-2 transition-colors"
-            style={{
-              height: "240px",
-              borderColor: coordenadas ? "#16a34a" : "#e5e7eb",
-            }}
+          <SelectorUbicacion
+            marcado={coordenadas !== null}
+            onChange={setCoordenadas}
           />
           {coordenadas ? (
             <p className="text-xs text-green-600 mt-1 font-medium">
               ✓ Ubicación marcada — podés arrastrar el pin para ajustar
             </p>
           ) : (
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-gray-500 mt-1">
               Aún no marcaste la ubicación
             </p>
           )}
@@ -215,7 +156,7 @@ export default function NuevoIncidentePage() {
               className="block text-sm font-semibold text-gray-700 mb-1.5"
             >
               Referencia de ubicación{" "}
-              <span className="font-normal text-gray-400">(opcional)</span>
+              <span className="font-normal text-gray-500">(opcional)</span>
             </label>
             <input
               id="ubicacionText"
@@ -257,7 +198,10 @@ export default function NuevoIncidentePage() {
         </div>
 
         {error && (
-          <p role="alert" className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2.5">
+          <p
+            role="alert"
+            className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2.5"
+          >
             {error}
           </p>
         )}

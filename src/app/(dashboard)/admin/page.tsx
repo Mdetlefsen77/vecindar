@@ -157,7 +157,7 @@ export default async function AdminPage() {
             <p className="text-3xl font-bold text-gray-900 leading-none mt-1">
               {s.value}
               {s.total !== undefined && (
-                <span className="text-base font-normal text-gray-400">
+                <span className="text-base font-normal text-gray-500">
                   {" "}
                   / {s.total}
                 </span>
@@ -183,7 +183,7 @@ export default async function AdminPage() {
         </div>
 
         {ultimosPendientes.length === 0 ? (
-          <div className="bg-gray-50 rounded-xl p-6 text-center text-gray-400 text-sm">
+          <div className="bg-gray-50 rounded-xl p-6 text-center text-gray-500 text-sm">
             No hay registros pendientes ✅
           </div>
         ) : (
@@ -207,7 +207,7 @@ export default async function AdminPage() {
                   <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-medium">
                     Pendiente
                   </span>
-                  <p className="text-xs text-gray-400 mt-1">
+                  <p className="text-xs text-gray-500 mt-1">
                     {new Date(u.createdAt).toLocaleDateString("es-AR")}
                   </p>
                 </div>

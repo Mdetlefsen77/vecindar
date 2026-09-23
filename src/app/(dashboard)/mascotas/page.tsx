@@ -89,7 +89,7 @@ export default async function MascotasPage({
 
       {/* Empty state */}
       {mascotas.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
+        <div className="text-center py-16 text-gray-500">
           <svg
             className="w-12 h-12 mx-auto mb-3 opacity-40"
             fill="none"
@@ -106,7 +106,7 @@ export default async function MascotasPage({
           <p className="font-medium">No hay alertas con esos filtros.</p>
           <Link
             href="/mascotas/nuevo"
-            className="text-blue-500 text-sm hover:underline mt-2 block"
+            className="text-blue-600 text-sm hover:underline mt-2 block"
           >
             Publicar una alerta →
           </Link>
@@ -132,7 +132,7 @@ export default async function MascotasPage({
                     />
                   ) : (
                     <svg
-                      className="w-7 h-7 text-gray-400"
+                      className="w-7 h-7 text-gray-500"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

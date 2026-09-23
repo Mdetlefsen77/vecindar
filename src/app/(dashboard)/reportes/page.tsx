@@ -118,12 +118,12 @@ function VariacionBadge({
 }) {
   if (!v.suficiente) {
     return (
-      <span className="text-xs text-gray-400">sin base de comparación</span>
+      <span className="text-xs text-gray-500">sin base de comparación</span>
     );
   }
   const { abs, pct } = v.valor;
   if (abs === 0)
-    return <span className="text-xs text-gray-400">sin cambios</span>;
+    return <span className="text-xs text-gray-500">sin cambios</span>;
   const subio = abs > 0;
   const esBueno = subio === masEsMejor;
   const color = esBueno ? "text-green-600" : "text-red-600";
@@ -150,7 +150,7 @@ function ValorConUmbral({
 }) {
   if (!v.suficiente) {
     return (
-      <span className="text-sm text-gray-400 italic">
+      <span className="text-sm text-gray-500 italic">
         pocos casos, no concluyente
       </span>
     );
@@ -173,7 +173,7 @@ function ValorConUmbral({
     <span className="text-sm font-semibold text-gray-900">
       {v.valor.mediana}
       {unidad}{" "}
-      <span className="font-normal text-gray-400">
+      <span className="font-normal text-gray-500">
         (prom. {v.valor.promedio}
         {unidad})
       </span>
@@ -359,7 +359,7 @@ export default async function ReportesPage({
                             className={`px-3 py-1.5 text-sm rounded-md font-medium transition-colors ${
                               nivel === n.valor
                                 ? "bg-white text-gray-900 shadow-sm"
-                                : "text-gray-500 hover:text-gray-700"
+                                : "text-gray-600 hover:text-gray-800"
                             }`}
                           >
                             {n.label}
@@ -481,7 +481,7 @@ export default async function ReportesPage({
                           </span>{" "}
                           <span className="text-gray-600">{item.titulo}</span>
                           {item.responsable && (
-                            <span className="text-gray-400">
+                            <span className="text-gray-500">
                               {" "}
                               · {item.responsable}
                             </span>
@@ -537,7 +537,7 @@ export default async function ReportesPage({
                       <span className="text-sm font-semibold">
                         {modelo.incidentes.antiguedadBacklog.medianaDias}d
                         mediana
-                        <span className="font-normal text-gray-400">
+                        <span className="font-normal text-gray-500">
                           {" "}
                           (máx. {modelo.incidentes.antiguedadBacklog.maximoDias}
                           d)
@@ -590,7 +590,7 @@ export default async function ReportesPage({
                       unidad=" min"
                     />
                     {modelo.panico.tiempoPrimeraRespuestaP90Min !== null && (
-                      <span className="block text-xs text-gray-400">
+                      <span className="block text-xs text-gray-500">
                         p90: {modelo.panico.tiempoPrimeraRespuestaP90Min} min
                       </span>
                     )}
