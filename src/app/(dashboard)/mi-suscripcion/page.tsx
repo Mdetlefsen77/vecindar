@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma/client";
 import { getUserId } from "@/lib/api/guard";
 import { tiempoRelativo } from "@/lib/fechas";
 import {
-  DATOS_PAGO,
   METODO_PAGO_LABEL,
   estadoCobranza,
   montoDeSuscripcion,
@@ -14,6 +13,7 @@ import {
   periodoLabel,
   type EstadoCobranza,
 } from "@/lib/cobranza";
+import DatosPago from "@/components/cobranza/DatosPago";
 
 export const metadata = { title: "Mi suscripción" };
 
@@ -81,11 +81,6 @@ export default async function MiSuscripcionPage() {
 
   const totalPagado = pagos.reduce((acc, p) => acc + p.monto, 0);
   const mostrarComoPagar = estado === "vencida" || estado === "sin_datos";
-  const datosPago = [
-    DATOS_PAGO.alias && { label: "Alias", valor: DATOS_PAGO.alias },
-    DATOS_PAGO.cbu && { label: "CBU/CVU", valor: DATOS_PAGO.cbu },
-    DATOS_PAGO.titular && { label: "Titular", valor: DATOS_PAGO.titular },
-  ].filter(Boolean) as { label: string; valor: string }[];
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
@@ -129,29 +124,7 @@ export default async function MiSuscripcionPage() {
       {mostrarComoPagar && (
         <div className="rounded-2xl border border-gray-200 bg-white p-4">
           <h2 className="font-bold text-gray-900">Cómo pagar</h2>
-          {datosPago.length > 0 ? (
-            <dl className="mt-2 divide-y divide-gray-100">
-              {datosPago.map((d) => (
-                <div
-                  key={d.label}
-                  className="flex items-center justify-between gap-3 py-2"
-                >
-                  <dt className="text-sm text-gray-500">{d.label}</dt>
-                  <dd className="text-sm font-semibold text-gray-900 text-right break-all">
-                    {d.valor}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          ) : (
-            <p className="mt-2 text-sm text-gray-500">
-              Los datos de pago todavía no están cargados. Consultá con el
-              administrador del barrio.
-            </p>
-          )}
-          {DATOS_PAGO.nota && (
-            <p className="mt-3 text-sm text-gray-600">{DATOS_PAGO.nota}</p>
-          )}
+          <DatosPago />
         </div>
       )}
 
