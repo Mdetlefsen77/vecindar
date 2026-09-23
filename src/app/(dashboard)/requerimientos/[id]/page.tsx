@@ -14,6 +14,7 @@ import {
 } from "@/lib/utils/sla";
 import ComentarioForm from "./ComentarioForm";
 import CambiarEstado from "./CambiarEstado";
+import { esGestor, COMPARTIDORES_EXTERNOS } from "@/lib/permisos";
 import CompartirBoton from "@/components/notificaciones-externas/CompartirBoton";
 import { obtenerCompartido } from "@/lib/notificaciones-externas/compartir";
 
@@ -75,7 +76,9 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
     session.user.role,
   );
 
-  const yaCompartido = puedeGestionar
+  const puedeCompartir = esGestor(session.user.role, COMPARTIDORES_EXTERNOS);
+
+  const yaCompartido = puedeCompartir
     ? await obtenerCompartido("WHATSAPP", "REQUERIMIENTO", r.id)
     : null;
 
@@ -190,7 +193,7 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
       )}
 
       {/* Compartir en el grupo (HU-07) */}
-      {puedeGestionar && (
+      {puedeCompartir && (
         <div className="mt-4">
           <CompartirBoton
             tipoEvento="REQUERIMIENTO"

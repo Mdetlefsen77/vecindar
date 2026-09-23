@@ -3,7 +3,11 @@ import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import { nombreCompleto } from "@/lib/usuarios";
 import { getUserId, parseId } from "@/lib/api/guard";
-import { esGestor, GESTORES_MASCOTAS } from "@/lib/permisos";
+import {
+  esGestor,
+  GESTORES_MASCOTAS,
+  COMPARTIDORES_EXTERNOS,
+} from "@/lib/permisos";
 import Link from "next/link";
 import Image from "next/image";
 import AccionesMascota from "./AccionesMascota";
@@ -41,7 +45,9 @@ export default async function DetalleMascotaPage({ params }: Params) {
   const esDuenio = getUserId(session) === mascota.usuario.id;
   const puedeGestionar = esGestor(session.user.role, GESTORES_MASCOTAS);
 
-  const yaCompartido = puedeGestionar
+  const puedeCompartir = esGestor(session.user.role, COMPARTIDORES_EXTERNOS);
+
+  const yaCompartido = puedeCompartir
     ? await obtenerCompartido("WHATSAPP", "MASCOTA", mascota.id)
     : null;
 
@@ -185,7 +191,7 @@ export default async function DetalleMascotaPage({ params }: Params) {
       />
 
       {/* Compartir en el grupo (HU-07) */}
-      {puedeGestionar && (
+      {puedeCompartir && (
         <CompartirBoton
           tipoEvento="MASCOTA"
           entidadId={mascota.id}

@@ -1,4 +1,4 @@
-import type { Rol } from "@/generated/enums";
+import { Rol } from "@/generated/enums";
 
 /**
  * Matriz central de permisos: qué roles pueden *gestionar* (cambiar estado,
@@ -30,6 +30,14 @@ export const GESTORES_USUARIOS: readonly Rol[] = ["ADMIN"];
 
 /** Gestionan cobranza (panel `/admin/cobranza` y su API) sin ser ADMIN completo. */
 export const GESTORES_COBRANZA: readonly Rol[] = ["ADMIN", "TESORERO"];
+
+/**
+ * Pueden compartir un incidente / requerimiento / mascota en el grupo de
+ * WhatsApp (botón manual, Fase 1 del puente). Todos los roles: cuantos más
+ * vecinos difundan, más tráfico hacia la app. El spam lo frena la
+ * idempotencia (cada evento se comparte una sola vez), no el rol.
+ */
+export const COMPARTIDORES_EXTERNOS: readonly Rol[] = Object.values(Rol);
 
 /** Ven y generan el reporte periódico, niveles interno y difusión (docs/proposal-reportes.md §9). */
 export const GESTORES_REPORTES: readonly Rol[] = ["ADMIN", "SEGURIDAD"];

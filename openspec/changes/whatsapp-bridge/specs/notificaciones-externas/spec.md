@@ -36,15 +36,15 @@ Cuando un link rastreable es solicitado por un crawler de vista previa en vez de
 - **THEN** la respuesta incluye un título y descripción genéricos de tipo "incidente" y no incluye la descripción cargada por quien reportó
 
 ### Requirement: Compartir un evento hacia un canal externo
-El sistema SHALL ofrecer una acción para compartir manualmente un incidente, un requerimiento o una mascota perdida hacia un canal externo, visible únicamente para quienes ya tienen permiso de gestión sobre ese tipo de entidad. Al activarse, SHALL componer un mensaje breve según la plantilla del tipo de evento y SHALL dejar registrado quién lo compartió y cuándo.
+El sistema SHALL ofrecer una acción para compartir manualmente un incidente, un requerimiento o una mascota perdida hacia un canal externo, visible para cualquier usuario autenticado de cualquier rol (decisión del dueño de producto, 2026-09-23: más difusión; el volumen lo limita el requirement "Un evento no se comparte dos veces"). Al activarse, SHALL componer un mensaje breve según la plantilla del tipo de evento y SHALL dejar registrado quién lo compartió y cuándo.
 
-#### Scenario: Acceso restringido por tipo de entidad
-- **WHEN** una persona sin permiso de gestión sobre incidentes visita el detalle de un incidente
-- **THEN** no ve la acción de compartir
+#### Scenario: Cualquier rol puede compartir
+- **WHEN** un usuario con rol `VECINO` visita el detalle de un requerimiento, una mascota o un incidente con `visibleVecinos = true`
+- **THEN** ve la acción de compartir
 
 #### Scenario: Compartir un incidente
-- **WHEN** un gestor de incidentes activa la acción de compartir sobre un incidente con `visibleVecinos = true`
-- **THEN** el sistema genera el link rastreable, compone el mensaje según la plantilla de incidente, y registra el evento como compartido por ese gestor en ese momento
+- **WHEN** un usuario activa la acción de compartir sobre un incidente con `visibleVecinos = true`
+- **THEN** el sistema genera el link rastreable, compone el mensaje según la plantilla de incidente, y registra el evento como compartido por ese usuario en ese momento
 
 #### Scenario: No se ofrece compartir un incidente restringido
 - **WHEN** un incidente tiene `visibleVecinos = false`
@@ -54,7 +54,7 @@ El sistema SHALL ofrecer una acción para compartir manualmente un incidente, un
 El sistema SHALL impedir que el mismo evento sea compartido por el mismo canal más de una vez.
 
 #### Scenario: Intento de compartir un evento ya compartido
-- **WHEN** un gestor intenta compartir un evento que ya fue marcado como compartido hacia el mismo canal
+- **WHEN** un usuario intenta compartir un evento que ya fue marcado como compartido hacia el mismo canal
 - **THEN** el sistema no genera una nueva publicación y comunica que ya fue compartido, por quién y cuándo
 
 ### Requirement: El mensaje compartido nunca incluye datos sensibles
