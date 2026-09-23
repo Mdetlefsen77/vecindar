@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 import { signOut } from "next-auth/react";
 import PushNotificationToggle from "./PushNotificationToggle";
+import { esGestor, GESTORES_REPORTES } from "@/lib/permisos";
 
 const LogoutIcon = () => (
   <svg
@@ -52,6 +53,23 @@ const PanelIcon = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M9 3v18m0-18h9a2 2 0 012 2v14a2 2 0 01-2 2H9m0-18H5a2 2 0 00-2 2v14a2 2 0 002 2h4"
+    />
+  </svg>
+);
+
+const ReportesIcon = () => (
+  <svg
+    aria-hidden="true"
+    className="w-5 h-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={1.8}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M9 17v-6m4 6V7m4 10v-3M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z"
     />
   </svg>
 );
@@ -122,6 +140,17 @@ export default function MobileHeader({
               >
                 <PanelIcon />
                 {panel.label}
+              </Link>
+            </MenuItem>
+          )}
+          {esGestor(userRole, GESTORES_REPORTES) && (
+            <MenuItem>
+              <Link
+                href="/reportes"
+                className="w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 data-focus:bg-gray-50 data-focus:text-blue-600 transition-colors"
+              >
+                <ReportesIcon />
+                Reportes
               </Link>
             </MenuItem>
           )}
