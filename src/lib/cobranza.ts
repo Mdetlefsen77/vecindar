@@ -9,6 +9,9 @@ export const DATOS_PAGO = {
   alias: "barriosegurou3s",
   cbu: "0000003100060817012883",
   titular: "Miguel Esteban Rodriguez",
+  // Link de pago de Mercado Pago (botón "Pagar con Mercado Pago"). El pago
+  // no se registra solo: el vecino igual tiene que mandar el comprobante.
+  linkMercadoPago: "https://mpago.la/2ZqYoCz",
   // Texto libre: banco, horario de cobro en efectivo, a quién avisar, etc.
   nota: "Cuando pagues, enviá el comprobante al administrador del barrio para que registre el pago.",
 };
