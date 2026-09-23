@@ -135,6 +135,10 @@ function RegistroForm() {
     }
   };
 
+  const hrefLogin = callbackUrl
+    ? `/login?callbackUrl=${encodeURIComponent(callbackUrl)}`
+    : "/login";
+
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 py-12 px-4 sm:px-6 lg:px-8">
@@ -151,6 +155,9 @@ function RegistroForm() {
 
           <Suspense fallback={null}>
             <BannerInvitacion />
+          </Suspense>
+          <Suspense fallback={null}>
+            <BannerLlegadaExterna />
           </Suspense>
 
           {/* Formulario */}
@@ -325,7 +332,7 @@ function RegistroForm() {
             <p className="text-center text-sm text-gray-600">
               ¿Ya tenés cuenta?{" "}
               <Link
-                href="/login"
+                href={hrefLogin}
                 className="text-blue-600 hover:text-blue-800 font-medium"
               >
                 Iniciá sesión
@@ -337,7 +344,7 @@ function RegistroForm() {
 
       <Dialog
         open={success}
-        onClose={() => router.push("/login")}
+        onClose={() => router.push(hrefLogin)}
         className="relative z-50"
       >
         <DialogBackdrop className="fixed inset-0 bg-black/40" />
@@ -367,7 +374,7 @@ function RegistroForm() {
               ya fue aprobada.
             </Description>
             <button
-              onClick={() => router.push("/login")}
+              onClick={() => router.push(hrefLogin)}
               className="w-full py-2.5 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-medium"
             >
               Volver al inicio de sesión
@@ -376,5 +383,13 @@ function RegistroForm() {
         </div>
       </Dialog>
     </>
+  );
+}
+
+export default function RegistroPage() {
+  return (
+    <Suspense fallback={null}>
+      <RegistroForm />
+    </Suspense>
   );
 }
