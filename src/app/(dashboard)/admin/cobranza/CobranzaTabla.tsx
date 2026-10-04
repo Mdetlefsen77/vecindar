@@ -320,6 +320,16 @@ function GestionDialog({
                 {cargando === "pago" ? "Registrando…" : "Registrar pago"}
               </button>
               {fila.ultimoPago && (
+                <a
+                  href={`/mi-suscripcion/comprobante/${fila.ultimoPago.id}`}
+                  target="_blank"
+                  rel="noopener"
+                  className="block w-full text-center text-xs text-blue-600 hover:underline"
+                >
+                  Ver comprobante del último pago
+                </a>
+              )}
+              {fila.ultimoPago && (
                 <button
                   onClick={borrarUltimoPago}
                   disabled={bloqueado}
