@@ -1,5 +1,6 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { prisma } from "@/lib/prisma/client";
 import { getUserId } from "@/lib/api/guard";
 import { tiempoRelativo } from "@/lib/fechas";
@@ -159,9 +160,17 @@ export default async function MiSuscripcionPage() {
                     {fmtFecha(p.fecha)} ({tiempoRelativo(p.fecha)})
                   </p>
                 </div>
-                <span className="text-sm font-semibold text-gray-900 whitespace-nowrap">
-                  {formatoPesos(p.monto)}
-                </span>
+                <div className="text-right shrink-0">
+                  <p className="text-sm font-semibold text-gray-900 whitespace-nowrap">
+                    {formatoPesos(p.monto)}
+                  </p>
+                  <Link
+                    href={`/mi-suscripcion/comprobante/${p.id}`}
+                    className="text-xs text-blue-600 hover:underline font-medium"
+                  >
+                    Comprobante
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>
