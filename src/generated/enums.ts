@@ -151,7 +151,8 @@ export const TipoEventoPublicacion = {
   MASCOTA: 'MASCOTA',
   ALERTA_PANICO: 'ALERTA_PANICO',
   RESUMEN: 'RESUMEN',
-  PARTE_TURNO: 'PARTE_TURNO'
+  PARTE_TURNO: 'PARTE_TURNO',
+  OFICIO: 'OFICIO'
 } as const
 
 export type TipoEventoPublicacion = (typeof TipoEventoPublicacion)[keyof typeof TipoEventoPublicacion]
@@ -213,6 +214,7 @@ export type NivelCirculacion = (typeof NivelCirculacion)[keyof typeof NivelCircu
 
 export const GrupoOficio = {
   HOGAR: 'HOGAR',
+  SEGURIDAD: 'SEGURIDAD',
   JARDIN: 'JARDIN',
   TECNOLOGIA: 'TECNOLOGIA',
   VEHICULOS: 'VEHICULOS',

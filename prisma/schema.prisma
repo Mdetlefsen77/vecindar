@@ -556,6 +556,7 @@ enum TipoEventoPublicacion {
   ALERTA_PANICO
   RESUMEN
   PARTE_TURNO
+  OFICIO
 }
 
 enum EstadoPublicacion {
@@ -705,6 +706,7 @@ model CategoriaOficio {
 // emojis en src/lib/oficios.ts.
 enum GrupoOficio {
   HOGAR
+  SEGURIDAD
   JARDIN
   TECNOLOGIA
   VEHICULOS

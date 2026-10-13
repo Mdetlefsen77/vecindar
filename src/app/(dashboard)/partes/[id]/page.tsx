@@ -12,7 +12,7 @@ import {
   fechaParteLabel,
   horarioTurno,
 } from "@/lib/partes";
-import CompartirParte from "@/components/partes/CompartirParte";
+import CompartirEnGrupo from "@/components/notificaciones-externas/CompartirEnGrupo";
 
 export const metadata = { title: "Parte de turno" };
 
@@ -132,7 +132,11 @@ export default async function PartePage({ params, searchParams }: Props) {
       )}
 
       <div className="flex flex-wrap items-start justify-between gap-3 pt-2">
-        <CompartirParte parteId={parte.id} imagenes={parte.imagenes} />
+        <CompartirEnGrupo
+          tipoEvento="PARTE_TURNO"
+          entidadId={parte.id}
+          imagenes={parte.imagenes}
+        />
         {puedeEditar && (
           <Link
             href={`/partes/${parte.id}/editar`}

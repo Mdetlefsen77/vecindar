@@ -10,6 +10,7 @@ export const CATEGORIA_OTROS = "Otros";
 
 export const GRUPO_OFICIO: Record<GrupoOficio, { label: string; emoji: string }> = {
   HOGAR: { label: "Hogar y construcción", emoji: "🔨" },
+  SEGURIDAD: { label: "Seguridad", emoji: "🛡️" },
   JARDIN: { label: "Jardín y exterior", emoji: "🌿" },
   TECNOLOGIA: { label: "Tecnología", emoji: "💻" },
   VEHICULOS: { label: "Vehículos", emoji: "🚗" },

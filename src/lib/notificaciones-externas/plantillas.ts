@@ -34,6 +34,24 @@ function nombrePublico(autor: AutorPlantilla): string {
  * autor, fecha implícita (se comparte al momento) y el link — nunca
  * descripción, ubicación exacta, fotos, ni datos de contacto.
  */
+/**
+ * Oficio del catálogo. A diferencia del resto no es un teaser de un evento,
+ * pero mantiene la regla de no sacar datos de contacto de la app: sin
+ * teléfono ni manzana, solo el link (CA-06.2).
+ */
+export function plantillaOficio(
+  autor: AutorPlantilla,
+  titulo: string,
+  recomendaciones: number,
+  link: string,
+): string {
+  const aval =
+    recomendaciones === 0
+      ? "✨ Nuevo en el catálogo de oficios"
+      : `👍 Recomendado por ${recomendaciones} vecino${recomendaciones === 1 ? "" : "s"}`;
+  return `🧰 OFICIO DEL BARRIO\n\n*${titulo}* — ${nombrePublico(autor)}\n${aval}\n\nMirá el detalle y contactalo en Vecindar 👉 ${link}`;
+}
+
 export function plantillaIncidente(autor: AutorPlantilla, link: string): string {
   return `🚨 NUEVO INCIDENTE\n\n${nombrePublico(autor)} reportó un incidente de seguridad en el barrio.\n\nVer detalle 👉 ${link}`;
 }
