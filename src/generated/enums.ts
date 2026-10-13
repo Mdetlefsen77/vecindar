@@ -213,6 +213,7 @@ export type NivelCirculacion = (typeof NivelCirculacion)[keyof typeof NivelCircu
 
 export const GrupoOficio = {
   HOGAR: 'HOGAR',
+  SEGURIDAD: 'SEGURIDAD',
   JARDIN: 'JARDIN',
   TECNOLOGIA: 'TECNOLOGIA',
   VEHICULOS: 'VEHICULOS',
