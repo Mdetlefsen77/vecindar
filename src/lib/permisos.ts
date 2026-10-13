@@ -34,6 +34,9 @@ export const GESTORES_COBRANZA: readonly Rol[] = ["ADMIN", "TESORERO"];
 /** Cargan y editan los partes de turno de la guardia (`/partes`). Los ven todos. */
 export const GESTORES_PARTES: readonly Rol[] = ["ADMIN", "SEGURIDAD"];
 
+/** Moderan el catálogo de oficios (aprobar, pausar, categorías, reportes). */
+export const GESTORES_OFICIOS: readonly Rol[] = ["ADMIN"];
+
 /**
  * Pueden compartir un incidente / requerimiento / mascota en el grupo de
  * WhatsApp (botón manual, Fase 1 del puente). Todos los roles: cuantos más

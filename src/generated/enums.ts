@@ -209,3 +209,31 @@ export const NivelCirculacion = {
 } as const
 
 export type NivelCirculacion = (typeof NivelCirculacion)[keyof typeof NivelCirculacion]
+
+
+export const GrupoOficio = {
+  HOGAR: 'HOGAR',
+  JARDIN: 'JARDIN',
+  TECNOLOGIA: 'TECNOLOGIA',
+  VEHICULOS: 'VEHICULOS',
+  SALUD_BELLEZA: 'SALUD_BELLEZA',
+  EDUCACION: 'EDUCACION',
+  CUIDADOS: 'CUIDADOS',
+  LIMPIEZA: 'LIMPIEZA',
+  GASTRONOMIA_EVENTOS: 'GASTRONOMIA_EVENTOS',
+  PROFESIONALES: 'PROFESIONALES',
+  TRANSPORTE: 'TRANSPORTE',
+  OTROS: 'OTROS'
+} as const
+
+export type GrupoOficio = (typeof GrupoOficio)[keyof typeof GrupoOficio]
+
+
+export const EstadoOficio = {
+  PENDIENTE: 'PENDIENTE',
+  APROBADO: 'APROBADO',
+  RECHAZADO: 'RECHAZADO',
+  PAUSADO: 'PAUSADO'
+} as const
+
+export type EstadoOficio = (typeof EstadoOficio)[keyof typeof EstadoOficio]

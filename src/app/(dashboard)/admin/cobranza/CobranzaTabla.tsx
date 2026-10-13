@@ -14,10 +14,10 @@ import {
   formatoPesos,
   periodoLabel,
   mensajeRecordatorioWhatsApp,
-  linkWhatsApp,
   type EstadoCobranza,
 } from "@/lib/cobranza";
 import { MetodoPago } from "@/generated/enums";
+import { linkWhatsApp } from "@/lib/whatsapp";
 
 export interface FilaCobranza {
   id: number;

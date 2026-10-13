@@ -111,6 +111,11 @@ model Usuario {
   // Partes de turno que cargó (rol SEGURIDAD — ver src/lib/partes.ts).
   partesTurno ParteTurno[]
 
+  // Catálogo de oficios (ver src/lib/oficios.ts).
+  oficios                Oficio[]
+  recomendacionesOficio  RecomendacionOficio[]
+  reportesOficio         ReporteOficio[]
+
   // Puente WhatsApp (Fase 0/1) — ver openspec/changes/whatsapp-bridge y
   // docs/proposal-whatsapp-bridge.md. origenRegistro: de dónde vino el alta,
   // para medir conversión del canal externo.
@@ -677,4 +682,107 @@ enum NivelCirculacion {
   ESCASA
   NORMAL
   INTENSA
+}
+
+// ============================================
+// CATÁLOGO DE OFICIOS
+// ============================================
+
+// Rubros del catálogo. Viven en la base (no en un enum) para que el admin
+// pueda sumar nuevos a pedido de los vecinos. La carga inicial va en la
+// migración add_oficios.
+model CategoriaOficio {
+  id      Int         @id @default(autoincrement())
+  nombre  String      @unique
+  grupo   GrupoOficio
+  activa  Boolean     @default(true)
+  oficios Oficio[]
+
+  @@map("categorias_oficio")
+}
+
+// Familias de rubros, para agrupar el selector y el filtro. Etiquetas y
+// emojis en src/lib/oficios.ts.
+enum GrupoOficio {
+  HOGAR
+  JARDIN
+  TECNOLOGIA
+  VEHICULOS
+  SALUD_BELLEZA
+  EDUCACION
+  CUIDADOS
+  LIMPIEZA
+  GASTRONOMIA_EVENTOS
+  PROFESIONALES
+  TRANSPORTE
+  OTROS
+}
+
+// Card que publica un vecino con su oficio o servicio. Solo la ven los demás
+// cuando un ADMIN la aprueba.
+model Oficio {
+  id                 Int                   @id @default(autoincrement())
+  usuarioId          Int
+  usuario            Usuario               @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  categoriaId        Int
+  categoria          CategoriaOficio       @relation(fields: [categoriaId], references: [id])
+  // "Mi rubro no está": lo que escribió el vecino. Queda en la categoría
+  // "Otros" hasta que el admin cree la categoría y la reasigne.
+  categoriaSugerida  String?
+  titulo             String
+  descripcion        String
+  // Zona de trabajo, horarios, etc. Texto libre.
+  disponibilidad     String?
+  telefono           String
+  imagenes           String[]
+  estado             EstadoOficio          @default(PENDIENTE)
+  // Motivo de rechazo o pausa, que ve el dueño.
+  motivoEstado       String?
+  aprobadoAt         DateTime?
+  recomendaciones    RecomendacionOficio[]
+  reportes           ReporteOficio[]
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+
+  @@index([estado, categoriaId])
+  @@index([usuarioId])
+  @@map("oficios")
+}
+
+enum EstadoOficio {
+  PENDIENTE
+  APROBADO
+  RECHAZADO
+  PAUSADO
+}
+
+// "Recomiendo" de un vecino que contrató el servicio. Sin puntaje a
+// propósito: entre vecinos, una mala nota pública genera conflicto. Las malas
+// experiencias van por ReporteOficio, que solo ve el admin.
+model RecomendacionOficio {
+  id         Int      @id @default(autoincrement())
+  oficioId   Int
+  oficio     Oficio   @relation(fields: [oficioId], references: [id], onDelete: Cascade)
+  autorId    Int
+  autor      Usuario  @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  comentario String?
+  createdAt  DateTime @default(now())
+
+  @@unique([oficioId, autorId])
+  @@map("recomendaciones_oficio")
+}
+
+// Problema con un oficio, reportado en privado al admin. Nunca es público.
+model ReporteOficio {
+  id        Int      @id @default(autoincrement())
+  oficioId  Int
+  oficio    Oficio   @relation(fields: [oficioId], references: [id], onDelete: Cascade)
+  autorId   Int
+  autor     Usuario  @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  detalle   String
+  resuelto  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([resuelto])
+  @@map("reportes_oficio")
 }
