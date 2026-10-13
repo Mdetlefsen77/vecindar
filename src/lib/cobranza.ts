@@ -146,11 +146,11 @@ export function mensajeRecordatorioWhatsApp({
   const lineas = [`Hola ${nombre}! Te escribimos de Vecindar.`];
   if (estado === "vencida" && meses > 0) {
     lineas.push(
-      `Te recordamos que tenés ${meses === 1 ? "1 mes" : `${meses} meses`} de cuota pendiente (${formatoPesos(deuda)}).`,
+      `Te recordamos que tenés ${meses === 1 ? "1 mes" : `${meses} meses`} de aporte pendiente${meses === 1 ? "" : "s"} (${formatoPesos(deuda)}).`,
     );
   } else {
     lineas.push(
-      `Todavía no registramos ningún pago de tu suscripción. La cuota mensual es de ${formatoPesos(cuota)}.`,
+      `Todavía no registramos ningún pago de tu suscripción. El aporte mensual es de ${formatoPesos(cuota)}.`,
     );
   }
   lineas.push("");

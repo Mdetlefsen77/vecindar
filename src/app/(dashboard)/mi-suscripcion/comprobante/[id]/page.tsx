@@ -150,7 +150,7 @@ export default async function ComprobantePage({
             <tbody>
               <tr className="border-t border-gray-100">
                 <td className="px-4 py-3 text-gray-900">
-                  Cuota mensual de seguridad y app —{" "}
+                  Aporte mensual de seguridad y app —{" "}
                   <span className="capitalize">
                     {periodoLabel(pago.periodo)}
                   </span>
@@ -199,7 +199,7 @@ export default async function ComprobantePage({
         <footer className="mt-8 pt-4 border-t border-gray-200 text-xs text-gray-500 space-y-1">
           <p>Emitido el {fmtFecha(new Date())} desde Vecindar.</p>
           <p>
-            Comprobante interno de pago de la cuota vecinal. No válido como
+            Comprobante interno de pago del aporte vecinal. No válido como
             factura.
           </p>
         </footer>

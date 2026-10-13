@@ -33,7 +33,7 @@ export default function CobranzaBanner({
         </span>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-semibold text-amber-900">
-            Tu cuota está vencida
+            Tu aporte mensual venció
           </p>
           <p className="mt-1 text-sm text-amber-800">
             {meses === 1 ? "Adeudás 1 mes" : `Adeudás ${meses} meses`} · total
