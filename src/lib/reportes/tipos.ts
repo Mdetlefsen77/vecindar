@@ -69,6 +69,25 @@ export interface SeccionMascotas {
   medianaDiasResolucion: ValorEstadistico<{ mediana: number; promedio: number }>;
 }
 
+/** Partes de turno de la guardia (src/lib/partes.ts) — solo agregados, nunca el texto de las novedades. */
+export interface SeccionGuardia {
+  turnosConParte: number;
+  /**
+   * 4 turnos por día, contados desde el primer parte cargado en el sistema
+   * (o el inicio del período, lo que sea posterior) y hasta hoy como mucho:
+   * antes de que existieran los partes no hay "turnos sin parte".
+   */
+  turnosEsperados: number;
+  /** "YYYY-MM-DD" si el conteo de esperados arranca después del inicio del período. */
+  esperadosDesde: string | null;
+  coberturaPct: ValorEstadistico<number>;
+  rondas: { estado: string; cantidad: number }[];
+  rondasCompletasPct: ValorEstadistico<number>;
+  porTurno: { turno: string; cantidad: number }[];
+  conNovedades: number;
+  conPresenciaPolicial: number;
+}
+
 /** `null` si el nivel/rol no debe verla (D6 — SEGURIDAD no ve adopción). */
 export interface SeccionAdopcion {
   registradosTotales: number;
@@ -102,6 +121,8 @@ export interface ReporteModelo {
   panico: SeccionPanico;
   requerimientos: SeccionRequerimientos;
   mascotas: SeccionMascotas;
+  /** Opcional: los reportes archivados antes de que existieran los partes no la tienen. */
+  guardia?: SeccionGuardia;
   adopcion: SeccionAdopcion | null;
   requiereAtencion: RequiereAtencion;
 }

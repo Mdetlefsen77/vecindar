@@ -9,6 +9,7 @@ import type {
   NivelReporte,
   ReporteModelo,
   ItemRequiereAtencion,
+  SeccionGuardia,
 } from "./tipos";
 import { calcularIncidentes, contarReportados } from "./metricas/incidentes";
 import { calcularPanico, contarAlertas } from "./metricas/panico";
@@ -18,6 +19,11 @@ import {
 } from "./metricas/requerimientos";
 import { calcularMascotas } from "./metricas/mascotas";
 import { calcularAdopcion, contarActivos30d } from "./metricas/adopcion";
+import {
+  calcularGuardia,
+  contarRondasCompletas,
+  contarTurnosConParte,
+} from "./metricas/guardia";
 
 /** Total de casos que pasaron a un estado de cierre dentro del período, en los 4 módulos. */
 async function contarResueltosTotal(p: Periodo): Promise<number> {
@@ -197,6 +203,13 @@ export async function construirReporte(
     activos30dActual,
     activos30dAnterior,
     activos30dSerie,
+    guardia,
+    turnosActual,
+    turnosAnterior,
+    turnosSerie,
+    rondasActual,
+    rondasAnterior,
+    rondasSerie,
   ] = await Promise.all([
     calcularIncidentes(periodo),
     calcularPanico(periodo),
@@ -220,6 +233,13 @@ export async function construirReporte(
     contarActivos30d(periodo),
     contarActivos30d(anterior),
     serie12(periodo, contarActivos30d),
+    calcularGuardia(periodo),
+    contarTurnosConParte(periodo),
+    contarTurnosConParte(anterior),
+    serie12(periodo, contarTurnosConParte),
+    contarRondasCompletas(periodo),
+    contarRondasCompletas(anterior),
+    serie12(periodo, contarRondasCompletas),
   ]);
 
   const modeloSinNivel: ReporteModelo = {
@@ -233,6 +253,21 @@ export async function construirReporte(
     generadoAt: new Date().toISOString(),
     resumenEjecutivo: {
       kpis: [
+        // Primero la guardia: es el servicio principal del barrio.
+        {
+          label: "Turnos con parte",
+          valor: turnosActual,
+          variacion: variacion(turnosActual, turnosAnterior),
+          serie12Meses: turnosSerie,
+          masEsMejor: true,
+        },
+        {
+          label: "Rondas completas",
+          valor: rondasActual,
+          variacion: variacion(rondasActual, rondasAnterior),
+          serie12Meses: rondasSerie,
+          masEsMejor: true,
+        },
         {
           label: "Incidentes reportados",
           valor: incidentesActual,
@@ -279,6 +314,7 @@ export async function construirReporte(
         },
       ],
       notas: construirNotas({
+        guardia,
         incidentesActual,
         incidentesAnterior,
         alertasActual,
@@ -293,6 +329,7 @@ export async function construirReporte(
     panico,
     requerimientos,
     mascotas,
+    guardia,
     // Siempre completo acá — D6 (SEGURIDAD no ve adopción) es un filtro de
     // quién está MIRANDO el reporte, no de qué contiene el documento. Si se
     // horneara acá, un reporte archivado por SEGURIDAD perdería adopción
@@ -307,12 +344,24 @@ export async function construirReporte(
 
 /** Reglas simples, no IA (§4-1 de la spec) — 3-5 líneas de lenguaje natural. */
 function construirNotas(datos: {
+  guardia: SeccionGuardia;
   incidentesActual: number;
   incidentesAnterior: number;
   alertasActual: number;
   backlogAbierto: number;
 }): string[] {
   const notas: string[] = [];
+  const { guardia } = datos;
+  if (guardia.turnosConParte > 0) {
+    const finalizadas =
+      guardia.rondas.find((r) => r.estado === "FINALIZADA")?.cantidad ?? 0;
+    const cobertura = guardia.coberturaPct.suficiente
+      ? ` (${guardia.coberturaPct.valor}% de los turnos)`
+      : "";
+    notas.push(
+      `La guardia cargó ${guardia.turnosConParte} parte(s) de turno${cobertura} y completó ${finalizadas} ronda(s) de patrullaje.`,
+    );
+  }
   if (datos.incidentesActual === 0) {
     notas.push("No se reportaron incidentes en el período.");
   } else if (datos.incidentesActual < datos.incidentesAnterior) {
