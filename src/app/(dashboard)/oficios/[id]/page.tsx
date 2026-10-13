@@ -13,6 +13,7 @@ import {
   textoRecomendados,
 } from "@/lib/oficios";
 import { linkWhatsApp } from "@/lib/whatsapp";
+import CompartirEnGrupo from "@/components/notificaciones-externas/CompartirEnGrupo";
 import {
   BorrarOficio,
   ModerarOficio,
@@ -141,6 +142,19 @@ export default async function OficioPage({ params, searchParams }: Props) {
         >
           💬 Contactar por WhatsApp
         </a>
+      )}
+
+      {publicado && (
+        <CompartirEnGrupo
+          tipoEvento="OFICIO"
+          entidadId={oficio.id}
+          etiqueta={esDueno ? "📤 Compartir mi oficio" : "📤 Compartir"}
+          ayuda={
+            esDueno
+              ? "Compartilo en tus grupos para que más vecinos te conozcan."
+              : "Pasáselo a quien lo necesite. El teléfono no va en el mensaje: se ve en la app."
+          }
+        />
       )}
 
       <section className="bg-white rounded-2xl border border-gray-200 p-4 space-y-3">

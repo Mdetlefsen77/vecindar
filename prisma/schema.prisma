@@ -556,6 +556,7 @@ enum TipoEventoPublicacion {
   ALERTA_PANICO
   RESUMEN
   PARTE_TURNO
+  OFICIO
 }
 
 enum EstadoPublicacion {

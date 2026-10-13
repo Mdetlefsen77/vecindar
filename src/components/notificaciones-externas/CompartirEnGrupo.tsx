@@ -24,17 +24,26 @@ async function descargarFotos(urls: string[]): Promise<File[]> {
 }
 
 /**
- * "Compartir en el grupo" para un parte de turno. Con Web Share (celular)
- * manda el texto y las fotos juntas — WhatsApp las publica con el texto como
- * epígrafe. Sin soporte de archivos, comparte solo el texto (el link del
- * mensaje lleva a las fotos en la app).
+ * Compartir por WhatsApp un contenido que se puede compartir muchas veces con
+ * el mismo link rastreable (partes de turno, oficios — ver
+ * /api/notificaciones-externas/compartir). Con Web Share (celular) abre el
+ * menú nativo y, si hay `imagenes`, manda texto y fotos juntas (WhatsApp usa
+ * el texto como epígrafe). Sin soporte de archivos, comparte solo el texto
+ * (el link del mensaje lleva al detalle en la app).
  */
-export default function CompartirParte({
-  parteId,
-  imagenes,
+export default function CompartirEnGrupo({
+  tipoEvento,
+  entidadId,
+  imagenes = [],
+  etiqueta = "📤 Compartir en el grupo",
+  ayuda,
 }: {
-  parteId: number;
-  imagenes: string[];
+  tipoEvento: "PARTE_TURNO" | "OFICIO";
+  entidadId: number;
+  imagenes?: string[];
+  etiqueta?: string;
+  /** Texto bajo los botones antes de compartir. */
+  ayuda?: string;
 }) {
   const [estado, setEstado] = useState<Estado>({ tipo: "inicial" });
   const [copiado, setCopiado] = useState(false);
@@ -85,7 +94,7 @@ export default function CompartirParte({
       const res = await fetch("/api/notificaciones-externas/compartir", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tipoEvento: "PARTE_TURNO", entidadId: parteId }),
+        body: JSON.stringify({ tipoEvento, entidadId }),
       });
       const d = await res.json().catch(() => ({}));
       if (!res.ok || !d.mensaje) {
@@ -141,7 +150,7 @@ export default function CompartirParte({
               ? "📤 Abrir WhatsApp"
               : estado.tipo === "compartido"
                 ? "📤 Compartir de nuevo"
-                : "📤 Compartir en el grupo"}
+                : etiqueta}
         </button>
         <button
           type="button"
@@ -154,12 +163,12 @@ export default function CompartirParte({
       </div>
       <p role="status" className="text-xs text-gray-500">
         {estado.tipo === "compartido"
-          ? "Listo — elegí el grupo de seguridad en WhatsApp."
+          ? "Listo — elegí el chat o el grupo en WhatsApp."
           : estado.tipo === "error"
             ? <span className="text-red-600">{estado.mensaje}</span>
             : imagenes.length > 0
               ? "En el celular se comparten el texto y las fotos juntos."
-              : null}
+              : (ayuda ?? null)}
       </p>
     </div>
   );

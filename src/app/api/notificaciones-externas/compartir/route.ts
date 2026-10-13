@@ -7,6 +7,7 @@ import {
   plantillaIncidente,
   plantillaRequerimiento,
   plantillaMascota,
+  plantillaOficio,
   type AutorPlantilla,
 } from "@/lib/notificaciones-externas/plantillas";
 import { compartirEventoSchema } from "@/lib/validation/notificacionesExternas";
@@ -107,12 +108,53 @@ async function resolverParteTurno(entidadId: number) {
   };
 }
 
+async function resolverOficio(entidadId: number) {
+  const oficio = await prisma.oficio.findUnique({
+    where: { id: entidadId },
+    select: {
+      id: true,
+      titulo: true,
+      estado: true,
+      usuario: {
+        select: {
+          nombre: true,
+          apellido: true,
+          ocultarNombreEnPublicacionExterna: true,
+        },
+      },
+      _count: { select: { recomendaciones: true } },
+    },
+  });
+  // Solo lo publicado: un oficio pendiente o pausado no se difunde.
+  if (!oficio || oficio.estado !== "APROBADO") {
+    return { error: "No encontrado." as const };
+  }
+  return {
+    urlDestino: `/oficios/${oficio.id}`,
+    construirMensaje: (link: string) =>
+      plantillaOficio(
+        oficio.usuario as AutorPlantilla,
+        oficio.titulo,
+        oficio._count.recomendaciones,
+        link,
+      ),
+  };
+}
+
 const RESOLVERS = {
   INCIDENTE: resolverIncidente,
   REQUERIMIENTO: resolverRequerimiento,
   MASCOTA: resolverMascota,
   PARTE_TURNO: resolverParteTurno,
+  OFICIO: resolverOficio,
 } as const;
+
+/**
+ * Tipos que se comparten muchas veces (otro grupo, otro vecino, el dueño
+ * promocionándose): se reutiliza el mismo link rastreable en lugar de
+ * responder "ya compartido".
+ */
+const REUTILIZABLES = new Set(["PARTE_TURNO", "OFICIO"]);
 
 // POST /api/notificaciones-externas/compartir — HU-07. Genera el link
 // rastreable, arma el mensaje según la plantilla del tipo y registra la
@@ -152,11 +194,9 @@ export async function POST(req: NextRequest) {
     publicadaPorId: getUserId(session),
   });
 
-  // Un parte se puede volver a compartir (ej. el guardia canceló el share
-  // o lo manda a otro grupo): se reutiliza el mismo link rastreable.
   if (
     !resultado.ok &&
-    tipoEvento === "PARTE_TURNO" &&
+    REUTILIZABLES.has(tipoEvento) &&
     resultado.yaCompartido.codigo
   ) {
     const link = `${req.nextUrl.origin}/r/${resultado.yaCompartido.codigo}`;
