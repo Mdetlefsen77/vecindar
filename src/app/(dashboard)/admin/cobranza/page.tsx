@@ -6,6 +6,8 @@ import { nombreCompleto } from "@/lib/usuarios";
 import {
   estadoCobranza,
   montoDeSuscripcion,
+  mesesVencidos,
+  deudaEstimada,
   periodoActual,
   formatoPesos,
   type EstadoCobranza,
@@ -14,6 +16,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import CobranzaFiltros from "./CobranzaFiltros";
 import CobranzaTabla, { type FilaCobranza } from "./CobranzaTabla";
+import RecordarTodos from "./RecordarTodos";
 import type { Prisma } from "@/generated/client";
 
 type SearchParams = Promise<{ estado?: string; q?: string }>;
@@ -51,7 +54,9 @@ export default async function AdminCobranzaPage({
         nombre: true,
         apellido: true,
         email: true,
+        telefono: true,
         rol: true,
+        _count: { select: { pushSubscriptions: true } },
         lote: {
           select: {
             numero: true,
@@ -87,6 +92,13 @@ export default async function AdminCobranzaPage({
   const filas: FilaCobranza[] = usuarios.map((u) => ({
     id: u.id,
     nombre: nombreCompleto(u),
+    nombrePila: u.nombre,
+    telefono: u.telefono,
+    conPush: u._count.pushSubscriptions > 0,
+    mesesVencidos: u.suscripcion?.exento
+      ? 0
+      : mesesVencidos(u.suscripcion?.vigenteHasta, ahora),
+    deuda: deudaEstimada(u.suscripcion, ahora),
     lote: `MZ ${u.lote.manzana.numero} – ${u.lote.numero}`,
     estado: estadoCobranza(u.suscripcion, ahora),
     vigenteHasta: u.suscripcion?.vigenteHasta
@@ -112,6 +124,11 @@ export default async function AdminCobranzaPage({
     exento: 0,
   };
   for (const f of filas) conteos[f.estado] += 1;
+
+  const deudores = filas.filter(
+    (f) => f.estado === "vencida" || f.estado === "sin_datos",
+  );
+  const deudoresConPush = deudores.filter((f) => f.conPush).length;
 
   const filasFiltradas = esEstadoValido(estado)
     ? filas.filter((f) => f.estado === estado)
@@ -169,6 +186,23 @@ export default async function AdminCobranzaPage({
           </Link>
         ))}
       </div>
+
+      {/* Recordatorios a deudores */}
+      {deudores.length > 0 && (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 flex flex-wrap items-center justify-between gap-3">
+          <div className="text-sm text-amber-900">
+            <p className="font-semibold">
+              {deudores.length} vecinos con la cuota vencida o sin pagos
+            </p>
+            <p className="text-amber-800">
+              {deudoresConPush} reciben notificaciones push ·{" "}
+              {deudores.length - deudoresConPush} sin push activo (escribiles
+              por WhatsApp desde la tabla)
+            </p>
+          </div>
+          <RecordarTodos conPush={deudoresConPush} />
+        </div>
+      )}
 
       <div className="flex flex-wrap items-center gap-2 justify-between">
         <Suspense>
