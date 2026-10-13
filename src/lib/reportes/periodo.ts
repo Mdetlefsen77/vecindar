@@ -105,3 +105,19 @@ export function etiquetaPeriodo(p: Periodo, tipo: PeriodoTipo): string {
   }
   return `semana del ${inicioLocal.toLocaleDateString("es-AR", { day: "2-digit", month: "2-digit", timeZone: ZONA_HORARIA })}`;
 }
+
+/**
+ * Días calendario de Córdoba que abarca `p`, como valores DATE (medianoche
+ * UTC) — para filtrar columnas `@db.Date` como `ParteTurno.fecha`, que no
+ * tienen hora y no se pueden comparar contra los instantes de `p`.
+ * `hasta` es exclusivo, igual que `p.fin`.
+ */
+export function diasDelPeriodo(p: Periodo): { desde: Date; hasta: Date } {
+  const aDate = (instante: Date) => {
+    const local = toZonedTime(instante, ZONA_HORARIA);
+    return new Date(
+      Date.UTC(local.getFullYear(), local.getMonth(), local.getDate()),
+    );
+  };
+  return { desde: aDate(p.inicio), hasta: aDate(p.fin) };
+}

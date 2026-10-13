@@ -108,6 +108,9 @@ model Usuario {
   // Reportes que generó y archivó (Fase 3).
   reportesGenerados      Reporte[]
 
+  // Partes de turno que cargó (rol SEGURIDAD — ver src/lib/partes.ts).
+  partesTurno ParteTurno[]
+
   // Puente WhatsApp (Fase 0/1) — ver openspec/changes/whatsapp-bridge y
   // docs/proposal-whatsapp-bridge.md. origenRegistro: de dónde vino el alta,
   // para medir conversión del canal externo.
@@ -547,6 +550,7 @@ enum TipoEventoPublicacion {
   MASCOTA
   ALERTA_PANICO
   RESUMEN
+  PARTE_TURNO
 }
 
 enum EstadoPublicacion {
@@ -622,4 +626,55 @@ model ClickLink {
 
   @@index([linkId])
   @@map("clicks_links")
+}
+
+// ============================================
+// PARTES DE TURNO DE LA GUARDIA
+// ============================================
+
+// Resumen que carga la guardia al cerrar cada turno (ronda, circulación,
+// presencia policial, novedades y fotos) y que después comparte a mano en el
+// grupo de WhatsApp. Horarios de cada turno en src/lib/partes.ts.
+model ParteTurno {
+  id                Int              @id @default(autoincrement())
+  // Día del turno (sin hora). El turno noche de las 20 a 23 es del mismo día.
+  fecha             DateTime         @db.Date
+  turno             TurnoGuardia
+  ronda             EstadoRonda
+  circulacion       NivelCirculacion
+  presenciaPolicial Boolean
+  // Recomendación a los vecinos ("Tomen recaudos…"). Precargada según el
+  // turno, editable.
+  recomendacion     String
+  // null = sin novedades.
+  novedades         String?
+  imagenes          String[]
+  autorId           Int
+  autor             Usuario          @relation(fields: [autorId], references: [id])
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  // Un parte por turno: si ya existe, se edita en lugar de cargar otro.
+  @@unique([fecha, turno])
+  @@index([createdAt])
+  @@map("partes_turno")
+}
+
+enum TurnoGuardia {
+  MANANA
+  MEDIODIA
+  MEDIATARDE
+  NOCHE
+}
+
+enum EstadoRonda {
+  FINALIZADA
+  PARCIAL
+  NO_REALIZADA
+}
+
+enum NivelCirculacion {
+  ESCASA
+  NORMAL
+  INTENSA
 }

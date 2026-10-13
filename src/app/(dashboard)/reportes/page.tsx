@@ -13,6 +13,16 @@ import BarrasHorizontales from "@/lib/reportes/graficos/BarrasHorizontales";
 import Sparkline from "@/lib/reportes/graficos/Sparkline";
 import ExportarPdfBoton from "@/components/reportes/ExportarPdfBoton";
 import ArchivarReporteForm from "@/components/reportes/ArchivarReporteForm";
+import { ORDEN_TURNOS, RONDA_LABEL, TURNOS } from "@/lib/partes";
+import type { EstadoRonda, TurnoGuardia } from "@/generated/enums";
+
+// Slots de CATEGORICO_LIGHT elegidos por significado, no por orden: que
+// "No realizada" no salga verde. Azul / amarillo / rojo.
+const SLOT_RONDA: Record<EstadoRonda, number> = {
+  FINALIZADA: 0,
+  PARCIAL: 3,
+  NO_REALIZADA: 7,
+};
 
 type SearchParams = Promise<{ anio?: string; mes?: string; nivel?: string }>;
 
@@ -495,6 +505,93 @@ export default async function ReportesPage({
                   </ul>
                 )}
               </Seccion>
+
+              {/* Guardia — los reportes archivados antes de los partes no la tienen */}
+              {modelo.guardia && (
+                <Seccion titulo="Seguridad — Guardia">
+                  {modelo.guardia.turnosConParte === 0 ? (
+                    <p className="text-sm text-gray-500">
+                      No se cargaron partes de turno en el período.
+                    </p>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <Campo label="Turnos con parte">
+                          <span className="text-sm font-semibold">
+                            {modelo.guardia.turnosConParte}
+                            <span className="font-normal text-gray-500">
+                              {" "}
+                              de {modelo.guardia.turnosEsperados}
+                            </span>
+                          </span>
+                        </Campo>
+                        <Campo label="Cobertura de turnos">
+                          <ValorConUmbral
+                            v={modelo.guardia.coberturaPct}
+                            unidad="%"
+                          />
+                        </Campo>
+                        <Campo label="Rondas completas">
+                          <ValorConUmbral
+                            v={modelo.guardia.rondasCompletasPct}
+                            unidad="%"
+                          />
+                        </Campo>
+                        <Campo label="Partes con novedades">
+                          <span className="text-sm font-semibold">
+                            {modelo.guardia.conNovedades}
+                          </span>
+                        </Campo>
+                        <Campo label="Con presencia policial">
+                          <span className="text-sm font-semibold">
+                            {modelo.guardia.conPresenciaPolicial}
+                          </span>
+                        </Campo>
+                      </div>
+                      {modelo.guardia.esperadosDesde && (
+                        <p className="text-xs text-gray-500">
+                          La cobertura se cuenta desde el{" "}
+                          {modelo.guardia.esperadosDesde
+                            .split("-")
+                            .reverse()
+                            .join("/")}
+                          , cuando se empezaron a cargar los partes en Vecindar.
+                        </p>
+                      )}
+                      <div className="grid sm:grid-cols-2 gap-4 pt-2">
+                        <div>
+                          <p className="text-xs text-gray-500 mb-2">Rondas</p>
+                          <BarrasHorizontales
+                            datos={modelo.guardia.rondas.map((r) => ({
+                              label:
+                                RONDA_LABEL[r.estado as EstadoRonda] ?? r.estado,
+                              valor: r.cantidad,
+                              colorSlot:
+                                SLOT_RONDA[r.estado as EstadoRonda] ?? -1,
+                            }))}
+                          />
+                        </div>
+                        <div>
+                          <p className="text-xs text-gray-500 mb-2">
+                            Partes por turno
+                          </p>
+                          <BarrasHorizontales
+                            datos={modelo.guardia.porTurno.map((t) => ({
+                              label:
+                                TURNOS[t.turno as TurnoGuardia]?.label ??
+                                t.turno,
+                              valor: t.cantidad,
+                              colorSlot: ORDEN_TURNOS.indexOf(
+                                t.turno as TurnoGuardia,
+                              ),
+                            }))}
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </Seccion>
+              )}
 
               {/* Incidentes */}
               <Seccion titulo="Seguridad — Incidentes">

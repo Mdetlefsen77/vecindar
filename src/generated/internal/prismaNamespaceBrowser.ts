@@ -71,7 +71,8 @@ export const ModelName = {
   Reporte: 'Reporte',
   PublicacionExterna: 'PublicacionExterna',
   LinkRastreable: 'LinkRastreable',
-  ClickLink: 'ClickLink'
+  ClickLink: 'ClickLink',
+  ParteTurno: 'ParteTurno'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -393,6 +394,24 @@ export const ClickLinkScalarFieldEnum = {
 } as const
 
 export type ClickLinkScalarFieldEnum = (typeof ClickLinkScalarFieldEnum)[keyof typeof ClickLinkScalarFieldEnum]
+
+
+export const ParteTurnoScalarFieldEnum = {
+  id: 'id',
+  fecha: 'fecha',
+  turno: 'turno',
+  ronda: 'ronda',
+  circulacion: 'circulacion',
+  presenciaPolicial: 'presenciaPolicial',
+  recomendacion: 'recomendacion',
+  novedades: 'novedades',
+  imagenes: 'imagenes',
+  autorId: 'autorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ParteTurnoScalarFieldEnum = (typeof ParteTurnoScalarFieldEnum)[keyof typeof ParteTurnoScalarFieldEnum]
 
 
 export const SortOrder = {

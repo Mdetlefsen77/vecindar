@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
+import { RONDA_LABEL, TURNOS, fechaParteLabel } from "@/lib/partes";
 import type {
   TipoIncidente,
   CategoriaReq,
@@ -191,6 +192,7 @@ export default async function InicioPage() {
     mascotas,
     codigoInvitacion,
     invitados,
+    ultimoParte,
   ] = await Promise.all([
     prisma.usuario.findUnique({
       where: { id: usuarioId },
@@ -230,6 +232,17 @@ export default async function InicioPage() {
     // aparece después de cargar, empuja el resto de la página (CLS).
     obtenerOCrearCodigo(usuarioId),
     prisma.usuario.count({ where: { invitadoPorId: usuarioId } }),
+    prisma.parteTurno.findFirst({
+      orderBy: [{ fecha: "desc" }, { createdAt: "desc" }],
+      select: {
+        id: true,
+        fecha: true,
+        turno: true,
+        ronda: true,
+        novedades: true,
+        imagenes: true,
+      },
+    }),
   ]);
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
     usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
@@ -369,6 +382,40 @@ export default async function InicioPage() {
             pointer-events-none z-[9]"
         />
       </div>
+
+      {ultimoParte && (
+        <Link
+          href={`/partes/${ultimoParte.id}`}
+          className="flex items-center gap-3 bg-white rounded-2xl shadow-sm border border-gray-100 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 transition-colors"
+        >
+          <span aria-hidden="true" className="text-2xl">
+            📌
+          </span>
+          <span className="flex-1 min-w-0">
+            <span className="block text-sm text-gray-500">
+              Último parte de la guardia
+            </span>
+            <span className="block font-semibold text-gray-900 truncate">
+              Turno {TURNOS[ultimoParte.turno].label.toLowerCase()}
+            </span>
+            <span className="block text-sm text-gray-600 truncate first-letter:uppercase">
+              {fechaParteLabel(ultimoParte.fecha)} · Ronda{" "}
+              {RONDA_LABEL[ultimoParte.ronda].toLowerCase()}
+              {ultimoParte.imagenes.length > 0 &&
+                ` · 📸 ${ultimoParte.imagenes.length}`}
+            </span>
+          </span>
+          <span
+            className={`flex-shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full ${
+              ultimoParte.novedades
+                ? "bg-amber-100 text-amber-800"
+                : "bg-green-100 text-green-700"
+            }`}
+          >
+            {ultimoParte.novedades ? "Con novedades" : "Sin novedades"}
+          </span>
+        </Link>
+      )}
 
       <InvitarVecino codigo={codigoInvitacion} registros={invitados} />
 

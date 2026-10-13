@@ -13,13 +13,19 @@ export async function GET(_req: Request, { params }: Params) {
   }
   const modelo = await construirWrapped(anioNum);
 
-  const destacados: { valor: string; label: string; color: string }[] = [
-    {
-      valor: `${modelo.incidentesResueltos}`,
-      label: "incidentes resueltos",
-      color: "#ea580c",
-    },
-  ];
+  const destacados: { valor: string; label: string; color: string }[] = [];
+  if (modelo.guardia) {
+    destacados.push({
+      valor: `${modelo.guardia.rondasCompletas}`,
+      label: `rondas de patrullaje en ${modelo.guardia.turnosCubiertos} turnos`,
+      color: "#7c3aed",
+    });
+  }
+  destacados.push({
+    valor: `${modelo.incidentesResueltos}`,
+    label: "incidentes resueltos",
+    color: "#ea580c",
+  });
   if (modelo.tiempoMedianoRespuestaSOSMin !== null) {
     destacados.push({
       valor: `${modelo.tiempoMedianoRespuestaSOSMin} min`,

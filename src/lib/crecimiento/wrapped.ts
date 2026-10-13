@@ -1,6 +1,8 @@
 import { prisma } from "@/lib/prisma/client";
 
 const MINIMO_CASOS_MEDIANA_SOS = 5; // D8 de docs/proposal-reportes.md §15
+// Mismo criterio que el recibo de valor: con menos partes no se destaca.
+const MINIMO_PARTES = 5;
 
 /**
  * "Vecindar Wrapped" — resumen anual para compartir (docs/proposal-crecimiento.md
@@ -16,6 +18,9 @@ const MINIMO_CASOS_MEDIANA_SOS = 5; // D8 de docs/proposal-reportes.md §15
 
 export interface WrappedModelo {
   anio: number;
+  // Partes de turno de la guardia (src/lib/partes.ts). null = menos de
+  // MINIMO_PARTES en el año, no se muestra.
+  guardia: { turnosCubiertos: number; rondasCompletas: number } | null;
   incidentesResueltos: number;
   tiempoMedianoRespuestaSOSMin: number | null; // null = pocos casos, no se muestra (§7.6)
   coberturaLotesPct: number;
@@ -64,6 +69,10 @@ function tallarManzanas(
 export async function construirWrapped(anio: number): Promise<WrappedModelo> {
   const { inicio, fin } = limitesAnio(anio);
   const rango = { gte: inicio, lt: fin };
+  const rangoDias = {
+    gte: new Date(Date.UTC(anio, 0, 1)),
+    lt: new Date(Date.UTC(anio + 1, 0, 1)),
+  };
 
   const [
     incidentesResueltos,
@@ -76,6 +85,8 @@ export async function construirWrapped(anio: number): Promise<WrappedModelo> {
     incidentesUsuarios,
     requerimientosUsuarios,
     mascotasUsuarios,
+    turnosCubiertos,
+    rondasCompletas,
   ] = await Promise.all([
     prisma.incidente.count({ where: { createdAt: rango, estado: "RESUELTO" } }),
     prisma.alertaPanico.findMany({
@@ -123,6 +134,11 @@ export async function construirWrapped(anio: number): Promise<WrappedModelo> {
       select: { usuarioId: true },
       distinct: ["usuarioId"],
     }),
+    // `ParteTurno.fecha` es un DATE: se compara por día, sin el offset -03:00.
+    prisma.parteTurno.count({ where: { fecha: rangoDias } }),
+    prisma.parteTurno.count({
+      where: { fecha: rangoDias, ronda: "FINALIZADA" },
+    }),
   ]);
 
   let tiempoMedianoRespuestaSOSMin: number | null = null;
@@ -147,6 +163,10 @@ export async function construirWrapped(anio: number): Promise<WrappedModelo> {
 
   return {
     anio,
+    guardia:
+      turnosCubiertos >= MINIMO_PARTES
+        ? { turnosCubiertos, rondasCompletas }
+        : null,
     incidentesResueltos,
     tiempoMedianoRespuestaSOSMin,
     coberturaLotesPct:

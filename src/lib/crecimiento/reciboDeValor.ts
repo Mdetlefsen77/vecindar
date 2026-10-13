@@ -25,6 +25,9 @@ import { enviarPushUsuario } from "@/lib/push/enviarPush";
  */
 
 const MINIMO_CASOS_MEDIANA = 3;
+// Con pocos partes (ej. se pagó el mes en curso el día 2) la cifra no
+// impresiona y conviene destacar otra cosa.
+const MINIMO_PARTES = 5;
 
 function limitesMes(periodo: string): { inicio: Date; fin: Date } {
   const [anio, mes] = periodo.split("-").map(Number);
@@ -50,12 +53,25 @@ function mesLabel(periodo: string): string {
   });
 }
 
-async function numerosDelPeriodo(periodo: string): Promise<string[]> {
+export async function numerosDelPeriodo(periodo: string): Promise<string[]> {
   const { inicio, fin } = limitesMes(periodo);
   const rango = { gte: inicio, lt: fin };
 
-  const [incidentesResueltos, requerimientosIngresados, mascotasResueltas, alertas] =
-    await Promise.all([
+  const [anio, mes] = periodo.split("-").map(Number);
+  // `ParteTurno.fecha` es un DATE (medianoche UTC): se compara por día, sin offset.
+  const rangoDias = {
+    gte: new Date(Date.UTC(anio, mes - 1, 1)),
+    lt: new Date(Date.UTC(anio, mes, 1)),
+  };
+
+  const [
+    incidentesResueltos,
+    requerimientosIngresados,
+    mascotasResueltas,
+    alertas,
+    turnosCubiertos,
+    rondasCompletas,
+  ] = await Promise.all([
       prisma.incidente.count({
         where: { createdAt: rango, estado: "RESUELTO" },
       }),
@@ -65,9 +81,22 @@ async function numerosDelPeriodo(periodo: string): Promise<string[]> {
         where: { createdAt: rango, recibidoAt: { not: null } },
         select: { createdAt: true, recibidoAt: true },
       }),
+      prisma.parteTurno.count({ where: { fecha: rangoDias } }),
+      prisma.parteTurno.count({
+        where: { fecha: rangoDias, ronda: "FINALIZADA" },
+      }),
     ]);
 
   const frases: string[] = [];
+
+  // Primero la guardia: es el servicio principal que financia la cuota.
+  if (turnosCubiertos >= MINIMO_PARTES) {
+    frases.push(
+      rondasCompletas > 0
+        ? `la guardia cubrió ${turnosCubiertos} turnos y completó ${rondasCompletas} ronda${rondasCompletas === 1 ? "" : "s"} de patrullaje`
+        : `la guardia cubrió ${turnosCubiertos} turnos`,
+    );
+  }
 
   if (alertas.length >= MINIMO_CASOS_MEDIANA) {
     const minutos = alertas.map(

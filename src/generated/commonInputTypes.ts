@@ -613,6 +613,57 @@ export type EnumModoPublicacionWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumModoPublicacionFilter<$PrismaModel>
 }
 
+export type EnumTurnoGuardiaFilter<$PrismaModel = never> = {
+  equals?: $Enums.TurnoGuardia | Prisma.EnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  in?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTurnoGuardiaFilter<$PrismaModel> | $Enums.TurnoGuardia
+}
+
+export type EnumEstadoRondaFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoRonda | Prisma.EnumEstadoRondaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoRondaFilter<$PrismaModel> | $Enums.EstadoRonda
+}
+
+export type EnumNivelCirculacionFilter<$PrismaModel = never> = {
+  equals?: $Enums.NivelCirculacion | Prisma.EnumNivelCirculacionFieldRefInput<$PrismaModel>
+  in?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel> | $Enums.NivelCirculacion
+}
+
+export type EnumTurnoGuardiaWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TurnoGuardia | Prisma.EnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  in?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTurnoGuardiaWithAggregatesFilter<$PrismaModel> | $Enums.TurnoGuardia
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTurnoGuardiaFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTurnoGuardiaFilter<$PrismaModel>
+}
+
+export type EnumEstadoRondaWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoRonda | Prisma.EnumEstadoRondaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoRondaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoRonda
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEstadoRondaFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEstadoRondaFilter<$PrismaModel>
+}
+
+export type EnumNivelCirculacionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.NivelCirculacion | Prisma.EnumNivelCirculacionFieldRefInput<$PrismaModel>
+  in?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNivelCirculacionWithAggregatesFilter<$PrismaModel> | $Enums.NivelCirculacion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -1174,6 +1225,57 @@ export type NestedEnumModoPublicacionWithAggregatesFilter<$PrismaModel = never> 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumModoPublicacionFilter<$PrismaModel>
   _max?: Prisma.NestedEnumModoPublicacionFilter<$PrismaModel>
+}
+
+export type NestedEnumTurnoGuardiaFilter<$PrismaModel = never> = {
+  equals?: $Enums.TurnoGuardia | Prisma.EnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  in?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTurnoGuardiaFilter<$PrismaModel> | $Enums.TurnoGuardia
+}
+
+export type NestedEnumEstadoRondaFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoRonda | Prisma.EnumEstadoRondaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoRondaFilter<$PrismaModel> | $Enums.EstadoRonda
+}
+
+export type NestedEnumNivelCirculacionFilter<$PrismaModel = never> = {
+  equals?: $Enums.NivelCirculacion | Prisma.EnumNivelCirculacionFieldRefInput<$PrismaModel>
+  in?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel> | $Enums.NivelCirculacion
+}
+
+export type NestedEnumTurnoGuardiaWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TurnoGuardia | Prisma.EnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  in?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TurnoGuardia[] | Prisma.ListEnumTurnoGuardiaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTurnoGuardiaWithAggregatesFilter<$PrismaModel> | $Enums.TurnoGuardia
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTurnoGuardiaFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTurnoGuardiaFilter<$PrismaModel>
+}
+
+export type NestedEnumEstadoRondaWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoRonda | Prisma.EnumEstadoRondaFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoRonda[] | Prisma.ListEnumEstadoRondaFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoRondaWithAggregatesFilter<$PrismaModel> | $Enums.EstadoRonda
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEstadoRondaFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEstadoRondaFilter<$PrismaModel>
+}
+
+export type NestedEnumNivelCirculacionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.NivelCirculacion | Prisma.EnumNivelCirculacionFieldRefInput<$PrismaModel>
+  in?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.NivelCirculacion[] | Prisma.ListEnumNivelCirculacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumNivelCirculacionWithAggregatesFilter<$PrismaModel> | $Enums.NivelCirculacion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel>
 }
 
 

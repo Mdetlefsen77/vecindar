@@ -150,7 +150,8 @@ export const TipoEventoPublicacion = {
   REQUERIMIENTO: 'REQUERIMIENTO',
   MASCOTA: 'MASCOTA',
   ALERTA_PANICO: 'ALERTA_PANICO',
-  RESUMEN: 'RESUMEN'
+  RESUMEN: 'RESUMEN',
+  PARTE_TURNO: 'PARTE_TURNO'
 } as const
 
 export type TipoEventoPublicacion = (typeof TipoEventoPublicacion)[keyof typeof TipoEventoPublicacion]
@@ -180,3 +181,31 @@ export const OrigenRegistro = {
 } as const
 
 export type OrigenRegistro = (typeof OrigenRegistro)[keyof typeof OrigenRegistro]
+
+
+export const TurnoGuardia = {
+  MANANA: 'MANANA',
+  MEDIODIA: 'MEDIODIA',
+  MEDIATARDE: 'MEDIATARDE',
+  NOCHE: 'NOCHE'
+} as const
+
+export type TurnoGuardia = (typeof TurnoGuardia)[keyof typeof TurnoGuardia]
+
+
+export const EstadoRonda = {
+  FINALIZADA: 'FINALIZADA',
+  PARCIAL: 'PARCIAL',
+  NO_REALIZADA: 'NO_REALIZADA'
+} as const
+
+export type EstadoRonda = (typeof EstadoRonda)[keyof typeof EstadoRonda]
+
+
+export const NivelCirculacion = {
+  ESCASA: 'ESCASA',
+  NORMAL: 'NORMAL',
+  INTENSA: 'INTENSA'
+} as const
+
+export type NivelCirculacion = (typeof NivelCirculacion)[keyof typeof NivelCirculacion]

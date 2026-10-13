@@ -13,13 +13,19 @@ export default async function WrappedPage({ params }: Params) {
   const modelo = await construirWrapped(anioNum);
   const imagenUrl = `/wrapped/${anioNum}/imagen`;
 
-  const tarjetas: { valor: string; label: string; color: string }[] = [
-    {
-      valor: `${modelo.incidentesResueltos}`,
-      label: "incidentes resueltos",
-      color: "#fb923c",
-    },
-  ];
+  const tarjetas: { valor: string; label: string; color: string }[] = [];
+  if (modelo.guardia) {
+    tarjetas.push({
+      valor: `${modelo.guardia.rondasCompletas}`,
+      label: `rondas de patrullaje completas en ${modelo.guardia.turnosCubiertos} turnos de la guardia`,
+      color: "#a78bfa",
+    });
+  }
+  tarjetas.push({
+    valor: `${modelo.incidentesResueltos}`,
+    label: "incidentes resueltos",
+    color: "#fb923c",
+  });
   if (modelo.tiempoMedianoRespuestaSOSMin !== null) {
     tarjetas.push({
       valor: `${modelo.tiempoMedianoRespuestaSOSMin} min`,

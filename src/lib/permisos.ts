@@ -31,6 +31,9 @@ export const GESTORES_USUARIOS: readonly Rol[] = ["ADMIN"];
 /** Gestionan cobranza (panel `/admin/cobranza` y su API) sin ser ADMIN completo. */
 export const GESTORES_COBRANZA: readonly Rol[] = ["ADMIN", "TESORERO"];
 
+/** Cargan y editan los partes de turno de la guardia (`/partes`). Los ven todos. */
+export const GESTORES_PARTES: readonly Rol[] = ["ADMIN", "SEGURIDAD"];
+
 /**
  * Pueden compartir un incidente / requerimiento / mascota en el grupo de
  * WhatsApp (botón manual, Fase 1 del puente). Todos los roles: cuantos más
