@@ -164,3 +164,27 @@ export function mensajeParte(p: DatosMensajeParte, link?: string): string {
   }
   return lineas.join("\n");
 }
+
+/** Horas después del fin de un turno durante las que todavía se reclama su parte. */
+const VENTANA_RECORDATORIO_HS = 3;
+
+/**
+ * Turno que terminó hace menos de `VENTANA_RECORDATORIO_HS` horas, para el
+ * recordatorio a la guardia si no cargó el parte. La ventana es amplia porque
+ * el cron de GitHub Actions puede correr con demora. Los turnos terminan a las
+ * 8, 13, 18 y 23, así que las ventanas no se pisan; la del turno noche cruza
+ * la medianoche y en ese caso el parte es del día anterior.
+ */
+export function turnoRecienTerminado(
+  ahora = new Date(),
+): { fecha: string; turno: TurnoGuardia } | null {
+  const { fecha, hora } = enZonaHoraria(ahora);
+  for (const turno of ORDEN_TURNOS) {
+    const desdeFin = (hora - TURNOS[turno].fin + 24) % 24;
+    if (desdeFin < VENTANA_RECORDATORIO_HS) {
+      const cruzoMedianoche = hora < TURNOS[turno].fin;
+      return { fecha: cruzoMedianoche ? diaAnterior(fecha) : fecha, turno };
+    }
+  }
+  return null;
+}
