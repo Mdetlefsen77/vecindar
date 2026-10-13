@@ -193,6 +193,7 @@ export default async function InicioPage() {
     codigoInvitacion,
     invitados,
     ultimoParte,
+    oficiosPublicados,
   ] = await Promise.all([
     prisma.usuario.findUnique({
       where: { id: usuarioId },
@@ -243,6 +244,7 @@ export default async function InicioPage() {
         imagenes: true,
       },
     }),
+    prisma.oficio.count({ where: { estado: "APROBADO" } }),
   ]);
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
     usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
@@ -416,6 +418,28 @@ export default async function InicioPage() {
           </span>
         </Link>
       )}
+
+      <Link
+        href="/oficios"
+        className="flex items-center gap-3 bg-white rounded-2xl shadow-sm border border-gray-100 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 transition-colors"
+      >
+        <span aria-hidden="true" className="text-2xl">
+          🧰
+        </span>
+        <span className="flex-1 min-w-0">
+          <span className="block font-semibold text-gray-900">
+            Oficios del barrio
+          </span>
+          <span className="block text-sm text-gray-600">
+            {oficiosPublicados > 0
+              ? `${oficiosPublicados} servicio${oficiosPublicados === 1 ? "" : "s"} de vecinos, con sus recomendaciones`
+              : "¿Ofrecés un servicio? Publicalo para el barrio"}
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-gray-400 text-xl">
+          ›
+        </span>
+      </Link>
 
       <InvitarVecino codigo={codigoInvitacion} registros={invitados} />
 

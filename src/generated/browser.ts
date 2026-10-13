@@ -127,3 +127,23 @@ export type ClickLink = Prisma.ClickLinkModel
  * 
  */
 export type ParteTurno = Prisma.ParteTurnoModel
+/**
+ * Model CategoriaOficio
+ * 
+ */
+export type CategoriaOficio = Prisma.CategoriaOficioModel
+/**
+ * Model Oficio
+ * 
+ */
+export type Oficio = Prisma.OficioModel
+/**
+ * Model RecomendacionOficio
+ * 
+ */
+export type RecomendacionOficio = Prisma.RecomendacionOficioModel
+/**
+ * Model ReporteOficio
+ * 
+ */
+export type ReporteOficio = Prisma.ReporteOficioModel

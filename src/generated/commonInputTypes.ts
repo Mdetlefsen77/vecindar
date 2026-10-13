@@ -664,6 +664,40 @@ export type EnumNivelCirculacionWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel>
 }
 
+export type EnumGrupoOficioFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrupoOficio | Prisma.EnumGrupoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrupoOficioFilter<$PrismaModel> | $Enums.GrupoOficio
+}
+
+export type EnumGrupoOficioWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrupoOficio | Prisma.EnumGrupoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrupoOficioWithAggregatesFilter<$PrismaModel> | $Enums.GrupoOficio
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrupoOficioFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrupoOficioFilter<$PrismaModel>
+}
+
+export type EnumEstadoOficioFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoOficio | Prisma.EnumEstadoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel> | $Enums.EstadoOficio
+}
+
+export type EnumEstadoOficioWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoOficio | Prisma.EnumEstadoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoOficioWithAggregatesFilter<$PrismaModel> | $Enums.EstadoOficio
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -1276,6 +1310,40 @@ export type NestedEnumNivelCirculacionWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel>
   _max?: Prisma.NestedEnumNivelCirculacionFilter<$PrismaModel>
+}
+
+export type NestedEnumGrupoOficioFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrupoOficio | Prisma.EnumGrupoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrupoOficioFilter<$PrismaModel> | $Enums.GrupoOficio
+}
+
+export type NestedEnumGrupoOficioWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.GrupoOficio | Prisma.EnumGrupoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.GrupoOficio[] | Prisma.ListEnumGrupoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumGrupoOficioWithAggregatesFilter<$PrismaModel> | $Enums.GrupoOficio
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumGrupoOficioFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumGrupoOficioFilter<$PrismaModel>
+}
+
+export type NestedEnumEstadoOficioFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoOficio | Prisma.EnumEstadoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel> | $Enums.EstadoOficio
+}
+
+export type NestedEnumEstadoOficioWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.EstadoOficio | Prisma.EnumEstadoOficioFieldRefInput<$PrismaModel>
+  in?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  notIn?: $Enums.EstadoOficio[] | Prisma.ListEnumEstadoOficioFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumEstadoOficioWithAggregatesFilter<$PrismaModel> | $Enums.EstadoOficio
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel>
 }
 
 

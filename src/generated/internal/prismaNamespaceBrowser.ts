@@ -72,7 +72,11 @@ export const ModelName = {
   PublicacionExterna: 'PublicacionExterna',
   LinkRastreable: 'LinkRastreable',
   ClickLink: 'ClickLink',
-  ParteTurno: 'ParteTurno'
+  ParteTurno: 'ParteTurno',
+  CategoriaOficio: 'CategoriaOficio',
+  Oficio: 'Oficio',
+  RecomendacionOficio: 'RecomendacionOficio',
+  ReporteOficio: 'ReporteOficio'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -412,6 +416,59 @@ export const ParteTurnoScalarFieldEnum = {
 } as const
 
 export type ParteTurnoScalarFieldEnum = (typeof ParteTurnoScalarFieldEnum)[keyof typeof ParteTurnoScalarFieldEnum]
+
+
+export const CategoriaOficioScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  grupo: 'grupo',
+  activa: 'activa'
+} as const
+
+export type CategoriaOficioScalarFieldEnum = (typeof CategoriaOficioScalarFieldEnum)[keyof typeof CategoriaOficioScalarFieldEnum]
+
+
+export const OficioScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  categoriaId: 'categoriaId',
+  categoriaSugerida: 'categoriaSugerida',
+  titulo: 'titulo',
+  descripcion: 'descripcion',
+  disponibilidad: 'disponibilidad',
+  telefono: 'telefono',
+  imagenes: 'imagenes',
+  estado: 'estado',
+  motivoEstado: 'motivoEstado',
+  aprobadoAt: 'aprobadoAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OficioScalarFieldEnum = (typeof OficioScalarFieldEnum)[keyof typeof OficioScalarFieldEnum]
+
+
+export const RecomendacionOficioScalarFieldEnum = {
+  id: 'id',
+  oficioId: 'oficioId',
+  autorId: 'autorId',
+  comentario: 'comentario',
+  createdAt: 'createdAt'
+} as const
+
+export type RecomendacionOficioScalarFieldEnum = (typeof RecomendacionOficioScalarFieldEnum)[keyof typeof RecomendacionOficioScalarFieldEnum]
+
+
+export const ReporteOficioScalarFieldEnum = {
+  id: 'id',
+  oficioId: 'oficioId',
+  autorId: 'autorId',
+  detalle: 'detalle',
+  resuelto: 'resuelto',
+  createdAt: 'createdAt'
+} as const
+
+export type ReporteOficioScalarFieldEnum = (typeof ReporteOficioScalarFieldEnum)[keyof typeof ReporteOficioScalarFieldEnum]
 
 
 export const SortOrder = {
