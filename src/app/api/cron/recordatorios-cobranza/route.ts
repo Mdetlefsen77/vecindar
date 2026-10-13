@@ -2,15 +2,22 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { enviarPushUsuario } from "@/lib/push/enviarPush";
 import { montoDeSuscripcion, formatoPesos } from "@/lib/cobranza";
+import {
+  deudoresParaRecordar,
+  enviarPushRecordatorio,
+} from "@/lib/cobranzaServer";
 
 /**
  * GET /api/cron/recordatorios-cobranza
  *
  * Disparado por Vercel Cron (ver vercel.json) una vez por día. Push a cada
- * vecino no exento con la cuota por vencer o vencida:
+ * vecino verificado no exento:
  *  - 3 días antes de vencer (una vez).
  *  - El primer día que queda vencida.
  *  - Después, un recordatorio cada 7 días mientras siga vencida.
+ *  - Sin ningún pago registrado ("sin datos"): los días 1, 8, 15, 22 y 29 de
+ *    cada mes. No tienen fecha de vencimiento propia, así que se usa una
+ *    cadencia fija semanal.
  * Nunca toca `Suscripcion` — solo lee y notifica.
  */
 
@@ -35,50 +42,47 @@ export async function GET(req: NextRequest) {
   }
 
   const ahora = new Date();
+  const tocaSinDatos = ahora.getDate() % 7 === 1;
 
-  const suscripciones = await prisma.suscripcion.findMany({
-    where: { exento: false, vigenteHasta: { not: null } },
-    select: {
-      usuarioId: true,
-      vigenteHasta: true,
-      montoMensual: true,
-      usuario: { select: { verificado: true } },
+  // Aviso previo: cuotas al día que vencen en 3 días.
+  const porVencer = await prisma.suscripcion.findMany({
+    where: {
+      exento: false,
+      vigenteHasta: { gte: ahora },
+      usuario: { verificado: true },
     },
+    select: { usuarioId: true, vigenteHasta: true, montoMensual: true },
   });
+  const previos = porVencer.filter((s) => diasEntre(ahora, s.vigenteHasta!) === 3);
 
-  let avisosPrevios = 0;
-  let avisosVencida = 0;
+  const deudores = await deudoresParaRecordar(ahora);
+  const vencidas = deudores.filter((d) => {
+    if (d.estado !== "vencida") return false;
+    const diasDeMora = -diasEntre(ahora, d.vigenteHasta!);
+    return diasDeMora === 1 || (diasDeMora > 0 && diasDeMora % 7 === 0);
+  });
+  const sinDatos = tocaSinDatos
+    ? deudores.filter((d) => d.estado === "sin_datos")
+    : [];
 
-  await Promise.all(
-    suscripciones
-      .filter((s) => s.usuario.verificado)
-      .map(async (s) => {
-        const cuota = formatoPesos(montoDeSuscripcion(s));
-        const dias = diasEntre(ahora, s.vigenteHasta!);
-
-        if (dias === 3) {
-          avisosPrevios++;
-          await enviarPushUsuario(s.usuarioId, {
-            title: "Tu cuota vence en 3 días",
-            body: `Cuota mensual: ${cuota}. Entrá a "Mi suscripción" para regularizarla a tiempo.`,
-            url: "/mi-suscripcion",
-            tag: "cobranza",
-          });
-          return;
-        }
-
-        const diasDeMora = -dias;
-        if (diasDeMora === 1 || (diasDeMora > 0 && diasDeMora % 7 === 0)) {
-          avisosVencida++;
-          await enviarPushUsuario(s.usuarioId, {
-            title: "Tu cuota está vencida",
-            body: `Cuota mensual: ${cuota}. Entrá a "Mi suscripción" para ver cómo pagar.`,
-            url: "/mi-suscripcion",
-            tag: "cobranza",
-          });
-        }
+  await Promise.all([
+    ...previos.map((s) =>
+      enviarPushUsuario(s.usuarioId, {
+        title: "Tu cuota vence en 3 días",
+        body: `Cuota mensual: ${formatoPesos(montoDeSuscripcion(s))}. Entrá a "Mi suscripción" para regularizarla a tiempo.`,
+        url: "/mi-suscripcion",
+        tag: "cobranza",
       }),
-  );
+    ),
+    ...[...vencidas, ...sinDatos].map((d) =>
+      enviarPushRecordatorio(d.usuarioId, d.estado, d.cuota),
+    ),
+  ]);
 
-  return NextResponse.json({ ok: true, avisosPrevios, avisosVencida });
+  return NextResponse.json({
+    ok: true,
+    avisosPrevios: previos.length,
+    avisosVencida: vencidas.length,
+    avisosSinDatos: sinDatos.length,
+  });
 }

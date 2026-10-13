@@ -13,6 +13,8 @@ import {
   METODO_PAGO_LABEL,
   formatoPesos,
   periodoLabel,
+  mensajeRecordatorioWhatsApp,
+  linkWhatsApp,
   type EstadoCobranza,
 } from "@/lib/cobranza";
 import { MetodoPago } from "@/generated/enums";
@@ -20,6 +22,11 @@ import { MetodoPago } from "@/generated/enums";
 export interface FilaCobranza {
   id: number;
   nombre: string;
+  nombrePila: string;
+  telefono: string | null;
+  conPush: boolean;
+  mesesVencidos: number;
+  deuda: number;
   lote: string;
   estado: EstadoCobranza;
   vigenteHasta: string | null;
@@ -36,6 +43,42 @@ const BADGE: Record<EstadoCobranza, string> = {
   sin_datos: "bg-gray-100 text-gray-500",
   exento: "bg-blue-100 text-blue-700",
 };
+
+function esDeudor(f: FilaCobranza): boolean {
+  return f.estado === "vencida" || f.estado === "sin_datos";
+}
+
+function hrefWhatsApp(f: FilaCobranza): string {
+  return linkWhatsApp(
+    f.telefono,
+    mensajeRecordatorioWhatsApp({
+      nombre: f.nombrePila,
+      estado: f.estado,
+      meses: f.mesesVencidos,
+      deuda: f.deuda,
+      cuota: f.montoMensual,
+    }),
+  );
+}
+
+/** Botón "Recordar" por WhatsApp — solo para deudores. */
+function BotonWhatsApp({ fila }: { fila: FilaCobranza }) {
+  return (
+    <a
+      href={hrefWhatsApp(fila)}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={
+        fila.telefono
+          ? `Abrir WhatsApp con ${fila.telefono}`
+          : "Sin teléfono cargado: elegí el contacto en WhatsApp"
+      }
+      className="text-sm px-3 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors whitespace-nowrap text-center"
+    >
+      Recordar
+    </a>
+  );
+}
 
 function fmtFecha(iso: string | null): string {
   if (!iso) return "—";
@@ -83,7 +126,23 @@ export default function CobranzaTabla({
             >
               <div>
                 <p className="font-medium text-sm text-gray-900">{f.nombre}</p>
-                <p className="text-xs text-gray-500 font-mono">{f.lote}</p>
+                <p className="text-xs text-gray-500">
+                  <span className="font-mono">{f.lote}</span>
+                  {!f.conPush && (
+                    <span
+                      className="ml-2 text-amber-700"
+                      title="No tiene notificaciones push activas: no le llegan los recordatorios automáticos"
+                    >
+                      · sin push
+                    </span>
+                  )}
+                </p>
+                {f.estado === "vencida" && f.mesesVencidos > 0 && (
+                  <p className="text-xs text-red-600">
+                    Debe {f.mesesVencidos === 1 ? "1 mes" : `${f.mesesVencidos} meses`}{" "}
+                    · {formatoPesos(f.deuda)}
+                  </p>
+                )}
               </div>
 
               <span
@@ -112,12 +171,15 @@ export default function CobranzaTabla({
                 )}
               </span>
 
-              <button
-                onClick={() => setAbierta(f)}
-                className="text-sm px-3 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-700 transition-colors whitespace-nowrap justify-self-start sm:justify-self-auto"
-              >
-                Gestionar
-              </button>
+              <div className="flex gap-2 justify-self-start sm:justify-self-end">
+                {esDeudor(f) && <BotonWhatsApp fila={f} />}
+                <button
+                  onClick={() => setAbierta(f)}
+                  className="text-sm px-3 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-700 transition-colors whitespace-nowrap"
+                >
+                  Gestionar
+                </button>
+              </div>
             </div>
           ))}
         </div>
