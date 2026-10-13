@@ -68,6 +68,19 @@ export default async function SeguridadPage() {
         </p>
       </div>
 
+      <Link
+        href="/partes/nuevo"
+        className="flex items-center justify-between gap-3 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white px-5 py-4 shadow-sm transition-colors"
+      >
+        <span>
+          <span className="block text-lg font-bold">📌 Cargar parte de turno</span>
+          <span className="block text-sm text-blue-100">
+            Ronda, circulación, novedades y fotos — y compartilo en el grupo
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-2xl">›</span>
+      </Link>
+
       {/* Stats grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {stats.map((s) => (
@@ -99,6 +112,7 @@ export default async function SeguridadPage() {
             { label: "Requerimientos", href: "/requerimientos", icon: "📋" },
             { label: "Mascotas perdidas", href: "/mascotas", icon: "🐾" },
             { label: "Alertas de pánico", href: "/panico", icon: "🆘" },
+            { label: "Partes de guardia", href: "/partes", icon: "📌" },
           ].map((a) => (
             <Link
               key={a.href}

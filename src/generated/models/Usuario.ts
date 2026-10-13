@@ -346,6 +346,7 @@ export type UsuarioWhereInput = {
   codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
   transicionesRealizadas?: Prisma.TransicionEstadoListRelationFilter
   reportesGenerados?: Prisma.ReporteListRelationFilter
+  partesTurno?: Prisma.ParteTurnoListRelationFilter
   publicacionesExternas?: Prisma.PublicacionExternaListRelationFilter
   clicksLinks?: Prisma.ClickLinkListRelationFilter
 }
@@ -387,6 +388,7 @@ export type UsuarioOrderByWithRelationInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionOrderByWithRelationInput
   transicionesRealizadas?: Prisma.TransicionEstadoOrderByRelationAggregateInput
   reportesGenerados?: Prisma.ReporteOrderByRelationAggregateInput
+  partesTurno?: Prisma.ParteTurnoOrderByRelationAggregateInput
   publicacionesExternas?: Prisma.PublicacionExternaOrderByRelationAggregateInput
   clicksLinks?: Prisma.ClickLinkOrderByRelationAggregateInput
 }
@@ -431,6 +433,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   codigoInvitacion?: Prisma.XOR<Prisma.CodigoInvitacionNullableScalarRelationFilter, Prisma.CodigoInvitacionWhereInput> | null
   transicionesRealizadas?: Prisma.TransicionEstadoListRelationFilter
   reportesGenerados?: Prisma.ReporteListRelationFilter
+  partesTurno?: Prisma.ParteTurnoListRelationFilter
   publicacionesExternas?: Prisma.PublicacionExternaListRelationFilter
   clicksLinks?: Prisma.ClickLinkListRelationFilter
 }, "id" | "email">
@@ -519,6 +522,7 @@ export type UsuarioCreateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -558,6 +562,7 @@ export type UsuarioUncheckedCreateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -596,6 +601,7 @@ export type UsuarioUpdateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -635,6 +641,7 @@ export type UsuarioUncheckedUpdateInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -1158,6 +1165,20 @@ export type UsuarioUpdateOneWithoutClicksLinksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutClicksLinksInput, Prisma.UsuarioUpdateWithoutClicksLinksInput>, Prisma.UsuarioUncheckedUpdateWithoutClicksLinksInput>
 }
 
+export type UsuarioCreateNestedOneWithoutPartesTurnoInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutPartesTurnoInput, Prisma.UsuarioUncheckedCreateWithoutPartesTurnoInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutPartesTurnoInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneRequiredWithoutPartesTurnoNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutPartesTurnoInput, Prisma.UsuarioUncheckedCreateWithoutPartesTurnoInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutPartesTurnoInput
+  upsert?: Prisma.UsuarioUpsertWithoutPartesTurnoInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutPartesTurnoInput, Prisma.UsuarioUpdateWithoutPartesTurnoInput>, Prisma.UsuarioUncheckedUpdateWithoutPartesTurnoInput>
+}
+
 export type UsuarioCreateWithoutLoteInput = {
   email: string
   password: string
@@ -1191,6 +1212,7 @@ export type UsuarioCreateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -1229,6 +1251,7 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1316,6 +1339,7 @@ export type UsuarioCreateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -1354,6 +1378,7 @@ export type UsuarioUncheckedCreateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1396,6 +1421,7 @@ export type UsuarioCreateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -1434,6 +1460,7 @@ export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1492,6 +1519,7 @@ export type UsuarioUpdateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -1530,6 +1558,7 @@ export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -1583,6 +1612,7 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -1621,6 +1651,7 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1674,6 +1705,7 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -1712,6 +1744,7 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -1749,6 +1782,7 @@ export type UsuarioCreateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -1787,6 +1821,7 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1829,6 +1864,7 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -1867,6 +1903,7 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -1920,6 +1957,7 @@ export type UsuarioUpdateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -1958,6 +1996,7 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -2006,6 +2045,7 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -2044,6 +2084,7 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -2081,6 +2122,7 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -2119,6 +2161,7 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -2172,6 +2215,7 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -2210,6 +2254,7 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -2247,6 +2292,7 @@ export type UsuarioCreateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -2285,6 +2331,7 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -2338,6 +2385,7 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -2376,6 +2424,7 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -2413,6 +2462,7 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -2451,6 +2501,7 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -2493,6 +2544,7 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -2531,6 +2583,7 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -2584,6 +2637,7 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -2622,6 +2676,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -2670,6 +2725,7 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -2708,6 +2764,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -2745,6 +2802,7 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -2783,6 +2841,7 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -2836,6 +2895,7 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -2874,6 +2934,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -2911,6 +2972,7 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -2949,6 +3011,7 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -3002,6 +3065,7 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -3040,6 +3104,7 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -3077,6 +3142,7 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -3115,6 +3181,7 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -3168,6 +3235,7 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -3206,6 +3274,7 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -3243,6 +3312,7 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -3281,6 +3351,7 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -3334,6 +3405,7 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -3372,6 +3444,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -3409,6 +3482,7 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -3447,6 +3521,7 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -3500,6 +3575,7 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -3538,6 +3614,7 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -3575,6 +3652,7 @@ export type UsuarioCreateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -3613,6 +3691,7 @@ export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -3666,6 +3745,7 @@ export type UsuarioUpdateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -3704,6 +3784,7 @@ export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -3741,6 +3822,7 @@ export type UsuarioCreateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -3779,6 +3861,7 @@ export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -3832,6 +3915,7 @@ export type UsuarioUpdateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -3870,6 +3954,7 @@ export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -3907,6 +3992,7 @@ export type UsuarioCreateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -3945,6 +4031,7 @@ export type UsuarioUncheckedCreateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -3998,6 +4085,7 @@ export type UsuarioUpdateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -4036,6 +4124,7 @@ export type UsuarioUncheckedUpdateWithoutReportesGeneradosInput = {
   invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -4074,6 +4163,7 @@ export type UsuarioCreateWithoutPublicacionesExternasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
 
@@ -4112,6 +4202,7 @@ export type UsuarioUncheckedCreateWithoutPublicacionesExternasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
 
@@ -4165,6 +4256,7 @@ export type UsuarioUpdateWithoutPublicacionesExternasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
 
@@ -4203,6 +4295,7 @@ export type UsuarioUncheckedUpdateWithoutPublicacionesExternasInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
@@ -4240,6 +4333,7 @@ export type UsuarioCreateWithoutClicksLinksInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
 }
 
@@ -4278,6 +4372,7 @@ export type UsuarioUncheckedCreateWithoutClicksLinksInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
 }
 
@@ -4331,6 +4426,7 @@ export type UsuarioUpdateWithoutClicksLinksInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
 }
 
@@ -4369,7 +4465,178 @@ export type UsuarioUncheckedUpdateWithoutClicksLinksInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+}
+
+export type UsuarioCreateWithoutPartesTurnoInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutPartesTurnoInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutPartesTurnoInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutPartesTurnoInput, Prisma.UsuarioUncheckedCreateWithoutPartesTurnoInput>
+}
+
+export type UsuarioUpsertWithoutPartesTurnoInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutPartesTurnoInput, Prisma.UsuarioUncheckedUpdateWithoutPartesTurnoInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutPartesTurnoInput, Prisma.UsuarioUncheckedCreateWithoutPartesTurnoInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutPartesTurnoInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutPartesTurnoInput, Prisma.UsuarioUncheckedUpdateWithoutPartesTurnoInput>
+}
+
+export type UsuarioUpdateWithoutPartesTurnoInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutPartesTurnoInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateManyLoteInput = {
@@ -4425,6 +4692,7 @@ export type UsuarioUpdateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -4463,6 +4731,7 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -4540,6 +4809,7 @@ export type UsuarioUpdateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -4578,6 +4848,7 @@ export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
   codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
   transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -4622,6 +4893,7 @@ export type UsuarioCountOutputType = {
   invitados: number
   transicionesRealizadas: number
   reportesGenerados: number
+  partesTurno: number
   publicacionesExternas: number
   clicksLinks: number
 }
@@ -4641,6 +4913,7 @@ export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   invitados?: boolean | UsuarioCountOutputTypeCountInvitadosArgs
   transicionesRealizadas?: boolean | UsuarioCountOutputTypeCountTransicionesRealizadasArgs
   reportesGenerados?: boolean | UsuarioCountOutputTypeCountReportesGeneradosArgs
+  partesTurno?: boolean | UsuarioCountOutputTypeCountPartesTurnoArgs
   publicacionesExternas?: boolean | UsuarioCountOutputTypeCountPublicacionesExternasArgs
   clicksLinks?: boolean | UsuarioCountOutputTypeCountClicksLinksArgs
 }
@@ -4756,6 +5029,13 @@ export type UsuarioCountOutputTypeCountReportesGeneradosArgs<ExtArgs extends run
 /**
  * UsuarioCountOutputType without action
  */
+export type UsuarioCountOutputTypeCountPartesTurnoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ParteTurnoWhereInput
+}
+
+/**
+ * UsuarioCountOutputType without action
+ */
 export type UsuarioCountOutputTypeCountPublicacionesExternasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PublicacionExternaWhereInput
 }
@@ -4805,6 +5085,7 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
   transicionesRealizadas?: boolean | Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>
   reportesGenerados?: boolean | Prisma.Usuario$reportesGeneradosArgs<ExtArgs>
+  partesTurno?: boolean | Prisma.Usuario$partesTurnoArgs<ExtArgs>
   publicacionesExternas?: boolean | Prisma.Usuario$publicacionesExternasArgs<ExtArgs>
   clicksLinks?: boolean | Prisma.Usuario$clicksLinksArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
@@ -4897,6 +5178,7 @@ export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   codigoInvitacion?: boolean | Prisma.Usuario$codigoInvitacionArgs<ExtArgs>
   transicionesRealizadas?: boolean | Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>
   reportesGenerados?: boolean | Prisma.Usuario$reportesGeneradosArgs<ExtArgs>
+  partesTurno?: boolean | Prisma.Usuario$partesTurnoArgs<ExtArgs>
   publicacionesExternas?: boolean | Prisma.Usuario$publicacionesExternasArgs<ExtArgs>
   clicksLinks?: boolean | Prisma.Usuario$clicksLinksArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
@@ -4931,6 +5213,7 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     codigoInvitacion: Prisma.$CodigoInvitacionPayload<ExtArgs> | null
     transicionesRealizadas: Prisma.$TransicionEstadoPayload<ExtArgs>[]
     reportesGenerados: Prisma.$ReportePayload<ExtArgs>[]
+    partesTurno: Prisma.$ParteTurnoPayload<ExtArgs>[]
     publicacionesExternas: Prisma.$PublicacionExternaPayload<ExtArgs>[]
     clicksLinks: Prisma.$ClickLinkPayload<ExtArgs>[]
   }
@@ -5365,6 +5648,7 @@ export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends runtime.
   codigoInvitacion<T extends Prisma.Usuario$codigoInvitacionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$codigoInvitacionArgs<ExtArgs>>): Prisma.Prisma__CodigoInvitacionClient<runtime.Types.Result.GetResult<Prisma.$CodigoInvitacionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   transicionesRealizadas<T extends Prisma.Usuario$transicionesRealizadasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$transicionesRealizadasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransicionEstadoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportesGenerados<T extends Prisma.Usuario$reportesGeneradosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$reportesGeneradosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  partesTurno<T extends Prisma.Usuario$partesTurnoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$partesTurnoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParteTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   publicacionesExternas<T extends Prisma.Usuario$publicacionesExternasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$publicacionesExternasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicacionExternaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   clicksLinks<T extends Prisma.Usuario$clicksLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$clicksLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClickLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
@@ -6200,6 +6484,30 @@ export type Usuario$reportesGeneradosArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.ReporteScalarFieldEnum | Prisma.ReporteScalarFieldEnum[]
+}
+
+/**
+ * Usuario.partesTurno
+ */
+export type Usuario$partesTurnoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ParteTurno
+   */
+  select?: Prisma.ParteTurnoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ParteTurno
+   */
+  omit?: Prisma.ParteTurnoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ParteTurnoInclude<ExtArgs> | null
+  where?: Prisma.ParteTurnoWhereInput
+  orderBy?: Prisma.ParteTurnoOrderByWithRelationInput | Prisma.ParteTurnoOrderByWithRelationInput[]
+  cursor?: Prisma.ParteTurnoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ParteTurnoScalarFieldEnum | Prisma.ParteTurnoScalarFieldEnum[]
 }
 
 /**

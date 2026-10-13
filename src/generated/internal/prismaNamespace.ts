@@ -404,7 +404,8 @@ export const ModelName = {
   Reporte: 'Reporte',
   PublicacionExterna: 'PublicacionExterna',
   LinkRastreable: 'LinkRastreable',
-  ClickLink: 'ClickLink'
+  ClickLink: 'ClickLink',
+  ParteTurno: 'ParteTurno'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -420,7 +421,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1978,6 +1979,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ParteTurno: {
+      payload: Prisma.$ParteTurnoPayload<ExtArgs>
+      fields: Prisma.ParteTurnoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ParteTurnoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ParteTurnoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>
+        }
+        findFirst: {
+          args: Prisma.ParteTurnoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ParteTurnoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>
+        }
+        findMany: {
+          args: Prisma.ParteTurnoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>[]
+        }
+        create: {
+          args: Prisma.ParteTurnoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>
+        }
+        createMany: {
+          args: Prisma.ParteTurnoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ParteTurnoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>[]
+        }
+        delete: {
+          args: Prisma.ParteTurnoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>
+        }
+        update: {
+          args: Prisma.ParteTurnoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>
+        }
+        deleteMany: {
+          args: Prisma.ParteTurnoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ParteTurnoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ParteTurnoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>[]
+        }
+        upsert: {
+          args: Prisma.ParteTurnoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ParteTurnoPayload>
+        }
+        aggregate: {
+          args: Prisma.ParteTurnoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateParteTurno>
+        }
+        groupBy: {
+          args: Prisma.ParteTurnoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ParteTurnoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ParteTurnoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ParteTurnoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2320,6 +2395,24 @@ export const ClickLinkScalarFieldEnum = {
 } as const
 
 export type ClickLinkScalarFieldEnum = (typeof ClickLinkScalarFieldEnum)[keyof typeof ClickLinkScalarFieldEnum]
+
+
+export const ParteTurnoScalarFieldEnum = {
+  id: 'id',
+  fecha: 'fecha',
+  turno: 'turno',
+  ronda: 'ronda',
+  circulacion: 'circulacion',
+  presenciaPolicial: 'presenciaPolicial',
+  recomendacion: 'recomendacion',
+  novedades: 'novedades',
+  imagenes: 'imagenes',
+  autorId: 'autorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ParteTurnoScalarFieldEnum = (typeof ParteTurnoScalarFieldEnum)[keyof typeof ParteTurnoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2696,6 +2789,48 @@ export type EnumModoPublicacionFieldRefInput<$PrismaModel> = FieldRefInputType<$
 export type ListEnumModoPublicacionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModoPublicacion[]'>
     
 
+
+/**
+ * Reference to a field of type 'TurnoGuardia'
+ */
+export type EnumTurnoGuardiaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TurnoGuardia'>
+    
+
+
+/**
+ * Reference to a field of type 'TurnoGuardia[]'
+ */
+export type ListEnumTurnoGuardiaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TurnoGuardia[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EstadoRonda'
+ */
+export type EnumEstadoRondaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoRonda'>
+    
+
+
+/**
+ * Reference to a field of type 'EstadoRonda[]'
+ */
+export type ListEnumEstadoRondaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoRonda[]'>
+    
+
+
+/**
+ * Reference to a field of type 'NivelCirculacion'
+ */
+export type EnumNivelCirculacionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NivelCirculacion'>
+    
+
+
+/**
+ * Reference to a field of type 'NivelCirculacion[]'
+ */
+export type ListEnumNivelCirculacionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NivelCirculacion[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -2812,6 +2947,7 @@ export type GlobalOmitConfig = {
   publicacionExterna?: Prisma.PublicacionExternaOmit
   linkRastreable?: Prisma.LinkRastreableOmit
   clickLink?: Prisma.ClickLinkOmit
+  parteTurno?: Prisma.ParteTurnoOmit
 }
 
 /* Types for Logging */

@@ -21,6 +21,10 @@ const VISTA_PREVIA_POR_TIPO: Record<string, { titulo: string; descripcion: strin
     titulo: "Vecindar — Alerta activa",
     descripcion: "Hay una alerta activa en el barrio. Abrí Vecindar para ver el detalle.",
   },
+  PARTE_TURNO: {
+    titulo: "Vecindar — Parte de la guardia",
+    descripcion: "La guardia cargó el parte del turno. Abrí Vecindar para ver el detalle y las fotos.",
+  },
   RESUMEN: {
     titulo: "Vecindar — Novedades del barrio",
     descripcion: "Hay novedades cargadas en Vecindar. Abrí la app para verlas.",

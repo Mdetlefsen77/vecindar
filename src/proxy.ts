@@ -13,6 +13,7 @@ const RUTAS_PROTEGIDAS = [
   "/requerimientos",
   "/mascotas",
   "/seguridad",
+  "/partes",
   "/admin",
 ];
 
@@ -53,6 +54,7 @@ export const config = {
     "/requerimientos/:path*",
     "/mascotas/:path*",
     "/seguridad/:path*",
+    "/partes/:path*",
     "/admin/:path*",
     "/login",
   ],

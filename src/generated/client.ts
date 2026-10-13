@@ -144,3 +144,8 @@ export type LinkRastreable = Prisma.LinkRastreableModel
  * 
  */
 export type ClickLink = Prisma.ClickLinkModel
+/**
+ * Model ParteTurno
+ * 
+ */
+export type ParteTurno = Prisma.ParteTurnoModel

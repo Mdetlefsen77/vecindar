@@ -10,6 +10,7 @@ import {
   type AutorPlantilla,
 } from "@/lib/notificaciones-externas/plantillas";
 import { compartirEventoSchema } from "@/lib/validation/notificacionesExternas";
+import { mensajeParte } from "@/lib/partes";
 
 async function resolverIncidente(entidadId: number) {
   const inc = await prisma.incidente.findUnique({
@@ -89,10 +90,28 @@ async function resolverMascota(entidadId: number) {
   };
 }
 
+async function resolverParteTurno(entidadId: number) {
+  const parte = await prisma.parteTurno.findUnique({
+    where: { id: entidadId },
+  });
+  if (!parte) return { error: "No encontrado." as const };
+  // A diferencia del resto, el parte es contenido pensado para el grupo:
+  // el mensaje lleva el parte completo, no un teaser.
+  return {
+    urlDestino: `/partes/${parte.id}`,
+    construirMensaje: (link: string) =>
+      mensajeParte(
+        { ...parte, cantidadFotos: parte.imagenes.length },
+        link,
+      ),
+  };
+}
+
 const RESOLVERS = {
   INCIDENTE: resolverIncidente,
   REQUERIMIENTO: resolverRequerimiento,
   MASCOTA: resolverMascota,
+  PARTE_TURNO: resolverParteTurno,
 } as const;
 
 // POST /api/notificaciones-externas/compartir — HU-07. Genera el link
@@ -132,6 +151,21 @@ export async function POST(req: NextRequest) {
     urlDestino: resuelto.urlDestino,
     publicadaPorId: getUserId(session),
   });
+
+  // Un parte se puede volver a compartir (ej. el guardia canceló el share
+  // o lo manda a otro grupo): se reutiliza el mismo link rastreable.
+  if (
+    !resultado.ok &&
+    tipoEvento === "PARTE_TURNO" &&
+    resultado.yaCompartido.codigo
+  ) {
+    const link = `${req.nextUrl.origin}/r/${resultado.yaCompartido.codigo}`;
+    return NextResponse.json({
+      ok: true,
+      mensaje: resuelto.construirMensaje(link),
+      codigo: resultado.yaCompartido.codigo,
+    });
+  }
 
   if (!resultado.ok) {
     return NextResponse.json(
