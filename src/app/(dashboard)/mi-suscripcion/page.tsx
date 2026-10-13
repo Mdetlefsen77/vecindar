@@ -25,12 +25,12 @@ const ESTADO_UI: Record<
   al_dia: {
     titulo: "Al día",
     clase: "border-green-300 bg-green-50 text-green-800",
-    detalle: "Tenés la cuota mensual al día. ¡Gracias!",
+    detalle: "Tenés el aporte mensual al día. ¡Gracias por sumarte!",
   },
   vencida: {
     titulo: "Vencida",
     clase: "border-amber-300 bg-amber-50 text-amber-900",
-    detalle: "Tu cuota está vencida. Abajo están los datos para regularizarla.",
+    detalle: "Tu aporte mensual venció. Abajo están los datos para regularizarlo.",
   },
   sin_datos: {
     titulo: "Sin registro",
@@ -41,7 +41,7 @@ const ESTADO_UI: Record<
   exento: {
     titulo: "Exento",
     clase: "border-blue-200 bg-blue-50 text-blue-800",
-    detalle: "Estás exento del pago de la cuota mensual.",
+    detalle: "Estás exento del aporte mensual.",
   },
 };
 
@@ -88,7 +88,7 @@ export default async function MiSuscripcionPage() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Mi suscripción</h1>
         <p className="text-sm text-gray-500 mt-0.5">
-          Cuota mensual del barrio: {formatoPesos(cuota)}
+          Aporte mensual del barrio: {formatoPesos(cuota)}
         </p>
       </div>
 

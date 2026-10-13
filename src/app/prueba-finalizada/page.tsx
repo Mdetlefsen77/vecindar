@@ -42,7 +42,7 @@ export default async function PruebaFinalizadaPage() {
           <p className="text-sm text-gray-600">
             Vecindar funciona con una suscripción mensual de{" "}
             <span className="font-semibold">{formatoPesos(cuota)}</span>. Para
-            seguir usando la app, pagá tu primera cuota: apenas se registre el
+            seguir usando la app, hacé tu primer aporte: apenas se registre el
             pago, tu cuenta vuelve a estar activa.
           </p>
         </div>

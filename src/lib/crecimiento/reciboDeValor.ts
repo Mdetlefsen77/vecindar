@@ -109,11 +109,11 @@ export async function enviarReciboDeValor(pago: {
     const frases = await numerosDelPeriodo(pago.periodo);
     const cuerpo =
       frases.length > 0
-        ? `Gracias a tu cuota, ${frases.slice(0, 2).join(" y ")}.`
+        ? `Gracias a tu aporte, ${frases.slice(0, 2).join(" y ")}.`
         : "Gracias por sostener la seguridad y gestión del barrio este mes.";
 
     await enviarPushUsuario(pago.usuarioId, {
-      title: `Tu cuota de ${mesLabel(pago.periodo)}`,
+      title: `Tu aporte de ${mesLabel(pago.periodo)}`,
       body: cuerpo,
       url: "/mi-suscripcion",
       tag: `recibo-valor-${pago.usuarioId}-${pago.periodo}`,

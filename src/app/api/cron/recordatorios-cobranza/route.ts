@@ -68,8 +68,8 @@ export async function GET(req: NextRequest) {
   await Promise.all([
     ...previos.map((s) =>
       enviarPushUsuario(s.usuarioId, {
-        title: "Tu cuota vence en 3 días",
-        body: `Cuota mensual: ${formatoPesos(montoDeSuscripcion(s))}. Entrá a "Mi suscripción" para regularizarla a tiempo.`,
+        title: "Tu aporte mensual vence en 3 días",
+        body: `Aporte mensual: ${formatoPesos(montoDeSuscripcion(s))}. Entrá a "Mi suscripción" para regularizarla a tiempo.`,
         url: "/mi-suscripcion",
         tag: "cobranza",
       }),

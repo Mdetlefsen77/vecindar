@@ -91,14 +91,14 @@ export async function enviarPushRecordatorio(
     usuarioId,
     estado === "vencida"
       ? {
-          title: "Tu cuota está vencida",
-          body: `Cuota mensual: ${monto}. Entrá a "Mi suscripción" para ver cómo pagar.`,
+          title: "Tu aporte mensual venció",
+          body: `Aporte mensual: ${monto}. Entrá a "Mi suscripción" para ver cómo pagar.`,
           url: "/mi-suscripcion",
           tag: "cobranza",
         }
       : {
           title: "Activá tu suscripción a Vecindar",
-          body: `Todavía no registramos ningún pago. Cuota mensual: ${monto}. Entrá a "Mi suscripción" para ver cómo pagar.`,
+          body: `Todavía no registramos ningún aporte. Aporte mensual: ${monto}. Entrá a "Mi suscripción" para ver cómo pagar.`,
           url: "/mi-suscripcion",
           tag: "cobranza",
         },

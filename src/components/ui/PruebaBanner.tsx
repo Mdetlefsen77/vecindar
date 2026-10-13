@@ -30,7 +30,7 @@ export default function PruebaBanner({
           </p>
           <p className="mt-1 text-sm text-blue-800">
             Vecindar funciona con una suscripción mensual. Tu prueba termina el{" "}
-            {vence}; para seguir usando la app después, pagá tu primera cuota.
+            {vence}; para seguir usando la app después, hacé tu primer aporte.
           </p>
           <Link
             href="/mi-suscripcion"
