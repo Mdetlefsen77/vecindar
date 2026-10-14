@@ -195,8 +195,18 @@ export default function OficioForm({
       </label>
 
       <ImageUpload
-        label="📸 Fotos de trabajos realizados"
+        label="📸 Fotos de tu servicio"
+        ayuda={
+          <>
+            <strong>La primera foto es la portada de tu tarjeta.</strong> Elegí
+            la que mejor muestre lo que hacés: tu logo, una foto tuya
+            trabajando o tu mejor trabajo terminado. Evitá capturas de
+            pantalla, fotos borrosas o con mucho texto. Podés cambiar la
+            portada tocando «★ Portada» en otra foto.
+          </>
+        }
         multiple
+        portada
         maxFiles={6}
         value={v.imagenes}
         onChange={(urls) => set("imagenes", urls)}

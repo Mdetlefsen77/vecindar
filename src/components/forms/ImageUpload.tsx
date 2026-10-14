@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -8,6 +8,8 @@ import Image from "next/image";
 interface BaseProps {
   label?: string;
   className?: string;
+  /** Texto de ayuda bajo el label. */
+  ayuda?: ReactNode;
 }
 
 interface SingleProps extends BaseProps {
@@ -15,6 +17,7 @@ interface SingleProps extends BaseProps {
   value: string | null;
   onChange: (url: string | null) => void;
   maxFiles?: never;
+  portada?: never;
 }
 
 interface MultipleProps extends BaseProps {
@@ -22,6 +25,8 @@ interface MultipleProps extends BaseProps {
   value: string[];
   onChange: (urls: string[]) => void;
   maxFiles?: number;
+  /** Marca la primera foto como portada y permite elegir otra. */
+  portada?: boolean;
 }
 
 type Props = SingleProps | MultipleProps;
@@ -81,6 +86,14 @@ export default function ImageUpload(props: Props) {
     }
   }
 
+  function hacerPortada(index: number) {
+    const p = props as MultipleProps;
+    const elegida = p.value[index];
+    p.onChange([elegida, ...p.value.filter((_, i) => i !== index)]);
+  }
+
+  const conPortada = isMultiple && (props as MultipleProps).portada === true;
+
   function removeImage(index: number) {
     if (!isMultiple) {
       (props as SingleProps).onChange(null);
@@ -98,6 +111,9 @@ export default function ImageUpload(props: Props) {
           <span className="text-gray-500 font-normal">(opcional)</span>
         </label>
       )}
+      {props.ayuda && (
+        <div className="text-xs text-gray-600 mb-2">{props.ayuda}</div>
+      )}
 
       {/* Previews */}
       {urls.length > 0 && (
@@ -105,7 +121,11 @@ export default function ImageUpload(props: Props) {
           {urls.map((url, i) => (
             <div
               key={url}
-              className="relative w-24 h-24 rounded-xl overflow-hidden border border-gray-200 group flex-shrink-0"
+              className={`relative w-24 h-24 rounded-xl overflow-hidden flex-shrink-0 ${
+                conPortada && i === 0
+                  ? "border-2 border-blue-600"
+                  : "border border-gray-200"
+              }`}
             >
               <Image
                 src={url}
@@ -118,12 +138,26 @@ export default function ImageUpload(props: Props) {
                 type="button"
                 onClick={() => removeImage(i)}
                 aria-label="Eliminar imagen"
-                className="absolute top-1 right-1 w-5 h-5 bg-red-500 rounded-full text-white text-xs
-                           flex items-center justify-center shadow
-                           opacity-0 group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                className="absolute top-1 right-1 w-7 h-7 bg-red-500 rounded-full text-white text-sm
+                           flex items-center justify-center shadow"
               >
                 ×
               </button>
+              {conPortada &&
+                (i === 0 ? (
+                  <span className="absolute bottom-0 inset-x-0 bg-blue-600 text-white text-[11px] font-semibold text-center py-0.5">
+                    Portada
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => hacerPortada(i)}
+                    aria-label={`Usar la foto ${i + 1} de portada`}
+                    className="absolute bottom-0 inset-x-0 bg-black/60 text-white text-[11px] font-semibold text-center py-1"
+                  >
+                    ★ Portada
+                  </button>
+                ))}
             </div>
           ))}
 
