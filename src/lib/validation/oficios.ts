@@ -71,3 +71,12 @@ export const categoriaSchema = z.object({
 });
 
 export type OficioInput = z.infer<typeof oficioSchema>;
+
+export const fotosAdminSchema = z.object({
+  imagenes: z.array(z.url()).max(6, "Máximo 6 fotos."),
+  aviso: z
+    .string()
+    .trim()
+    .min(10, "Escribí el aviso para el vecino (mínimo 10 caracteres).")
+    .max(300, "El aviso es demasiado largo."),
+});

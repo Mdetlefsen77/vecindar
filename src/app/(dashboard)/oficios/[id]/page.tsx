@@ -16,6 +16,7 @@ import { linkWhatsApp } from "@/lib/whatsapp";
 import CompartirEnGrupo from "@/components/notificaciones-externas/CompartirEnGrupo";
 import {
   BorrarOficio,
+  EditarFotosAdmin,
   ModerarOficio,
   RecomendarPanel,
   ReportarProblema,
@@ -252,6 +253,12 @@ export default async function OficioPage({ params, searchParams }: Props) {
             oficioId={oficio.id}
             estado={oficio.estado}
             categoriaSugerida={oficio.categoriaSugerida}
+          />
+          <EditarFotosAdmin
+            oficioId={oficio.id}
+            titulo={oficio.titulo}
+            telefono={oficio.telefono}
+            imagenes={oficio.imagenes}
           />
           {!esDueno && <BorrarOficio oficioId={oficio.id} />}
         </section>
