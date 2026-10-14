@@ -5,7 +5,7 @@ import Image from "next/image";
 import { prisma } from "@/lib/prisma/client";
 import { esGestor, GESTORES_OFICIOS } from "@/lib/permisos";
 import { GRUPO_OFICIO, nombreCorto } from "@/lib/oficios";
-import { ModerarOficio } from "@/components/oficios/AccionesOficio";
+import { EditarFotosAdmin, ModerarOficio } from "@/components/oficios/AccionesOficio";
 import { CategoriasAdmin, ResolverReporte } from "./Gestion";
 
 export const metadata = { title: "Oficios — administración" };
@@ -118,6 +118,12 @@ export default async function AdminOficiosPage() {
                   ))}
                 </div>
               )}
+              <EditarFotosAdmin
+                oficioId={o.id}
+                titulo={o.titulo}
+                telefono={o.telefono}
+                imagenes={o.imagenes}
+              />
               <ModerarOficio
                 oficioId={o.id}
                 estado={o.estado}

@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import ImageUpload from "@/components/forms/ImageUpload";
 import { GRUPO_OFICIO, ORDEN_GRUPOS } from "@/lib/oficios";
+import { linkWhatsApp } from "@/lib/whatsapp";
 
 async function enviar(
   url: string,
@@ -380,6 +382,138 @@ export function ModerarOficio({
             Reactivar
           </button>
         )}
+      </div>
+    </div>
+  );
+}
+
+const AVISO_FOTOS =
+  "Cambiamos la foto de portada porque la anterior no mostraba bien tu servicio. Si querés, podés elegir otra desde Editar.";
+
+/** El admin reordena, quita o sube fotos de una card y le avisa al dueño. */
+export function EditarFotosAdmin({
+  oficioId,
+  titulo,
+  telefono,
+  imagenes,
+}: {
+  oficioId: number;
+  titulo: string;
+  telefono: string;
+  imagenes: string[];
+}) {
+  const router = useRouter();
+  const [abierto, setAbierto] = useState(false);
+  const [fotos, setFotos] = useState(imagenes);
+  const [aviso, setAviso] = useState(AVISO_FOTOS);
+  const [cargando, setCargando] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [guardado, setGuardado] = useState<{ conPush: boolean; aviso: string } | null>(null);
+
+  async function guardar() {
+    setCargando(true);
+    setError(null);
+    try {
+      const res = await fetch(`/api/oficios/${oficioId}/imagenes`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imagenes: fotos, aviso }),
+      });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) return setError(d.error ?? "No se pudieron guardar las fotos.");
+      setGuardado({ conPush: d.conPush, aviso });
+      setAbierto(false);
+      router.refresh();
+    } catch {
+      setError("Ocurrió un error de red.");
+    } finally {
+      setCargando(false);
+    }
+  }
+
+  const whatsapp = guardado
+    ? linkWhatsApp(
+        telefono,
+        `Hola! Te escribo de Vecindar por tu oficio "${titulo}". ${guardado.aviso}`,
+      )
+    : null;
+
+  if (!abierto) {
+    return (
+      <div className="space-y-2">
+        {guardado && (
+          <div role="status" className="rounded-xl bg-green-50 border border-green-200 p-3 text-sm space-y-2">
+            <p className="text-green-800">
+              ✓ Fotos guardadas.{" "}
+              {guardado.conPush
+                ? "Le enviamos el aviso por notificación."
+                : "No tiene las notificaciones activadas: avisale por WhatsApp."}
+            </p>
+            {whatsapp && (
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block font-semibold text-green-700 underline"
+              >
+                Avisar por WhatsApp
+              </a>
+            )}
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={() => {
+            setFotos(imagenes);
+            setGuardado(null);
+            setAbierto(true);
+          }}
+          className="min-h-[40px] px-4 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-50"
+        >
+          🖼️ Editar fotos
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-3">
+      <ImageUpload
+        label="Fotos del oficio"
+        ayuda="Elegí otra portada con «★ Portada», quitá fotos o subí una nueva (queda al final: después marcala como portada)."
+        multiple
+        portada
+        maxFiles={6}
+        value={fotos}
+        onChange={setFotos}
+      />
+      <label className="block text-sm font-medium text-gray-700">
+        Aviso para el vecino
+        <textarea
+          value={aviso}
+          onChange={(e) => setAviso(e.target.value)}
+          rows={3}
+          maxLength={300}
+          className="mt-1.5 block w-full border border-gray-300 rounded-xl px-3 py-2 text-base text-gray-900 bg-white"
+        />
+      </label>
+      {error && <p className="text-sm text-red-600">{error}</p>}
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={guardar}
+          disabled={cargando}
+          className="min-h-[40px] px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold disabled:opacity-60"
+        >
+          {cargando ? "Guardando…" : "Guardar y avisar"}
+        </button>
+        <button
+          type="button"
+          onClick={() => setAbierto(false)}
+          className="min-h-[40px] px-4 py-2 text-sm text-gray-600"
+        >
+          Cancelar
+        </button>
       </div>
     </div>
   );
