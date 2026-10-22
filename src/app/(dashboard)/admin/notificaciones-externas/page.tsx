@@ -7,7 +7,7 @@ import { HORAS_PRUEBA } from "@/lib/prueba";
 
 const TIPO_LABEL: Record<string, string> = {
   INCIDENTE: "Incidentes",
-  REQUERIMIENTO: "Requerimientos",
+  REQUERIMIENTO: "Pedidos",
   MASCOTA: "Mascotas",
   ALERTA_PANICO: "Alertas de pánico",
   RESUMEN: "Resúmenes",

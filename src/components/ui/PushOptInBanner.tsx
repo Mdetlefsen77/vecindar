@@ -29,7 +29,7 @@ function getServerSnapshotFalse() {
  * Banner proactivo que aparece tras el login pidiendo activar las notificaciones
  * push. Antes el único punto de opt-in era un botón escondido en el menú, así
  * que la mayoría de los vecinos nunca las activaba y no se enteraba de nada
- * (alertas SOS, incidentes, requerimientos y mascotas nuevas).
+ * (alertas SOS, incidentes, pedidos y mascotas nuevas).
  */
 export default function PushOptInBanner() {
   const { state, subscribe, error } = usePushNotifications();
@@ -83,7 +83,7 @@ export default function PushOptInBanner() {
             Activá las notificaciones
           </p>
           <p className="mt-1 text-sm text-gray-600">
-            Enterate al instante de alertas SOS, incidentes, requerimientos y
+            Enterate al instante de alertas SOS, incidentes, pedidos y
             mascotas perdidas en el barrio.
           </p>
           {error && (

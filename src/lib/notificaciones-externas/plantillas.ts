@@ -10,7 +10,7 @@ const CATEGORIA_REQ_LABEL: Record<CategoriaReq, string> = {
   LIMPIEZA: "Limpieza",
   SEGURIDAD: "Seguridad",
   INFRAESTRUCTURA: "Infraestructura",
-  OTRO: "Requerimiento",
+  OTRO: "Otro",
 };
 
 export interface AutorPlantilla {
@@ -86,7 +86,8 @@ export function plantillaRequerimiento(
   categoria: CategoriaReq,
   link: string,
 ): string {
-  return `📋 NUEVO REQUERIMIENTO\n\n${nombrePublico(autor)} cargó un reclamo de ${CATEGORIA_REQ_LABEL[categoria]}.\n\nVer detalle 👉 ${link}`;
+  const de = categoria === "OTRO" ? "" : ` de ${CATEGORIA_REQ_LABEL[categoria]}`;
+  return `📋 NUEVO PEDIDO\n\n${nombrePublico(autor)} cargó un pedido${de}.\n\nVer detalle 👉 ${link}`;
 }
 
 export function plantillaMascota(

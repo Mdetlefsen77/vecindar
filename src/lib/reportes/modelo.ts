@@ -133,7 +133,7 @@ async function construirRequiereAtencion(): Promise<ItemRequiereAtencion[]> {
       items.push({
         tipo: "REQUERIMIENTO",
         entidadId: req.id,
-        titulo: `Requerimiento #${req.id} — ${req.categoria}`,
+        titulo: `Pedido #${req.id} — ${req.categoria}`,
         diasAbierto,
         responsable: null,
       });
@@ -283,7 +283,7 @@ export async function construirReporte(
           masEsMejor: false,
         },
         {
-          label: "Requerimientos ingresados",
+          label: "Pedidos ingresados",
           valor: requerimientosActual,
           variacion: variacion(requerimientosActual, requerimientosAnterior),
           serie12Meses: requerimientosSerie,

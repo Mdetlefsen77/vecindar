@@ -173,7 +173,7 @@ const NAV_ITEMS: NavItem[] = [
   itemSeccion("avisos"),
   itemSeccion("incidentes"),
   itemSeccion("mapa"),
-  itemSeccion("requerimientos", "Requerimientos"),
+  itemSeccion("requerimientos"),
   itemSeccion("mascotas"),
   itemSeccion("oficios"),
   itemSeccion("partes", "Partes de guardia"),

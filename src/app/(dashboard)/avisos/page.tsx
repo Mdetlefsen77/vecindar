@@ -141,7 +141,7 @@ export default async function AvisosPage() {
       <p className="text-sm text-gray-500 text-center">
         ¿Hay que arreglar algo (una luminaria, una poda, un pozo)?{" "}
         <Link href="/requerimientos/nuevo" className="font-semibold text-blue-700">
-          Cargá un requerimiento
+          Cargá un pedido
         </Link>
       </p>
     </div>

@@ -37,7 +37,7 @@ export async function POST(
 
   if (!requerimiento) {
     return NextResponse.json(
-      { error: "Requerimiento no encontrado." },
+      { error: "Pedido no encontrado." },
       { status: 404 },
     );
   }
@@ -58,7 +58,7 @@ export async function POST(
   // Avisar al dueño del requerimiento si le respondió otra persona
   if (requerimiento.usuarioId !== getUserId(session)) {
     void enviarPushUsuario(requerimiento.usuarioId, {
-      title: "💬 Nueva respuesta a tu requerimiento",
+      title: "💬 Nueva respuesta a tu pedido",
       body: `${nombreCompleto(comentario.usuario)}: ${parsed.data.texto.slice(0, 120)}`,
       url: `/requerimientos/${id}`,
       tag: `requerimiento-${id}`,
