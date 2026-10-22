@@ -30,7 +30,7 @@ const INCIDENTE_LABEL: Record<TipoIncidente, string> = {
 function NuevoBadge({ count }: { count: number }) {
   if (count <= 0) return null;
   return (
-    <span className="absolute -top-2 -right-2 min-w-[28px] h-[28px] px-1.5 flex items-center justify-center rounded-full bg-red-600 text-white text-sm font-bold border-2 border-white shadow-md">
+    <span className="absolute -top-2 -right-2 min-w-[32px] h-[32px] px-2 flex items-center justify-center rounded-full bg-red-600 text-white text-base font-bold border-2 border-white shadow-md">
       {count > 9 ? "9+" : count}
       <span className="sr-only"> nuevos</span>
     </span>
@@ -321,45 +321,45 @@ export default async function InicioPage() {
       {/* ─── SOS: franja de todo el ancho, el único bloque rojo ──────── */}
       <Link
         href="/panico"
-        className="flex items-center gap-4 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-[0.99] transition-all text-white px-4 py-3 min-h-[80px] shadow-[0_6px_18px_rgba(220,38,38,0.35)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-300"
+        className="flex items-center gap-4 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-[0.99] transition-all text-white px-4 py-4 min-h-[104px] shadow-[0_6px_18px_rgba(220,38,38,0.35)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-300"
       >
-        <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-[3px] border-white/80 flex items-center justify-center flex-shrink-0 text-base sm:text-lg font-black tracking-wider">
+        <span className="w-[72px] h-[72px] sm:w-20 sm:h-20 rounded-full border-[3px] border-white/80 flex items-center justify-center flex-shrink-0 text-xl sm:text-2xl font-black tracking-wider">
           SOS
         </span>
         <span className="flex-1 min-w-0">
-          <span className="block text-lg sm:text-xl font-bold leading-tight">
+          <span className="block text-[22px] sm:text-2xl font-bold leading-tight whitespace-nowrap">
             Botón de pánico
           </span>
-          <span className="block text-sm sm:text-base text-red-50">
+          <span className="block text-base sm:text-lg text-red-50 mt-0.5">
             Pedí ayuda a la guardia al instante
           </span>
         </span>
-        <span aria-hidden="true" className="text-3xl leading-none">
+        <span aria-hidden="true" className="text-4xl leading-none">
           ›
         </span>
       </Link>
 
       {/* ─── Accesos: 6 iguales, cada uno con cómo está su sección ───── */}
       <nav aria-label="Accesos rápidos">
-        <ul className="grid grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+        <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {accesos.map((a) => {
             const estilo = SECCIONES[a.seccion];
             return (
               <li key={a.seccion} className="flex">
                 <Link
                   href={estilo.href}
-                  className="relative flex-1 flex flex-col items-center justify-start gap-1.5 min-h-[124px] px-1.5 py-3 text-center bg-white rounded-2xl border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow active:scale-[0.97] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                  className="relative flex-1 flex flex-col items-center justify-start gap-2 min-h-[160px] px-2 py-4 text-center bg-white rounded-2xl border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow active:scale-[0.97] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 >
                   <NuevoBadge count={a.nuevos ?? 0} />
                   <span
-                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${estilo.chip}`}
+                    className={`w-16 h-16 rounded-2xl flex items-center justify-center ${estilo.chip}`}
                   >
-                    <IconoSeccion nombre={a.seccion} className="w-7 h-7" />
+                    <IconoSeccion nombre={a.seccion} className="w-9 h-9" />
                   </span>
-                  <span className="text-base font-bold text-gray-900 leading-tight">
+                  <span className="text-xl font-bold text-gray-900 leading-tight">
                     {estilo.label}
                   </span>
-                  <span className={`text-sm leading-tight ${TONO_ESTADO[a.tono]}`}>
+                  <span className={`text-base leading-tight ${TONO_ESTADO[a.tono]}`}>
                     {a.estado}
                   </span>
                 </Link>
