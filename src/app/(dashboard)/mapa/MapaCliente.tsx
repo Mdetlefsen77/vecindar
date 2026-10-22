@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useState } from "react";
 import type { IncidentePin } from "@/components/map/IncidentesLayer";
 import type { AlertaPin } from "@/components/map/AlertasLayer";
+import type { OficioPin } from "@/components/map/OficiosLayer";
 import type { Foco } from "@/components/map/MapView";
 import TituloSeccion from "@/components/ui/TituloSeccion";
 import { tiempoRelativo } from "@/lib/fechas";
@@ -25,12 +26,21 @@ const MapView = dynamic(() => import("@/components/map/MapView"), {
 // recién cuando hacen falta, igual que el mapa.
 const cargarLotes = () => import("@/lib/barrio/lotes");
 
-type LayerKey = "manzanas" | "incidentes" | "alertas";
+type LayerKey = "manzanas" | "incidentes" | "oficios" | "alertas";
 
 const LAYER_LABELS: Record<LayerKey, string> = {
   manzanas: "Manzanas",
   incidentes: "Incidentes",
+  oficios: "Oficios",
   alertas: "Alertas SOS",
+};
+
+// Botón de capa activo en el color de lo que muestra.
+const CAPA_ACTIVA: Record<LayerKey, string> = {
+  manzanas: "bg-blue-50 border-blue-500 text-blue-800",
+  incidentes: "bg-orange-50 border-orange-500 text-orange-800",
+  oficios: "bg-indigo-50 border-indigo-500 text-indigo-800",
+  alertas: "bg-red-50 border-red-500 text-red-700",
 };
 
 const PERIODOS = [
@@ -46,11 +56,14 @@ const REFRESCO_VECINO_MS = 60_000;
 
 export default function MapaCliente({
   miLote,
+  oficios,
   verSos,
   detalleLotes,
 }: {
   /** Número del lote del usuario. */
   miLote: string | null;
+  /** Oficios publicados, ubicados por la manzana de su dueño. */
+  oficios: OficioPin[];
   /** Guardia y admin: capa de alertas SOS de todo el barrio. */
   verSos: boolean;
   /** Guardia y admin: quién vive en cada lote. */
@@ -59,6 +72,7 @@ export default function MapaCliente({
   const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
     manzanas: true,
     incidentes: true,
+    oficios: true,
     alertas: verSos,
   });
   const [dias, setDias] = useState<number>(30);
@@ -311,11 +325,7 @@ export default function MapaCliente({
                 aria-pressed={active}
                 className={`min-h-[48px] px-4 rounded-xl text-base font-semibold border-2 transition-colors inline-flex items-center gap-2 ${
                   active
-                    ? isAlerta
-                      ? "bg-red-50 border-red-500 text-red-700"
-                      : key === "incidentes"
-                        ? "bg-orange-50 border-orange-500 text-orange-800"
-                        : "bg-blue-50 border-blue-500 text-blue-800"
+                    ? CAPA_ACTIVA[key]
                     : "bg-white border-gray-300 text-gray-600 hover:bg-gray-50"
                 }`}
               >
@@ -360,8 +370,10 @@ export default function MapaCliente({
           showManzanas={layers.manzanas}
           showIncidentes={layers.incidentes}
           showAlertas={verSos && layers.alertas}
+          showOficios={layers.oficios}
           incidentes={incidentes}
           alertas={alertas}
+          oficios={oficios}
           detalleLotes={detalleLotes}
           miLote={miLote}
           foco={foco}
@@ -418,6 +430,17 @@ export default function MapaCliente({
                   </span>
                 )}
                 <span className="text-gray-500"> · gris = resuelto</span>
+              </span>
+            </li>
+          )}
+          {layers.oficios && (
+            <li className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-0.5 px-1.5 h-6 rounded-full bg-indigo-700 text-white text-xs font-bold flex-shrink-0">
+                🧰
+              </span>
+              <span>
+                Oficios de vecinos: {oficios.length}
+                <span className="text-gray-500"> · el número es cuántos hay en esa manzana</span>
               </span>
             </li>
           )}

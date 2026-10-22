@@ -8,6 +8,7 @@ import ManzanasLayer from "./ManzanasLayer";
 import LotesLayer, { type EstadoLote } from "./LotesLayer";
 import IncidentesLayer, { type IncidentePin } from "./IncidentesLayer";
 import AlertasLayer, { type AlertaPin } from "./AlertasLayer";
+import OficiosLayer, { type OficioPin } from "./OficiosLayer";
 import {
   BARRIO_CENTER,
   BARRIO_ZOOM,
@@ -45,8 +46,10 @@ interface MapViewProps {
   showManzanas?: boolean;
   showIncidentes?: boolean;
   showAlertas?: boolean;
+  showOficios?: boolean;
   incidentes?: IncidentePin[];
   alertas?: AlertaPin[];
+  oficios?: OficioPin[];
   /** Guardia y admin: estado de cada lote y quién vive ahí. */
   detalleLotes?: boolean;
   /** Número del lote del usuario, para pintarlo como "Tu casa". */
@@ -58,8 +61,10 @@ export default function MapView({
   showManzanas = true,
   showIncidentes = true,
   showAlertas = true,
+  showOficios = true,
   incidentes = [],
   alertas = [],
+  oficios = [],
   detalleLotes = false,
   miLote = null,
   foco = null,
@@ -192,6 +197,7 @@ export default function MapView({
         destacado={foco?.lote ?? null}
       />
       {showIncidentes && <IncidentesLayer map={map} incidentes={incidentes} />}
+      {showOficios && <OficiosLayer map={map} oficios={oficios} />}
       {showAlertas && <AlertasLayer map={map} alertas={alertas} />}
     </>
   );
