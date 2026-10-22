@@ -180,7 +180,7 @@ export default async function OficiosPage({
             🔥 Promos del barrio
           </h2>
           {/* Carrusel horizontal: en mobile se desliza, sin ocupar media pantalla. */}
-          <ul className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
+          <ul className="flex gap-4 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
             {promos.map((p) => {
               const foto = p.imagen ?? p.oficio.imagenes[0];
               const precio = textoPrecioPromo(p);
@@ -269,7 +269,7 @@ export default async function OficiosPage({
           )}
         </div>
       ) : (
-        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {oficios.map((o) => (
             <li key={o.id}>
               <Link
