@@ -29,12 +29,29 @@ L.Icon.Default.mergeOptions({
     "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 });
 
+/**
+ * Punto al que vuela el mapa: tu casa, un lote buscado o un SOS. `n` cambia
+ * en cada pedido, así tocar dos veces "Mi casa" vuelve a centrar.
+ */
+export interface Foco {
+  centro: [number, number];
+  /** Si es un lote, se abre su manzana y se resalta ese lote. */
+  manzanaId?: number;
+  lote?: string;
+  n: number;
+}
+
 interface MapViewProps {
   showManzanas?: boolean;
   showIncidentes?: boolean;
   showAlertas?: boolean;
   incidentes?: IncidentePin[];
   alertas?: AlertaPin[];
+  /** Guardia y admin: estado de cada lote y quién vive ahí. */
+  detalleLotes?: boolean;
+  /** Número del lote del usuario, para pintarlo como "Tu casa". */
+  miLote?: string | null;
+  foco?: Foco | null;
 }
 
 export default function MapView({
@@ -43,6 +60,9 @@ export default function MapView({
   showAlertas = true,
   incidentes = [],
   alertas = [],
+  detalleLotes = false,
+  miLote = null,
+  foco = null,
 }: MapViewProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<L.Map | null>(null);
@@ -57,11 +77,12 @@ export default function MapView({
     Record<string, string[]>
   >({});
 
-  // Fetchar estado de lotes cuando cambia la manzana seleccionada.
+  // Fetchar estado de lotes cuando cambia la manzana seleccionada. Solo la
+  // guardia y el admin lo reciben: al vecino la API no le manda nombres.
   // Cuando no hay manzana seleccionada no tocamos el estado acá (evita el
   // setState síncrono dentro del effect); el render usa `{}` en ese caso.
   useEffect(() => {
-    if (!manzanaSeleccionada) return;
+    if (!manzanaSeleccionada || !detalleLotes) return;
 
     void fetch(`/api/lotes?manzanaId=${manzanaSeleccionada.id}`)
       .then((r) => r.json())
@@ -96,7 +117,7 @@ export default function MapView({
         setLotesEstado({});
         setLotesResidentes({});
       });
-  }, [manzanaSeleccionada]);
+  }, [manzanaSeleccionada, detalleLotes]);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -105,6 +126,12 @@ export default function MapView({
       minZoom: BARRIO_ZOOM_MIN,
       maxZoom: BARRIO_ZOOM_MAX,
     }).setView(BARRIO_CENTER, BARRIO_ZOOM);
+    // Encuadrar el barrio entero: con el zoom fijo, en el celular quedaba
+    // chiquito y corrido hacia abajo.
+    newMap.fitBounds(
+      L.latLngBounds(MANZANAS_CONFIG.flatMap((m) => m.bounds)),
+      { padding: [12, 12] },
+    );
 
     L.tileLayer(OSM_TILE_URL, {
       attribution:
@@ -125,6 +152,17 @@ export default function MapView({
     };
   }, []);
 
+  // Volar al foco pedido y, si es un lote, abrir su manzana.
+  useEffect(() => {
+    if (!map || !foco) return;
+    map.flyTo(foco.centro, 18, { duration: 0.8 });
+    if (foco.manzanaId != null) {
+      const manzana = MANZANAS_CONFIG.find((m) => m.id === foco.manzanaId);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- sincroniza el mapa con un pedido externo
+      if (manzana) setManzanaSeleccionada(manzana);
+    }
+  }, [map, foco]);
+
   const handleManzanaClick = useCallback((manzana: ManzanaConfig) => {
     // Toggle: si ya estaba seleccionada, deselecciona
     setManzanaSeleccionada((prev) =>
@@ -132,13 +170,11 @@ export default function MapView({
     );
   }, []);
 
+  const detalle = detalleLotes && manzanaSeleccionada;
+
   return (
     <>
-      <div
-        ref={mapContainerRef}
-        className="w-full h-full rounded-lg"
-        style={{ minHeight: "500px" }}
-      />
+      <div ref={mapContainerRef} className="w-full h-full" />
       {showManzanas && (
         <ManzanasLayer
           map={map}
@@ -149,8 +185,11 @@ export default function MapView({
       <LotesLayer
         map={map}
         manzana={manzanaSeleccionada}
-        lotesEstado={manzanaSeleccionada ? lotesEstado : {}}
-        lotesResidentes={manzanaSeleccionada ? lotesResidentes : {}}
+        mostrarEstado={detalleLotes}
+        lotesEstado={detalle ? lotesEstado : {}}
+        lotesResidentes={detalle ? lotesResidentes : {}}
+        miLote={miLote}
+        destacado={foco?.lote ?? null}
       />
       {showIncidentes && <IncidentesLayer map={map} incidentes={incidentes} />}
       {showAlertas && <AlertasLayer map={map} alertas={alertas} />}

@@ -42,16 +42,25 @@ export async function GET(req: NextRequest) {
       ...(manzanaId ? { lote: { manzanaId } } : {}),
       ...(soloVisibles ? { visibleVecinos: true } : {}),
     },
+    // Quién reportó no se le muestra a otros vecinos.
+    omit: { reportadoPorId: soloVisibles },
     include: {
-      reportadoPor: {
-        select: {
-          nombre: true,
-          apellido: true,
-          lote: {
-            select: { numero: true, manzana: { select: { numero: true } } },
-          },
-        },
-      },
+      ...(soloVisibles
+        ? {}
+        : {
+            reportadoPor: {
+              select: {
+                nombre: true,
+                apellido: true,
+                lote: {
+                  select: {
+                    numero: true,
+                    manzana: { select: { numero: true } },
+                  },
+                },
+              },
+            },
+          }),
       lote: {
         select: { numero: true, manzana: { select: { numero: true } } },
       },

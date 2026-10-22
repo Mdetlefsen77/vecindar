@@ -6,7 +6,7 @@
  * Cada lote tiene su polígono exacto derivado del levantamiento catastral.
  */
 
-import type { ManzanaConfig } from "@/lib/barrio/manzanas";
+import { MANZANAS_CONFIG, type ManzanaConfig } from "@/lib/barrio/manzanas";
 export type { ManzanaLayout } from "@/lib/barrio/manzanas";
 import { getParcelasBounds } from "@/lib/barrio/data/geojson";
 
@@ -41,4 +41,35 @@ export function calcularLotesPolygons(manzana: ManzanaConfig): LotePolygon[] {
       centro: p.centro,
     }),
   );
+}
+
+// ─── Búsqueda ─────────────────────────────────────────────────────────────────
+
+/**
+ * Ubica un lote por su número. La numeración es corrida en todo el barrio
+ * (MZ 1 tiene del 1 al 25, MZ 2 del 26 al 59…), así que el número solo alcanza.
+ */
+export function ubicarLote(
+  numero: string,
+): { manzana: ManzanaConfig; lote: LotePolygon } | null {
+  const n = parseInt(numero.trim(), 10);
+  if (!Number.isFinite(n)) return null;
+  const manzana = MANZANAS_CONFIG.find(
+    (m) =>
+      m.tipo === "manzana" &&
+      m.loteInicio != null &&
+      m.cantidadLotes != null &&
+      n >= m.loteInicio &&
+      n < m.loteInicio + m.cantidadLotes,
+  );
+  if (!manzana) return null;
+  const lote = calcularLotesPolygons(manzana).find(
+    (l) => l.numero === String(n),
+  );
+  return lote ? { manzana, lote } : null;
+}
+
+/** Link de Google Maps con el recorrido hasta un punto: abre la app en el celular. */
+export function linkComoLlegar([lat, lng]: [number, number]): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${lat.toFixed(6)},${lng.toFixed(6)}`;
 }

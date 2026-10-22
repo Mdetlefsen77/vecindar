@@ -25,6 +25,13 @@ export const GESTORES_MASCOTAS: readonly Rol[] = ["ADMIN", "REFERENTE_MANZANA"];
 /** Reciben el panel de recepción de alertas SOS y pueden avanzar su estado. */
 export const GESTORES_PANICO: readonly Rol[] = ["ADMIN", "SEGURIDAD"];
 
+/**
+ * Ven en el mapa quién vive en cada lote y cuáles están desocupados. Al resto
+ * no: una lista de casas vacías con nombres es justo lo que no tiene que
+ * circular en un barrio que se cuida.
+ */
+export const VEN_DETALLE_LOTES: readonly Rol[] = ["ADMIN", "SEGURIDAD"];
+
 /** Acceso al panel de administración y gestión de usuarios / configuración. */
 export const GESTORES_USUARIOS: readonly Rol[] = ["ADMIN"];
 
