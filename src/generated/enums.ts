@@ -152,7 +152,8 @@ export const TipoEventoPublicacion = {
   ALERTA_PANICO: 'ALERTA_PANICO',
   RESUMEN: 'RESUMEN',
   PARTE_TURNO: 'PARTE_TURNO',
-  OFICIO: 'OFICIO'
+  OFICIO: 'OFICIO',
+  AVISO: 'AVISO'
 } as const
 
 export type TipoEventoPublicacion = (typeof TipoEventoPublicacion)[keyof typeof TipoEventoPublicacion]

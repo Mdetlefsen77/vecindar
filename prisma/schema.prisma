@@ -560,6 +560,7 @@ enum TipoEventoPublicacion {
   RESUMEN
   PARTE_TURNO
   OFICIO
+  AVISO
 }
 
 enum EstadoPublicacion {
