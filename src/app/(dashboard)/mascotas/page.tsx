@@ -10,6 +10,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import MascotasFiltros from "./MascotasFiltros";
 import { type TipoAlertaMascota } from "@/generated/enums";
+import TituloSeccion from "@/components/ui/TituloSeccion";
 
 type SearchParams = Promise<{ tipo?: string; estado?: string }>;
 
@@ -64,7 +65,7 @@ export default async function MascotasPage({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Mascotas</h1>
+          <TituloSeccion seccion="mascotas">Mascotas</TituloSeccion>
           <p className="text-sm text-gray-500 mt-0.5">
             {mascotas.length} alerta{mascotas.length !== 1 ? "s" : ""}
             {abiertas > 0 && (

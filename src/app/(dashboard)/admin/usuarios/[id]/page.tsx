@@ -243,7 +243,7 @@ export default async function DetalleUsuarioPage({ params }: Params) {
             href: `/incidentes`,
           },
           {
-            label: "Requerimientos",
+            label: "Pedidos",
             value: usuario._count.requerimientos,
             href: `/requerimientos`,
           },
@@ -381,11 +381,11 @@ export default async function DetalleUsuarioPage({ params }: Params) {
         </div>
       )}
 
-      {/* Últimos requerimientos */}
+      {/* Últimos pedidos */}
       {usuario.requerimientos.length > 0 && (
         <div>
           <h2 className="font-semibold text-gray-800 mb-3">
-            Últimos requerimientos
+            Últimos pedidos
           </h2>
           <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 overflow-hidden">
             {usuario.requerimientos.map((req) => (

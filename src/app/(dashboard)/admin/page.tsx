@@ -66,7 +66,7 @@ export default async function AdminPage() {
       urgent: incidentesActivos > 0,
     },
     {
-      label: "Requerimientos abiertos",
+      label: "Pedidos abiertos",
       value: requerimientosAbiertos,
       href: "/requerimientos",
       color:
@@ -235,7 +235,7 @@ export default async function AdminPage() {
               icon: "📤",
             },
             { label: "Ver incidentes", href: "/incidentes", icon: "🔍" },
-            { label: "Requerimientos", href: "/requerimientos", icon: "📋" },
+            { label: "Pedidos", href: "/requerimientos", icon: "📋" },
             { label: "Mapa del barrio", href: "/mapa", icon: "🗺️" },
             { label: "Mascotas perdidas", href: "/mascotas", icon: "🐾" },
             { label: "Alertas de pánico", href: "/panico", icon: "🆘" },

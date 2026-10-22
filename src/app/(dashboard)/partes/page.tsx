@@ -4,6 +4,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma/client";
 import { esGestor, GESTORES_PARTES } from "@/lib/permisos";
 import { RONDA_LABEL, TURNOS, fechaParteLabel } from "@/lib/partes";
+import TituloSeccion from "@/components/ui/TituloSeccion";
 
 export const metadata = { title: "Partes de la guardia" };
 
@@ -29,9 +30,7 @@ export default async function PartesPage() {
     <div className="max-w-3xl mx-auto px-4 py-6 space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
-            Partes de la guardia
-          </h1>
+          <TituloSeccion seccion="partes">Partes de la guardia</TituloSeccion>
           <p className="text-sm text-gray-500">
             Resumen de cada turno de patrullaje en el barrio
           </p>

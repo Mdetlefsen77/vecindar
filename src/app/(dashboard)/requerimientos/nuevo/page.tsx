@@ -43,7 +43,7 @@ export default function NuevoRequerimientoPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error ?? "Error al crear el requerimiento.");
+        throw new Error(data.error ?? "Error al crear el pedido.");
       }
 
       router.push("/requerimientos");
@@ -81,9 +81,9 @@ export default function NuevoRequerimientoPage() {
         </Link>
         <div>
           <h1 className="text-2xl font-bold text-gray-900">
-            Nuevo requerimiento
+            Nuevo pedido
           </h1>
-          <p className="text-sm text-gray-500">Pedido, reclamo o sugerencia</p>
+          <p className="text-sm text-gray-500">Reclamo o sugerencia para el barrio</p>
         </div>
       </div>
 
@@ -182,7 +182,7 @@ export default function NuevoRequerimientoPage() {
           disabled={loading}
           className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white font-semibold py-3 rounded-lg transition-colors"
         >
-          {loading ? "Enviando..." : "Enviar requerimiento"}
+          {loading ? "Enviando..." : "Enviar pedido"}
         </button>
       </form>
     </div>

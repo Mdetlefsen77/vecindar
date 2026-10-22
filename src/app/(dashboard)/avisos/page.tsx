@@ -10,6 +10,7 @@ import { nombreCorto } from "@/lib/oficios";
 import { textoVencimiento, tiempoRelativo } from "@/lib/fechas";
 import AccionesAviso from "@/components/avisos/AccionesAviso";
 import CompartirEnGrupo from "@/components/notificaciones-externas/CompartirEnGrupo";
+import TituloSeccion from "@/components/ui/TituloSeccion";
 
 export const metadata = { title: "Avisos del barrio" };
 
@@ -40,7 +41,7 @@ export default async function AvisosPage() {
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Avisos del barrio</h1>
+          <TituloSeccion seccion="avisos">Avisos del barrio</TituloSeccion>
           <p className="text-sm text-gray-500">
             Lo que pasa ahora en el barrio. Cada aviso se borra solo al vencer.
           </p>
@@ -140,7 +141,7 @@ export default async function AvisosPage() {
       <p className="text-sm text-gray-500 text-center">
         ¿Hay que arreglar algo (una luminaria, una poda, un pozo)?{" "}
         <Link href="/requerimientos/nuevo" className="font-semibold text-blue-700">
-          Cargá un requerimiento
+          Cargá un pedido
         </Link>
       </p>
     </div>

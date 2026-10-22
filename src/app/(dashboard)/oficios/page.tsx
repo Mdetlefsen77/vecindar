@@ -15,6 +15,7 @@ import {
 import { textoVencimiento } from "@/lib/fechas";
 import { promoVigente } from "@/lib/promosServer";
 import type { Prisma } from "@/generated/client";
+import TituloSeccion from "@/components/ui/TituloSeccion";
 
 export const metadata = { title: "Oficios del barrio" };
 
@@ -113,7 +114,7 @@ export default async function OficiosPage({
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Oficios del barrio</h1>
+          <TituloSeccion seccion="oficios">Oficios del barrio</TituloSeccion>
           <p className="text-sm text-gray-500">
             Servicios que ofrecen los vecinos, recomendados por quienes los
             contrataron

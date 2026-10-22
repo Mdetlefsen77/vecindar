@@ -59,7 +59,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const roleError = requireRole(
     session.user.role,
     GESTORES_REQUERIMIENTOS,
-    "No tenés permisos para cambiar el estado de este requerimiento.",
+    "No tenés permisos para cambiar el estado de este pedido.",
   );
   if (roleError) return roleError;
 

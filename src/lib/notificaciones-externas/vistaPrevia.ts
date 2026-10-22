@@ -10,7 +10,7 @@ const VISTA_PREVIA_POR_TIPO: Record<string, { titulo: string; descripcion: strin
     descripcion: "Se reportó un incidente de seguridad. Abrí Vecindar para ver el detalle.",
   },
   REQUERIMIENTO: {
-    titulo: "Vecindar — Nuevo requerimiento",
+    titulo: "Vecindar — Nuevo pedido",
     descripcion: "Se cargó un reclamo de mantenimiento en el barrio. Abrí Vecindar para ver el detalle.",
   },
   MASCOTA: {

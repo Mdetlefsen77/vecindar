@@ -40,57 +40,6 @@ const WalletIcon = () => (
   </svg>
 );
 
-const PartesIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-5 h-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-    />
-  </svg>
-);
-
-const AvisosIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-5 h-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
-    />
-  </svg>
-);
-
-const OficiosIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-5 h-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-    />
-  </svg>
-);
-
 const PanelIcon = () => (
   <svg
     aria-hidden="true"
@@ -138,7 +87,7 @@ interface MobileHeaderProps {
 }
 
 const ITEM_CLASS =
-  "w-full flex items-center gap-2 px-4 py-3 text-sm text-gray-600 hover:bg-gray-50 hover:text-blue-600 focus-visible:outline-none focus-visible:bg-gray-50 focus-visible:text-blue-600 transition-colors";
+  "w-full flex items-center gap-3 px-4 py-3 min-h-[48px] text-base text-gray-700 hover:bg-gray-50 hover:text-blue-600 focus-visible:outline-none focus-visible:bg-gray-50 focus-visible:text-blue-600 transition-colors";
 
 export default function MobileHeader({
   userName,
@@ -220,18 +169,6 @@ export default function MobileHeader({
             <Link href="/mi-suscripcion" className={ITEM_CLASS}>
               <WalletIcon />
               Mi suscripción
-            </Link>
-            <Link href="/avisos" className={ITEM_CLASS}>
-              <AvisosIcon />
-              Avisos del barrio
-            </Link>
-            <Link href="/oficios" className={ITEM_CLASS}>
-              <OficiosIcon />
-              Oficios del barrio
-            </Link>
-            <Link href="/partes" className={ITEM_CLASS}>
-              <PartesIcon />
-              Partes de guardia
             </Link>
             {panel && (
               <Link href={panel.href} className={ITEM_CLASS}>

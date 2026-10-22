@@ -34,7 +34,7 @@ export default async function SeguridadPage() {
       urgent: incidentesActivos > 0,
     },
     {
-      label: "Requerimientos abiertos",
+      label: "Pedidos abiertos",
       value: requerimientosAbiertos,
       href: "/requerimientos",
       color:
@@ -64,7 +64,7 @@ export default async function SeguridadPage() {
           Panel de Seguridad
         </h1>
         <p className="text-gray-500 text-sm mt-1">
-          Seguimiento de incidentes, requerimientos y alertas del barrio
+          Seguimiento de incidentes, pedidos y alertas del barrio
         </p>
       </div>
 
@@ -109,7 +109,7 @@ export default async function SeguridadPage() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
           {[
             { label: "Ver incidentes", href: "/incidentes", icon: "🔍" },
-            { label: "Requerimientos", href: "/requerimientos", icon: "📋" },
+            { label: "Pedidos", href: "/requerimientos", icon: "📋" },
             { label: "Mascotas perdidas", href: "/mascotas", icon: "🐾" },
             { label: "Alertas de pánico", href: "/panico", icon: "🆘" },
             { label: "Partes de guardia", href: "/partes", icon: "📌" },

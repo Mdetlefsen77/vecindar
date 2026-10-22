@@ -223,7 +223,7 @@ function Campo({
 
 const TIPO_ITEM_LABEL: Record<ItemRequiereAtencion["tipo"], string> = {
   INCIDENTE: "Incidente",
-  REQUERIMIENTO: "Requerimiento",
+  REQUERIMIENTO: "Pedido",
   ALERTA_PANICO: "Alerta SOS",
   VERIFICACION: "Verificación",
 };
@@ -708,7 +708,7 @@ export default async function ReportesPage({
               </Seccion>
 
               {/* Requerimientos */}
-              <Seccion titulo="Mantenimiento — Requerimientos">
+              <Seccion titulo="Mantenimiento — Pedidos">
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                   <Campo label="Ingresados">
                     <span className="text-sm font-semibold">

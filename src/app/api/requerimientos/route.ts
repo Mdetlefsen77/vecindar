@@ -13,7 +13,7 @@ const CATEGORIA_REQ_LABEL: Record<CategoriaReq, string> = {
   LIMPIEZA: "Limpieza",
   SEGURIDAD: "Seguridad",
   INFRAESTRUCTURA: "Infraestructura",
-  OTRO: "Requerimiento",
+  OTRO: "Otro",
 };
 
 // ── GET /api/requerimientos ──────────────────────────────────────────────────
@@ -88,7 +88,10 @@ export async function POST(req: NextRequest) {
   // Aviso a todo el barrio (menos el autor) — mismo patrón que incidentes/mascotas.
   void enviarPushBroadcast(
     {
-      title: `🛠️ Nuevo requerimiento: ${CATEGORIA_REQ_LABEL[categoria]}`,
+      title:
+        categoria === "OTRO"
+          ? "🛠️ Nuevo pedido"
+          : `🛠️ Nuevo pedido: ${CATEGORIA_REQ_LABEL[categoria]}`,
       body: titulo.slice(0, 120),
       url: `/requerimientos/${requerimiento.id}`,
       tag: `requerimiento-${requerimiento.id}`,

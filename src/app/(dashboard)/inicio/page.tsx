@@ -1,181 +1,54 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
-import { nombreCompleto } from "@/lib/usuarios";
 import { getUserId } from "@/lib/api/guard";
 import Link from "next/link";
-import Image from "next/image";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
 import { RONDA_LABEL, TURNOS, fechaParteLabel } from "@/lib/partes";
 import { textoPrecioPromo } from "@/lib/oficios";
-import { textoVencimiento } from "@/lib/fechas";
+import { textoVencimiento, tiempoRelativo } from "@/lib/fechas";
 import { TIPO_AVISO, avisoVigente } from "@/lib/avisos";
 import { promoVigente } from "@/lib/promosServer";
-import type {
-  TipoIncidente,
-  CategoriaReq,
-  EstadoRequerimiento,
-  TipoAlertaMascota,
-} from "@/generated/enums";
+import { esGestor, GESTORES_PANICO } from "@/lib/permisos";
+import { ORDEN_INICIO, SECCIONES } from "@/lib/secciones";
+import IconoSeccion from "@/components/ui/IconoSeccion";
+import type { TipoIncidente } from "@/generated/enums";
 
-// ─── Helpers ────────────────────────────────────────────────────────────────
+// ─── Config ──────────────────────────────────────────────────────────────────
 
-function timeAgo(date: Date): string {
-  const diff = Date.now() - new Date(date).getTime();
-  const mins = Math.floor(diff / 60_000);
-  if (mins < 60) return `hace ${mins}m`;
-  const hours = Math.floor(mins / 60);
-  if (hours < 24) return `hace ${hours}h`;
-  return `hace ${Math.floor(hours / 24)}d`;
-}
-
-// ─── Config por tipo ─────────────────────────────────────────────────────────
-
-const INCIDENTE_CFG: Record<
-  TipoIncidente,
-  { label: string; bg: string; dot: string }
-> = {
-  ROBO: { label: "Robo", bg: "bg-red-100 text-red-700", dot: "bg-red-500" },
-  ROBO_TENTATIVA: {
-    label: "Tentativa",
-    bg: "bg-orange-100 text-orange-700",
-    dot: "bg-orange-500",
-  },
-  SOSPECHOSO: {
-    label: "Sospechoso",
-    bg: "bg-yellow-100 text-yellow-700",
-    dot: "bg-yellow-500",
-  },
-  VANDALISMO: {
-    label: "Vandalismo",
-    bg: "bg-purple-100 text-purple-700",
-    dot: "bg-purple-500",
-  },
-  OTRO: { label: "Otro", bg: "bg-gray-100 text-gray-600", dot: "bg-gray-400" },
+const INCIDENTE_LABEL: Record<TipoIncidente, string> = {
+  ROBO: "Robo",
+  ROBO_TENTATIVA: "Tentativa de robo",
+  SOSPECHOSO: "Movimiento sospechoso",
+  VANDALISMO: "Vandalismo",
+  OTRO: "Otro",
 };
 
-const CATEGORIA_CFG: Record<CategoriaReq, { label: string; color: string }> = {
-  ILUMINACION: { label: "Iluminación", color: "bg-yellow-100 text-yellow-800" },
-  PODA: { label: "Poda", color: "bg-green-100 text-green-800" },
-  CALLES: { label: "Calles", color: "bg-stone-100 text-stone-700" },
-  LIMPIEZA: { label: "Limpieza", color: "bg-sky-100 text-sky-700" },
-  SEGURIDAD: { label: "Seguridad", color: "bg-red-100 text-red-700" },
-  INFRAESTRUCTURA: {
-    label: "Infraest.",
-    color: "bg-orange-100 text-orange-700",
-  },
-  OTRO: { label: "Otro", color: "bg-gray-100 text-gray-600" },
-};
-
-const ESTADO_REQ_CFG: Record<
-  EstadoRequerimiento,
-  { label: string; color: string }
-> = {
-  NUEVO: { label: "Nuevo", color: "bg-blue-100 text-blue-700" },
-  EN_PROGRESO: { label: "En progreso", color: "bg-amber-100 text-amber-700" },
-  RESUELTO: { label: "Resuelto", color: "bg-green-100 text-green-700" },
-  CERRADO: { label: "Cerrado", color: "bg-gray-100 text-gray-600" },
-};
-
-// ─── Íconos SVG ──────────────────────────────────────────────────────────────
-
-// Icon sizes: sm on mobile, lg on tablet+
-const IconMap = () => (
-  <svg
-    className="w-6 h-6 sm:w-8 sm:h-8"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-    />
-  </svg>
-);
-const IconClipboard = () => (
-  <svg
-    className="w-6 h-6 sm:w-8 sm:h-8"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-    />
-  </svg>
-);
-const IconPaw = () => (
-  <svg
-    className="w-6 h-6 sm:w-8 sm:h-8"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zm-5 0c-.83 0-1.5-.67-1.5-1.5v-5C8 2.67 8.67 2 9.5 2S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5zm8 5c-.83 0-1.5-.67-1.5-1.5v-3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5zm-11 0C5.67 15 5 14.33 5 13.5v-3C5 9.67 5.67 9 6.5 9S8 9.67 8 10.5v3c0 .83-.67 1.5-1.5 1.5zm5.5 5c-2.5 0-6-2.5-6-6 0-.83.67-1.5 1.5-1.5h9c.83 0 1.5.67 1.5 1.5 0 3.5-3.5 6-6 6z"
-    />
-  </svg>
-);
-const IconAlert = () => (
-  <svg
-    className="w-6 h-6 sm:w-8 sm:h-8"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-    />
-  </svg>
-);
-const IconShield = () => (
-  <svg
-    className="w-5 h-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-    />
-  </svg>
-);
-
-// Badge de "nuevo" — círculo con contador, en la esquina externa de la tarjeta
-// (la esquina interna, hacia el centro, la tapa el botón SOS flotante).
-// Se resetea cuando el usuario visita la sección (ver VistaSeccion).
-function NuevoBadge({
-  count,
-  side = "right",
-}: {
-  count: number;
-  side?: "left" | "right";
-}) {
+// Contador de "nuevo" en la esquina del botón. Se resetea cuando el usuario
+// visita la sección (ver src/lib/vistas.ts).
+function NuevoBadge({ count }: { count: number }) {
   if (count <= 0) return null;
   return (
-    <span
-      className={`absolute -top-2 ${side === "right" ? "-right-2" : "-left-2"} min-w-[26px] h-[26px] px-1.5 flex items-center justify-center rounded-full bg-red-500 text-white text-sm font-bold border-2 border-white shadow-md z-20`}
-    >
+    <span className="absolute -top-2 -right-2 min-w-[28px] h-[28px] px-1.5 flex items-center justify-center rounded-full bg-red-600 text-white text-sm font-bold border-2 border-white shadow-md">
       {count > 9 ? "9+" : count}
+      <span className="sr-only"> nuevos</span>
     </span>
   );
 }
+
+function plural(n: number, uno: string, varios: string): string {
+  return `${n} ${n === 1 ? uno : varios}`;
+}
+
+type Tono = "alerta" | "activo" | "ok" | "neutro";
+
+const TONO_ESTADO: Record<Tono, string> = {
+  alerta: "text-red-700 font-bold",
+  activo: "text-amber-800 font-semibold",
+  ok: "text-green-700 font-semibold",
+  neutro: "text-gray-600",
+};
 
 // ─── Page Component ───────────────────────────────────────────────────────────
 
@@ -187,54 +60,52 @@ export default async function InicioPage() {
   const nombre = session.user.name?.split(" ")[0] ?? "Vecino";
   const usuarioId = getUserId(session);
 
+  const ahora = new Date();
+  const esGestorPanico = esGestor(session.user.role, GESTORES_PANICO);
+  const filtroIncidentes = {
+    estado: "ACTIVO" as const,
+    ...(isVecino ? { visibleVecinos: true } : {}),
+  };
+
   // Primer viaje a la base, todo en paralelo: última visita a cada sección
-  // (determina qué cuenta como "nuevo"), los listados y la invitación.
+  // (determina qué cuenta como "nuevo"), el estado de cada acceso, el modo
+  // alerta y la invitación.
   const [
     usuarioConVistas,
-    incidentes,
-    requerimientos,
-    mascotas,
+    ultimoIncidente,
+    incidentesActivos,
+    pedidosAbiertos,
+    mascotasPerdidas,
     codigoInvitacion,
     invitados,
     ultimoParte,
     oficiosPublicados,
     promos,
+    promosActivas,
     avisos,
+    avisosActivos,
+    alertaSos,
   ] = await Promise.all([
     prisma.usuario.findUnique({
       where: { id: usuarioId },
       select: { createdAt: true, vistasSecciones: true },
     }),
-    prisma.incidente.findMany({
-      where: {
-        estado: "ACTIVO",
-        ...(isVecino ? { visibleVecinos: true } : {}),
-      },
-      include: {
-        lote: {
-          select: {
-            numero: true,
-            calleFrente: true,
-            manzana: { select: { numero: true } },
-          },
-        },
-      },
+    prisma.incidente.findFirst({
+      where: filtroIncidentes,
       orderBy: { createdAt: "desc" },
-      take: 4,
+      select: {
+        id: true,
+        tipo: true,
+        ubicacionText: true,
+        createdAt: true,
+        lote: { select: { numero: true, manzana: { select: { numero: true } } } },
+      },
     }),
-    prisma.requerimiento.findMany({
+    prisma.incidente.count({ where: filtroIncidentes }),
+    prisma.requerimiento.count({
       where: { estado: { in: ["NUEVO", "EN_PROGRESO"] } },
-      include: {
-        usuario: { select: { nombre: true, apellido: true } },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 4,
     }),
-    prisma.mascotaPerdida.findMany({
-      where: { estado: true },
-      orderBy: { createdAt: "desc" },
-      take: 3,
-    }),
+    prisma.mascotaPerdida.count({ where: { estado: true, tipo: "PERDIDA" } }),
     // Se resuelve acá y no en el cliente: si el cuadro "Invitá a un vecino"
     // aparece después de cargar, empuja el resto de la página (CLS).
     obtenerOCrearCodigo(usuarioId),
@@ -253,7 +124,7 @@ export default async function InicioPage() {
     prisma.oficio.count({ where: { estado: "APROBADO" } }),
     // Las que vencen primero arriba: son las que no hay que perderse.
     prisma.promoOficio.findMany({
-      where: { ...promoVigente(), oficio: { estado: "APROBADO" } },
+      where: { ...promoVigente(ahora), oficio: { estado: "APROBADO" } },
       orderBy: { venceAt: "asc" },
       take: 3,
       select: {
@@ -265,11 +136,30 @@ export default async function InicioPage() {
         oficio: { select: { id: true, titulo: true } },
       },
     }),
+    prisma.promoOficio.count({
+      where: { ...promoVigente(ahora), oficio: { estado: "APROBADO" } },
+    }),
     prisma.aviso.findMany({
-      where: avisoVigente(),
+      where: avisoVigente(ahora),
       orderBy: { createdAt: "desc" },
       take: 3,
       select: { id: true, tipo: true, ubicacion: true, detalle: true },
+    }),
+    prisma.aviso.count({ where: avisoVigente(ahora) }),
+    // Modo alerta por SOS: la guardia ve las alertas abiertas de todos; un
+    // vecino, solo la suya (las alertas de otros no se difunden).
+    prisma.alertaPanico.findFirst({
+      where: {
+        estado: { not: "CERRADO" },
+        ...(esGestorPanico
+          ? {}
+          : {
+              usuarioId,
+              createdAt: { gt: new Date(ahora.getTime() - 12 * 3_600_000) },
+            }),
+      },
+      orderBy: { createdAt: "desc" },
+      select: { estado: true },
     }),
   ]);
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
@@ -301,6 +191,56 @@ export default async function InicioPage() {
       }),
     ]);
 
+  // Orden por uso (ORDEN_INICIO): lo que cambia todos los días primero.
+  const estadoPorSeccion: Record<
+    (typeof ORDEN_INICIO)[number],
+    { estado: string; tono: Tono; nuevos?: number }
+  > = {
+    avisos:
+      avisosActivos > 0
+        ? { estado: plural(avisosActivos, "activo", "activos"), tono: "activo" }
+        : { estado: "Sin avisos", tono: "neutro" },
+    incidentes:
+      incidentesActivos > 0
+        ? {
+            estado: plural(incidentesActivos, "activo", "activos"),
+            tono: "alerta",
+            nuevos: nuevosIncidentes,
+          }
+        : { estado: "✓ Tranquilo", tono: "ok", nuevos: nuevosIncidentes },
+    mapa: { estado: "Ver el barrio", tono: "neutro" },
+    requerimientos: {
+      estado:
+        pedidosAbiertos > 0
+          ? plural(pedidosAbiertos, "abierto", "abiertos")
+          : "Ninguno abierto",
+      tono: "neutro",
+      nuevos: nuevosRequerimientos,
+    },
+    mascotas:
+      mascotasPerdidas > 0
+        ? {
+            estado: plural(mascotasPerdidas, "perdida", "perdidas"),
+            tono: "activo",
+            nuevos: nuevasMascotas,
+          }
+        : { estado: "Ninguna perdida", tono: "neutro", nuevos: nuevasMascotas },
+    oficios:
+      promosActivas > 0
+        ? { estado: `🔥 ${plural(promosActivas, "promo", "promos")}`, tono: "activo" }
+        : {
+            estado:
+              oficiosPublicados > 0
+                ? plural(oficiosPublicados, "servicio", "servicios")
+                : "Sumá el tuyo",
+            tono: "neutro",
+          },
+  };
+  const accesos = ORDEN_INICIO.map((seccion) => ({
+    seccion,
+    ...estadoPorSeccion[seccion],
+  }));
+
   return (
     <div className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-6 space-y-3 sm:space-y-4 max-w-7xl mx-auto">
       {/* Saludo — visible en tablet+, compacto en mobile */}
@@ -317,109 +257,132 @@ export default async function InicioPage() {
         </p>
       </div>
 
-      {/* ─── Accesos rápidos + SOS central ─────────────────────────────── */}
-      <div className="relative grid grid-cols-2 gap-2">
-        {/* MAPA — arriba izquierda */}
-        <Link
-          href="/mapa"
-          className="bg-brand hover:bg-brand-dark active:scale-[0.97] transition-all
-            rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl rounded-br-[3.5rem]
-            text-white shadow-sm h-40
-            flex flex-col items-center justify-center gap-3"
-        >
-          <span className="[&_svg]:w-12 [&_svg]:h-12">
-            <IconMap />
-          </span>
-          <span className="text-lg font-bold leading-tight">Mapa</span>
-        </Link>
-
-        {/* REQUERIMIENTOS — arriba derecha */}
-        <Link
-          href="/requerimientos"
-          className="relative bg-amber-700 hover:bg-amber-800 active:scale-[0.97] transition-all
-            rounded-tl-2xl rounded-tr-2xl rounded-br-2xl rounded-bl-[3.5rem]
-            text-white shadow-sm h-40
-            flex flex-col items-center justify-center gap-3"
-        >
-          <NuevoBadge count={nuevosRequerimientos} />
-          <span className="[&_svg]:w-12 [&_svg]:h-12">
-            <IconClipboard />
-          </span>
-          <span className="text-lg font-bold leading-tight">
-            Requerimientos
-          </span>
-        </Link>
-
-        {/* MASCOTAS — abajo izquierda */}
-        <Link
-          href="/mascotas"
-          className="relative bg-teal-700 hover:bg-teal-800 active:scale-[0.97] transition-all
-            rounded-bl-2xl rounded-br-2xl rounded-tl-2xl rounded-tr-[3.5rem]
-            text-white shadow-sm h-40
-            flex flex-col items-center justify-center gap-3"
-        >
-          <NuevoBadge count={nuevasMascotas} side="left" />
-          <span className="[&_svg]:w-12 [&_svg]:h-12">
-            <IconPaw />
-          </span>
-          <span className="text-lg font-bold leading-tight">Mascotas</span>
-        </Link>
-
-        {/* INCIDENTES — abajo derecha */}
-        <Link
-          href="/incidentes"
-          className="relative bg-orange-700 hover:bg-orange-800 active:scale-[0.97] transition-all
-            rounded-bl-2xl rounded-br-2xl rounded-tr-2xl rounded-tl-[3.5rem]
-            text-white shadow-sm h-40
-            flex flex-col items-center justify-center gap-3"
-        >
-          <NuevoBadge count={nuevosIncidentes} />
-          <span className="[&_svg]:w-12 [&_svg]:h-12">
-            <IconAlert />
-          </span>
-          <span className="text-lg font-bold leading-tight">Incidentes</span>
-        </Link>
-
-        {/* SOS — círculo central flotante */}
+      {/* ─── Modo alerta: lo único que va arriba del SOS ───────────── */}
+      {alertaSos && (
         <Link
           href="/panico"
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-[120px] h-[120px] sm:w-[180px] sm:h-[180px] lg:w-[220px] lg:h-[220px] rounded-full
-            bg-red-600 hover:bg-red-700 active:scale-95
-            flex flex-col items-center justify-center
-            text-white select-none
-            shadow-[0_0_0_4px_white,0_0_0_8px_#dc2626,0_8px_28px_rgba(220,38,38,0.6)]
-            sm:shadow-[0_0_0_6px_white,0_0_0_12px_#dc2626,0_10px_36px_rgba(220,38,38,0.6)]
-            lg:shadow-[0_0_0_8px_white,0_0_0_15px_#dc2626,0_12px_44px_rgba(220,38,38,0.65)]
-            z-10 transition-all"
+          role="alert"
+          className="flex items-center gap-3 rounded-2xl bg-red-700 text-white px-4 py-3 min-h-[60px] font-semibold"
         >
-          <span className="text-[28px] sm:text-[44px] lg:text-[56px] font-black tracking-[0.15em] leading-tight">
-            SOS
+          <span aria-hidden="true" className="text-2xl">
+            🚨
           </span>
-          <span className="text-[10px] sm:text-xs lg:text-sm font-medium leading-tight">
-            3 seg
+          <span className="flex-1">
+            {esGestorPanico
+              ? "Hay una alerta SOS sin cerrar"
+              : alertaSos.estado === "ENVIADO"
+                ? "Tu alerta SOS fue enviada a la guardia"
+                : "La guardia recibió tu alerta SOS"}
+            <span className="block text-sm font-normal text-red-100">
+              {esGestorPanico ? "Tocá para atenderla" : "Tocá para ver el estado"}
+            </span>
+          </span>
+          <span aria-hidden="true" className="text-2xl">
+            ›
           </span>
         </Link>
+      )}
+      {ultimoIncidente && (
+        <Link
+          href={
+            incidentesActivos === 1
+              ? `/incidentes/${ultimoIncidente.id}`
+              : "/incidentes"
+          }
+          role="status"
+          className="flex items-center gap-3 rounded-2xl border-2 border-red-300 bg-red-50 text-red-900 px-4 py-3 min-h-[60px]"
+        >
+          <span aria-hidden="true" className="text-2xl">
+            ⚠️
+          </span>
+          <span className="flex-1 min-w-0">
+            <span className="block font-bold">
+              {incidentesActivos === 1
+                ? `Incidente activo: ${INCIDENTE_LABEL[ultimoIncidente.tipo]}`
+                : `${incidentesActivos} incidentes activos en el barrio`}
+            </span>
+            <span className="block text-sm text-red-800 truncate">
+              {incidentesActivos === 1
+                ? `${
+                    ultimoIncidente.ubicacionText ??
+                    (ultimoIncidente.lote
+                      ? `Manzana ${ultimoIncidente.lote.manzana.numero}`
+                      : "En el barrio")
+                  } · ${tiempoRelativo(ultimoIncidente.createdAt)}`
+                : "Tocá para ver el detalle"}
+            </span>
+          </span>
+          <span aria-hidden="true" className="text-2xl">
+            ›
+          </span>
+        </Link>
+      )}
 
-        {/* Silueta de las esquinas interiores detrás del SOS */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-[112px] h-[112px] sm:w-[172px] sm:h-[172px] lg:w-[212px] lg:h-[212px] rounded-[3.5rem]
-            border-[3px] border-white/50
-            bg-black/[0.06]
-            pointer-events-none z-[9]"
-        />
-      </div>
+      {/* ─── SOS: franja de todo el ancho, el único bloque rojo ──────── */}
+      <Link
+        href="/panico"
+        className="flex items-center gap-4 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-[0.99] transition-all text-white px-4 py-3 min-h-[80px] shadow-[0_6px_18px_rgba(220,38,38,0.35)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-300"
+      >
+        <span className="w-14 h-14 sm:w-16 sm:h-16 rounded-full border-[3px] border-white/80 flex items-center justify-center flex-shrink-0 text-base sm:text-lg font-black tracking-wider">
+          SOS
+        </span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-lg sm:text-xl font-bold leading-tight">
+            Botón de pánico
+          </span>
+          <span className="block text-sm sm:text-base text-red-50">
+            Pedí ayuda a la guardia al instante
+          </span>
+        </span>
+        <span aria-hidden="true" className="text-3xl leading-none">
+          ›
+        </span>
+      </Link>
+
+      {/* ─── Accesos: 6 iguales, cada uno con cómo está su sección ───── */}
+      <nav aria-label="Accesos rápidos">
+        <ul className="grid grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+          {accesos.map((a) => {
+            const estilo = SECCIONES[a.seccion];
+            return (
+              <li key={a.seccion} className="flex">
+                <Link
+                  href={estilo.href}
+                  className="relative flex-1 flex flex-col items-center justify-start gap-1.5 min-h-[124px] px-1.5 py-3 text-center bg-white rounded-2xl border border-gray-200 shadow-sm hover:border-gray-300 hover:shadow active:scale-[0.97] transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                >
+                  <NuevoBadge count={a.nuevos ?? 0} />
+                  <span
+                    className={`w-12 h-12 rounded-xl flex items-center justify-center ${estilo.chip}`}
+                  >
+                    <IconoSeccion nombre={a.seccion} className="w-7 h-7" />
+                  </span>
+                  <span className="text-base font-bold text-gray-900 leading-tight">
+                    {estilo.label}
+                  </span>
+                  <span className={`text-sm leading-tight ${TONO_ESTADO[a.tono]}`}>
+                    {a.estado}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
 
       {/* Avisos: siempre visible, aunque esté vacío, para que se descubra. */}
       <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3">
-          <Link href="/avisos" className="font-semibold text-gray-900">
-            📢 Avisos del barrio
+          <Link href="/avisos" className="flex items-center gap-2 font-bold text-gray-900 text-base">
+            <span
+              className={`w-8 h-8 rounded-lg flex items-center justify-center ${SECCIONES.avisos.chip}`}
+            >
+              <IconoSeccion nombre="avisos" className="w-5 h-5" />
+            </span>
+            Avisos del barrio
           </Link>
           <Link
             href="/avisos/nuevo"
-            className="min-h-[40px] inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
+            className="min-h-[44px] inline-flex items-center px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
           >
             + Dar un aviso
           </Link>
@@ -524,282 +487,7 @@ export default async function InicioPage() {
         </section>
       )}
 
-      <Link
-        href="/oficios"
-        className="flex items-center gap-3 bg-white rounded-2xl shadow-sm border border-gray-100 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 transition-colors"
-      >
-        <span aria-hidden="true" className="text-2xl">
-          🧰
-        </span>
-        <span className="flex-1 min-w-0">
-          <span className="block font-semibold text-gray-900">
-            Oficios del barrio
-          </span>
-          <span className="block text-sm text-gray-600">
-            {oficiosPublicados > 0
-              ? `${oficiosPublicados} servicio${oficiosPublicados === 1 ? "" : "s"} de vecinos, con sus recomendaciones`
-              : "¿Ofrecés un servicio? Publicalo para el barrio"}
-          </span>
-        </span>
-        <span aria-hidden="true" className="text-gray-400 text-xl">
-          ›
-        </span>
-      </Link>
-
       <InvitarVecino codigo={codigoInvitacion} registros={invitados} />
-
-      {/* Secciones principales — columna única mobile, 2 col en lg */}
-      <div className="grid lg:grid-cols-2 gap-3 sm:gap-4">
-        {/* Últimos incidentes */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
-            <div className="flex items-center gap-2.5">
-              <span className="text-blue-600 [&_svg]:w-6 [&_svg]:h-6">
-                <IconShield />
-              </span>
-              <h2 className="font-bold text-gray-900 text-base sm:text-lg">
-                Últimos incidentes
-              </h2>
-            </div>
-            <Link
-              href="/incidentes"
-              className="text-base text-blue-600 font-semibold hover:bg-blue-50 rounded-lg py-1.5 px-3 -mr-1 transition-colors whitespace-nowrap"
-            >
-              Ver más ›
-            </Link>
-          </div>
-
-          {incidentes.length === 0 ? (
-            <p className="text-center text-gray-500 py-8 text-sm">
-              Sin incidentes activos
-            </p>
-          ) : (
-            <ul className="divide-y divide-gray-50">
-              {incidentes.map((inc) => {
-                const cfg = INCIDENTE_CFG[inc.tipo as TipoIncidente];
-                const ubicacion =
-                  inc.ubicacionText ??
-                  (inc.lote
-                    ? `Manzana ${inc.lote.manzana.numero}, Lote ${inc.lote.numero}`
-                    : "Sin ubicación");
-                return (
-                  <li key={inc.id}>
-                    <Link
-                      href={`/incidentes/${inc.id}`}
-                      className="flex items-start gap-3 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
-                    >
-                      {/* Dot */}
-                      <div className="mt-2 flex-shrink-0">
-                        <span
-                          className={`block w-3.5 h-3.5 rounded-full ${cfg.dot}`}
-                        />
-                      </div>
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-start justify-between gap-2">
-                          <p className="font-medium text-gray-900 text-sm sm:text-base leading-snug">
-                            {cfg.label} reportado
-                          </p>
-                          <span
-                            className={`flex-shrink-0 text-sm font-semibold px-2.5 py-0.5 rounded-full ${cfg.bg}`}
-                          >
-                            {cfg.label}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-500 truncate mt-1">
-                          {ubicacion}
-                        </p>
-                        <p className="text-sm text-gray-500 mt-0.5">
-                          {timeAgo(inc.createdAt)}
-                        </p>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
-
-        {/* Requerimientos abiertos */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
-            <div className="flex items-center gap-2.5">
-              <span className="text-amber-500">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
-              </span>
-              <h2 className="font-bold text-gray-900 text-base sm:text-lg">
-                Requerimientos abiertos
-              </h2>
-            </div>
-            <Link
-              href="/requerimientos"
-              className="text-base text-blue-600 font-semibold hover:bg-blue-50 rounded-lg py-1.5 px-3 -mr-1 transition-colors whitespace-nowrap"
-            >
-              Ver más ›
-            </Link>
-          </div>
-
-          {requerimientos.length === 0 ? (
-            <p className="text-center text-gray-500 py-8 text-sm">
-              Sin requerimientos abiertos
-            </p>
-          ) : (
-            <ul className="divide-y divide-gray-50">
-              {requerimientos.map((req) => {
-                const catCfg = CATEGORIA_CFG[req.categoria as CategoriaReq];
-                const estadoCfg =
-                  ESTADO_REQ_CFG[req.estado as EstadoRequerimiento];
-                return (
-                  <li key={req.id}>
-                    <Link
-                      href={`/requerimientos/${req.id}`}
-                      className="flex items-start gap-3 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
-                    >
-                      {/* Categoría badge — izquierda */}
-                      <span
-                        className={`flex-shrink-0 mt-0.5 text-sm font-semibold px-2.5 py-1 rounded-md ${catCfg.color}`}
-                      >
-                        {catCfg.label}
-                      </span>
-                      {/* Contenido central */}
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 text-sm sm:text-base truncate leading-snug">
-                          {req.titulo}
-                        </p>
-                        <p className="text-sm text-gray-500 mt-1 truncate">
-                          {nombreCompleto(req.usuario)} ·{" "}
-                          {timeAgo(req.createdAt)}
-                        </p>
-                      </div>
-                      {/* Estado badge — derecha */}
-                      <span
-                        className={`flex-shrink-0 mt-0.5 text-sm font-semibold px-2.5 py-1 rounded-full ${estadoCfg.color}`}
-                      >
-                        {estadoCfg.label}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-        </section>
-
-        {/* Mascotas perdidas */}
-        <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden lg:col-span-2">
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100">
-            <div className="flex items-center gap-2.5">
-              <span className="text-teal-600">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={1.8}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zm-5 0c-.83 0-1.5-.67-1.5-1.5v-5C8 2.67 8.67 2 9.5 2S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5zm8 5c-.83 0-1.5-.67-1.5-1.5v-3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5zm-11 0C5.67 15 5 14.33 5 13.5v-3C5 9.67 5.67 9 6.5 9S8 9.67 8 10.5v3c0 .83-.67 1.5-1.5 1.5zm5.5 5c-2.5 0-6-2.5-6-6 0-.83.67-1.5 1.5-1.5h9c.83 0 1.5.67 1.5 1.5 0 3.5-3.5 6-6 6z"
-                  />
-                </svg>
-              </span>
-              <h2 className="font-bold text-gray-900 text-base sm:text-lg">
-                Mascotas perdidas
-              </h2>
-            </div>
-            <Link
-              href="/mascotas"
-              className="text-base text-blue-600 font-semibold hover:bg-blue-50 rounded-lg py-1.5 px-3 -mr-1 transition-colors whitespace-nowrap"
-            >
-              Ver más ›
-            </Link>
-          </div>
-
-          {mascotas.length === 0 ? (
-            <p className="text-center text-gray-500 py-8 text-sm">
-              Sin alertas de mascotas activas
-            </p>
-          ) : (
-            <ul className="divide-y divide-gray-100 sm:divide-y-0 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:divide-x">
-              {mascotas.map((m) => (
-                <li key={m.id}>
-                  <Link
-                    href={`/mascotas/${m.id}`}
-                    className="flex items-center gap-3 px-4 sm:px-5 py-3 sm:py-4 hover:bg-gray-50 active:bg-gray-100 transition-colors"
-                  >
-                    {/* Avatar */}
-                    {m.foto ? (
-                      <Image
-                        src={m.foto}
-                        alt={m.nombre ?? "mascota"}
-                        width={56}
-                        height={56}
-                        className="w-14 h-14 rounded-full object-cover flex-shrink-0 border-2 border-gray-100"
-                      />
-                    ) : (
-                      <div className="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0 border-2 border-amber-200">
-                        <svg
-                          className="w-7 h-7 text-amber-600"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={1.8}
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zm-5 0c-.83 0-1.5-.67-1.5-1.5v-5C8 2.67 8.67 2 9.5 2S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5zm8 5c-.83 0-1.5-.67-1.5-1.5v-3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5zm-11 0C5.67 15 5 14.33 5 13.5v-3C5 9.67 5.67 9 6.5 9S8 9.67 8 10.5v3c0 .83-.67 1.5-1.5 1.5zm5.5 5c-2.5 0-6-2.5-6-6 0-.83.67-1.5 1.5-1.5h9c.83 0 1.5.67 1.5 1.5 0 3.5-3.5 6-6 6z"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-2">
-                        <p className="font-medium text-gray-900 text-sm sm:text-base truncate">
-                          {m.nombre ?? "Sin nombre"}
-                        </p>
-                        <span
-                          className={`flex-shrink-0 text-sm font-semibold px-2.5 py-0.5 rounded-full ${
-                            (m.tipo as TipoAlertaMascota) === "PERDIDA"
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-green-100 text-green-700"
-                          }`}
-                        >
-                          {(m.tipo as TipoAlertaMascota) === "PERDIDA"
-                            ? "Perdida"
-                            : "Encontrada"}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-500 truncate mt-1">
-                        {m.descripcion}
-                      </p>
-                      <p className="text-sm text-gray-500 mt-0.5">
-                        {timeAgo(m.createdAt)}
-                      </p>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </div>
     </div>
   );
 }

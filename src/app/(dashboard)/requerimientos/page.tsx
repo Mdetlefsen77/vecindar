@@ -14,6 +14,7 @@ import {
   ESTADO_SLA_CONFIG,
   type ConfigSLAMap,
 } from "@/lib/utils/sla";
+import TituloSeccion from "@/components/ui/TituloSeccion";
 
 // ── Helpers de display ────────────────────────────────────────────────────────
 
@@ -126,9 +127,9 @@ export default async function RequerimientosPage({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Requerimientos</h1>
+          <TituloSeccion seccion="requerimientos">Pedidos</TituloSeccion>
           <p className="text-sm text-gray-500 mt-0.5">
-            Pedidos, reclamos y sugerencias del barrio
+            Reclamos y sugerencias para mejorar el barrio
           </p>
         </div>
         <Link
@@ -176,7 +177,7 @@ export default async function RequerimientosPage({
               d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
             />
           </svg>
-          <p className="font-medium">No hay requerimientos</p>
+          <p className="font-medium">No hay pedidos</p>
           <p className="text-sm mt-1">
             Podés crear uno con el botón &quot;Nuevo&quot;
           </p>
