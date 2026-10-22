@@ -321,9 +321,9 @@ export default async function InicioPage() {
       {/* ─── SOS: franja de todo el ancho, el único bloque rojo ──────── */}
       <Link
         href="/panico"
-        className="flex items-center gap-4 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-[0.99] transition-all text-white px-4 py-4 min-h-[104px] shadow-[0_6px_18px_rgba(220,38,38,0.35)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-300"
+        className="flex items-center gap-4 rounded-2xl bg-red-600 hover:bg-red-700 active:scale-[0.99] transition-all text-white px-4 py-4 min-h-[160px] shadow-[0_6px_18px_rgba(220,38,38,0.35)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-red-300"
       >
-        <span className="w-[72px] h-[72px] sm:w-20 sm:h-20 rounded-full border-[3px] border-white/80 flex items-center justify-center flex-shrink-0 text-xl sm:text-2xl font-black tracking-wider">
+        <span className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white/80 flex items-center justify-center flex-shrink-0 text-2xl sm:text-3xl font-black tracking-wider">
           SOS
         </span>
         <span className="flex-1 min-w-0">
