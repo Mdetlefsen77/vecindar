@@ -75,6 +75,7 @@ export const ModelName = {
   ParteTurno: 'ParteTurno',
   CategoriaOficio: 'CategoriaOficio',
   Oficio: 'Oficio',
+  PromoOficio: 'PromoOficio',
   RecomendacionOficio: 'RecomendacionOficio',
   ReporteOficio: 'ReporteOficio'
 } as const
@@ -446,6 +447,22 @@ export const OficioScalarFieldEnum = {
 } as const
 
 export type OficioScalarFieldEnum = (typeof OficioScalarFieldEnum)[keyof typeof OficioScalarFieldEnum]
+
+
+export const PromoOficioScalarFieldEnum = {
+  id: 'id',
+  oficioId: 'oficioId',
+  titulo: 'titulo',
+  descripcion: 'descripcion',
+  precioAntes: 'precioAntes',
+  precioAhora: 'precioAhora',
+  imagen: 'imagen',
+  duracion: 'duracion',
+  venceAt: 'venceAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PromoOficioScalarFieldEnum = (typeof PromoOficioScalarFieldEnum)[keyof typeof PromoOficioScalarFieldEnum]
 
 
 export const RecomendacionOficioScalarFieldEnum = {

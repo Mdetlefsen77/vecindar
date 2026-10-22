@@ -296,6 +296,7 @@ export type OficioWhereInput = {
   categoria?: Prisma.XOR<Prisma.CategoriaOficioScalarRelationFilter, Prisma.CategoriaOficioWhereInput>
   recomendaciones?: Prisma.RecomendacionOficioListRelationFilter
   reportes?: Prisma.ReporteOficioListRelationFilter
+  promo?: Prisma.XOR<Prisma.PromoOficioNullableScalarRelationFilter, Prisma.PromoOficioWhereInput> | null
 }
 
 export type OficioOrderByWithRelationInput = {
@@ -317,6 +318,7 @@ export type OficioOrderByWithRelationInput = {
   categoria?: Prisma.CategoriaOficioOrderByWithRelationInput
   recomendaciones?: Prisma.RecomendacionOficioOrderByRelationAggregateInput
   reportes?: Prisma.ReporteOficioOrderByRelationAggregateInput
+  promo?: Prisma.PromoOficioOrderByWithRelationInput
 }
 
 export type OficioWhereUniqueInput = Prisma.AtLeast<{
@@ -341,6 +343,7 @@ export type OficioWhereUniqueInput = Prisma.AtLeast<{
   categoria?: Prisma.XOR<Prisma.CategoriaOficioScalarRelationFilter, Prisma.CategoriaOficioWhereInput>
   recomendaciones?: Prisma.RecomendacionOficioListRelationFilter
   reportes?: Prisma.ReporteOficioListRelationFilter
+  promo?: Prisma.XOR<Prisma.PromoOficioNullableScalarRelationFilter, Prisma.PromoOficioWhereInput> | null
 }, "id">
 
 export type OficioOrderByWithAggregationInput = {
@@ -401,6 +404,7 @@ export type OficioCreateInput = {
   categoria: Prisma.CategoriaOficioCreateNestedOneWithoutOficiosInput
   recomendaciones?: Prisma.RecomendacionOficioCreateNestedManyWithoutOficioInput
   reportes?: Prisma.ReporteOficioCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioCreateNestedOneWithoutOficioInput
 }
 
 export type OficioUncheckedCreateInput = {
@@ -420,6 +424,7 @@ export type OficioUncheckedCreateInput = {
   updatedAt?: Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutOficioInput
   reportes?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioUncheckedCreateNestedOneWithoutOficioInput
 }
 
 export type OficioUpdateInput = {
@@ -438,6 +443,7 @@ export type OficioUpdateInput = {
   categoria?: Prisma.CategoriaOficioUpdateOneRequiredWithoutOficiosNestedInput
   recomendaciones?: Prisma.RecomendacionOficioUpdateManyWithoutOficioNestedInput
   reportes?: Prisma.ReporteOficioUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioUncheckedUpdateInput = {
@@ -457,6 +463,7 @@ export type OficioUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutOficioNestedInput
   reportes?: Prisma.ReporteOficioUncheckedUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUncheckedUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioCreateManyInput = {
@@ -680,6 +687,20 @@ export type EnumEstadoOficioFieldUpdateOperationsInput = {
   set?: $Enums.EstadoOficio
 }
 
+export type OficioCreateNestedOneWithoutPromoInput = {
+  create?: Prisma.XOR<Prisma.OficioCreateWithoutPromoInput, Prisma.OficioUncheckedCreateWithoutPromoInput>
+  connectOrCreate?: Prisma.OficioCreateOrConnectWithoutPromoInput
+  connect?: Prisma.OficioWhereUniqueInput
+}
+
+export type OficioUpdateOneRequiredWithoutPromoNestedInput = {
+  create?: Prisma.XOR<Prisma.OficioCreateWithoutPromoInput, Prisma.OficioUncheckedCreateWithoutPromoInput>
+  connectOrCreate?: Prisma.OficioCreateOrConnectWithoutPromoInput
+  upsert?: Prisma.OficioUpsertWithoutPromoInput
+  connect?: Prisma.OficioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OficioUpdateToOneWithWhereWithoutPromoInput, Prisma.OficioUpdateWithoutPromoInput>, Prisma.OficioUncheckedUpdateWithoutPromoInput>
+}
+
 export type OficioCreateNestedOneWithoutRecomendacionesInput = {
   create?: Prisma.XOR<Prisma.OficioCreateWithoutRecomendacionesInput, Prisma.OficioUncheckedCreateWithoutRecomendacionesInput>
   connectOrCreate?: Prisma.OficioCreateOrConnectWithoutRecomendacionesInput
@@ -723,6 +744,7 @@ export type OficioCreateWithoutUsuarioInput = {
   categoria: Prisma.CategoriaOficioCreateNestedOneWithoutOficiosInput
   recomendaciones?: Prisma.RecomendacionOficioCreateNestedManyWithoutOficioInput
   reportes?: Prisma.ReporteOficioCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioCreateNestedOneWithoutOficioInput
 }
 
 export type OficioUncheckedCreateWithoutUsuarioInput = {
@@ -741,6 +763,7 @@ export type OficioUncheckedCreateWithoutUsuarioInput = {
   updatedAt?: Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutOficioInput
   reportes?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioUncheckedCreateNestedOneWithoutOficioInput
 }
 
 export type OficioCreateOrConnectWithoutUsuarioInput = {
@@ -804,6 +827,7 @@ export type OficioCreateWithoutCategoriaInput = {
   usuario: Prisma.UsuarioCreateNestedOneWithoutOficiosInput
   recomendaciones?: Prisma.RecomendacionOficioCreateNestedManyWithoutOficioInput
   reportes?: Prisma.ReporteOficioCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioCreateNestedOneWithoutOficioInput
 }
 
 export type OficioUncheckedCreateWithoutCategoriaInput = {
@@ -822,6 +846,7 @@ export type OficioUncheckedCreateWithoutCategoriaInput = {
   updatedAt?: Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutOficioInput
   reportes?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioUncheckedCreateNestedOneWithoutOficioInput
 }
 
 export type OficioCreateOrConnectWithoutCategoriaInput = {
@@ -850,6 +875,96 @@ export type OficioUpdateManyWithWhereWithoutCategoriaInput = {
   data: Prisma.XOR<Prisma.OficioUpdateManyMutationInput, Prisma.OficioUncheckedUpdateManyWithoutCategoriaInput>
 }
 
+export type OficioCreateWithoutPromoInput = {
+  categoriaSugerida?: string | null
+  titulo: string
+  descripcion: string
+  disponibilidad?: string | null
+  telefono: string
+  imagenes?: Prisma.OficioCreateimagenesInput | string[]
+  estado?: $Enums.EstadoOficio
+  motivoEstado?: string | null
+  aprobadoAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  usuario: Prisma.UsuarioCreateNestedOneWithoutOficiosInput
+  categoria: Prisma.CategoriaOficioCreateNestedOneWithoutOficiosInput
+  recomendaciones?: Prisma.RecomendacionOficioCreateNestedManyWithoutOficioInput
+  reportes?: Prisma.ReporteOficioCreateNestedManyWithoutOficioInput
+}
+
+export type OficioUncheckedCreateWithoutPromoInput = {
+  id?: number
+  usuarioId: number
+  categoriaId: number
+  categoriaSugerida?: string | null
+  titulo: string
+  descripcion: string
+  disponibilidad?: string | null
+  telefono: string
+  imagenes?: Prisma.OficioCreateimagenesInput | string[]
+  estado?: $Enums.EstadoOficio
+  motivoEstado?: string | null
+  aprobadoAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  recomendaciones?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutOficioInput
+  reportes?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutOficioInput
+}
+
+export type OficioCreateOrConnectWithoutPromoInput = {
+  where: Prisma.OficioWhereUniqueInput
+  create: Prisma.XOR<Prisma.OficioCreateWithoutPromoInput, Prisma.OficioUncheckedCreateWithoutPromoInput>
+}
+
+export type OficioUpsertWithoutPromoInput = {
+  update: Prisma.XOR<Prisma.OficioUpdateWithoutPromoInput, Prisma.OficioUncheckedUpdateWithoutPromoInput>
+  create: Prisma.XOR<Prisma.OficioCreateWithoutPromoInput, Prisma.OficioUncheckedCreateWithoutPromoInput>
+  where?: Prisma.OficioWhereInput
+}
+
+export type OficioUpdateToOneWithWhereWithoutPromoInput = {
+  where?: Prisma.OficioWhereInput
+  data: Prisma.XOR<Prisma.OficioUpdateWithoutPromoInput, Prisma.OficioUncheckedUpdateWithoutPromoInput>
+}
+
+export type OficioUpdateWithoutPromoInput = {
+  categoriaSugerida?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  disponibilidad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telefono?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenes?: Prisma.OficioUpdateimagenesInput | string[]
+  estado?: Prisma.EnumEstadoOficioFieldUpdateOperationsInput | $Enums.EstadoOficio
+  motivoEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aprobadoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  usuario?: Prisma.UsuarioUpdateOneRequiredWithoutOficiosNestedInput
+  categoria?: Prisma.CategoriaOficioUpdateOneRequiredWithoutOficiosNestedInput
+  recomendaciones?: Prisma.RecomendacionOficioUpdateManyWithoutOficioNestedInput
+  reportes?: Prisma.ReporteOficioUpdateManyWithoutOficioNestedInput
+}
+
+export type OficioUncheckedUpdateWithoutPromoInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  usuarioId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoriaId?: Prisma.IntFieldUpdateOperationsInput | number
+  categoriaSugerida?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  titulo?: Prisma.StringFieldUpdateOperationsInput | string
+  descripcion?: Prisma.StringFieldUpdateOperationsInput | string
+  disponibilidad?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  telefono?: Prisma.StringFieldUpdateOperationsInput | string
+  imagenes?: Prisma.OficioUpdateimagenesInput | string[]
+  estado?: Prisma.EnumEstadoOficioFieldUpdateOperationsInput | $Enums.EstadoOficio
+  motivoEstado?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  aprobadoAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  recomendaciones?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutOficioNestedInput
+  reportes?: Prisma.ReporteOficioUncheckedUpdateManyWithoutOficioNestedInput
+}
+
 export type OficioCreateWithoutRecomendacionesInput = {
   categoriaSugerida?: string | null
   titulo: string
@@ -865,6 +980,7 @@ export type OficioCreateWithoutRecomendacionesInput = {
   usuario: Prisma.UsuarioCreateNestedOneWithoutOficiosInput
   categoria: Prisma.CategoriaOficioCreateNestedOneWithoutOficiosInput
   reportes?: Prisma.ReporteOficioCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioCreateNestedOneWithoutOficioInput
 }
 
 export type OficioUncheckedCreateWithoutRecomendacionesInput = {
@@ -883,6 +999,7 @@ export type OficioUncheckedCreateWithoutRecomendacionesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   reportes?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioUncheckedCreateNestedOneWithoutOficioInput
 }
 
 export type OficioCreateOrConnectWithoutRecomendacionesInput = {
@@ -916,6 +1033,7 @@ export type OficioUpdateWithoutRecomendacionesInput = {
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutOficiosNestedInput
   categoria?: Prisma.CategoriaOficioUpdateOneRequiredWithoutOficiosNestedInput
   reportes?: Prisma.ReporteOficioUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioUncheckedUpdateWithoutRecomendacionesInput = {
@@ -934,6 +1052,7 @@ export type OficioUncheckedUpdateWithoutRecomendacionesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reportes?: Prisma.ReporteOficioUncheckedUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUncheckedUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioCreateWithoutReportesInput = {
@@ -951,6 +1070,7 @@ export type OficioCreateWithoutReportesInput = {
   usuario: Prisma.UsuarioCreateNestedOneWithoutOficiosInput
   categoria: Prisma.CategoriaOficioCreateNestedOneWithoutOficiosInput
   recomendaciones?: Prisma.RecomendacionOficioCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioCreateNestedOneWithoutOficioInput
 }
 
 export type OficioUncheckedCreateWithoutReportesInput = {
@@ -969,6 +1089,7 @@ export type OficioUncheckedCreateWithoutReportesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutOficioInput
+  promo?: Prisma.PromoOficioUncheckedCreateNestedOneWithoutOficioInput
 }
 
 export type OficioCreateOrConnectWithoutReportesInput = {
@@ -1002,6 +1123,7 @@ export type OficioUpdateWithoutReportesInput = {
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutOficiosNestedInput
   categoria?: Prisma.CategoriaOficioUpdateOneRequiredWithoutOficiosNestedInput
   recomendaciones?: Prisma.RecomendacionOficioUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioUncheckedUpdateWithoutReportesInput = {
@@ -1020,6 +1142,7 @@ export type OficioUncheckedUpdateWithoutReportesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUncheckedUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioCreateManyUsuarioInput = {
@@ -1053,6 +1176,7 @@ export type OficioUpdateWithoutUsuarioInput = {
   categoria?: Prisma.CategoriaOficioUpdateOneRequiredWithoutOficiosNestedInput
   recomendaciones?: Prisma.RecomendacionOficioUpdateManyWithoutOficioNestedInput
   reportes?: Prisma.ReporteOficioUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioUncheckedUpdateWithoutUsuarioInput = {
@@ -1071,6 +1195,7 @@ export type OficioUncheckedUpdateWithoutUsuarioInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutOficioNestedInput
   reportes?: Prisma.ReporteOficioUncheckedUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUncheckedUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioUncheckedUpdateManyWithoutUsuarioInput = {
@@ -1120,6 +1245,7 @@ export type OficioUpdateWithoutCategoriaInput = {
   usuario?: Prisma.UsuarioUpdateOneRequiredWithoutOficiosNestedInput
   recomendaciones?: Prisma.RecomendacionOficioUpdateManyWithoutOficioNestedInput
   reportes?: Prisma.ReporteOficioUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioUncheckedUpdateWithoutCategoriaInput = {
@@ -1138,6 +1264,7 @@ export type OficioUncheckedUpdateWithoutCategoriaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recomendaciones?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutOficioNestedInput
   reportes?: Prisma.ReporteOficioUncheckedUpdateManyWithoutOficioNestedInput
+  promo?: Prisma.PromoOficioUncheckedUpdateOneWithoutOficioNestedInput
 }
 
 export type OficioUncheckedUpdateManyWithoutCategoriaInput = {
@@ -1215,6 +1342,7 @@ export type OficioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   categoria?: boolean | Prisma.CategoriaOficioDefaultArgs<ExtArgs>
   recomendaciones?: boolean | Prisma.Oficio$recomendacionesArgs<ExtArgs>
   reportes?: boolean | Prisma.Oficio$reportesArgs<ExtArgs>
+  promo?: boolean | Prisma.Oficio$promoArgs<ExtArgs>
   _count?: boolean | Prisma.OficioCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["oficio"]>
 
@@ -1279,6 +1407,7 @@ export type OficioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   categoria?: boolean | Prisma.CategoriaOficioDefaultArgs<ExtArgs>
   recomendaciones?: boolean | Prisma.Oficio$recomendacionesArgs<ExtArgs>
   reportes?: boolean | Prisma.Oficio$reportesArgs<ExtArgs>
+  promo?: boolean | Prisma.Oficio$promoArgs<ExtArgs>
   _count?: boolean | Prisma.OficioCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OficioIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1297,6 +1426,7 @@ export type $OficioPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     categoria: Prisma.$CategoriaOficioPayload<ExtArgs>
     recomendaciones: Prisma.$RecomendacionOficioPayload<ExtArgs>[]
     reportes: Prisma.$ReporteOficioPayload<ExtArgs>[]
+    promo: Prisma.$PromoOficioPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1711,6 +1841,7 @@ export interface Prisma__OficioClient<T, Null = never, ExtArgs extends runtime.T
   categoria<T extends Prisma.CategoriaOficioDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CategoriaOficioDefaultArgs<ExtArgs>>): Prisma.Prisma__CategoriaOficioClient<runtime.Types.Result.GetResult<Prisma.$CategoriaOficioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   recomendaciones<T extends Prisma.Oficio$recomendacionesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Oficio$recomendacionesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecomendacionOficioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportes<T extends Prisma.Oficio$reportesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Oficio$reportesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReporteOficioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  promo<T extends Prisma.Oficio$promoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Oficio$promoArgs<ExtArgs>>): Prisma.Prisma__PromoOficioClient<runtime.Types.Result.GetResult<Prisma.$PromoOficioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2195,6 +2326,25 @@ export type Oficio$reportesArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.ReporteOficioScalarFieldEnum | Prisma.ReporteOficioScalarFieldEnum[]
+}
+
+/**
+ * Oficio.promo
+ */
+export type Oficio$promoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PromoOficio
+   */
+  select?: Prisma.PromoOficioSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PromoOficio
+   */
+  omit?: Prisma.PromoOficioOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PromoOficioInclude<ExtArgs> | null
+  where?: Prisma.PromoOficioWhereInput
 }
 
 /**

@@ -408,6 +408,7 @@ export const ModelName = {
   ParteTurno: 'ParteTurno',
   CategoriaOficio: 'CategoriaOficio',
   Oficio: 'Oficio',
+  PromoOficio: 'PromoOficio',
   RecomendacionOficio: 'RecomendacionOficio',
   ReporteOficio: 'ReporteOficio'
 } as const
@@ -425,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "recomendacionOficio" | "reporteOficio"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "promoOficio" | "recomendacionOficio" | "reporteOficio"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2205,6 +2206,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    PromoOficio: {
+      payload: Prisma.$PromoOficioPayload<ExtArgs>
+      fields: Prisma.PromoOficioFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PromoOficioFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PromoOficioFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>
+        }
+        findFirst: {
+          args: Prisma.PromoOficioFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PromoOficioFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>
+        }
+        findMany: {
+          args: Prisma.PromoOficioFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>[]
+        }
+        create: {
+          args: Prisma.PromoOficioCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>
+        }
+        createMany: {
+          args: Prisma.PromoOficioCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PromoOficioCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>[]
+        }
+        delete: {
+          args: Prisma.PromoOficioDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>
+        }
+        update: {
+          args: Prisma.PromoOficioUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>
+        }
+        deleteMany: {
+          args: Prisma.PromoOficioDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PromoOficioUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PromoOficioUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>[]
+        }
+        upsert: {
+          args: Prisma.PromoOficioUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromoOficioPayload>
+        }
+        aggregate: {
+          args: Prisma.PromoOficioAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePromoOficio>
+        }
+        groupBy: {
+          args: Prisma.PromoOficioGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromoOficioGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PromoOficioCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromoOficioCountAggregateOutputType> | number
+        }
+      }
+    }
     RecomendacionOficio: {
       payload: Prisma.$RecomendacionOficioPayload<ExtArgs>
       fields: Prisma.RecomendacionOficioFieldRefs
@@ -2745,6 +2820,22 @@ export const OficioScalarFieldEnum = {
 export type OficioScalarFieldEnum = (typeof OficioScalarFieldEnum)[keyof typeof OficioScalarFieldEnum]
 
 
+export const PromoOficioScalarFieldEnum = {
+  id: 'id',
+  oficioId: 'oficioId',
+  titulo: 'titulo',
+  descripcion: 'descripcion',
+  precioAntes: 'precioAntes',
+  precioAhora: 'precioAhora',
+  imagen: 'imagen',
+  duracion: 'duracion',
+  venceAt: 'venceAt',
+  createdAt: 'createdAt'
+} as const
+
+export type PromoOficioScalarFieldEnum = (typeof PromoOficioScalarFieldEnum)[keyof typeof PromoOficioScalarFieldEnum]
+
+
 export const RecomendacionOficioScalarFieldEnum = {
   id: 'id',
   oficioId: 'oficioId',
@@ -3212,6 +3303,20 @@ export type EnumEstadoOficioFieldRefInput<$PrismaModel> = FieldRefInputType<$Pri
 export type ListEnumEstadoOficioFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EstadoOficio[]'>
     
 
+
+/**
+ * Reference to a field of type 'DuracionPromo'
+ */
+export type EnumDuracionPromoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DuracionPromo'>
+    
+
+
+/**
+ * Reference to a field of type 'DuracionPromo[]'
+ */
+export type ListEnumDuracionPromoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DuracionPromo[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3331,6 +3436,7 @@ export type GlobalOmitConfig = {
   parteTurno?: Prisma.ParteTurnoOmit
   categoriaOficio?: Prisma.CategoriaOficioOmit
   oficio?: Prisma.OficioOmit
+  promoOficio?: Prisma.PromoOficioOmit
   recomendacionOficio?: Prisma.RecomendacionOficioOmit
   reporteOficio?: Prisma.ReporteOficioOmit
 }

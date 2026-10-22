@@ -138,6 +138,11 @@ export type CategoriaOficio = Prisma.CategoriaOficioModel
  */
 export type Oficio = Prisma.OficioModel
 /**
+ * Model PromoOficio
+ * 
+ */
+export type PromoOficio = Prisma.PromoOficioModel
+/**
  * Model RecomendacionOficio
  * 
  */

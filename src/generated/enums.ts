@@ -239,3 +239,11 @@ export const EstadoOficio = {
 } as const
 
 export type EstadoOficio = (typeof EstadoOficio)[keyof typeof EstadoOficio]
+
+
+export const DuracionPromo = {
+  DIA: 'DIA',
+  SEMANA: 'SEMANA'
+} as const
+
+export type DuracionPromo = (typeof DuracionPromo)[keyof typeof DuracionPromo]

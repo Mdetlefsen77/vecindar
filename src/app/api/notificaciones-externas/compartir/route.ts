@@ -12,6 +12,7 @@ import {
 } from "@/lib/notificaciones-externas/plantillas";
 import { compartirEventoSchema } from "@/lib/validation/notificacionesExternas";
 import { mensajeParte } from "@/lib/partes";
+import { textoPrecioPromo, textoVencimientoPromo } from "@/lib/oficios";
 
 async function resolverIncidente(entidadId: number) {
   const inc = await prisma.incidente.findUnique({
@@ -122,6 +123,9 @@ async function resolverOficio(entidadId: number) {
           ocultarNombreEnPublicacionExterna: true,
         },
       },
+      promo: {
+        select: { titulo: true, precioAntes: true, precioAhora: true, venceAt: true },
+      },
       _count: { select: { recomendaciones: true } },
     },
   });
@@ -129,6 +133,8 @@ async function resolverOficio(entidadId: number) {
   if (!oficio || oficio.estado !== "APROBADO") {
     return { error: "No encontrado." as const };
   }
+  const promo =
+    oficio.promo && oficio.promo.venceAt > new Date() ? oficio.promo : null;
   return {
     urlDestino: `/oficios/${oficio.id}`,
     construirMensaje: (link: string) =>
@@ -137,6 +143,11 @@ async function resolverOficio(entidadId: number) {
         oficio.titulo,
         oficio._count.recomendaciones,
         link,
+        promo && {
+          titulo: promo.titulo,
+          precio: textoPrecioPromo(promo),
+          vencimiento: textoVencimientoPromo(promo.venceAt),
+        },
       ),
   };
 }

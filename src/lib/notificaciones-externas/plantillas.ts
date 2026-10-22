@@ -44,11 +44,16 @@ export function plantillaOficio(
   titulo: string,
   recomendaciones: number,
   link: string,
+  promo?: { titulo: string; precio: string | null; vencimiento: string } | null,
 ): string {
   const aval =
     recomendaciones === 0
       ? "✨ Nuevo en el catálogo de oficios"
       : `👍 Recomendado por ${recomendaciones} vecino${recomendaciones === 1 ? "" : "s"}`;
+  if (promo) {
+    const precio = promo.precio ? `\n💲 ${promo.precio}` : "";
+    return `🔥 PROMO DEL BARRIO\n\n*${promo.titulo}*${precio}\n⏳ ${promo.vencimiento}\n\n${titulo} — ${nombrePublico(autor)}\n${aval}\n\nMirá el detalle y contactalo en Vecindar 👉 ${link}`;
+  }
   return `🧰 OFICIO DEL BARRIO\n\n*${titulo}* — ${nombrePublico(autor)}\n${aval}\n\nMirá el detalle y contactalo en Vecindar 👉 ${link}`;
 }
 
