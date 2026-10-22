@@ -114,6 +114,9 @@ model Usuario {
   // Catálogo de oficios (ver src/lib/oficios.ts).
   oficios                Oficio[]
   recomendacionesOficio  RecomendacionOficio[]
+  // Avisos del barrio (ver src/lib/avisos.ts).
+  avisos                 Aviso[]
+  confirmacionesAviso    ConfirmacionAviso[]
   reportesOficio         ReporteOficio[]
 
   // Puente WhatsApp (Fase 0/1) — ver openspec/changes/whatsapp-bridge y
@@ -814,4 +817,61 @@ model ReporteOficio {
 
   @@index([resuelto])
   @@map("reportes_oficio")
+}
+
+// ============================================
+// AVISOS DEL BARRIO
+// ============================================
+
+// Aviso para los vecinos ("enjambre en K y 3, tengan cuidado"). A diferencia de
+// un Requerimiento no se gestiona: vence solo o lo dan por resuelto los
+// vecinos. Vigente = venceAt futuro y resueltoAt null; el cron limpiar-avisos
+// borra los que ya no lo están.
+model Aviso {
+  id             Int                 @id @default(autoincrement())
+  autorId        Int
+  autor          Usuario             @relation(fields: [autorId], references: [id], onDelete: Cascade)
+  tipo           TipoAviso
+  // "Calle K esq. 3". Texto libre.
+  ubicacion      String
+  detalle        String?
+  imagen         String?
+  venceAt        DateTime
+  resueltoAt     DateTime?
+  confirmaciones ConfirmacionAviso[]
+  createdAt      DateTime            @default(now())
+
+  @@index([venceAt])
+  @@index([autorId, createdAt])
+  @@map("avisos")
+}
+
+enum TipoAviso {
+  ANIMALES
+  PERRO_SUELTO
+  CORTE_LUZ
+  CORTE_AGUA
+  CALLE_CORTADA
+  ARBOL_CAIDO
+  PERDIDO_ENCONTRADO
+  OTRO
+}
+
+// "Sigue pasando" / "Ya se resolvió" de un vecino. Uno por vecino y aviso,
+// puede cambiar de opinión.
+model ConfirmacionAviso {
+  avisoId   Int
+  aviso     Aviso              @relation(fields: [avisoId], references: [id], onDelete: Cascade)
+  usuarioId Int
+  usuario   Usuario            @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  tipo      TipoConfirmacion
+  createdAt DateTime           @default(now())
+
+  @@id([avisoId, usuarioId])
+  @@map("confirmaciones_aviso")
+}
+
+enum TipoConfirmacion {
+  SIGUE
+  RESUELTO
 }

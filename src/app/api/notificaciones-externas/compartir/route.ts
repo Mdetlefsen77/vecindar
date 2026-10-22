@@ -12,7 +12,8 @@ import {
 } from "@/lib/notificaciones-externas/plantillas";
 import { compartirEventoSchema } from "@/lib/validation/notificacionesExternas";
 import { mensajeParte } from "@/lib/partes";
-import { textoPrecioPromo, textoVencimientoPromo } from "@/lib/oficios";
+import { textoPrecioPromo } from "@/lib/oficios";
+import { textoVencimiento } from "@/lib/fechas";
 
 async function resolverIncidente(entidadId: number) {
   const inc = await prisma.incidente.findUnique({
@@ -146,7 +147,7 @@ async function resolverOficio(entidadId: number) {
         promo && {
           titulo: promo.titulo,
           precio: textoPrecioPromo(promo),
-          vencimiento: textoVencimientoPromo(promo.venceAt),
+          vencimiento: textoVencimiento(promo.venceAt),
         },
       ),
   };

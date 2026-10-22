@@ -34,6 +34,13 @@ export const GESTORES_COBRANZA: readonly Rol[] = ["ADMIN", "TESORERO"];
 /** Cargan y editan los partes de turno de la guardia (`/partes`). Los ven todos. */
 export const GESTORES_PARTES: readonly Rol[] = ["ADMIN", "SEGURIDAD"];
 
+/** Pueden borrar avisos del barrio de otros vecinos (lo comunitario, como requerimientos). */
+export const GESTORES_AVISOS: readonly Rol[] = [
+  "ADMIN",
+  "SEGURIDAD",
+  "REFERENTE_MANZANA",
+];
+
 /** Moderan el catálogo de oficios (aprobar, pausar, categorías, reportes). */
 export const GESTORES_OFICIOS: readonly Rol[] = ["ADMIN"];
 

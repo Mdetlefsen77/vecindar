@@ -152,3 +152,13 @@ export type RecomendacionOficio = Prisma.RecomendacionOficioModel
  * 
  */
 export type ReporteOficio = Prisma.ReporteOficioModel
+/**
+ * Model Aviso
+ * 
+ */
+export type Aviso = Prisma.AvisoModel
+/**
+ * Model ConfirmacionAviso
+ * 
+ */
+export type ConfirmacionAviso = Prisma.ConfirmacionAvisoModel

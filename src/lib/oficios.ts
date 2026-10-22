@@ -97,28 +97,6 @@ export function puedeCargarPromo(
   return false;
 }
 
-const TZ = "America/Argentina/Cordoba";
-
-function diaLocal(d: Date): string {
-  return d.toLocaleDateString("en-CA", { timeZone: TZ });
-}
-
-/** "Vence hoy a las 18:30" · "Vence mañana a las 18:30" · "Quedan 3 días". */
-export function textoVencimientoPromo(venceAt: Date, ahora = new Date()): string {
-  const hora = venceAt.toLocaleTimeString("es-AR", {
-    timeZone: TZ,
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  });
-  if (diaLocal(venceAt) === diaLocal(ahora)) return `Vence hoy a las ${hora}`;
-  if (diaLocal(venceAt) === diaLocal(new Date(ahora.getTime() + 86_400_000))) {
-    return `Vence mañana a las ${hora}`;
-  }
-  const dias = Math.ceil((venceAt.getTime() - ahora.getTime()) / 86_400_000);
-  return `Quedan ${dias} días`;
-}
-
 /** "$ 8.000 (antes $ 10.000)", "$ 8.000", o null si la promo no tiene precio. */
 export function textoPrecioPromo(promo: {
   precioAntes: number | null;

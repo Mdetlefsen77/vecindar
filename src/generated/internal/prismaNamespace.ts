@@ -410,7 +410,9 @@ export const ModelName = {
   Oficio: 'Oficio',
   PromoOficio: 'PromoOficio',
   RecomendacionOficio: 'RecomendacionOficio',
-  ReporteOficio: 'ReporteOficio'
+  ReporteOficio: 'ReporteOficio',
+  Aviso: 'Aviso',
+  ConfirmacionAviso: 'ConfirmacionAviso'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -426,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "promoOficio" | "recomendacionOficio" | "reporteOficio"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "promoOficio" | "recomendacionOficio" | "reporteOficio" | "aviso" | "confirmacionAviso"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2428,6 +2430,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Aviso: {
+      payload: Prisma.$AvisoPayload<ExtArgs>
+      fields: Prisma.AvisoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AvisoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AvisoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>
+        }
+        findFirst: {
+          args: Prisma.AvisoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AvisoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>
+        }
+        findMany: {
+          args: Prisma.AvisoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>[]
+        }
+        create: {
+          args: Prisma.AvisoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>
+        }
+        createMany: {
+          args: Prisma.AvisoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AvisoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>[]
+        }
+        delete: {
+          args: Prisma.AvisoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>
+        }
+        update: {
+          args: Prisma.AvisoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>
+        }
+        deleteMany: {
+          args: Prisma.AvisoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AvisoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AvisoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>[]
+        }
+        upsert: {
+          args: Prisma.AvisoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AvisoPayload>
+        }
+        aggregate: {
+          args: Prisma.AvisoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAviso>
+        }
+        groupBy: {
+          args: Prisma.AvisoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AvisoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AvisoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AvisoCountAggregateOutputType> | number
+        }
+      }
+    }
+    ConfirmacionAviso: {
+      payload: Prisma.$ConfirmacionAvisoPayload<ExtArgs>
+      fields: Prisma.ConfirmacionAvisoFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ConfirmacionAvisoFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ConfirmacionAvisoFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>
+        }
+        findFirst: {
+          args: Prisma.ConfirmacionAvisoFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ConfirmacionAvisoFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>
+        }
+        findMany: {
+          args: Prisma.ConfirmacionAvisoFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>[]
+        }
+        create: {
+          args: Prisma.ConfirmacionAvisoCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>
+        }
+        createMany: {
+          args: Prisma.ConfirmacionAvisoCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ConfirmacionAvisoCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>[]
+        }
+        delete: {
+          args: Prisma.ConfirmacionAvisoDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>
+        }
+        update: {
+          args: Prisma.ConfirmacionAvisoUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>
+        }
+        deleteMany: {
+          args: Prisma.ConfirmacionAvisoDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ConfirmacionAvisoUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ConfirmacionAvisoUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>[]
+        }
+        upsert: {
+          args: Prisma.ConfirmacionAvisoUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConfirmacionAvisoPayload>
+        }
+        aggregate: {
+          args: Prisma.ConfirmacionAvisoAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateConfirmacionAviso>
+        }
+        groupBy: {
+          args: Prisma.ConfirmacionAvisoGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConfirmacionAvisoGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ConfirmacionAvisoCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConfirmacionAvisoCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2857,6 +3007,31 @@ export const ReporteOficioScalarFieldEnum = {
 } as const
 
 export type ReporteOficioScalarFieldEnum = (typeof ReporteOficioScalarFieldEnum)[keyof typeof ReporteOficioScalarFieldEnum]
+
+
+export const AvisoScalarFieldEnum = {
+  id: 'id',
+  autorId: 'autorId',
+  tipo: 'tipo',
+  ubicacion: 'ubicacion',
+  detalle: 'detalle',
+  imagen: 'imagen',
+  venceAt: 'venceAt',
+  resueltoAt: 'resueltoAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AvisoScalarFieldEnum = (typeof AvisoScalarFieldEnum)[keyof typeof AvisoScalarFieldEnum]
+
+
+export const ConfirmacionAvisoScalarFieldEnum = {
+  avisoId: 'avisoId',
+  usuarioId: 'usuarioId',
+  tipo: 'tipo',
+  createdAt: 'createdAt'
+} as const
+
+export type ConfirmacionAvisoScalarFieldEnum = (typeof ConfirmacionAvisoScalarFieldEnum)[keyof typeof ConfirmacionAvisoScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3317,6 +3492,34 @@ export type EnumDuracionPromoFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
 export type ListEnumDuracionPromoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DuracionPromo[]'>
     
 
+
+/**
+ * Reference to a field of type 'TipoAviso'
+ */
+export type EnumTipoAvisoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoAviso'>
+    
+
+
+/**
+ * Reference to a field of type 'TipoAviso[]'
+ */
+export type ListEnumTipoAvisoFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoAviso[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TipoConfirmacion'
+ */
+export type EnumTipoConfirmacionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoConfirmacion'>
+    
+
+
+/**
+ * Reference to a field of type 'TipoConfirmacion[]'
+ */
+export type ListEnumTipoConfirmacionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TipoConfirmacion[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3439,6 +3642,8 @@ export type GlobalOmitConfig = {
   promoOficio?: Prisma.PromoOficioOmit
   recomendacionOficio?: Prisma.RecomendacionOficioOmit
   reporteOficio?: Prisma.ReporteOficioOmit
+  aviso?: Prisma.AvisoOmit
+  confirmacionAviso?: Prisma.ConfirmacionAvisoOmit
 }
 
 /* Types for Logging */

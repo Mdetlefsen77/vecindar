@@ -77,7 +77,9 @@ export const ModelName = {
   Oficio: 'Oficio',
   PromoOficio: 'PromoOficio',
   RecomendacionOficio: 'RecomendacionOficio',
-  ReporteOficio: 'ReporteOficio'
+  ReporteOficio: 'ReporteOficio',
+  Aviso: 'Aviso',
+  ConfirmacionAviso: 'ConfirmacionAviso'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -486,6 +488,31 @@ export const ReporteOficioScalarFieldEnum = {
 } as const
 
 export type ReporteOficioScalarFieldEnum = (typeof ReporteOficioScalarFieldEnum)[keyof typeof ReporteOficioScalarFieldEnum]
+
+
+export const AvisoScalarFieldEnum = {
+  id: 'id',
+  autorId: 'autorId',
+  tipo: 'tipo',
+  ubicacion: 'ubicacion',
+  detalle: 'detalle',
+  imagen: 'imagen',
+  venceAt: 'venceAt',
+  resueltoAt: 'resueltoAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AvisoScalarFieldEnum = (typeof AvisoScalarFieldEnum)[keyof typeof AvisoScalarFieldEnum]
+
+
+export const ConfirmacionAvisoScalarFieldEnum = {
+  avisoId: 'avisoId',
+  usuarioId: 'usuarioId',
+  tipo: 'tipo',
+  createdAt: 'createdAt'
+} as const
+
+export type ConfirmacionAvisoScalarFieldEnum = (typeof ConfirmacionAvisoScalarFieldEnum)[keyof typeof ConfirmacionAvisoScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -349,6 +349,8 @@ export type UsuarioWhereInput = {
   partesTurno?: Prisma.ParteTurnoListRelationFilter
   oficios?: Prisma.OficioListRelationFilter
   recomendacionesOficio?: Prisma.RecomendacionOficioListRelationFilter
+  avisos?: Prisma.AvisoListRelationFilter
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoListRelationFilter
   reportesOficio?: Prisma.ReporteOficioListRelationFilter
   publicacionesExternas?: Prisma.PublicacionExternaListRelationFilter
   clicksLinks?: Prisma.ClickLinkListRelationFilter
@@ -394,6 +396,8 @@ export type UsuarioOrderByWithRelationInput = {
   partesTurno?: Prisma.ParteTurnoOrderByRelationAggregateInput
   oficios?: Prisma.OficioOrderByRelationAggregateInput
   recomendacionesOficio?: Prisma.RecomendacionOficioOrderByRelationAggregateInput
+  avisos?: Prisma.AvisoOrderByRelationAggregateInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoOrderByRelationAggregateInput
   reportesOficio?: Prisma.ReporteOficioOrderByRelationAggregateInput
   publicacionesExternas?: Prisma.PublicacionExternaOrderByRelationAggregateInput
   clicksLinks?: Prisma.ClickLinkOrderByRelationAggregateInput
@@ -442,6 +446,8 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   partesTurno?: Prisma.ParteTurnoListRelationFilter
   oficios?: Prisma.OficioListRelationFilter
   recomendacionesOficio?: Prisma.RecomendacionOficioListRelationFilter
+  avisos?: Prisma.AvisoListRelationFilter
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoListRelationFilter
   reportesOficio?: Prisma.ReporteOficioListRelationFilter
   publicacionesExternas?: Prisma.PublicacionExternaListRelationFilter
   clicksLinks?: Prisma.ClickLinkListRelationFilter
@@ -534,6 +540,8 @@ export type UsuarioCreateInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -577,6 +585,8 @@ export type UsuarioUncheckedCreateInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -619,6 +629,8 @@ export type UsuarioUpdateInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -662,6 +674,8 @@ export type UsuarioUncheckedUpdateInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1242,6 +1256,34 @@ export type UsuarioUpdateOneRequiredWithoutReportesOficioNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutReportesOficioInput, Prisma.UsuarioUpdateWithoutReportesOficioInput>, Prisma.UsuarioUncheckedUpdateWithoutReportesOficioInput>
 }
 
+export type UsuarioCreateNestedOneWithoutAvisosInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutAvisosInput, Prisma.UsuarioUncheckedCreateWithoutAvisosInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutAvisosInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneRequiredWithoutAvisosNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutAvisosInput, Prisma.UsuarioUncheckedCreateWithoutAvisosInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutAvisosInput
+  upsert?: Prisma.UsuarioUpsertWithoutAvisosInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutAvisosInput, Prisma.UsuarioUpdateWithoutAvisosInput>, Prisma.UsuarioUncheckedUpdateWithoutAvisosInput>
+}
+
+export type UsuarioCreateNestedOneWithoutConfirmacionesAvisoInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutConfirmacionesAvisoInput, Prisma.UsuarioUncheckedCreateWithoutConfirmacionesAvisoInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutConfirmacionesAvisoInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneRequiredWithoutConfirmacionesAvisoNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutConfirmacionesAvisoInput, Prisma.UsuarioUncheckedCreateWithoutConfirmacionesAvisoInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutConfirmacionesAvisoInput
+  upsert?: Prisma.UsuarioUpsertWithoutConfirmacionesAvisoInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutConfirmacionesAvisoInput, Prisma.UsuarioUpdateWithoutConfirmacionesAvisoInput>, Prisma.UsuarioUncheckedUpdateWithoutConfirmacionesAvisoInput>
+}
+
 export type UsuarioCreateWithoutLoteInput = {
   email: string
   password: string
@@ -1278,6 +1320,8 @@ export type UsuarioCreateWithoutLoteInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -1320,6 +1364,8 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1411,6 +1457,8 @@ export type UsuarioCreateWithoutInvitadosInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -1453,6 +1501,8 @@ export type UsuarioUncheckedCreateWithoutInvitadosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1499,6 +1549,8 @@ export type UsuarioCreateWithoutInvitadoPorInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -1541,6 +1593,8 @@ export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1603,6 +1657,8 @@ export type UsuarioUpdateWithoutInvitadosInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -1645,6 +1701,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1702,6 +1760,8 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -1744,6 +1804,8 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1801,6 +1863,8 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -1843,6 +1907,8 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -1884,6 +1950,8 @@ export type UsuarioCreateWithoutPagosInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -1926,6 +1994,8 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -1972,6 +2042,8 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -2014,6 +2086,8 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -2071,6 +2145,8 @@ export type UsuarioUpdateWithoutPagosInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -2113,6 +2189,8 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -2165,6 +2243,8 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -2207,6 +2287,8 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -2248,6 +2330,8 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -2290,6 +2374,8 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -2347,6 +2433,8 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -2389,6 +2477,8 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -2430,6 +2520,8 @@ export type UsuarioCreateWithoutIncidentesInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -2472,6 +2564,8 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -2529,6 +2623,8 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -2571,6 +2667,8 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -2612,6 +2710,8 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -2654,6 +2754,8 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -2700,6 +2802,8 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -2742,6 +2846,8 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -2799,6 +2905,8 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -2841,6 +2949,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -2893,6 +3003,8 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -2935,6 +3047,8 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -2976,6 +3090,8 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -3018,6 +3134,8 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -3075,6 +3193,8 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -3117,6 +3237,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -3158,6 +3280,8 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -3200,6 +3324,8 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -3257,6 +3383,8 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -3299,6 +3427,8 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -3340,6 +3470,8 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -3382,6 +3514,8 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -3439,6 +3573,8 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -3481,6 +3617,8 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -3522,6 +3660,8 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -3564,6 +3704,8 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -3621,6 +3763,8 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -3663,6 +3807,8 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -3704,6 +3850,8 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -3746,6 +3894,8 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -3803,6 +3953,8 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -3845,6 +3997,8 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -3886,6 +4040,8 @@ export type UsuarioCreateWithoutCodigoInvitacionInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -3928,6 +4084,8 @@ export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -3985,6 +4143,8 @@ export type UsuarioUpdateWithoutCodigoInvitacionInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -4027,6 +4187,8 @@ export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -4068,6 +4230,8 @@ export type UsuarioCreateWithoutTransicionesRealizadasInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -4110,6 +4274,8 @@ export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -4167,6 +4333,8 @@ export type UsuarioUpdateWithoutTransicionesRealizadasInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -4209,6 +4377,8 @@ export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -4250,6 +4420,8 @@ export type UsuarioCreateWithoutReportesGeneradosInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -4292,6 +4464,8 @@ export type UsuarioUncheckedCreateWithoutReportesGeneradosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -4349,6 +4523,8 @@ export type UsuarioUpdateWithoutReportesGeneradosInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -4391,6 +4567,8 @@ export type UsuarioUncheckedUpdateWithoutReportesGeneradosInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -4433,6 +4611,8 @@ export type UsuarioCreateWithoutPublicacionesExternasInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -4475,6 +4655,8 @@ export type UsuarioUncheckedCreateWithoutPublicacionesExternasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -4532,6 +4714,8 @@ export type UsuarioUpdateWithoutPublicacionesExternasInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -4574,6 +4758,8 @@ export type UsuarioUncheckedUpdateWithoutPublicacionesExternasInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -4615,6 +4801,8 @@ export type UsuarioCreateWithoutClicksLinksInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
 }
@@ -4657,6 +4845,8 @@ export type UsuarioUncheckedCreateWithoutClicksLinksInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
 }
@@ -4714,6 +4904,8 @@ export type UsuarioUpdateWithoutClicksLinksInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
 }
@@ -4756,6 +4948,8 @@ export type UsuarioUncheckedUpdateWithoutClicksLinksInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
 }
@@ -4796,6 +4990,8 @@ export type UsuarioCreateWithoutPartesTurnoInput = {
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -4838,6 +5034,8 @@ export type UsuarioUncheckedCreateWithoutPartesTurnoInput = {
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -4895,6 +5093,8 @@ export type UsuarioUpdateWithoutPartesTurnoInput = {
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -4937,6 +5137,8 @@ export type UsuarioUncheckedUpdateWithoutPartesTurnoInput = {
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -4978,6 +5180,8 @@ export type UsuarioCreateWithoutOficiosInput = {
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -5020,6 +5224,8 @@ export type UsuarioUncheckedCreateWithoutOficiosInput = {
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -5077,6 +5283,8 @@ export type UsuarioUpdateWithoutOficiosInput = {
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -5119,6 +5327,8 @@ export type UsuarioUncheckedUpdateWithoutOficiosInput = {
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -5160,6 +5370,8 @@ export type UsuarioCreateWithoutRecomendacionesOficioInput = {
   reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
@@ -5202,6 +5414,8 @@ export type UsuarioUncheckedCreateWithoutRecomendacionesOficioInput = {
   reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
@@ -5259,6 +5473,8 @@ export type UsuarioUpdateWithoutRecomendacionesOficioInput = {
   reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -5301,6 +5517,8 @@ export type UsuarioUncheckedUpdateWithoutRecomendacionesOficioInput = {
   reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -5343,6 +5561,8 @@ export type UsuarioCreateWithoutReportesOficioInput = {
   partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
   publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
 }
@@ -5385,6 +5605,8 @@ export type UsuarioUncheckedCreateWithoutReportesOficioInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
   oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
   clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
 }
@@ -5442,6 +5664,8 @@ export type UsuarioUpdateWithoutReportesOficioInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
 }
@@ -5484,6 +5708,388 @@ export type UsuarioUncheckedUpdateWithoutReportesOficioInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutAvisosInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
+  oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoCreateNestedManyWithoutUsuarioInput
+  reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutAvisosInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
+  oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedCreateNestedManyWithoutUsuarioInput
+  reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutAvisosInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutAvisosInput, Prisma.UsuarioUncheckedCreateWithoutAvisosInput>
+}
+
+export type UsuarioUpsertWithoutAvisosInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutAvisosInput, Prisma.UsuarioUncheckedUpdateWithoutAvisosInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutAvisosInput, Prisma.UsuarioUncheckedCreateWithoutAvisosInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutAvisosInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutAvisosInput, Prisma.UsuarioUncheckedUpdateWithoutAvisosInput>
+}
+
+export type UsuarioUpdateWithoutAvisosInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
+  oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
+  reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutAvisosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
+  oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
+  reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutConfirmacionesAvisoInput = {
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  verificado?: boolean
+  rol?: $Enums.Rol
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  lote: Prisma.LoteCreateNestedOneWithoutUsuariosInput
+  incidentes?: Prisma.IncidenteCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoCreateNestedManyWithoutRegistradoPorInput
+  invitadoPor?: Prisma.UsuarioCreateNestedOneWithoutInvitadosInput
+  invitados?: Prisma.UsuarioCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoCreateNestedManyWithoutAutorInput
+  oficios?: Prisma.OficioCreateNestedManyWithoutUsuarioInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoCreateNestedManyWithoutAutorInput
+  reportesOficio?: Prisma.ReporteOficioCreateNestedManyWithoutAutorInput
+  publicacionesExternas?: Prisma.PublicacionExternaCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutConfirmacionesAvisoInput = {
+  id?: number
+  email: string
+  password: string
+  nombre: string
+  apellido: string
+  telefono?: string | null
+  loteId: number
+  verificado?: boolean
+  rol?: $Enums.Rol
+  invitadoPorId?: number | null
+  origenRegistro?: $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: boolean
+  pruebaIniciadaAt?: Date | string | null
+  pruebaHasta?: Date | string | null
+  ultimoLoginAt?: Date | string | null
+  ultimaActividadAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  incidentes?: Prisma.IncidenteUncheckedCreateNestedManyWithoutReportadoPorInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutUsuarioInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedCreateNestedManyWithoutAtendioPorInput
+  requerimientos?: Prisma.RequerimientoUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedCreateNestedManyWithoutUsuarioInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedCreateNestedManyWithoutUsuarioInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedCreateNestedManyWithoutUsuarioInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedCreateNestedManyWithoutUsuarioInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedCreateNestedManyWithoutUsuarioInput
+  suscripcion?: Prisma.SuscripcionUncheckedCreateNestedOneWithoutUsuarioInput
+  pagos?: Prisma.PagoUncheckedCreateNestedManyWithoutUsuarioInput
+  pagosRegistrados?: Prisma.PagoUncheckedCreateNestedManyWithoutRegistradoPorInput
+  invitados?: Prisma.UsuarioUncheckedCreateNestedManyWithoutInvitadoPorInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedCreateNestedOneWithoutUsuarioInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedCreateNestedManyWithoutUsuarioInput
+  reportesGenerados?: Prisma.ReporteUncheckedCreateNestedManyWithoutGeneradoPorInput
+  partesTurno?: Prisma.ParteTurnoUncheckedCreateNestedManyWithoutAutorInput
+  oficios?: Prisma.OficioUncheckedCreateNestedManyWithoutUsuarioInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedCreateNestedManyWithoutAutorInput
+  avisos?: Prisma.AvisoUncheckedCreateNestedManyWithoutAutorInput
+  reportesOficio?: Prisma.ReporteOficioUncheckedCreateNestedManyWithoutAutorInput
+  publicacionesExternas?: Prisma.PublicacionExternaUncheckedCreateNestedManyWithoutPublicadaPorInput
+  clicksLinks?: Prisma.ClickLinkUncheckedCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutConfirmacionesAvisoInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutConfirmacionesAvisoInput, Prisma.UsuarioUncheckedCreateWithoutConfirmacionesAvisoInput>
+}
+
+export type UsuarioUpsertWithoutConfirmacionesAvisoInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutConfirmacionesAvisoInput, Prisma.UsuarioUncheckedUpdateWithoutConfirmacionesAvisoInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutConfirmacionesAvisoInput, Prisma.UsuarioUncheckedCreateWithoutConfirmacionesAvisoInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutConfirmacionesAvisoInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutConfirmacionesAvisoInput, Prisma.UsuarioUncheckedUpdateWithoutConfirmacionesAvisoInput>
+}
+
+export type UsuarioUpdateWithoutConfirmacionesAvisoInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  lote?: Prisma.LoteUpdateOneRequiredWithoutUsuariosNestedInput
+  incidentes?: Prisma.IncidenteUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUpdateManyWithoutRegistradoPorNestedInput
+  invitadoPor?: Prisma.UsuarioUpdateOneWithoutInvitadosNestedInput
+  invitados?: Prisma.UsuarioUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
+  oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
+  publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
+  clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutConfirmacionesAvisoInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  apellido?: Prisma.StringFieldUpdateOperationsInput | string
+  telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  loteId?: Prisma.IntFieldUpdateOperationsInput | number
+  verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
+  ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pruebaHasta?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimoLoginAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ultimaActividadAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  incidentes?: Prisma.IncidenteUncheckedUpdateManyWithoutReportadoPorNestedInput
+  alertasPanico?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutUsuarioNestedInput
+  alertasAtendidas?: Prisma.AlertaPanicoUncheckedUpdateManyWithoutAtendioPorNestedInput
+  requerimientos?: Prisma.RequerimientoUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosReq?: Prisma.ComentarioReqUncheckedUpdateManyWithoutUsuarioNestedInput
+  comentariosAlertas?: Prisma.ComentarioAlertaUncheckedUpdateManyWithoutUsuarioNestedInput
+  mascotasPerdidas?: Prisma.MascotaPerdidaUncheckedUpdateManyWithoutUsuarioNestedInput
+  pushSubscriptions?: Prisma.PushSubscriptionUncheckedUpdateManyWithoutUsuarioNestedInput
+  vistasSecciones?: Prisma.VistaSeccionUncheckedUpdateManyWithoutUsuarioNestedInput
+  suscripcion?: Prisma.SuscripcionUncheckedUpdateOneWithoutUsuarioNestedInput
+  pagos?: Prisma.PagoUncheckedUpdateManyWithoutUsuarioNestedInput
+  pagosRegistrados?: Prisma.PagoUncheckedUpdateManyWithoutRegistradoPorNestedInput
+  invitados?: Prisma.UsuarioUncheckedUpdateManyWithoutInvitadoPorNestedInput
+  codigoInvitacion?: Prisma.CodigoInvitacionUncheckedUpdateOneWithoutUsuarioNestedInput
+  transicionesRealizadas?: Prisma.TransicionEstadoUncheckedUpdateManyWithoutUsuarioNestedInput
+  reportesGenerados?: Prisma.ReporteUncheckedUpdateManyWithoutGeneradoPorNestedInput
+  partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
+  oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
+  recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
 }
@@ -5544,6 +6150,8 @@ export type UsuarioUpdateWithoutLoteInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -5586,6 +6194,8 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -5667,6 +6277,8 @@ export type UsuarioUpdateWithoutInvitadoPorInput = {
   partesTurno?: Prisma.ParteTurnoUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUpdateManyWithoutUsuarioNestedInput
@@ -5709,6 +6321,8 @@ export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
   partesTurno?: Prisma.ParteTurnoUncheckedUpdateManyWithoutAutorNestedInput
   oficios?: Prisma.OficioUncheckedUpdateManyWithoutUsuarioNestedInput
   recomendacionesOficio?: Prisma.RecomendacionOficioUncheckedUpdateManyWithoutAutorNestedInput
+  avisos?: Prisma.AvisoUncheckedUpdateManyWithoutAutorNestedInput
+  confirmacionesAviso?: Prisma.ConfirmacionAvisoUncheckedUpdateManyWithoutUsuarioNestedInput
   reportesOficio?: Prisma.ReporteOficioUncheckedUpdateManyWithoutAutorNestedInput
   publicacionesExternas?: Prisma.PublicacionExternaUncheckedUpdateManyWithoutPublicadaPorNestedInput
   clicksLinks?: Prisma.ClickLinkUncheckedUpdateManyWithoutUsuarioNestedInput
@@ -5757,6 +6371,8 @@ export type UsuarioCountOutputType = {
   partesTurno: number
   oficios: number
   recomendacionesOficio: number
+  avisos: number
+  confirmacionesAviso: number
   reportesOficio: number
   publicacionesExternas: number
   clicksLinks: number
@@ -5780,6 +6396,8 @@ export type UsuarioCountOutputTypeSelect<ExtArgs extends runtime.Types.Extension
   partesTurno?: boolean | UsuarioCountOutputTypeCountPartesTurnoArgs
   oficios?: boolean | UsuarioCountOutputTypeCountOficiosArgs
   recomendacionesOficio?: boolean | UsuarioCountOutputTypeCountRecomendacionesOficioArgs
+  avisos?: boolean | UsuarioCountOutputTypeCountAvisosArgs
+  confirmacionesAviso?: boolean | UsuarioCountOutputTypeCountConfirmacionesAvisoArgs
   reportesOficio?: boolean | UsuarioCountOutputTypeCountReportesOficioArgs
   publicacionesExternas?: boolean | UsuarioCountOutputTypeCountPublicacionesExternasArgs
   clicksLinks?: boolean | UsuarioCountOutputTypeCountClicksLinksArgs
@@ -5917,6 +6535,20 @@ export type UsuarioCountOutputTypeCountRecomendacionesOficioArgs<ExtArgs extends
 /**
  * UsuarioCountOutputType without action
  */
+export type UsuarioCountOutputTypeCountAvisosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AvisoWhereInput
+}
+
+/**
+ * UsuarioCountOutputType without action
+ */
+export type UsuarioCountOutputTypeCountConfirmacionesAvisoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ConfirmacionAvisoWhereInput
+}
+
+/**
+ * UsuarioCountOutputType without action
+ */
 export type UsuarioCountOutputTypeCountReportesOficioArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.ReporteOficioWhereInput
 }
@@ -5976,6 +6608,8 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   partesTurno?: boolean | Prisma.Usuario$partesTurnoArgs<ExtArgs>
   oficios?: boolean | Prisma.Usuario$oficiosArgs<ExtArgs>
   recomendacionesOficio?: boolean | Prisma.Usuario$recomendacionesOficioArgs<ExtArgs>
+  avisos?: boolean | Prisma.Usuario$avisosArgs<ExtArgs>
+  confirmacionesAviso?: boolean | Prisma.Usuario$confirmacionesAvisoArgs<ExtArgs>
   reportesOficio?: boolean | Prisma.Usuario$reportesOficioArgs<ExtArgs>
   publicacionesExternas?: boolean | Prisma.Usuario$publicacionesExternasArgs<ExtArgs>
   clicksLinks?: boolean | Prisma.Usuario$clicksLinksArgs<ExtArgs>
@@ -6072,6 +6706,8 @@ export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   partesTurno?: boolean | Prisma.Usuario$partesTurnoArgs<ExtArgs>
   oficios?: boolean | Prisma.Usuario$oficiosArgs<ExtArgs>
   recomendacionesOficio?: boolean | Prisma.Usuario$recomendacionesOficioArgs<ExtArgs>
+  avisos?: boolean | Prisma.Usuario$avisosArgs<ExtArgs>
+  confirmacionesAviso?: boolean | Prisma.Usuario$confirmacionesAvisoArgs<ExtArgs>
   reportesOficio?: boolean | Prisma.Usuario$reportesOficioArgs<ExtArgs>
   publicacionesExternas?: boolean | Prisma.Usuario$publicacionesExternasArgs<ExtArgs>
   clicksLinks?: boolean | Prisma.Usuario$clicksLinksArgs<ExtArgs>
@@ -6110,6 +6746,8 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     partesTurno: Prisma.$ParteTurnoPayload<ExtArgs>[]
     oficios: Prisma.$OficioPayload<ExtArgs>[]
     recomendacionesOficio: Prisma.$RecomendacionOficioPayload<ExtArgs>[]
+    avisos: Prisma.$AvisoPayload<ExtArgs>[]
+    confirmacionesAviso: Prisma.$ConfirmacionAvisoPayload<ExtArgs>[]
     reportesOficio: Prisma.$ReporteOficioPayload<ExtArgs>[]
     publicacionesExternas: Prisma.$PublicacionExternaPayload<ExtArgs>[]
     clicksLinks: Prisma.$ClickLinkPayload<ExtArgs>[]
@@ -6548,6 +7186,8 @@ export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends runtime.
   partesTurno<T extends Prisma.Usuario$partesTurnoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$partesTurnoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ParteTurnoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   oficios<T extends Prisma.Usuario$oficiosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$oficiosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$OficioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   recomendacionesOficio<T extends Prisma.Usuario$recomendacionesOficioArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$recomendacionesOficioArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RecomendacionOficioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  avisos<T extends Prisma.Usuario$avisosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$avisosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AvisoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  confirmacionesAviso<T extends Prisma.Usuario$confirmacionesAvisoArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$confirmacionesAvisoArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ConfirmacionAvisoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   reportesOficio<T extends Prisma.Usuario$reportesOficioArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$reportesOficioArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReporteOficioPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   publicacionesExternas<T extends Prisma.Usuario$publicacionesExternasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$publicacionesExternasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicacionExternaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   clicksLinks<T extends Prisma.Usuario$clicksLinksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$clicksLinksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClickLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -7456,6 +8096,54 @@ export type Usuario$recomendacionesOficioArgs<ExtArgs extends runtime.Types.Exte
   take?: number
   skip?: number
   distinct?: Prisma.RecomendacionOficioScalarFieldEnum | Prisma.RecomendacionOficioScalarFieldEnum[]
+}
+
+/**
+ * Usuario.avisos
+ */
+export type Usuario$avisosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Aviso
+   */
+  select?: Prisma.AvisoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Aviso
+   */
+  omit?: Prisma.AvisoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AvisoInclude<ExtArgs> | null
+  where?: Prisma.AvisoWhereInput
+  orderBy?: Prisma.AvisoOrderByWithRelationInput | Prisma.AvisoOrderByWithRelationInput[]
+  cursor?: Prisma.AvisoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AvisoScalarFieldEnum | Prisma.AvisoScalarFieldEnum[]
+}
+
+/**
+ * Usuario.confirmacionesAviso
+ */
+export type Usuario$confirmacionesAvisoArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ConfirmacionAviso
+   */
+  select?: Prisma.ConfirmacionAvisoSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ConfirmacionAviso
+   */
+  omit?: Prisma.ConfirmacionAvisoOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ConfirmacionAvisoInclude<ExtArgs> | null
+  where?: Prisma.ConfirmacionAvisoWhereInput
+  orderBy?: Prisma.ConfirmacionAvisoOrderByWithRelationInput | Prisma.ConfirmacionAvisoOrderByWithRelationInput[]
+  cursor?: Prisma.ConfirmacionAvisoWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ConfirmacionAvisoScalarFieldEnum | Prisma.ConfirmacionAvisoScalarFieldEnum[]
 }
 
 /**
