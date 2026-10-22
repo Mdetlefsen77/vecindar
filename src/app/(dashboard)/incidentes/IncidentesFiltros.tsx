@@ -76,8 +76,8 @@ export default function IncidentesFiltros({
             }
             className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               (tipoActivo ?? "") === t.value
-                ? "bg-red-600 text-white"
-                : "bg-white border border-gray-200 text-gray-600 hover:border-red-300"
+                ? "bg-orange-700 text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-orange-300"
             }`}
           >
             {t.label}
@@ -100,8 +100,8 @@ export default function IncidentesFiltros({
             }
             className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               (estadoActivo ?? "") === e.value
-                ? "bg-red-600 text-white"
-                : "bg-white border border-gray-200 text-gray-600 hover:border-red-300"
+                ? "bg-orange-700 text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-orange-300"
             }`}
           >
             {e.label}
@@ -147,8 +147,8 @@ export default function IncidentesFiltros({
             }
             className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
               (prioridadActiva ?? "") === p.value
-                ? "bg-red-600 text-white"
-                : "bg-white border border-gray-200 text-gray-600 hover:border-red-300"
+                ? "bg-orange-700 text-white"
+                : "bg-white border border-gray-200 text-gray-600 hover:border-orange-300"
             }`}
           >
             {p.label}

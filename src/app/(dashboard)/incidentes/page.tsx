@@ -15,6 +15,7 @@ import {
   ESTADO_SLA_CONFIG,
   type ConfigSLAMap,
 } from "@/lib/utils/sla";
+import TituloSeccion from "@/components/ui/TituloSeccion";
 
 export const TIPO_CONFIG: Record<
   string,
@@ -169,14 +170,14 @@ export default async function IncidentesPage({
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Incidentes</h1>
+          <TituloSeccion seccion="incidentes">Incidentes</TituloSeccion>
           <p className="text-sm text-gray-500 mt-0.5">
-            Robos, sospechos y eventos de seguridad
+            Robos, hechos sospechosos y otros eventos de seguridad
           </p>
         </div>
         <Link
           href="/incidentes/nuevo"
-          className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors shadow-sm"
+          className="flex items-center gap-1.5 bg-orange-700 hover:bg-orange-800 text-white text-base font-semibold px-4 py-2.5 min-h-[44px] rounded-xl transition-colors shadow-sm"
         >
           <svg
             className="w-4 h-4"
@@ -305,7 +306,7 @@ export default async function IncidentesPage({
                       </div>
                     </div>
                     <svg
-                      className="w-4 h-4 text-gray-300 group-hover:text-red-400 flex-shrink-0 mt-0.5 transition-colors"
+                      className="w-4 h-4 text-gray-300 group-hover:text-orange-400 flex-shrink-0 mt-0.5 transition-colors"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

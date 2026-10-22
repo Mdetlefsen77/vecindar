@@ -6,6 +6,7 @@ import { preconnect, preload } from "react-dom";
 import { OSM_TILE_ORIGIN, mosaicoCentralUrl } from "@/lib/barrio/constantes";
 import type { IncidentePin } from "@/components/map/IncidentesLayer";
 import type { AlertaPin } from "@/components/map/AlertasLayer";
+import TituloSeccion from "@/components/ui/TituloSeccion";
 
 // Importar el mapa con SSR deshabilitado (Leaflet solo funciona en el cliente)
 const MapView = dynamic(() => import("@/components/map/MapView"), {
@@ -91,7 +92,7 @@ export default function MapaPage() {
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Header */}
         <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100">
-          <h1 className="text-3xl font-bold text-gray-900">Mapa del Barrio</h1>
+          <TituloSeccion seccion="mapa">Mapa del barrio</TituloSeccion>
           <p className="mt-2 text-sm text-gray-600">
             Visualización de manzanas, lotes e incidentes reportados
           </p>

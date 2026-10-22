@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import PushNotificationToggle from "./PushNotificationToggle";
+import IconoSeccion from "./IconoSeccion";
+import { SECCIONES, type Seccion } from "@/lib/secciones";
 
 interface NavItem {
   href: string;
@@ -11,6 +13,17 @@ interface NavItem {
   icon: React.ReactNode;
   /** Si se define, el ítem solo se muestra a estos roles. Sin definir = todos. */
   roles?: string[];
+  /** Sección del barrio: toma su color (ver src/lib/secciones.ts). */
+  seccion?: Seccion;
+}
+
+function itemSeccion(seccion: Seccion, label?: string): NavItem {
+  return {
+    href: SECCIONES[seccion].href,
+    label: label ?? SECCIONES[seccion].label,
+    icon: <IconoSeccion nombre={seccion} />,
+    seccion,
+  };
 }
 
 const HomeIcon = () => (
@@ -29,38 +42,6 @@ const HomeIcon = () => (
     />
   </svg>
 );
-const MapIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-    />
-  </svg>
-);
-const ShieldIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-    />
-  </svg>
-);
 const SosIcon = () => (
   <svg
     aria-hidden="true"
@@ -74,38 +55,6 @@ const SosIcon = () => (
       strokeLinecap="round"
       strokeLinejoin="round"
       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-    />
-  </svg>
-);
-const ClipboardIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-    />
-  </svg>
-);
-const PawIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5zm-5 0c-.83 0-1.5-.67-1.5-1.5v-5C8 2.67 8.67 2 9.5 2S11 2.67 11 3.5v5c0 .83-.67 1.5-1.5 1.5zm8 5c-.83 0-1.5-.67-1.5-1.5v-3c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v3c0 .83-.67 1.5-1.5 1.5zm-11 0C5.67 15 5 14.33 5 13.5v-3C5 9.67 5.67 9 6.5 9S8 9.67 8 10.5v3c0 .83-.67 1.5-1.5 1.5zm5.5 5c-2.5 0-6-2.5-6-6 0-.83.67-1.5 1.5-1.5h9c.83 0 1.5.67 1.5 1.5 0 3.5-3.5 6-6 6z"
     />
   </svg>
 );
@@ -217,67 +166,17 @@ const ReportesIcon = () => (
   </svg>
 );
 
-const PartesIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-    />
-  </svg>
-);
-
-const AvisosIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
-    />
-  </svg>
-);
-
-const OficiosIcon = () => (
-  <svg
-    aria-hidden="true"
-    className="w-6 h-6"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    strokeWidth={1.8}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-    />
-  </svg>
-);
-
+// Mismo orden que los accesos de Inicio: lo que cambia todos los días primero.
 const NAV_ITEMS: NavItem[] = [
   { href: "/inicio", label: "Inicio", icon: <HomeIcon /> },
-  { href: "/mapa", label: "Mapa", icon: <MapIcon /> },
-  { href: "/incidentes", label: "Incidentes", icon: <ShieldIcon /> },
   { href: "/panico", label: "SOS", icon: <SosIcon /> },
-  { href: "/avisos", label: "Avisos", icon: <AvisosIcon /> },
-  { href: "/requerimientos", label: "Requerimientos", icon: <ClipboardIcon /> },
-  { href: "/mascotas", label: "Mascotas", icon: <PawIcon /> },
-  { href: "/oficios", label: "Oficios", icon: <OficiosIcon /> },
-  { href: "/partes", label: "Partes de guardia", icon: <PartesIcon /> },
+  itemSeccion("avisos"),
+  itemSeccion("incidentes"),
+  itemSeccion("mapa"),
+  itemSeccion("requerimientos", "Requerimientos"),
+  itemSeccion("mascotas"),
+  itemSeccion("oficios"),
+  itemSeccion("partes", "Partes de guardia"),
   { href: "/mi-suscripcion", label: "Mi suscripción", icon: <WalletIcon /> },
   {
     href: "/seguridad",
@@ -364,6 +263,7 @@ export default function Sidebar({
             );
           }
 
+          const estilo = item.seccion ? SECCIONES[item.seccion] : null;
           return (
             <Link
               key={item.href}
@@ -371,11 +271,15 @@ export default function Sidebar({
               aria-current={isActive ? "page" : undefined}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-medium transition-all min-h-[48px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-1 ${
                 isActive
-                  ? "bg-blue-50 text-blue-700 border border-blue-200"
-                  : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  ? `border font-semibold ${estilo?.activo ?? "bg-blue-50 text-blue-700 border-blue-200"}`
+                  : "border border-transparent text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               }`}
             >
-              <span className={isActive ? "text-blue-600" : "text-gray-500"}>
+              <span
+                className={
+                  estilo ? estilo.texto : isActive ? "text-blue-600" : "text-gray-500"
+                }
+              >
                 {item.icon}
               </span>
               <span>{item.label}</span>
