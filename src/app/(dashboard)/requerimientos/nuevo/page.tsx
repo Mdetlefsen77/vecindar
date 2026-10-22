@@ -87,6 +87,15 @@ export default function NuevoRequerimientoPage() {
         </div>
       </div>
 
+      <Link
+        href="/avisos/nuevo"
+        className="block mb-4 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-sm text-blue-900 hover:bg-blue-100"
+      >
+        📢 ¿Querés <strong>avisarle algo al barrio</strong> (un perro suelto, un
+        corte de luz, una calle cortada)? Usá <strong>Avisos</strong>: se borra
+        solo cuando vence. →
+      </Link>
+
       <form
         onSubmit={handleSubmit}
         className="bg-white rounded-xl border border-gray-200 p-6 space-y-5"

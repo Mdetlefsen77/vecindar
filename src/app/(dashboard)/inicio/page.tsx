@@ -8,7 +8,9 @@ import Image from "next/image";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
 import { RONDA_LABEL, TURNOS, fechaParteLabel } from "@/lib/partes";
-import { textoPrecioPromo, textoVencimientoPromo } from "@/lib/oficios";
+import { textoPrecioPromo } from "@/lib/oficios";
+import { textoVencimiento } from "@/lib/fechas";
+import { TIPO_AVISO, avisoVigente } from "@/lib/avisos";
 import { promoVigente } from "@/lib/promosServer";
 import type {
   TipoIncidente,
@@ -197,6 +199,7 @@ export default async function InicioPage() {
     ultimoParte,
     oficiosPublicados,
     promos,
+    avisos,
   ] = await Promise.all([
     prisma.usuario.findUnique({
       where: { id: usuarioId },
@@ -261,6 +264,12 @@ export default async function InicioPage() {
         venceAt: true,
         oficio: { select: { id: true, titulo: true } },
       },
+    }),
+    prisma.aviso.findMany({
+      where: avisoVigente(),
+      orderBy: { createdAt: "desc" },
+      take: 3,
+      select: { id: true, tipo: true, ubicacion: true, detalle: true },
     }),
   ]);
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
@@ -402,6 +411,51 @@ export default async function InicioPage() {
         />
       </div>
 
+      {/* Avisos: siempre visible, aunque esté vacío, para que se descubra. */}
+      <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3">
+          <Link href="/avisos" className="font-semibold text-gray-900">
+            📢 Avisos del barrio
+          </Link>
+          <Link
+            href="/avisos/nuevo"
+            className="min-h-[40px] inline-flex items-center px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
+          >
+            + Dar un aviso
+          </Link>
+        </div>
+        {avisos.length === 0 ? (
+          <p className="px-4 sm:px-5 pb-3 text-sm text-gray-500">
+            Sin avisos por ahora. ¿Viste algo que los vecinos tengan que saber?
+          </p>
+        ) : (
+          <ul className="divide-y divide-gray-100 border-t border-gray-100">
+            {avisos.map((a) => (
+              <li key={a.id}>
+                <Link
+                  href={`/avisos#aviso-${a.id}`}
+                  className="flex items-center gap-3 px-4 sm:px-5 py-2.5 hover:bg-gray-50 transition-colors"
+                >
+                  <span aria-hidden="true" className="text-xl">
+                    {TIPO_AVISO[a.tipo].emoji}
+                  </span>
+                  <span className="flex-1 min-w-0">
+                    <span className="block font-medium text-gray-900 truncate">
+                      {TIPO_AVISO[a.tipo].label} · {a.ubicacion}
+                    </span>
+                    {a.detalle && (
+                      <span className="block text-sm text-gray-600 truncate">
+                        {a.detalle}
+                      </span>
+                    )}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
       {ultimoParte && (
         <Link
           href={`/partes/${ultimoParte.id}`}
@@ -460,7 +514,7 @@ export default async function InicioPage() {
                       )}
                     </span>
                     <span className="block text-sm text-gray-600 truncate">
-                      {p.oficio.titulo} · {textoVencimientoPromo(p.venceAt)}
+                      {p.oficio.titulo} · {textoVencimiento(p.venceAt)}
                     </span>
                   </Link>
                 </li>

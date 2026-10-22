@@ -715,6 +715,40 @@ export type EnumDuracionPromoWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel>
 }
 
+export type EnumTipoAvisoFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoAviso | Prisma.EnumTipoAvisoFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoAvisoFilter<$PrismaModel> | $Enums.TipoAviso
+}
+
+export type EnumTipoAvisoWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoAviso | Prisma.EnumTipoAvisoFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoAvisoWithAggregatesFilter<$PrismaModel> | $Enums.TipoAviso
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTipoAvisoFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTipoAvisoFilter<$PrismaModel>
+}
+
+export type EnumTipoConfirmacionFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoConfirmacion | Prisma.EnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoConfirmacionFilter<$PrismaModel> | $Enums.TipoConfirmacion
+}
+
+export type EnumTipoConfirmacionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoConfirmacion | Prisma.EnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoConfirmacionWithAggregatesFilter<$PrismaModel> | $Enums.TipoConfirmacion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTipoConfirmacionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTipoConfirmacionFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -1378,6 +1412,40 @@ export type NestedEnumDuracionPromoWithAggregatesFilter<$PrismaModel = never> = 
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel>
+}
+
+export type NestedEnumTipoAvisoFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoAviso | Prisma.EnumTipoAvisoFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoAvisoFilter<$PrismaModel> | $Enums.TipoAviso
+}
+
+export type NestedEnumTipoAvisoWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoAviso | Prisma.EnumTipoAvisoFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoAviso[] | Prisma.ListEnumTipoAvisoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoAvisoWithAggregatesFilter<$PrismaModel> | $Enums.TipoAviso
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTipoAvisoFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTipoAvisoFilter<$PrismaModel>
+}
+
+export type NestedEnumTipoConfirmacionFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoConfirmacion | Prisma.EnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoConfirmacionFilter<$PrismaModel> | $Enums.TipoConfirmacion
+}
+
+export type NestedEnumTipoConfirmacionWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TipoConfirmacion | Prisma.EnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  in?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TipoConfirmacion[] | Prisma.ListEnumTipoConfirmacionFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTipoConfirmacionWithAggregatesFilter<$PrismaModel> | $Enums.TipoConfirmacion
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTipoConfirmacionFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTipoConfirmacionFilter<$PrismaModel>
 }
 
 

@@ -11,8 +11,8 @@ import {
   agruparCategorias,
   textoPrecioPromo,
   textoRecomendados,
-  textoVencimientoPromo,
 } from "@/lib/oficios";
+import { textoVencimiento } from "@/lib/fechas";
 import { promoVigente } from "@/lib/promosServer";
 import type { Prisma } from "@/generated/client";
 
@@ -196,7 +196,7 @@ export default async function OficiosPage({
                     )}
                     <div className="flex-1 flex flex-col gap-0.5 p-3">
                       <p className="text-xs font-semibold text-orange-700">
-                        {textoVencimientoPromo(p.venceAt, ahora)}
+                        {textoVencimiento(p.venceAt, ahora)}
                       </p>
                       <p className="font-bold text-gray-900 leading-snug line-clamp-2">
                         {p.titulo}

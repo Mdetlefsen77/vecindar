@@ -247,3 +247,25 @@ export const DuracionPromo = {
 } as const
 
 export type DuracionPromo = (typeof DuracionPromo)[keyof typeof DuracionPromo]
+
+
+export const TipoAviso = {
+  ANIMALES: 'ANIMALES',
+  PERRO_SUELTO: 'PERRO_SUELTO',
+  CORTE_LUZ: 'CORTE_LUZ',
+  CORTE_AGUA: 'CORTE_AGUA',
+  CALLE_CORTADA: 'CALLE_CORTADA',
+  ARBOL_CAIDO: 'ARBOL_CAIDO',
+  PERDIDO_ENCONTRADO: 'PERDIDO_ENCONTRADO',
+  OTRO: 'OTRO'
+} as const
+
+export type TipoAviso = (typeof TipoAviso)[keyof typeof TipoAviso]
+
+
+export const TipoConfirmacion = {
+  SIGUE: 'SIGUE',
+  RESUELTO: 'RESUELTO'
+} as const
+
+export type TipoConfirmacion = (typeof TipoConfirmacion)[keyof typeof TipoConfirmacion]

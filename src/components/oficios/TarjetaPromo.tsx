@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { textoPrecioPromo, textoVencimientoPromo } from "@/lib/oficios";
+import { textoPrecioPromo } from "@/lib/oficios";
+import { textoVencimiento } from "@/lib/fechas";
 
 export interface PromoVista {
   titulo: string;
@@ -28,7 +29,7 @@ export default function TarjetaPromo({ promo }: { promo: PromoVista }) {
       )}
       <div className="p-4 space-y-1">
         <p className="text-xs font-bold uppercase tracking-wide text-orange-700">
-          🔥 Promo · {textoVencimientoPromo(promo.venceAt)}
+          🔥 Promo · {textoVencimiento(promo.venceAt)}
         </p>
         <h2 className="text-lg font-bold text-gray-900">{promo.titulo}</h2>
         {precio && <p className="font-semibold text-orange-800">{precio}</p>}
