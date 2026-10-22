@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const compartirEventoSchema = z.object({
-  tipoEvento: z.enum(["INCIDENTE", "REQUERIMIENTO", "MASCOTA", "PARTE_TURNO", "OFICIO"]),
+  tipoEvento: z.enum(["INCIDENTE", "REQUERIMIENTO", "MASCOTA", "PARTE_TURNO", "OFICIO", "AVISO"]),
   entidadId: z.coerce.number().int().positive(),
 });
 

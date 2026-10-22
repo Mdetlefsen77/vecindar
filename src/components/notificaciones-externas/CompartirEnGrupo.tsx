@@ -38,7 +38,7 @@ export default function CompartirEnGrupo({
   etiqueta = "📤 Compartir en el grupo",
   ayuda,
 }: {
-  tipoEvento: "PARTE_TURNO" | "OFICIO";
+  tipoEvento: "PARTE_TURNO" | "OFICIO" | "AVISO";
   entidadId: number;
   imagenes?: string[];
   etiqueta?: string;

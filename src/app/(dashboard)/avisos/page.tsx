@@ -9,6 +9,7 @@ import { TIPO_AVISO, VOTOS_PARA_RESOLVER, avisoVigente } from "@/lib/avisos";
 import { nombreCorto } from "@/lib/oficios";
 import { textoVencimiento, tiempoRelativo } from "@/lib/fechas";
 import AccionesAviso from "@/components/avisos/AccionesAviso";
+import CompartirEnGrupo from "@/components/notificaciones-externas/CompartirEnGrupo";
 
 export const metadata = { title: "Avisos del barrio" };
 
@@ -121,6 +122,14 @@ export default async function AvisosPage() {
                     puedeBorrar={esAutor || esModerador}
                     miConfirmacion={mia}
                   />
+                  <div className="pt-2 border-t border-gray-100">
+                    <CompartirEnGrupo
+                      tipoEvento="AVISO"
+                      entidadId={a.id}
+                      imagenes={a.imagen ? [a.imagen] : []}
+                      etiqueta="📤 Compartir en WhatsApp"
+                    />
+                  </div>
                 </div>
               </li>
             );

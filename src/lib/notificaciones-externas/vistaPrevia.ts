@@ -29,6 +29,10 @@ const VISTA_PREVIA_POR_TIPO: Record<string, { titulo: string; descripcion: strin
     titulo: "Vecindar — Oficio recomendado en el barrio",
     descripcion: "Un servicio de un vecino, recomendado por quienes lo contrataron. Abrí Vecindar para ver el detalle y contactarlo.",
   },
+  AVISO: {
+    titulo: "Vecindar — Aviso para los vecinos",
+    descripcion: "Un vecino avisó algo que está pasando en el barrio. Abrí Vecindar para ver el detalle.",
+  },
   RESUMEN: {
     titulo: "Vecindar — Novedades del barrio",
     descripcion: "Hay novedades cargadas en Vecindar. Abrí la app para verlas.",

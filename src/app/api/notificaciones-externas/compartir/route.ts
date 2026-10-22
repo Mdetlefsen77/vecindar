@@ -8,12 +8,14 @@ import {
   plantillaRequerimiento,
   plantillaMascota,
   plantillaOficio,
+  plantillaAviso,
   type AutorPlantilla,
 } from "@/lib/notificaciones-externas/plantillas";
 import { compartirEventoSchema } from "@/lib/validation/notificacionesExternas";
 import { mensajeParte } from "@/lib/partes";
 import { textoPrecioPromo } from "@/lib/oficios";
 import { textoVencimiento } from "@/lib/fechas";
+import { TIPO_AVISO, avisoVigente } from "@/lib/avisos";
 
 async function resolverIncidente(entidadId: number) {
   const inc = await prisma.incidente.findUnique({
@@ -153,12 +155,50 @@ async function resolverOficio(entidadId: number) {
   };
 }
 
+async function resolverAviso(entidadId: number) {
+  const aviso = await prisma.aviso.findFirst({
+    where: { id: entidadId, ...avisoVigente() },
+    select: {
+      id: true,
+      tipo: true,
+      ubicacion: true,
+      detalle: true,
+      venceAt: true,
+      autor: {
+        select: {
+          nombre: true,
+          apellido: true,
+          ocultarNombreEnPublicacionExterna: true,
+        },
+      },
+    },
+  });
+  // Vencido o resuelto ya no se difunde.
+  if (!aviso) return { error: "Este aviso ya no está vigente." as const };
+  return {
+    urlDestino: `/avisos#aviso-${aviso.id}`,
+    construirMensaje: (link: string) =>
+      plantillaAviso(
+        aviso.autor as AutorPlantilla,
+        {
+          emoji: TIPO_AVISO[aviso.tipo].emoji,
+          tipo: TIPO_AVISO[aviso.tipo].label,
+          ubicacion: aviso.ubicacion,
+          detalle: aviso.detalle,
+          vencimiento: textoVencimiento(aviso.venceAt),
+        },
+        link,
+      ),
+  };
+}
+
 const RESOLVERS = {
   INCIDENTE: resolverIncidente,
   REQUERIMIENTO: resolverRequerimiento,
   MASCOTA: resolverMascota,
   PARTE_TURNO: resolverParteTurno,
   OFICIO: resolverOficio,
+  AVISO: resolverAviso,
 } as const;
 
 /**
@@ -166,7 +206,7 @@ const RESOLVERS = {
  * promocionándose): se reutiliza el mismo link rastreable en lugar de
  * responder "ya compartido".
  */
-const REUTILIZABLES = new Set(["PARTE_TURNO", "OFICIO"]);
+const REUTILIZABLES = new Set(["PARTE_TURNO", "OFICIO", "AVISO"]);
 
 // POST /api/notificaciones-externas/compartir — HU-07. Genera el link
 // rastreable, arma el mensaje según la plantilla del tipo y registra la

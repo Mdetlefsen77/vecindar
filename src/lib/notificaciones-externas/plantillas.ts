@@ -57,6 +57,26 @@ export function plantillaOficio(
   return `🧰 OFICIO DEL BARRIO\n\n*${titulo}* — ${nombrePublico(autor)}\n${aval}\n\nMirá el detalle y contactalo en Vecindar 👉 ${link}`;
 }
 
+/**
+ * Aviso del barrio. A diferencia de los teasers lleva el contenido (qué pasa y
+ * dónde): el aviso existe para que los vecinos se enteren, y no tiene datos
+ * personales. Sí mantiene el nombre público del autor.
+ */
+export function plantillaAviso(
+  autor: AutorPlantilla,
+  aviso: {
+    emoji: string;
+    tipo: string;
+    ubicacion: string;
+    detalle: string | null;
+    vencimiento: string;
+  },
+  link: string,
+): string {
+  const detalle = aviso.detalle ? `\n${aviso.detalle}` : "";
+  return `${aviso.emoji} AVISO DEL BARRIO: ${aviso.tipo.toUpperCase()}\n\n📍 *${aviso.ubicacion}*${detalle}\n\nAvisó ${nombrePublico(autor)} · ${aviso.vencimiento.toLowerCase()}\n\nSi ya se resolvió, avisá en Vecindar 👉 ${link}`;
+}
+
 export function plantillaIncidente(autor: AutorPlantilla, link: string): string {
   return `🚨 NUEVO INCIDENTE\n\n${nombrePublico(autor)} reportó un incidente de seguridad en el barrio.\n\nVer detalle 👉 ${link}`;
 }

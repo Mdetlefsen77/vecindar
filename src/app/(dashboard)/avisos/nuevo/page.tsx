@@ -38,11 +38,10 @@ export default function NuevoAvisoPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tipo, ubicacion, detalle, imagen, duracion }),
       });
-      if (!res.ok) {
-        const d = await res.json().catch(() => ({}));
-        return setError(d.error ?? "No se pudo publicar el aviso.");
-      }
-      router.push("/avisos");
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) return setError(d.error ?? "No se pudo publicar el aviso.");
+      // Directo a su aviso, con el botón de compartir a la vista.
+      router.push(d.id ? `/avisos#aviso-${d.id}` : "/avisos");
       router.refresh();
     } catch {
       setError("Ocurrió un error de red.");
