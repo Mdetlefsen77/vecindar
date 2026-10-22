@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { GrupoOficio } from "@/generated/enums";
+import { DuracionPromo, GrupoOficio } from "@/generated/enums";
 import { normalizarTelefonoAR } from "@/lib/whatsapp";
 
 export const oficioSchema = z.object({
@@ -80,3 +80,39 @@ export const fotosAdminSchema = z.object({
     .min(10, "Escribí el aviso para el vecino (mínimo 10 caracteres).")
     .max(300, "El aviso es demasiado largo."),
 });
+
+const precio = z.coerce
+  .number()
+  .int("Poné el precio sin centavos.")
+  .positive("El precio tiene que ser mayor a cero.")
+  .max(100_000_000, "El precio es demasiado alto.")
+  .nullish()
+  .transform((v) => v ?? null);
+
+export const promoSchema = z
+  .object({
+    titulo: z
+      .string()
+      .trim()
+      .min(3, "Poné un título de al menos 3 letras.")
+      .max(80, "El título es demasiado largo."),
+    descripcion: z
+      .string()
+      .trim()
+      .max(300, "La descripción es demasiado larga.")
+      .nullish()
+      .transform((v) => (v ? v : null)),
+    precioAntes: precio,
+    precioAhora: precio,
+    imagen: z.url().nullish().transform((v) => v ?? null),
+    duracion: z.enum(DuracionPromo, "Elegí cuánto dura la promo."),
+  })
+  .refine((p) => p.precioAntes === null || p.precioAhora !== null, {
+    message: "Si ponés el precio de antes, poné también el de ahora.",
+    path: ["precioAhora"],
+  })
+  .refine(
+    (p) =>
+      p.precioAntes === null || p.precioAhora === null || p.precioAhora < p.precioAntes,
+    { message: "El precio de ahora tiene que ser menor al de antes.", path: ["precioAhora"] },
+  );

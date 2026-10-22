@@ -698,6 +698,23 @@ export type EnumEstadoOficioWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel>
 }
 
+export type EnumDuracionPromoFilter<$PrismaModel = never> = {
+  equals?: $Enums.DuracionPromo | Prisma.EnumDuracionPromoFieldRefInput<$PrismaModel>
+  in?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel> | $Enums.DuracionPromo
+}
+
+export type EnumDuracionPromoWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DuracionPromo | Prisma.EnumDuracionPromoFieldRefInput<$PrismaModel>
+  in?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDuracionPromoWithAggregatesFilter<$PrismaModel> | $Enums.DuracionPromo
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel>
+}
+
 export type NestedIntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -1344,6 +1361,23 @@ export type NestedEnumEstadoOficioWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel>
   _max?: Prisma.NestedEnumEstadoOficioFilter<$PrismaModel>
+}
+
+export type NestedEnumDuracionPromoFilter<$PrismaModel = never> = {
+  equals?: $Enums.DuracionPromo | Prisma.EnumDuracionPromoFieldRefInput<$PrismaModel>
+  in?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel> | $Enums.DuracionPromo
+}
+
+export type NestedEnumDuracionPromoWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.DuracionPromo | Prisma.EnumDuracionPromoFieldRefInput<$PrismaModel>
+  in?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  notIn?: $Enums.DuracionPromo[] | Prisma.ListEnumDuracionPromoFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumDuracionPromoWithAggregatesFilter<$PrismaModel> | $Enums.DuracionPromo
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumDuracionPromoFilter<$PrismaModel>
 }
 
 

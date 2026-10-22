@@ -8,6 +8,8 @@ import Image from "next/image";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
 import { RONDA_LABEL, TURNOS, fechaParteLabel } from "@/lib/partes";
+import { textoPrecioPromo, textoVencimientoPromo } from "@/lib/oficios";
+import { promoVigente } from "@/lib/promosServer";
 import type {
   TipoIncidente,
   CategoriaReq,
@@ -194,6 +196,7 @@ export default async function InicioPage() {
     invitados,
     ultimoParte,
     oficiosPublicados,
+    promos,
   ] = await Promise.all([
     prisma.usuario.findUnique({
       where: { id: usuarioId },
@@ -245,6 +248,20 @@ export default async function InicioPage() {
       },
     }),
     prisma.oficio.count({ where: { estado: "APROBADO" } }),
+    // Las que vencen primero arriba: son las que no hay que perderse.
+    prisma.promoOficio.findMany({
+      where: { ...promoVigente(), oficio: { estado: "APROBADO" } },
+      orderBy: { venceAt: "asc" },
+      take: 3,
+      select: {
+        id: true,
+        titulo: true,
+        precioAntes: true,
+        precioAhora: true,
+        venceAt: true,
+        oficio: { select: { id: true, titulo: true } },
+      },
+    }),
   ]);
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
     usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
@@ -417,6 +434,40 @@ export default async function InicioPage() {
             {ultimoParte.novedades ? "Con novedades" : "Sin novedades"}
           </span>
         </Link>
+      )}
+
+      {promos.length > 0 && (
+        <section className="bg-orange-50 rounded-2xl border border-orange-200 overflow-hidden">
+          <div className="flex items-center justify-between px-4 sm:px-5 pt-3">
+            <h2 className="font-semibold text-gray-900">🔥 Promos del barrio</h2>
+            <Link href="/oficios" className="text-sm font-semibold text-orange-700">
+              Ver todas
+            </Link>
+          </div>
+          <ul className="divide-y divide-orange-100">
+            {promos.map((p) => {
+              const precio = textoPrecioPromo(p);
+              return (
+                <li key={p.id}>
+                  <Link
+                    href={`/oficios/${p.oficio.id}`}
+                    className="block px-4 sm:px-5 py-2.5 hover:bg-orange-100/60 transition-colors"
+                  >
+                    <span className="block font-medium text-gray-900 truncate">
+                      {p.titulo}
+                      {precio && (
+                        <span className="font-semibold text-orange-800"> · {precio}</span>
+                      )}
+                    </span>
+                    <span className="block text-sm text-gray-600 truncate">
+                      {p.oficio.titulo} · {textoVencimientoPromo(p.venceAt)}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
       )}
 
       <Link

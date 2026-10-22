@@ -743,6 +743,7 @@ model Oficio {
   aprobadoAt         DateTime?
   recomendaciones    RecomendacionOficio[]
   reportes           ReporteOficio[]
+  promo              PromoOficio?
   createdAt          DateTime              @default(now())
   updatedAt          DateTime              @updatedAt
 
@@ -756,6 +757,32 @@ enum EstadoOficio {
   APROBADO
   RECHAZADO
   PAUSADO
+}
+
+// Promo de un oficio con vencimiento (una por oficio). Vencida no se muestra
+// (toda consulta filtra por `venceAt`) y el cron limpiar-promos la borra.
+// Solo la carga el dueño con el aporte al día, exento o recién registrado.
+model PromoOficio {
+  id          Int           @id @default(autoincrement())
+  oficioId    Int           @unique
+  oficio      Oficio        @relation(fields: [oficioId], references: [id], onDelete: Cascade)
+  titulo      String
+  descripcion String?
+  // Pesos. Opcionales: "antes $X / ahora $Y".
+  precioAntes Int?
+  precioAhora Int?
+  imagen      String?
+  duracion    DuracionPromo
+  venceAt     DateTime
+  createdAt   DateTime      @default(now())
+
+  @@index([venceAt])
+  @@map("promos_oficio")
+}
+
+enum DuracionPromo {
+  DIA
+  SEMANA
 }
 
 // "Recomiendo" de un vecino que contrató el servicio. Sin puntaje a

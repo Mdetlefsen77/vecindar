@@ -9,8 +9,11 @@ import {
   GRUPO_OFICIO,
   MAX_OFICIOS_POR_USUARIO,
   agruparCategorias,
+  textoPrecioPromo,
   textoRecomendados,
+  textoVencimientoPromo,
 } from "@/lib/oficios";
+import { promoVigente } from "@/lib/promosServer";
 import type { Prisma } from "@/generated/client";
 
 export const metadata = { title: "Oficios del barrio" };
@@ -29,6 +32,7 @@ export default async function OficiosPage({
   const { q, categoria } = await searchParams;
   const texto = q?.trim() ?? "";
   const categoriaId = parseId(categoria);
+  const ahora = new Date();
 
   const filtro: Prisma.OficioWhereInput = {
     estado: "APROBADO",
@@ -44,7 +48,7 @@ export default async function OficiosPage({
       : {}),
   };
 
-  const [oficios, mios, categoriasEnUso] = await Promise.all([
+  const [oficios, mios, categoriasEnUso, promos] = await Promise.all([
     prisma.oficio.findMany({
       where: filtro,
       orderBy: [{ recomendaciones: { _count: "desc" } }, { aprobadoAt: "desc" }],
@@ -62,6 +66,7 @@ export default async function OficiosPage({
             lote: { select: { manzana: { select: { numero: true } } } },
           },
         },
+        promo: { select: { venceAt: true } },
         _count: { select: { recomendaciones: true } },
       },
     }),
@@ -73,6 +78,7 @@ export default async function OficiosPage({
         titulo: true,
         estado: true,
         motivoEstado: true,
+        promo: { select: { venceAt: true } },
         _count: { select: { recomendaciones: true } },
       },
     }),
@@ -81,7 +87,24 @@ export default async function OficiosPage({
       where: { oficios: { some: { estado: "APROBADO" } } },
       select: { id: true, nombre: true, grupo: true },
     }),
+    prisma.promoOficio.findMany({
+      where: { ...promoVigente(ahora), oficio: { estado: "APROBADO" } },
+      orderBy: { venceAt: "asc" },
+      take: 20,
+      select: {
+        id: true,
+        titulo: true,
+        precioAntes: true,
+        precioAhora: true,
+        imagen: true,
+        venceAt: true,
+        oficio: { select: { id: true, titulo: true, imagenes: true } },
+      },
+    }),
   ]);
+
+  const conPromo = (o: { promo: { venceAt: Date } | null }) =>
+    !!o.promo && o.promo.venceAt > ahora;
 
   const puedePublicar =
     mios.filter((o) => o.estado !== "RECHAZADO").length < MAX_OFICIOS_POR_USUARIO;
@@ -127,6 +150,11 @@ export default async function OficiosPage({
                     )}
                   </span>
                   <span className="flex items-center gap-2 flex-shrink-0">
+                    {o.estado === "APROBADO" && conPromo(o) && (
+                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">
+                        🔥 Promo
+                      </span>
+                    )}
                     {o.estado === "APROBADO" && (
                       <span className="text-xs text-gray-500">
                         👍 {o._count.recomendaciones}
@@ -141,6 +169,49 @@ export default async function OficiosPage({
                 </Link>
               </li>
             ))}
+          </ul>
+        </section>
+      )}
+
+      {promos.length > 0 && !texto && !categoriaId && (
+        <section aria-labelledby="promos-titulo" className="space-y-2">
+          <h2 id="promos-titulo" className="font-bold text-gray-900">
+            🔥 Promos del barrio
+          </h2>
+          {/* Carrusel horizontal: en mobile se desliza, sin ocupar media pantalla. */}
+          <ul className="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 snap-x">
+            {promos.map((p) => {
+              const foto = p.imagen ?? p.oficio.imagenes[0];
+              const precio = textoPrecioPromo(p);
+              return (
+                <li key={p.id} className="snap-start flex-shrink-0 w-64">
+                  <Link
+                    href={`/oficios/${p.oficio.id}`}
+                    className="flex flex-col h-full rounded-2xl border-2 border-orange-200 bg-orange-50 overflow-hidden hover:shadow-md transition-shadow"
+                  >
+                    {foto && (
+                      <div className="relative aspect-[16/9] bg-orange-100">
+                        <Image src={foto} alt="" fill sizes="256px" className="object-cover" />
+                      </div>
+                    )}
+                    <div className="flex-1 flex flex-col gap-0.5 p-3">
+                      <p className="text-xs font-semibold text-orange-700">
+                        {textoVencimientoPromo(p.venceAt, ahora)}
+                      </p>
+                      <p className="font-bold text-gray-900 leading-snug line-clamp-2">
+                        {p.titulo}
+                      </p>
+                      {precio && (
+                        <p className="text-sm font-semibold text-orange-800">{precio}</p>
+                      )}
+                      <p className="mt-auto pt-1 text-xs text-gray-500 truncate">
+                        {p.oficio.titulo}
+                      </p>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </section>
       )}
@@ -223,8 +294,13 @@ export default async function OficiosPage({
                   </div>
                 )}
                 <div className="flex-1 flex flex-col gap-1 p-4">
-                  <p className="text-xs font-semibold text-blue-700">
+                  <p className="flex items-center justify-between gap-2 text-xs font-semibold text-blue-700">
                     {o.categoria.nombre}
+                    {conPromo(o) && (
+                      <span className="px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">
+                        🔥 Promo
+                      </span>
+                    )}
                   </p>
                   <h2 className="font-bold text-gray-900 leading-snug">{o.titulo}</h2>
                   <p className="text-sm text-gray-600 line-clamp-2">{o.descripcion}</p>

@@ -1,4 +1,5 @@
-import type { EstadoOficio, GrupoOficio } from "@/generated/enums";
+import type { DuracionPromo, EstadoOficio, GrupoOficio } from "@/generated/enums";
+import { formatoPesos, type EstadoCobranza } from "@/lib/cobranza";
 
 // Catálogo de oficios. Sin imports de servidor: lo usan páginas y formularios.
 
@@ -68,4 +69,64 @@ export function agruparCategorias(
       .filter((c) => c.grupo === grupo)
       .sort((a, b) => a.nombre.localeCompare(b.nombre, "es")),
   })).filter((g) => g.categorias.length > 0);
+}
+
+// ─── Promos ───────────────────────────────────────────────────────────────────
+
+export const DURACION_PROMO: Record<DuracionPromo, { label: string; ms: number }> = {
+  DIA: { label: "24 horas", ms: 24 * 60 * 60 * 1000 },
+  SEMANA: { label: "7 días", ms: 7 * 24 * 60 * 60 * 1000 },
+};
+
+/**
+ * Días desde el registro en que un vecino "sin datos" (nunca pagó) puede
+ * cargar promos. Pasado ese plazo tiene que tener el aporte al día.
+ */
+export const DIAS_GRACIA_PROMO = 30;
+
+/** Al día, exento, o "sin datos" dentro de los primeros `DIAS_GRACIA_PROMO` días. */
+export function puedeCargarPromo(
+  estado: EstadoCobranza,
+  registradoAt: Date,
+  ahora = new Date(),
+): boolean {
+  if (estado === "al_dia" || estado === "exento") return true;
+  if (estado === "sin_datos") {
+    return ahora.getTime() - registradoAt.getTime() < DIAS_GRACIA_PROMO * 86_400_000;
+  }
+  return false;
+}
+
+const TZ = "America/Argentina/Cordoba";
+
+function diaLocal(d: Date): string {
+  return d.toLocaleDateString("en-CA", { timeZone: TZ });
+}
+
+/** "Vence hoy a las 18:30" · "Vence mañana a las 18:30" · "Quedan 3 días". */
+export function textoVencimientoPromo(venceAt: Date, ahora = new Date()): string {
+  const hora = venceAt.toLocaleTimeString("es-AR", {
+    timeZone: TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+  if (diaLocal(venceAt) === diaLocal(ahora)) return `Vence hoy a las ${hora}`;
+  if (diaLocal(venceAt) === diaLocal(new Date(ahora.getTime() + 86_400_000))) {
+    return `Vence mañana a las ${hora}`;
+  }
+  const dias = Math.ceil((venceAt.getTime() - ahora.getTime()) / 86_400_000);
+  return `Quedan ${dias} días`;
+}
+
+/** "$ 8.000 (antes $ 10.000)", "$ 8.000", o null si la promo no tiene precio. */
+export function textoPrecioPromo(promo: {
+  precioAntes: number | null;
+  precioAhora: number | null;
+}): string | null {
+  if (promo.precioAhora === null) return null;
+  const ahora = formatoPesos(promo.precioAhora);
+  return promo.precioAntes !== null
+    ? `${ahora} (antes ${formatoPesos(promo.precioAntes)})`
+    : ahora;
 }

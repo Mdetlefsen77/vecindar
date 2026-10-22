@@ -21,6 +21,9 @@ import {
   RecomendarPanel,
   ReportarProblema,
 } from "@/components/oficios/AccionesOficio";
+import TarjetaPromo from "@/components/oficios/TarjetaPromo";
+import { BorrarPromo, CargarPromo } from "@/components/oficios/PromoDueno";
+import { habilitacionPromo } from "@/lib/promosServer";
 
 export const metadata = { title: "Oficio" };
 
@@ -59,6 +62,7 @@ export default async function OficioPage({ params, searchParams }: Props) {
           lote: { select: { manzana: { select: { numero: true } } } },
         },
       },
+      promo: true,
       recomendaciones: {
         orderBy: { createdAt: "desc" },
         select: {
@@ -80,6 +84,13 @@ export default async function OficioPage({ params, searchParams }: Props) {
   const yaRecomendado = oficio.recomendaciones.some((r) => r.autorId === usuarioId);
   const cantidad = oficio.recomendaciones.length;
   const publicado = oficio.estado === "APROBADO";
+  // Vencida = como si no existiera, aunque el cron todavía no la haya borrado.
+  const promo =
+    publicado && oficio.promo && oficio.promo.venceAt > new Date()
+      ? oficio.promo
+      : null;
+  const puedePromo =
+    publicado && esDueno && !promo && (await habilitacionPromo(usuarioId)).puede;
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
@@ -134,6 +145,18 @@ export default async function OficioPage({ params, searchParams }: Props) {
         </div>
       )}
 
+      {promo && <TarjetaPromo promo={promo} />}
+
+      {publicado && esDueno && !promo && (
+        <CargarPromo oficioId={oficio.id} habilitado={puedePromo} />
+      )}
+
+      {promo && (esDueno || esAdmin) && (
+        <div className="-mt-2 flex justify-end">
+          <BorrarPromo oficioId={oficio.id} />
+        </div>
+      )}
+
       {publicado && !esDueno && (
         <a
           href={linkWhatsApp(oficio.telefono, mensajeContacto(oficio.titulo))}
@@ -149,10 +172,19 @@ export default async function OficioPage({ params, searchParams }: Props) {
         <CompartirEnGrupo
           tipoEvento="OFICIO"
           entidadId={oficio.id}
-          etiqueta={esDueno ? "📤 Compartir mi oficio" : "📤 Compartir"}
+          imagenes={promo?.imagen ? [promo.imagen] : []}
+          etiqueta={
+            esDueno
+              ? promo
+                ? "📤 Compartir mi promo"
+                : "📤 Compartir mi oficio"
+              : "📤 Compartir"
+          }
           ayuda={
             esDueno
-              ? "Compartilo en tus grupos para que más vecinos te conozcan."
+              ? promo
+                ? "El mensaje lleva la promo y hasta cuándo vale. Tirala en tus grupos."
+                : "Compartilo en tus grupos para que más vecinos te conozcan."
               : "Pasáselo a quien lo necesite. El teléfono no va en el mensaje: se ve en la app."
           }
         />
