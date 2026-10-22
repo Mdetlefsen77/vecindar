@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import L from "leaflet";
+import { escapeHtml } from "./html";
 
 export interface AlertaPin {
   id: number;
@@ -87,9 +88,12 @@ export default function AlertasLayer({
       if (alerta.latitud == null || alerta.longitud == null) return;
 
       const cfg = ESTADO_CONFIG[alerta.estado] ?? ESTADO_CONFIG.ENVIADO;
-      const loteInfo = alerta.usuario?.lote
-        ? `MZ ${alerta.usuario.lote.manzana.numero} · Lote ${alerta.usuario.lote.numero}`
+      const lote = alerta.usuario?.lote;
+      const loteInfo = lote
+        ? `Manzana ${escapeHtml(lote.manzana.numero)} · Lote ${escapeHtml(lote.numero)}`
         : "";
+      const telefono = alerta.usuario?.telefono?.trim();
+      const activa = alerta.estado !== "CERRADO";
 
       const marker = L.marker([alerta.latitud, alerta.longitud], {
         icon: crearAlertaIcon(alerta.estado),
@@ -98,34 +102,42 @@ export default function AlertasLayer({
 
       marker.bindPopup(
         `
-        <div style="min-width:160px; padding:3px 2px;">
-          <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
-            <span style="font-size:18px;">🆘</span>
-            <span style="font-weight:700; font-size:14px; color:#dc2626;">Alerta SOS</span>
+        <div style="min-width:200px; padding:3px 2px;">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span style="font-size:20px;">🆘</span>
+            <span style="font-weight:700; font-size:17px; color:#b91c1c;">Alerta SOS</span>
           </div>
-          <p style="margin:0 0 3px; font-size:13px; font-weight:600; color:#111827;">
-            ${alerta.usuario?.nombre ?? "Vecino"}
+          <p style="margin:0 0 4px; font-size:16px; font-weight:700; color:#111827;">
+            ${escapeHtml(alerta.usuario?.nombre ?? "Vecino")}
           </p>
-          ${alerta.usuario?.telefono ? `<p style="margin:0 0 3px; font-size:12px; color:#374151;">📞 ${alerta.usuario.telefono}</p>` : ""}
-          ${loteInfo ? `<p style="margin:0 0 4px; font-size:11px; color:#6b7280;">${loteInfo}</p>` : ""}
-          <div style="display:flex; align-items:center; justify-content:space-between; margin-top:6px;">
+          ${loteInfo ? `<p style="margin:0 0 6px; font-size:14px; color:#4b5563;">${loteInfo}</p>` : ""}
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:6px;">
             <span style="
               background:${cfg.color}22; color:${cfg.color};
-              padding:2px 7px; border-radius:9999px; font-size:11px; font-weight:600;">
+              padding:2px 10px; border-radius:9999px; font-size:13px; font-weight:700;">
               ${cfg.label}
             </span>
-            <span style="font-size:11px; color:#6b7280;">
+            <span style="font-size:14px; color:#4b5563;">
               ${new Date(alerta.createdAt).toLocaleDateString("es-AR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}
             </span>
           </div>
-          <div style="margin-top:6px; text-align:right;">
-            <a href="/panico" style="font-size:11px; font-weight:600; color:#2563eb; text-decoration:none;">
-              Ver panel →
+          <div style="display:flex; gap:8px; margin-top:10px;">
+            ${
+              telefono && activa
+                ? `<a href="tel:${escapeHtml(telefono.replace(/[^\d+]/g, ""))}"
+                     style="flex:1; text-align:center; background:#dc2626; color:#fff; font-size:15px; font-weight:700; padding:10px 8px; border-radius:10px; text-decoration:none;">
+                     📞 Llamar
+                   </a>`
+                : ""
+            }
+            <a href="/panico"
+               style="flex:1; text-align:center; background:#f3f4f6; color:#1f2937; font-size:15px; font-weight:700; padding:10px 8px; border-radius:10px; text-decoration:none;">
+              Ver panel
             </a>
           </div>
         </div>
         `,
-        { maxWidth: 240 },
+        { maxWidth: 280 },
       );
 
       marker.on("click", () => onPinClick?.(alerta));

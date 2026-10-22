@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma/client";
 import { auth } from "@/lib/auth";
 import { parseId } from "@/lib/api/guard";
+import { esGestor, VEN_DETALLE_LOTES } from "@/lib/permisos";
 
 // Debe coincidir con el límite usado en /api/usuarios al registrar
 const MAX_USUARIOS_POR_LOTE = 2;
@@ -11,6 +12,8 @@ const MAX_USUARIOS_POR_LOTE = 2;
 //
 // Sin sesión (formulario de registro) solo se permite `?disponibles=true` y se
 // devuelve un payload mínimo: nada de ids de usuarios ni incidentes del lote.
+// Con sesión, quién vive en cada lote y sus incidentes quedan solo para
+// VEN_DETALLE_LOTES (guardia y admin); un vecino recibe el mismo payload mínimo.
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
@@ -19,6 +22,7 @@ export async function GET(req: NextRequest) {
 
     const session = await auth();
     const publico = !session?.user;
+    const detalle = !publico && esGestor(session.user.role, VEN_DETALLE_LOTES);
 
     if (publico && !soloDisponibles) {
       return NextResponse.json({ error: "No autorizado." }, { status: 401 });
@@ -31,8 +35,8 @@ export async function GET(req: NextRequest) {
       include: {
         manzana: { select: { numero: true, zona: true } },
         _count: { select: { usuarios: true } },
-        // Detalle interno solo para usuarios autenticados (lo consume el mapa).
-        ...(publico
+        // Detalle interno solo para la guardia y el admin (lo consume el mapa).
+        ...(!detalle
           ? {}
           : {
               usuarios: { select: { id: true, nombre: true, apellido: true } },
@@ -54,7 +58,7 @@ export async function GET(req: NextRequest) {
       ? lotes.filter((l) => l._count.usuarios < MAX_USUARIOS_POR_LOTE)
       : lotes;
 
-    if (publico) {
+    if (!detalle) {
       const resultado = filtrados.map((l) => ({
         id: l.id,
         numero: l.numero,

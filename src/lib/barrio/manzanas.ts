@@ -450,14 +450,14 @@ export const COLORES_LOTE = {
     weight: 1.2,
   },
   incidente: {
-    color: "#dc2626",
-    fillColor: "#fecaca",
+    color: "#ea580c",
+    fillColor: "#fed7aa",
     fillOpacity: 0.75,
     weight: 1.5,
   },
   sos_activo: {
-    color: "#d97706",
-    fillColor: "#fde68a",
+    color: "#dc2626",
+    fillColor: "#fecaca",
     fillOpacity: 0.8,
     weight: 1.5,
   },

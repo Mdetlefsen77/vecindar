@@ -103,12 +103,12 @@ export default function ManzanasLayer({
             ? `<span style="
                 background:${manzana.zona === "Norte" ? "#dbeafe" : "#ffedd5"};
                 color:${manzana.zona === "Norte" ? "#1d4ed8" : "#c2410c"};
-                padding:2px 8px; border-radius:9999px; font-size:11px; font-weight:600;">
+                padding:2px 8px; border-radius:9999px; font-size:13px; font-weight:600;">
                 Zona ${manzana.zona}
               </span>`
             : `<span style="
                 background:#dcfce7; color:#15803d;
-                padding:2px 8px; border-radius:9999px; font-size:11px; font-weight:600;">
+                padding:2px 8px; border-radius:9999px; font-size:13px; font-weight:600;">
                 ${manzana.tipo === "espacio_verde" ? "Espacio Verde" : "Uso Comunitario"}
               </span>`;
 
@@ -116,7 +116,7 @@ export default function ManzanasLayer({
           ? (() => {
               const inicio = manzana.loteInicio ?? 1;
               const fin = inicio + manzana.cantidadLotes - 1;
-              return `<p style="margin:4px 0 0; font-size:12px; color:#6b7280;">${manzana.cantidadLotes} lotes (${inicio}–${fin})</p>`;
+              return `<p style="margin:6px 0 0; font-size:14px; color:#4b5563;">${manzana.cantidadLotes} lotes (${inicio}–${fin})</p>`;
             })()
           : "";
 
@@ -128,7 +128,7 @@ export default function ManzanasLayer({
 
         marker.bindPopup(`
           <div style="min-width:140px; padding:4px 2px;">
-            <h3 style="margin:0 0 6px; font-size:15px; font-weight:700; color:#111827;">${titulo}</h3>
+            <h3 style="margin:0 0 6px; font-size:17px; font-weight:700; color:#111827;">${titulo}</h3>
             ${badge}
             ${lotesInfo}
           </div>

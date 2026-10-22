@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import L from "leaflet";
+import { escapeHtml } from "./html";
 
 export interface IncidentePin {
   id: number;
@@ -12,7 +13,6 @@ export interface IncidentePin {
   longitud: number;
   fechaHora: string;
   lote?: { numero: string; manzana: { numero: string } } | null;
-  reportadoPor?: { nombre: string } | null;
 }
 
 interface IncidentesLayerProps {
@@ -76,38 +76,43 @@ export default function IncidentesLayer({
 
       const cfg = TIPO_CONFIG[inc.tipo] ?? TIPO_CONFIG.OTRO;
       const loteInfo = inc.lote
-        ? `MZ ${inc.lote.manzana.numero} · Lote ${inc.lote.numero}`
+        ? `Manzana ${escapeHtml(inc.lote.manzana.numero)} · Lote ${escapeHtml(inc.lote.numero)}`
         : "";
 
       const marker = L.marker([inc.latitud, inc.longitud], {
         icon: crearPinIcon(inc.tipo, inc.estado),
       });
 
+      const descripcion =
+        inc.descripcion.length > 100
+          ? inc.descripcion.slice(0, 100) + "…"
+          : inc.descripcion;
+      const resuelto = inc.estado !== "ACTIVO";
       marker.bindPopup(
         `
-                <div style="min-width:160px; padding:3px 2px;">
-                    <div style="display:flex; align-items:center; gap:6px; margin-bottom:6px;">
-                        <span style="font-size:18px;">${cfg.emoji}</span>
-                        <span style="font-weight:700; font-size:14px; color:#111827;">${cfg.label}</span>
+                <div style="min-width:200px; padding:3px 2px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                        <span style="font-size:20px;">${cfg.emoji}</span>
+                        <span style="font-weight:700; font-size:17px; color:#111827;">${cfg.label}</span>
+                        ${resuelto ? `<span style="font-size:13px; font-weight:600; color:#15803d;">✓ Resuelto</span>` : ""}
                     </div>
-                    <p style="margin:0 0 4px; font-size:12px; color:#374151; line-height:1.4;">
-                        ${inc.descripcion.length > 80 ? inc.descripcion.slice(0, 80) + "…" : inc.descripcion}
+                    <p style="margin:0 0 6px; font-size:15px; color:#374151; line-height:1.4;">
+                        ${escapeHtml(descripcion)}
                     </p>
-                    ${loteInfo ? `<p style="margin:0 0 4px; font-size:11px; color:#6b7280;">${loteInfo}</p>` : ""}
-                    <div style="display:flex; align-items:center; justify-content:space-between; margin-top:6px;">
-                        <span style="font-size:11px; color:#6b7280;">
+                    ${loteInfo ? `<p style="margin:0 0 4px; font-size:14px; color:#4b5563;">${loteInfo}</p>` : ""}
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:8px;">
+                        <span style="font-size:14px; color:#4b5563;">
                             ${new Date(inc.fechaHora).toLocaleDateString("es-AR", { day: "numeric", month: "short" })}
                         </span>
                         <a href="/incidentes/${inc.id}"
-                           style="font-size:11px; font-weight:600; color:#2563eb; text-decoration:none;">
+                           style="font-size:15px; font-weight:700; color:#1d4ed8; text-decoration:none; padding:6px 0;">
                             Ver detalle →
                         </a>
                     </div>
                 </div>
             `,
-        { maxWidth: 240 },
+        { maxWidth: 280 },
       );
-
       marker.on("click", () => onPinClick?.(inc));
       marker.addTo(map!);
       markers.push(marker);
