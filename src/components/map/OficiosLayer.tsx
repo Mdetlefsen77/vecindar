@@ -83,13 +83,13 @@ export default function OficiosLayer({
       const marker = L.marker(centro, {
         icon: crearIcono(lista.length),
         zIndexOffset: 300,
-        title: `Oficios en la manzana ${numero}`,
+        title: `Servicios en la manzana ${numero}`,
       });
       marker.bindPopup(
         `
         <div style="min-width:210px;">
           <h3 style="margin:0 0 4px; font-size:17px; font-weight:700; color:#3730a3;">
-            🧰 Oficios en la Manzana ${escapeHtml(numero)}
+            🧰 Servicios en la Manzana ${escapeHtml(numero)}
           </h3>
           <ul style="list-style:none; margin:0; padding:0; max-height:260px; overflow-y:auto;">
             ${items}

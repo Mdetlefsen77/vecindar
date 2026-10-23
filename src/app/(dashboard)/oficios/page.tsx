@@ -20,7 +20,7 @@ import { promoVigente } from "@/lib/promosServer";
 import type { Prisma } from "@/generated/client";
 import TituloSeccion from "@/components/ui/TituloSeccion";
 
-export const metadata = { title: "Oficios del barrio" };
+export const metadata = { title: "Oficios y servicios" };
 
 type SearchParams = Promise<{ q?: string; categoria?: string; orden?: string }>;
 
@@ -149,7 +149,7 @@ export default async function OficiosPage({
     <div className="max-w-5xl mx-auto px-4 py-6 space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <TituloSeccion seccion="oficios">Oficios del barrio</TituloSeccion>
+          <TituloSeccion seccion="oficios">Oficios y servicios</TituloSeccion>
           <p className="text-sm text-gray-500">
             Servicios que ofrecen los vecinos, recomendados por quienes los
             contrataron
@@ -160,7 +160,7 @@ export default async function OficiosPage({
             href="/oficios/nuevo"
             className="min-h-[44px] inline-flex items-center px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold"
           >
-            + Publicar mi oficio
+            + Publicar mi oficio o servicio
           </Link>
         )}
       </div>
@@ -259,7 +259,7 @@ export default async function OficiosPage({
           name="q"
           defaultValue={texto}
           placeholder="Buscar: plomero, clases de inglés, tortas…"
-          aria-label="Buscar oficios"
+          aria-label="Buscar oficios y servicios"
           className="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-base"
         />
         {!porCercania && <input type="hidden" name="orden" value="recomendados" />}
@@ -334,8 +334,8 @@ export default async function OficiosPage({
         <div className="text-center py-12 text-gray-500 space-y-2">
           <p>
             {texto || categoriaId
-              ? "No encontramos oficios con ese filtro."
-              : "Todavía no hay oficios publicados."}
+              ? "No encontramos nada con ese filtro."
+              : "Todavía no hay oficios ni servicios publicados."}
           </p>
           {(texto || categoriaId) && (
             <Link href="/oficios" className="text-blue-600 text-sm font-semibold">

@@ -68,7 +68,7 @@ export function CargarPromo({
       <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-600 space-y-1">
         <p>
           🔥 <strong>Promos:</strong> con tu aporte al día podés destacar una
-          promo de tu oficio por 24 horas o una semana.
+          promo de tu publicación por 24 horas o una semana.
         </p>
         <Link href="/mi-suscripcion" className="font-semibold text-blue-700 underline">
           Ponete al día con tu aporte

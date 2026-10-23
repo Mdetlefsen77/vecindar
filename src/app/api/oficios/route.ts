@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   ]);
   if (activos >= MAX_OFICIOS_POR_USUARIO) {
     return NextResponse.json(
-      { error: `Podés publicar hasta ${MAX_OFICIOS_POR_USUARIO} oficios.` },
+      { error: `Podés publicar hasta ${MAX_OFICIOS_POR_USUARIO} oficios o servicios.` },
       { status: 409 },
     );
   }
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   });
 
   void enviarPushSoloAdmin({
-    title: "Nuevo oficio para revisar",
+    title: "Nuevo oficio o servicio para revisar",
     body: `"${oficio.titulo}" espera aprobación para aparecer en el catálogo.`,
     url: "/admin/oficios",
     tag: "oficios-pendientes",

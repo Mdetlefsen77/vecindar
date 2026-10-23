@@ -228,7 +228,7 @@ export default async function AdminPage() {
               icon: "👥",
             },
             { label: "Cobranza", href: "/admin/cobranza", icon: "💰" },
-            { label: "Oficios", href: "/admin/oficios", icon: "🧰" },
+            { label: "Oficios y servicios", href: "/admin/oficios", icon: "🧰" },
             {
               label: "Links y altas",
               href: "/admin/notificaciones-externas",

@@ -49,7 +49,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
 
   if (reenviado) {
     void enviarPushSoloAdmin({
-      title: "Oficio corregido para revisar",
+      title: "Publicación corregida para revisar",
       body: `"${actualizado.titulo}" se volvió a enviar a revisión.`,
       url: "/admin/oficios",
       tag: "oficios-pendientes",

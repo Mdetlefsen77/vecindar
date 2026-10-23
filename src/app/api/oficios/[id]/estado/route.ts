@@ -78,19 +78,19 @@ export async function POST(req: NextRequest, { params }: Params) {
 
   const aviso = {
     aprobar: {
-      title: "¡Tu oficio ya está publicado!",
-      body: `"${oficio.titulo}" ya aparece en el catálogo de oficios del barrio.`,
+      title: "¡Tu publicación ya está a la vista!",
+      body: `"${oficio.titulo}" ya aparece en Oficios y servicios del barrio.`,
     },
     reactivar: {
-      title: "Tu oficio volvió a publicarse",
+      title: "Tu publicación volvió a estar a la vista",
       body: `"${oficio.titulo}" ya aparece de nuevo en el catálogo.`,
     },
     rechazar: {
-      title: "Tu oficio necesita cambios",
+      title: "Tu publicación necesita cambios",
       body: `"${oficio.titulo}": ${motivo}`,
     },
     pausar: {
-      title: "Tu oficio fue pausado",
+      title: "Tu publicación fue pausada",
       body: `"${oficio.titulo}": ${motivo}`,
     },
   }[accion];

@@ -32,7 +32,7 @@ type LayerKey = "manzanas" | "incidentes" | "oficios" | "alertas";
 const LAYER_LABELS: Record<LayerKey, string> = {
   manzanas: "Manzanas",
   incidentes: "Incidentes",
-  oficios: "Oficios",
+  oficios: "Servicios",
   alertas: "Alertas SOS",
 };
 
@@ -248,10 +248,10 @@ export default function MapaCliente({
           <p className="flex-1 min-w-[12rem] text-base text-indigo-900">
             {rubro ? (
               <>
-                🧰 Mostrando solo oficios de <strong>{rubro}</strong>
+                🧰 Mostrando solo <strong>{rubro}</strong>
               </>
             ) : (
-              <>🧰 Oficios de los vecinos, por manzana</>
+              <>🧰 Oficios y servicios de los vecinos, por manzana</>
             )}
           </p>
           {rubro && (
@@ -266,7 +266,7 @@ export default function MapaCliente({
             href="/oficios"
             className="min-h-[44px] inline-flex items-center px-4 rounded-xl bg-white border-2 border-indigo-300 text-indigo-800 text-base font-semibold hover:bg-indigo-100"
           >
-            ← Volver a Oficios
+            ← Volver a la lista
           </Link>
         </div>
       )}
@@ -490,7 +490,7 @@ export default function MapaCliente({
                 🧰
               </span>
               <span>
-                Oficios de vecinos: {oficios.length}
+                Oficios y servicios: {oficios.length}
                 <span className="text-gray-500"> · el número es cuántos hay en esa manzana</span>
               </span>
             </li>

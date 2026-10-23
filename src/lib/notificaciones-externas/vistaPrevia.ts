@@ -26,7 +26,7 @@ const VISTA_PREVIA_POR_TIPO: Record<string, { titulo: string; descripcion: strin
     descripcion: "La guardia cargó el parte del turno. Abrí Vecindar para ver el detalle y las fotos.",
   },
   OFICIO: {
-    titulo: "Vecindar — Oficio recomendado en el barrio",
+    titulo: "Vecindar — Oficios y servicios del barrio",
     descripcion: "Un servicio de un vecino, recomendado por quienes lo contrataron. Abrí Vecindar para ver el detalle y contactarlo.",
   },
   AVISO: {

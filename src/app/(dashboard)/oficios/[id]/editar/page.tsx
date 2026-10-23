@@ -5,7 +5,7 @@ import { prisma } from "@/lib/prisma/client";
 import { getUserId, parseId } from "@/lib/api/guard";
 import OficioForm from "@/components/oficios/OficioForm";
 
-export const metadata = { title: "Editar oficio" };
+export const metadata = { title: "Editar publicación" };
 
 export default async function EditarOficioPage({
   params,
@@ -35,7 +35,7 @@ export default async function EditarOficioPage({
         <Link href={`/oficios/${id}`} className="text-gray-500 hover:text-gray-600 text-sm">
           ← Volver
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900 mt-1">Editar oficio</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mt-1">Editar publicación</h1>
         {oficio.estado === "RECHAZADO" && (
           <p className="text-sm text-amber-800 mt-1">
             Al guardar, se vuelve a enviar a revisión.

@@ -29,7 +29,7 @@ export async function POST(req: NextRequest, { params }: Params) {
   }
   if (oficio.estado !== "APROBADO") {
     return NextResponse.json(
-      { error: "Podés cargar promos cuando tu oficio esté publicado." },
+      { error: "Podés cargar promos cuando tu publicación esté a la vista." },
       { status: 400 },
     );
   }

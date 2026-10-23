@@ -36,7 +36,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
   await prisma.oficio.update({ where: { id: id! }, data: { imagenes } });
 
   void enviarPushUsuario(oficio.usuarioId, {
-    title: "Actualizamos las fotos de tu oficio",
+    title: "Actualizamos las fotos de tu publicación",
     body: `"${oficio.titulo}": ${aviso}`,
     url: `/oficios/${id}`,
     tag: `oficio-fotos-${id}`,

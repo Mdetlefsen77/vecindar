@@ -6,7 +6,7 @@ import { getUserId } from "@/lib/api/guard";
 import { MAX_OFICIOS_POR_USUARIO } from "@/lib/oficios";
 import OficioForm from "@/components/oficios/OficioForm";
 
-export const metadata = { title: "Publicar mi oficio" };
+export const metadata = { title: "Publicar mi oficio o servicio" };
 
 export default async function NuevoOficioPage() {
   const session = await auth();
@@ -30,9 +30,9 @@ export default async function NuevoOficioPage() {
     <div className="max-w-xl mx-auto px-4 py-6 space-y-5">
       <div>
         <Link href="/oficios" className="text-gray-500 hover:text-gray-600 text-sm">
-          ← Oficios
+          ← Oficios y servicios
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900 mt-1">Publicar mi oficio</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mt-1">Publicar mi oficio o servicio</h1>
         <p className="text-sm text-gray-500">
           Contale al barrio qué servicio ofrecés. Los vecinos que te contraten
           van a poder recomendarte.

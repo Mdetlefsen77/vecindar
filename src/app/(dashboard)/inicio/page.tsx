@@ -357,7 +357,7 @@ export default async function InicioPage() {
                     <IconoSeccion nombre={a.seccion} className="w-9 h-9" />
                   </span>
                   <span className="text-xl font-bold text-gray-900 leading-tight">
-                    {estilo.label}
+                    {estilo.corto ?? estilo.label}
                   </span>
                   <span className={`text-base leading-tight ${TONO_ESTADO[a.tono]}`}>
                     {a.estado}

@@ -434,7 +434,7 @@ export function EditarFotosAdmin({
   const whatsapp = guardado
     ? linkWhatsApp(
         telefono,
-        `Hola! Te escribo de Vecindar por tu oficio "${titulo}". ${guardado.aviso}`,
+        `Hola! Te escribo de Vecindar por tu publicación "${titulo}". ${guardado.aviso}`,
       )
     : null;
 
