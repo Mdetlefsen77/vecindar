@@ -9,9 +9,12 @@ import {
   GRUPO_OFICIO,
   MAX_OFICIOS_POR_USUARIO,
   agruparCategorias,
+  linkMapaOficios,
+  textoCercania,
   textoPrecioPromo,
   textoRecomendados,
 } from "@/lib/oficios";
+import { cuadrasEntreManzanas } from "@/lib/barrio/distancia";
 import { textoVencimiento } from "@/lib/fechas";
 import { promoVigente } from "@/lib/promosServer";
 import type { Prisma } from "@/generated/client";
@@ -19,7 +22,7 @@ import TituloSeccion from "@/components/ui/TituloSeccion";
 
 export const metadata = { title: "Oficios del barrio" };
 
-type SearchParams = Promise<{ q?: string; categoria?: string }>;
+type SearchParams = Promise<{ q?: string; categoria?: string; orden?: string }>;
 
 export default async function OficiosPage({
   searchParams,
@@ -30,7 +33,9 @@ export default async function OficiosPage({
   if (!session?.user) redirect("/login");
   const usuarioId = getUserId(session);
 
-  const { q, categoria } = await searchParams;
+  const { q, categoria, orden } = await searchParams;
+  // Por defecto, los más cercanos primero; a igual distancia, los más recomendados.
+  const porCercania = orden !== "recomendados";
   const texto = q?.trim() ?? "";
   const categoriaId = parseId(categoria);
   const ahora = new Date();
@@ -49,7 +54,7 @@ export default async function OficiosPage({
       : {}),
   };
 
-  const [oficios, mios, categoriasEnUso, promos] = await Promise.all([
+  const [encontrados, mios, categoriasEnUso, promos, yo] = await Promise.all([
     prisma.oficio.findMany({
       where: filtro,
       orderBy: [{ recomendaciones: { _count: "desc" } }, { aprobadoAt: "desc" }],
@@ -102,7 +107,37 @@ export default async function OficiosPage({
         oficio: { select: { id: true, titulo: true, imagenes: true } },
       },
     }),
+    prisma.usuario.findUnique({
+      where: { id: usuarioId },
+      select: { lote: { select: { manzana: { select: { numero: true } } } } },
+    }),
   ]);
+
+  // Cercanía por manzana (nunca por lote: no se muestra la casa de nadie).
+  const miManzana = yo?.lote?.manzana.numero ?? null;
+  const conCercania = encontrados.map((o) => ({
+    ...o,
+    cuadras: miManzana
+      ? cuadrasEntreManzanas(miManzana, o.usuario.lote.manzana.numero)
+      : null,
+  }));
+  const oficios =
+    porCercania && miManzana
+      ? // sort es estable: a igual distancia queda el orden por recomendaciones
+        conCercania.toSorted(
+          (a, b) => (a.cuadras ?? Infinity) - (b.cuadras ?? Infinity),
+        )
+      : conCercania;
+
+  // Mantiene la búsqueda y el rubro al cambiar el orden.
+  const linkOrden = (o: "cerca" | "recomendados") => {
+    const params = new URLSearchParams();
+    if (texto) params.set("q", texto);
+    if (categoriaId) params.set("categoria", String(categoriaId));
+    if (o === "recomendados") params.set("orden", o);
+    const qs = params.toString();
+    return qs ? `/oficios?${qs}` : "/oficios";
+  };
 
   const conPromo = (o: { promo: { venceAt: Date } | null }) =>
     !!o.promo && o.promo.venceAt > ahora;
@@ -227,6 +262,7 @@ export default async function OficiosPage({
           aria-label="Buscar oficios"
           className="flex-1 border border-gray-300 rounded-xl px-3 py-2.5 text-base"
         />
+        {!porCercania && <input type="hidden" name="orden" value="recomendados" />}
         <select
           name="categoria"
           defaultValue={categoriaId ?? ""}
@@ -254,6 +290,45 @@ export default async function OficiosPage({
           Buscar
         </button>
       </form>
+
+      {oficios.length > 0 && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {miManzana ? (
+            <div className="flex flex-wrap items-center gap-2" aria-label="Ordenar">
+              {(
+                [
+                  ["cerca", "📍 Cerca tuyo"],
+                  ["recomendados", "👍 Más recomendados"],
+                ] as const
+              ).map(([valor, label]) => {
+                const activo = (valor === "cerca") === porCercania;
+                return (
+                  <Link
+                    key={valor}
+                    href={linkOrden(valor)}
+                    aria-current={activo ? "true" : undefined}
+                    className={`min-h-[44px] inline-flex items-center px-4 rounded-xl border-2 text-base font-semibold ${
+                      activo
+                        ? "bg-indigo-50 border-indigo-500 text-indigo-800"
+                        : "bg-white border-gray-300 text-gray-600 hover:bg-gray-50"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                );
+              })}
+            </div>
+          ) : (
+            <span />
+          )}
+          <Link
+            href={linkMapaOficios({ categoria: categoriaId })}
+            className="min-h-[44px] inline-flex items-center gap-2 px-4 rounded-xl bg-white border-2 border-blue-500 text-blue-800 text-base font-semibold hover:bg-blue-50"
+          >
+            🗺️ Ver en el mapa
+          </Link>
+        </div>
+      )}
 
       {oficios.length === 0 ? (
         <div className="text-center py-12 text-gray-500 space-y-2">
@@ -309,6 +384,11 @@ export default async function OficiosPage({
                     {o.usuario.nombre} {o.usuario.apellido} · Mz{" "}
                     {o.usuario.lote.manzana.numero}
                   </p>
+                  {o.cuadras !== null && (
+                    <p className="text-sm font-semibold text-indigo-700">
+                      {o.cuadras === 0 ? "🏠" : "📍"} {textoCercania(o.cuadras)}
+                    </p>
+                  )}
                   <p
                     className={`text-sm font-semibold ${o._count.recomendaciones > 0 ? "text-green-700" : "text-gray-400"}`}
                   >

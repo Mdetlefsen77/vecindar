@@ -38,9 +38,12 @@ function crearIcono(cantidad: number): L.DivIcon {
 export default function OficiosLayer({
   map,
   oficios,
+  abrir = null,
 }: {
   map: L.Map | null;
   oficios: OficioPin[];
+  /** Manzana cuya lista se abre sola cuando el mapa termina de llegar ahí. */
+  abrir?: string | null;
 }) {
   useEffect(() => {
     const mapWithContainer = map as
@@ -97,12 +100,13 @@ export default function OficiosLayer({
       );
       marker.addTo(map!);
       markers.push(marker);
+      if (numero === abrir) map!.once("moveend", () => marker.openPopup());
     });
 
     return () => {
       markers.forEach((m) => map?.removeLayer(m));
     };
-  }, [map, oficios]);
+  }, [map, oficios, abrir]);
 
   return null;
 }

@@ -49,6 +49,23 @@ export function textoRecomendados(n: number): string {
 }
 
 /** Mensaje precargado del botón "Contactar por WhatsApp". */
+/** "En tu manzana", "A 1 cuadra", "A 4 cuadras". */
+export function textoCercania(cuadras: number): string {
+  if (cuadras === 0) return "En tu manzana";
+  return `A ${cuadras} cuadra${cuadras === 1 ? "" : "s"}`;
+}
+
+/** Link al mapa con la capa de oficios: centrado en una manzana o filtrado por rubro. */
+export function linkMapaOficios({
+  manzana,
+  categoria,
+}: { manzana?: string; categoria?: number | null } = {}): string {
+  const q = new URLSearchParams({ capa: "oficios" });
+  if (manzana) q.set("manzana", manzana);
+  if (categoria) q.set("rubro", String(categoria));
+  return `/mapa?${q}`;
+}
+
 export function mensajeContacto(titulo: string): string {
   return `Hola! Te escribo desde Vecindar por tu servicio de ${titulo}.`;
 }

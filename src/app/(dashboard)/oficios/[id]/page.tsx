@@ -8,11 +8,14 @@ import { esGestor, GESTORES_OFICIOS } from "@/lib/permisos";
 import {
   ESTADO_OFICIO,
   GRUPO_OFICIO,
+  linkMapaOficios,
   mensajeContacto,
   nombreCorto,
+  textoCercania,
   textoRecomendados,
 } from "@/lib/oficios";
 import { linkWhatsApp } from "@/lib/whatsapp";
+import { cuadrasEntreManzanas } from "@/lib/barrio/distancia";
 import CompartirEnGrupo from "@/components/notificaciones-externas/CompartirEnGrupo";
 import {
   BorrarOficio,
@@ -92,6 +95,18 @@ export default async function OficioPage({ params, searchParams }: Props) {
   const puedePromo =
     publicado && esDueno && !promo && (await habilitacionPromo(usuarioId)).puede;
 
+  // Qué tan cerca queda, por manzana (no se muestra en qué casa vive).
+  const manzanaOficio = oficio.usuario.lote.manzana.numero;
+  const yo = esDueno
+    ? null
+    : await prisma.usuario.findUnique({
+        where: { id: usuarioId },
+        select: { lote: { select: { manzana: { select: { numero: true } } } } },
+      });
+  const cuadras = yo?.lote
+    ? cuadrasEntreManzanas(yo.lote.manzana.numero, manzanaOficio)
+    : null;
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
       <div>
@@ -110,8 +125,23 @@ export default async function OficioPage({ params, searchParams }: Props) {
         <h1 className="text-2xl font-bold text-gray-900">{oficio.titulo}</h1>
         <p className="text-sm text-gray-500">
           {oficio.usuario.nombre} {oficio.usuario.apellido} · vecino de la Mz{" "}
-          {oficio.usuario.lote.manzana.numero}
+          {manzanaOficio}
         </p>
+        {publicado && (
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            {cuadras !== null && (
+              <span className="text-base font-semibold text-indigo-700">
+                {cuadras === 0 ? "🏠" : "📍"} {textoCercania(cuadras)} de tu casa
+              </span>
+            )}
+            <Link
+              href={linkMapaOficios({ manzana: manzanaOficio })}
+              className="min-h-[44px] inline-flex items-center gap-2 px-4 rounded-xl bg-white border-2 border-blue-500 text-blue-800 text-base font-semibold hover:bg-blue-50"
+            >
+              🗺️ Ver en el mapa
+            </Link>
+          </div>
+        )}
       </div>
 
       {nuevo && (

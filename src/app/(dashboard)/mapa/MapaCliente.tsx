@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import type { IncidentePin } from "@/components/map/IncidentesLayer";
 import type { AlertaPin } from "@/components/map/AlertasLayer";
@@ -57,6 +58,9 @@ const REFRESCO_VECINO_MS = 60_000;
 export default function MapaCliente({
   miLote,
   oficios,
+  soloOficios,
+  oficiosDe,
+  rubro,
   verSos,
   detalleLotes,
 }: {
@@ -64,6 +68,12 @@ export default function MapaCliente({
   miLote: string | null;
   /** Oficios publicados, ubicados por la manzana de su dueño. */
   oficios: OficioPin[];
+  /** Se llegó desde Oficios: arranca mostrando solo manzanas y oficios. */
+  soloOficios: boolean;
+  /** Manzana de un oficio: el mapa va ahí y abre su lista. */
+  oficiosDe: string | null;
+  /** Rubro elegido en Oficios: los oficios ya vienen filtrados. */
+  rubro: string | null;
   /** Guardia y admin: capa de alertas SOS de todo el barrio. */
   verSos: boolean;
   /** Guardia y admin: quién vive en cada lote. */
@@ -71,9 +81,9 @@ export default function MapaCliente({
 }) {
   const [layers, setLayers] = useState<Record<LayerKey, boolean>>({
     manzanas: true,
-    incidentes: true,
+    incidentes: !soloOficios,
     oficios: true,
-    alertas: verSos,
+    alertas: verSos && !soloOficios,
   });
   const [dias, setDias] = useState<number>(30);
 
@@ -128,6 +138,15 @@ export default function MapaCliente({
     );
     return () => clearInterval(id);
   }, [fetchData, verSos]);
+
+  // Viniendo de un oficio, lo que importa es el mapa: bajar hasta él.
+  useEffect(() => {
+    if (oficiosDe) {
+      document
+        .getElementById("mapa-barrio")
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [oficiosDe]);
 
   // Datos de "tu casa" para el link de cómo llegar.
   useEffect(() => {
@@ -223,6 +242,34 @@ export default function MapaCliente({
           Buscá un lote, ubicá tu casa y mirá lo que pasó cerca.
         </p>
       </div>
+
+      {soloOficios && (
+        <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-indigo-200 bg-indigo-50 p-4">
+          <p className="flex-1 min-w-[12rem] text-base text-indigo-900">
+            {rubro ? (
+              <>
+                🧰 Mostrando solo oficios de <strong>{rubro}</strong>
+              </>
+            ) : (
+              <>🧰 Oficios de los vecinos, por manzana</>
+            )}
+          </p>
+          {rubro && (
+            <Link
+              href="/mapa?capa=oficios"
+              className="min-h-[44px] inline-flex items-center px-4 rounded-xl bg-white border-2 border-indigo-300 text-indigo-800 text-base font-semibold hover:bg-indigo-100"
+            >
+              Ver todos
+            </Link>
+          )}
+          <Link
+            href="/oficios"
+            className="min-h-[44px] inline-flex items-center px-4 rounded-xl bg-white border-2 border-indigo-300 text-indigo-800 text-base font-semibold hover:bg-indigo-100"
+          >
+            ← Volver a Oficios
+          </Link>
+        </div>
+      )}
 
       {/* SOS activos: para la guardia, arriba de todo y con acceso directo */}
       {verSos && alertasActivas.length > 0 && (
@@ -365,7 +412,10 @@ export default function MapaCliente({
       </div>
 
       {/* Mapa */}
-      <div className="relative h-[65dvh] min-h-[420px] lg:h-[620px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-gray-100">
+      <div
+        id="mapa-barrio"
+        className="relative h-[65dvh] min-h-[420px] lg:h-[620px] rounded-2xl overflow-hidden border border-gray-200 shadow-sm bg-gray-100"
+      >
         <MapView
           showManzanas={layers.manzanas}
           showIncidentes={layers.incidentes}
@@ -374,6 +424,7 @@ export default function MapaCliente({
           incidentes={incidentes}
           alertas={alertas}
           oficios={oficios}
+          oficiosDe={oficiosDe}
           detalleLotes={detalleLotes}
           miLote={miLote}
           foco={foco}
