@@ -35,8 +35,8 @@ export async function POST(req: NextRequest, { params }: Params) {
   });
 
   void enviarPushSoloAdmin({
-    title: "Reportaron un problema con un oficio",
-    body: `Sobre "${oficio.titulo}". Revisalo en el panel de oficios.`,
+    title: "Reportaron un problema en Oficios y servicios",
+    body: `Sobre "${oficio.titulo}". Revisalo en el panel de Oficios y servicios.`,
     url: "/admin/oficios",
     tag: "oficios-reportes",
   });

@@ -28,7 +28,7 @@ import TarjetaPromo from "@/components/oficios/TarjetaPromo";
 import { BorrarPromo, CargarPromo } from "@/components/oficios/PromoDueno";
 import { habilitacionPromo } from "@/lib/promosServer";
 
-export const metadata = { title: "Oficio" };
+export const metadata = { title: "Oficios y servicios" };
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -111,7 +111,7 @@ export default async function OficioPage({ params, searchParams }: Props) {
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
       <div>
         <Link href="/oficios" className="text-gray-500 hover:text-gray-600 text-sm">
-          ← Oficios
+          ← Oficios y servicios
         </Link>
         <p className="mt-2 text-sm font-semibold text-blue-700">
           {GRUPO_OFICIO[oficio.categoria.grupo].emoji} {oficio.categoria.nombre}
@@ -207,7 +207,7 @@ export default async function OficioPage({ params, searchParams }: Props) {
             esDueno
               ? promo
                 ? "📤 Compartir mi promo"
-                : "📤 Compartir mi oficio"
+                : "📤 Compartir mi publicación"
               : "📤 Compartir"
           }
           ayuda={

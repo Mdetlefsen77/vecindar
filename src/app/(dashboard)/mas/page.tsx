@@ -14,7 +14,7 @@ const SECCIONES_MAS: { seccion: Seccion; descripcion: string }[] = [
   { seccion: "incidentes", descripcion: "Robos y hechos de seguridad" },
   { seccion: "requerimientos", descripcion: "Reclamos para arreglar algo" },
   { seccion: "mascotas", descripcion: "Perdidas y encontradas" },
-  { seccion: "oficios", descripcion: "Servicios de los vecinos" },
+  { seccion: "oficios", descripcion: "Plomeros, clases, tortas y más" },
   { seccion: "partes", descripcion: "Lo que reporta la guardia" },
 ];
 

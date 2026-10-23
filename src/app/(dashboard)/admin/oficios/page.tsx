@@ -8,7 +8,7 @@ import { GRUPO_OFICIO, nombreCorto } from "@/lib/oficios";
 import { EditarFotosAdmin, ModerarOficio } from "@/components/oficios/AccionesOficio";
 import { CategoriasAdmin, ResolverReporte } from "./Gestion";
 
-export const metadata = { title: "Oficios — administración" };
+export const metadata = { title: "Oficios y servicios — administración" };
 
 function fecha(d: Date): string {
   return d.toLocaleDateString("es-AR", {
@@ -65,7 +65,7 @@ export default async function AdminOficiosPage() {
         <Link href="/admin" className="text-gray-500 hover:text-gray-600 text-sm">
           ← Admin
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900 mt-1">Oficios</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mt-1">Oficios y servicios</h1>
         <p className="text-sm text-gray-500">
           {publicados} publicados · {pendientes.length} para revisar ·{" "}
           {reportes.length} reportes abiertos ·{" "}

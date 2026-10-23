@@ -48,7 +48,6 @@ export function textoRecomendados(n: number): string {
   return n === 1 ? "Recomendado por 1 vecino" : `Recomendado por ${n} vecinos`;
 }
 
-/** Mensaje precargado del botón "Contactar por WhatsApp". */
 /** "En tu manzana", "A 1 cuadra", "A 4 cuadras". */
 export function textoCercania(cuadras: number): string {
   if (cuadras === 0) return "En tu manzana";
@@ -66,6 +65,7 @@ export function linkMapaOficios({
   return `/mapa?${q}`;
 }
 
+/** Mensaje precargado del botón "Contactar por WhatsApp". */
 export function mensajeContacto(titulo: string): string {
   return `Hola! Te escribo desde Vecindar por tu servicio de ${titulo}.`;
 }

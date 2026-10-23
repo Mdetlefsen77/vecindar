@@ -16,8 +16,10 @@ export type Seccion =
   | "partes";
 
 export interface EstiloSeccion {
-  /** Nombre corto, el que va en botones y menús. */
+  /** Nombre de la sección: títulos, menús y "Más". */
   label: string;
+  /** Si el nombre no entra en el botón de Inicio o en el mapa, el corto. */
+  corto?: string;
   href: string;
   /** Fondo suave + ícono en color: el cuadradito del ícono. */
   chip: string;
@@ -57,7 +59,8 @@ export const SECCIONES: Record<Seccion, EstiloSeccion> = {
     activo: "bg-teal-50 text-teal-800 border-teal-300",
   },
   oficios: {
-    label: "Oficios",
+    label: "Oficios y servicios",
+    corto: "Servicios",
     href: "/oficios",
     chip: "bg-indigo-100 text-indigo-700",
     texto: "text-indigo-700",

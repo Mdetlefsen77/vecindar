@@ -12,7 +12,7 @@ const TIPO_LABEL: Record<string, string> = {
   ALERTA_PANICO: "Alertas de pánico",
   RESUMEN: "Resúmenes",
   PARTE_TURNO: "Partes de guardia",
-  OFICIO: "Oficios",
+  OFICIO: "Oficios y servicios",
 };
 
 // HU-11 — métricas del puente (Fase 0/1: sin outbox, todo lo compartido es
