@@ -11,6 +11,11 @@ import {
   Description,
 } from "@headlessui/react";
 import { AVISO_SUSCRIPCION } from "@/lib/prueba";
+import { formatoPesos } from "@/lib/cobranza";
+import {
+  DESCUENTO_VECINO_INVITADO,
+  MESES_DESCUENTO,
+} from "@/lib/crecimiento/beneficios";
 
 interface Lote {
   id: number;
@@ -25,9 +30,14 @@ function BannerInvitacion() {
   const searchParams = useSearchParams();
   if (searchParams.get("invitacion") !== "1") return null;
   return (
-    <div className="rounded-md bg-blue-50 border border-blue-200 p-3 text-center">
-      <p className="text-sm text-blue-800">
+    <div className="rounded-xl bg-blue-50 border-2 border-blue-200 p-4 text-center space-y-1">
+      <p className="text-base font-semibold text-blue-900">
         👋 Te invitó un vecino a sumarse a Vecindar
+      </p>
+      <p className="text-base text-blue-800">
+        🎁 Tenés{" "}
+        <strong>{formatoPesos(DESCUENTO_VECINO_INVITADO)} de descuento</strong>{" "}
+        en tus {MESES_DESCUENTO} primeros aportes.
       </p>
     </div>
   );
