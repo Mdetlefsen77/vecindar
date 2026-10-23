@@ -11,10 +11,13 @@ import {
   mesesVencidos,
   deudaEstimada,
   formatoPesos,
+  periodoActual,
   periodoLabel,
   type EstadoCobranza,
 } from "@/lib/cobranza";
 import DatosPago from "@/components/cobranza/DatosPago";
+import { invitacionesConPrimerPago } from "@/lib/crecimiento/beneficiosServer";
+import { descuentosDelPeriodo, sumarMeses } from "@/lib/crecimiento/beneficios";
 
 export const metadata = { title: "Mi suscripción" };
 
@@ -30,7 +33,8 @@ const ESTADO_UI: Record<
   vencida: {
     titulo: "Vencida",
     clase: "border-amber-300 bg-amber-50 text-amber-900",
-    detalle: "Tu aporte mensual venció. Abajo están los datos para regularizarlo.",
+    detalle:
+      "Tu aporte mensual venció. Abajo están los datos para regularizarlo.",
   },
   sin_datos: {
     titulo: "Sin registro",
@@ -57,18 +61,28 @@ export default async function MiSuscripcionPage() {
   const session = await auth();
   if (!session?.user) redirect("/login");
 
-  const usuario = await prisma.usuario.findUnique({
-    where: { id: getUserId(session) },
-    select: {
-      suscripcion: {
-        select: { vigenteHasta: true, montoMensual: true, exento: true },
+  const usuarioId = getUserId(session);
+  const [usuario, invitaciones] = await Promise.all([
+    prisma.usuario.findUnique({
+      where: { id: usuarioId },
+      select: {
+        suscripcion: {
+          select: { vigenteHasta: true, montoMensual: true, exento: true },
+        },
+        pagos: {
+          orderBy: { periodo: "desc" },
+          select: {
+            id: true,
+            periodo: true,
+            monto: true,
+            metodo: true,
+            fecha: true,
+          },
+        },
       },
-      pagos: {
-        orderBy: { periodo: "desc" },
-        select: { id: true, periodo: true, monto: true, metodo: true, fecha: true },
-      },
-    },
-  });
+    }),
+    invitacionesConPrimerPago(),
+  ]);
 
   const suscripcion = usuario?.suscripcion ?? null;
   const pagos = usuario?.pagos ?? [];
@@ -83,6 +97,23 @@ export default async function MiSuscripcionPage() {
   const totalPagado = pagos.reduce((acc, p) => acc + p.monto, 0);
   const mostrarComoPagar = estado === "vencida" || estado === "sin_datos";
 
+  // Descuentos por invitar vecinos (o por haber sido invitado), este mes y el
+  // próximo. Los aplica tesorería al cobrar.
+  const periodoHoy = periodoActual(ahora);
+  const descuentos = suscripcion?.exento
+    ? []
+    : [periodoHoy, sumarMeses(periodoHoy, 1)].flatMap((periodo) => {
+        const propios = descuentosDelPeriodo(
+          invitaciones,
+          periodo,
+          periodoHoy,
+        ).filter((d) => d.usuarioId === usuarioId);
+        const monto = propios.reduce((t, d) => t + d.monto, 0);
+        return monto > 0
+          ? [{ periodo, monto, motivos: propios.map((d) => d.motivo) }]
+          : [];
+      });
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
       <div>
@@ -91,6 +122,33 @@ export default async function MiSuscripcionPage() {
           Aporte mensual del barrio: {formatoPesos(cuota)}
         </p>
       </div>
+
+      {descuentos.length > 0 && (
+        <section className="rounded-2xl border-2 border-yellow-300 bg-yellow-50 p-4 space-y-2">
+          <h2 className="text-lg font-bold text-gray-900">
+            🎁 Tus descuentos
+          </h2>
+          <ul className="space-y-1.5">
+            {descuentos.map((d) => (
+              <li key={d.periodo} className="text-base text-gray-800">
+                <span className="font-semibold">
+                  {periodoLabel(d.periodo)}:
+                </span>{" "}
+                pagás{" "}
+                <span className="font-bold text-green-700">
+                  {formatoPesos(Math.max(0, cuota - d.monto))}
+                </span>{" "}
+                <span className="text-gray-500 line-through">
+                  {formatoPesos(cuota)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-gray-600">
+            Tesorería te lo descuenta al cobrar.
+          </p>
+        </section>
+      )}
 
       {/* Estado actual */}
       <div className={`rounded-2xl border-2 p-4 ${ui.clase}`}>

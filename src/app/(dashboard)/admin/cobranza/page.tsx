@@ -9,9 +9,16 @@ import {
   mesesVencidos,
   deudaEstimada,
   periodoActual,
+  periodoLabel,
   formatoPesos,
   type EstadoCobranza,
 } from "@/lib/cobranza";
+import { invitacionesConPrimerPago } from "@/lib/crecimiento/beneficiosServer";
+import {
+  descuentosDelPeriodo,
+  sumarMeses,
+  totalPorUsuario,
+} from "@/lib/crecimiento/beneficios";
 import Link from "next/link";
 import { Suspense } from "react";
 import CobranzaFiltros from "./CobranzaFiltros";
@@ -46,48 +53,92 @@ export default async function AdminCobranzaPage({
       }
     : {};
 
-  const [usuarios, cobradoMes, cobradoAnio] = await Promise.all([
-    prisma.usuario.findMany({
-      where: { verificado: true, ...filtroTexto },
-      select: {
-        id: true,
-        nombre: true,
-        apellido: true,
-        email: true,
-        telefono: true,
-        rol: true,
-        _count: { select: { pushSubscriptions: true } },
-        lote: {
-          select: {
-            numero: true,
-            manzana: { select: { numero: true } },
+  const proximo = sumarMeses(periodo, 1);
+  const [usuarios, cobradoMes, cobradoAnio, invitaciones, pagosConDescuento] =
+    await Promise.all([
+      prisma.usuario.findMany({
+        where: { verificado: true, ...filtroTexto },
+        select: {
+          id: true,
+          nombre: true,
+          apellido: true,
+          email: true,
+          telefono: true,
+          rol: true,
+          _count: { select: { pushSubscriptions: true } },
+          lote: {
+            select: {
+              numero: true,
+              manzana: { select: { numero: true } },
+            },
+          },
+          suscripcion: {
+            select: {
+              vigenteHasta: true,
+              montoMensual: true,
+              exento: true,
+              notaInterna: true,
+            },
+          },
+          pagos: {
+            orderBy: { periodo: "desc" },
+            take: 1,
+            select: { id: true, periodo: true, monto: true, fecha: true },
           },
         },
-        suscripcion: {
-          select: {
-            vigenteHasta: true,
-            montoMensual: true,
-            exento: true,
-            notaInterna: true,
-          },
-        },
-        pagos: {
-          orderBy: { periodo: "desc" },
-          take: 1,
-          select: { id: true, periodo: true, monto: true, fecha: true },
-        },
+        orderBy: [{ apellido: "asc" }, { nombre: "asc" }],
+      }),
+      prisma.pago.aggregate({
+        _sum: { monto: true },
+        where: { periodo },
+      }),
+      prisma.pago.aggregate({
+        _sum: { monto: true },
+        where: { periodo: { startsWith: `${anio}-` } },
+      }),
+      invitacionesConPrimerPago(),
+      prisma.pago.findMany({
+        where: { periodo: { in: [periodo, proximo] } },
+        select: { usuarioId: true, periodo: true, monto: true },
+      }),
+    ]);
+
+  // Descuentos por invitar vecinos, este mes y el próximo, para aplicar a
+  // mano al cobrar (de los usuarios que muestra la búsqueda). Si ese mes ya
+  // está pago se marca, para no descontarlo dos veces.
+  const pagado = new Map(
+    pagosConDescuento.map((p) => [`${p.usuarioId}:${p.periodo}`, p.monto]),
+  );
+  const cuotas = new Map(
+    usuarios.map((u) => [
+      u.id,
+      {
+        nombre: nombreCompleto(u),
+        cuota: montoDeSuscripcion(u.suscripcion),
+        exento: u.suscripcion?.exento ?? false,
       },
-      orderBy: [{ apellido: "asc" }, { nombre: "asc" }],
+    ]),
+  );
+  const descuentosPorMes = [periodo, proximo].map((p) => ({
+    periodo: p,
+    filas: [
+      ...totalPorUsuario(descuentosDelPeriodo(invitaciones, p, periodo)),
+    ].flatMap(([usuarioId, d]) => {
+      const u = cuotas.get(usuarioId);
+      if (!u || u.exento) return [];
+      return [
+        {
+          usuarioId,
+          nombre: u.nombre,
+          motivos: d.motivos,
+          descuento: Math.min(d.monto, u.cuota),
+          cobrar: Math.max(0, u.cuota - d.monto),
+          cuota: u.cuota,
+          pagado: pagado.get(`${usuarioId}:${p}`) ?? null,
+        },
+      ];
     }),
-    prisma.pago.aggregate({
-      _sum: { monto: true },
-      where: { periodo },
-    }),
-    prisma.pago.aggregate({
-      _sum: { monto: true },
-      where: { periodo: { startsWith: `${anio}-` } },
-    }),
-  ]);
+  }));
 
   const filas: FilaCobranza[] = usuarios.map((u) => ({
     id: u.id,
@@ -202,6 +253,67 @@ export default async function AdminCobranzaPage({
           </div>
           <RecordarTodos conPush={deudoresConPush} />
         </div>
+      )}
+
+      {/* Descuentos por invitar vecinos: los aplica tesorería al cobrar */}
+      {descuentosPorMes.some((m) => m.filas.length > 0) && (
+        <section className="rounded-xl border-2 border-yellow-300 bg-yellow-50 p-4 space-y-3">
+          <div>
+            <h2 className="text-base font-bold text-gray-900">
+              🎁 Descuentos por invitar vecinos
+            </h2>
+            <p className="text-sm text-gray-700">
+              Aplicalos al cobrar: el monto de la tabla de abajo no los incluye.
+            </p>
+          </div>
+          {descuentosPorMes.map(
+            (m) =>
+              m.filas.length > 0 && (
+                <div key={m.periodo}>
+                  <h3 className="text-sm font-semibold text-gray-800 mb-1">
+                    {periodoLabel(m.periodo)}
+                  </h3>
+                  <ul className="divide-y divide-yellow-200 rounded-lg bg-white border border-yellow-200">
+                    {m.filas.map((f) => (
+                      <li
+                        key={f.usuarioId}
+                        className="flex flex-wrap items-start justify-between gap-2 px-3 py-2 text-sm"
+                      >
+                        <div className="min-w-0">
+                          <p className="font-semibold text-gray-900">
+                            {f.nombre}
+                          </p>
+                          {f.motivos.map((motivo) => (
+                            <p key={motivo} className="text-gray-600">
+                              {motivo}
+                            </p>
+                          ))}
+                        </div>
+                        {f.pagado !== null ? (
+                          <p className="text-right whitespace-nowrap text-gray-600">
+                            ✓ Ya pagó {formatoPesos(f.pagado)}
+                          </p>
+                        ) : (
+                          <p className="text-right whitespace-nowrap">
+                            <span className="text-green-700 font-semibold">
+                              −{formatoPesos(f.descuento)}
+                            </span>
+                            <br />
+                            <span className="text-gray-900 font-bold">
+                              Cobrar {formatoPesos(f.cobrar)}
+                            </span>{" "}
+                            <span className="text-gray-400 line-through">
+                              {formatoPesos(f.cuota)}
+                            </span>
+                          </p>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ),
+          )}
+        </section>
       )}
 
       <div className="flex flex-wrap items-center gap-2 justify-between">

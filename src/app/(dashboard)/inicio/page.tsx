@@ -5,6 +5,13 @@ import { getUserId } from "@/lib/api/guard";
 import Link from "next/link";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
+import { invitacionesConPrimerPago } from "@/lib/crecimiento/beneficiosServer";
+import { descuentosDelPeriodo, sumarMeses } from "@/lib/crecimiento/beneficios";
+import {
+  montoDeSuscripcion,
+  periodoActual,
+  periodoLabel,
+} from "@/lib/cobranza";
 import { RONDA_LABEL, TURNOS, fechaParteLabel } from "@/lib/partes";
 import { textoPrecioPromo } from "@/lib/oficios";
 import { textoVencimiento, tiempoRelativo } from "@/lib/fechas";
@@ -77,7 +84,7 @@ export default async function InicioPage() {
     pedidosAbiertos,
     mascotasPerdidas,
     codigoInvitacion,
-    invitados,
+    invitaciones,
     ultimoParte,
     oficiosPublicados,
     promos,
@@ -88,7 +95,11 @@ export default async function InicioPage() {
   ] = await Promise.all([
     prisma.usuario.findUnique({
       where: { id: usuarioId },
-      select: { createdAt: true, vistasSecciones: true },
+      select: {
+        createdAt: true,
+        vistasSecciones: true,
+        suscripcion: { select: { montoMensual: true, exento: true } },
+      },
     }),
     prisma.incidente.findFirst({
       where: filtroIncidentes,
@@ -98,7 +109,9 @@ export default async function InicioPage() {
         tipo: true,
         ubicacionText: true,
         createdAt: true,
-        lote: { select: { numero: true, manzana: { select: { numero: true } } } },
+        lote: {
+          select: { numero: true, manzana: { select: { numero: true } } },
+        },
       },
     }),
     prisma.incidente.count({ where: filtroIncidentes }),
@@ -109,7 +122,7 @@ export default async function InicioPage() {
     // Se resuelve acá y no en el cliente: si el cuadro "Invitá a un vecino"
     // aparece después de cargar, empuja el resto de la página (CLS).
     obtenerOCrearCodigo(usuarioId),
-    prisma.usuario.count({ where: { invitadoPorId: usuarioId } }),
+    invitacionesConPrimerPago(),
     prisma.parteTurno.findFirst({
       orderBy: [{ fecha: "desc" }, { createdAt: "desc" }],
       select: {
@@ -227,7 +240,10 @@ export default async function InicioPage() {
         : { estado: "Ninguna perdida", tono: "neutro", nuevos: nuevasMascotas },
     oficios:
       promosActivas > 0
-        ? { estado: `🔥 ${plural(promosActivas, "promo", "promos")}`, tono: "activo" }
+        ? {
+            estado: `🔥 ${plural(promosActivas, "promo", "promos")}`,
+            tono: "activo",
+          }
         : {
             estado:
               oficiosPublicados > 0
@@ -240,6 +256,20 @@ export default async function InicioPage() {
     seccion,
     ...estadoPorSeccion[seccion],
   }));
+
+  // Beneficio por invitar: cuántos invitó, cuántos ya pagaron, y el descuento
+  // que ya ganó para este mes o el próximo.
+  const misInvitados = invitaciones.filter((i) => i.invitaId === usuarioId);
+  const periodoHoy = periodoActual(ahora);
+  const miDescuento =
+    [periodoHoy, sumarMeses(periodoHoy, 1)]
+      .map((periodo) => ({
+        mes: periodoLabel(periodo),
+        monto: descuentosDelPeriodo(invitaciones, periodo, periodoHoy)
+          .filter((d) => d.usuarioId === usuarioId)
+          .reduce((t, d) => t + d.monto, 0),
+      }))
+      .find((d) => d.monto > 0) ?? null;
 
   return (
     <div className="px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-6 space-y-3 sm:space-y-4 max-w-7xl mx-auto">
@@ -274,7 +304,9 @@ export default async function InicioPage() {
                 ? "Tu alerta SOS fue enviada a la guardia"
                 : "La guardia recibió tu alerta SOS"}
             <span className="block text-sm font-normal text-red-100">
-              {esGestorPanico ? "Tocá para atenderla" : "Tocá para ver el estado"}
+              {esGestorPanico
+                ? "Tocá para atenderla"
+                : "Tocá para ver el estado"}
             </span>
           </span>
           <span aria-hidden="true" className="text-2xl">
@@ -359,7 +391,9 @@ export default async function InicioPage() {
                   <span className="text-xl font-bold text-gray-900 leading-tight">
                     {estilo.corto ?? estilo.label}
                   </span>
-                  <span className={`text-base leading-tight ${TONO_ESTADO[a.tono]}`}>
+                  <span
+                    className={`text-base leading-tight ${TONO_ESTADO[a.tono]}`}
+                  >
                     {a.estado}
                   </span>
                 </Link>
@@ -372,7 +406,10 @@ export default async function InicioPage() {
       {/* Avisos: siempre visible, aunque esté vacío, para que se descubra. */}
       <section className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="flex items-center justify-between gap-3 px-4 sm:px-5 py-3">
-          <Link href="/avisos" className="flex items-center gap-2 font-bold text-gray-900 text-base">
+          <Link
+            href="/avisos"
+            className="flex items-center gap-2 font-bold text-gray-900 text-base"
+          >
             <span
               className={`w-8 h-8 rounded-lg flex items-center justify-center ${SECCIONES.avisos.chip}`}
             >
@@ -419,6 +456,18 @@ export default async function InicioPage() {
         )}
       </section>
 
+      <InvitarVecino
+        codigo={codigoInvitacion}
+        registros={misInvitados.length}
+        sumados={misInvitados.filter((i) => i.primerPago).length}
+        cuota={
+          usuarioConVistas?.suscripcion?.exento
+            ? null
+            : montoDeSuscripcion(usuarioConVistas?.suscripcion)
+        }
+        descuento={miDescuento}
+      />
+
       {ultimoParte && (
         <Link
           href={`/partes/${ultimoParte.id}`}
@@ -456,8 +505,13 @@ export default async function InicioPage() {
       {promos.length > 0 && (
         <section className="bg-orange-50 rounded-2xl border border-orange-200 overflow-hidden">
           <div className="flex items-center justify-between px-4 sm:px-5 pt-3">
-            <h2 className="font-semibold text-gray-900">🔥 Promos del barrio</h2>
-            <Link href="/oficios" className="text-sm font-semibold text-orange-700">
+            <h2 className="font-semibold text-gray-900">
+              🔥 Promos del barrio
+            </h2>
+            <Link
+              href="/oficios"
+              className="text-sm font-semibold text-orange-700"
+            >
               Ver todas
             </Link>
           </div>
@@ -473,7 +527,10 @@ export default async function InicioPage() {
                     <span className="block font-medium text-gray-900 truncate">
                       {p.titulo}
                       {precio && (
-                        <span className="font-semibold text-orange-800"> · {precio}</span>
+                        <span className="font-semibold text-orange-800">
+                          {" "}
+                          · {precio}
+                        </span>
                       )}
                     </span>
                     <span className="block text-sm text-gray-600 truncate">
@@ -486,8 +543,6 @@ export default async function InicioPage() {
           </ul>
         </section>
       )}
-
-      <InvitarVecino codigo={codigoInvitacion} registros={invitados} />
     </div>
   );
 }
