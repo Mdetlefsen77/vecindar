@@ -50,6 +50,8 @@ interface MapViewProps {
   incidentes?: IncidentePin[];
   alertas?: AlertaPin[];
   oficios?: OficioPin[];
+  /** Manzana a la que vuela el mapa para abrir su lista de oficios. */
+  oficiosDe?: string | null;
   /** Guardia y admin: estado de cada lote y quién vive ahí. */
   detalleLotes?: boolean;
   /** Número del lote del usuario, para pintarlo como "Tu casa". */
@@ -65,6 +67,7 @@ export default function MapView({
   incidentes = [],
   alertas = [],
   oficios = [],
+  oficiosDe = null,
   detalleLotes = false,
   miLote = null,
   foco = null,
@@ -168,6 +171,19 @@ export default function MapView({
     }
   }, [map, foco]);
 
+  // Venir desde un oficio: centrar su manzana (OficiosLayer abre la lista).
+  useEffect(() => {
+    if (!map || !oficiosDe) return;
+    const manzana = MANZANAS_CONFIG.find(
+      (m) => m.tipo === "manzana" && m.numero === oficiosDe,
+    );
+    if (manzana) {
+      map.flyTo(L.polygon(manzana.bounds).getBounds().getCenter(), 17, {
+        duration: 0.8,
+      });
+    }
+  }, [map, oficiosDe]);
+
   const handleManzanaClick = useCallback((manzana: ManzanaConfig) => {
     // Toggle: si ya estaba seleccionada, deselecciona
     setManzanaSeleccionada((prev) =>
@@ -197,7 +213,9 @@ export default function MapView({
         destacado={foco?.lote ?? null}
       />
       {showIncidentes && <IncidentesLayer map={map} incidentes={incidentes} />}
-      {showOficios && <OficiosLayer map={map} oficios={oficios} />}
+      {showOficios && (
+        <OficiosLayer map={map} oficios={oficios} abrir={oficiosDe} />
+      )}
       {showAlertas && <AlertasLayer map={map} alertas={alertas} />}
     </>
   );
