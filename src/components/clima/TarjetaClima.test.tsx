@@ -445,4 +445,30 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("Llevá paraguas");
     expect(html).not.toContain("null");
   });
+
+  it("I-12 daily con mínima null omite solo la mínima", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [null],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Mín");
+    expect(html).not.toContain("null");
+  });
 });
