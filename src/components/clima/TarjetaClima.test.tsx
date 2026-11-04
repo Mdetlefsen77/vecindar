@@ -106,4 +106,30 @@ describe("TarjetaClima", () => {
 
     expect(fetchMock.mock.calls[0][1].next.revalidate).toBe(1800);
   });
+
+  it("U-3 fetch recibe un signal que se aborta a los 3 s", async () => {
+    vi.useFakeTimers();
+    try {
+      const fetchMock = vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+          }),
+          { status: 200 },
+        ),
+      );
+      vi.stubGlobal("fetch", fetchMock);
+
+      await TarjetaClima();
+
+      const signal: AbortSignal = fetchMock.mock.calls[0][1].signal;
+      expect(signal).toBeInstanceOf(AbortSignal);
+      vi.advanceTimersByTime(2999);
+      expect(signal.aborted).toBe(false);
+      vi.advanceTimersByTime(1);
+      expect(signal.aborted).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
 });
