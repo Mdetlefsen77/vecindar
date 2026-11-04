@@ -27,4 +27,11 @@ describe("estadoDelCielo", () => {
     expect(estado?.texto).toBe(texto);
     expect(estado?.icono.length).toBeGreaterThan(0);
   });
+
+  it.each([4, 44, 46, 47, 49, 50, 58, 60, 68, 70, 78, 79, 83, 84, 87, 94, 100])(
+    "U-7 código desconocido %i → sin estado",
+    (codigo) => {
+      expect(estadoDelCielo(codigo)).toBeNull();
+    },
+  );
 });
