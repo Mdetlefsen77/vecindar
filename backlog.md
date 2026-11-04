@@ -29,7 +29,7 @@ Como **vecino** quiero **tocar la tarjeta del clima y ver el pronóstico de los 
 - `/clima` exige sesión: sin sesión, redirige a `/login`.
 - Si el servicio falla, `/clima` muestra un mensaje claro ("No pudimos traer el pronóstico, probá más tarde") y un botón para volver al inicio.
 
-- _A refinar:_ `TarjetaClima` hoy pide `forecast_days=1`; el pronóstico necesita más días (¿misma consulta con `forecast_days=4`, o una aparte para `/clima`?). Reusar `estadoDelCielo` y la validación con `Number.isFinite` de HU-02.
+- _A refinar:_ `TarjetaClima` hoy pide `forecast_days=1`; el pronóstico necesita más días (¿misma consulta con `forecast_days=4`, o una aparte para `/clima`?). Reusar `estadoDelCielo` y la validación con `Number.isFinite` de HU-02. → Resuelto en `stories/HU-03.md`: consulta propia de `/clima` con `forecast_days=4`.
 
 ## HU-04 · Aviso de clima fuerte en el inicio
 Como **vecino** quiero **ver un cartel destacado cuando viene tormenta, granizo, viento fuerte o calor extremo** para **prepararme a tiempo (guardar el auto, entrar cosas, tomar agua)**.
@@ -37,7 +37,7 @@ Como **vecino** quiero **ver un cartel destacado cuando viene tormenta, granizo,
 - Sin clima fuerte en el pronóstico, no hay cartel.
 - El cartel no usa el rojo de emergencias: ese color queda para SOS y pánico.
 
-- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día.
+- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día. La consulta de `/clima` (HU-03) ya trae 4 días con `weather_code`; faltarían las ráfagas.
 
 ## HU-05 · Notificación push por clima fuerte
 Como **vecino** quiero **recibir una notificación en el celular cuando se espera clima fuerte** para **enterarme aunque no abra la app**.
