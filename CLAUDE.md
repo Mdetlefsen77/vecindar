@@ -1,10 +1,10 @@
 ## Proyecto
 - **Stack:** TypeScript 5 (strict) · Next.js 16.1.6 (App Router) + React 19.2.3 · Prisma 7.4.1 + PostgreSQL · NextAuth 5 beta · zod 4 · npm (`package-lock.json`)
 - **Instalar:** `npm install`
-- **Tests:** pendiente (sin runner ni tests; se monta en la primera historia, vitest sugerido en `docs/proposal-reportes.md:199`) · **un test:** pendiente · **por nombre:** pendiente
+- **Tests:** `npm test` (vitest 4, `vitest run`, una sola corrida; no carga `.env`) · **un test:** `npx vitest run <archivo>` · **por nombre:** `npx vitest run -t "<nombre>"`
 - **Typecheck:** `npx tsc --noEmit --incremental false` · **Lint:** `npm run lint` · **Build:** `npm run build` (ver Efectos)
 - **Levantar:** `npm run dev` (puerto 3000; requiere `DATABASE_URL` en `.env`)
-- **Tests en:** pendiente · helpers: pendiente
+- **Tests en:** junto al código, `src/**/*.test.{ts,tsx}` · config `vitest.config.ts` (alias `@` → `src`, entorno node) · helpers: ninguno aún
 - **Git:** principal `main` · ramas `feat/`, `fix/`, `chore/` · remoto `origin` (github.com/Mdetlefsen77/vecindar) · host github · integración `pr → main` · commits conventional commits con scope opcional (`feat(mapa): …`) · tags semver del producto (`v0.1.0`, uno por merge de historia)
 - **Efectos:** ⚠ `npm run build` corre `prisma generate` (reescribe `src/generated/`, versionado) y `scripts/migrar.mjs` → `prisma migrate deploy` contra la DB del `.env` si no hay `VERCEL_ENV` (preview/local = DB de prod) · ⚠ `npx tsx src/scripts/seed-*.ts` escribe en la DB; `seed-lotes.ts --reset` borra manzanas, lotes y requerimientos · ⚠ `npm run format` reescribe todo el repo · ⚠ `/api/cron/*` escriben en la DB y mandan push
 - **Lint solo avisa:** `no-unused-vars`, `no-unused-expressions`, `jsx-a11y/*`, `import/*` son `warn`
