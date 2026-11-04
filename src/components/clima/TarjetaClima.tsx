@@ -46,6 +46,11 @@ export async function TarjetaClima() {
           Máx {dia.max}°C · Mín {dia.min}°C · Lluvia {dia.lluvia}%
         </p>
       )}
+      {dia && dia.lluvia >= 50 && (
+        <p className="text-xl font-bold mt-1">
+          <span aria-hidden="true">☔</span> Llevá paraguas
+        </p>
+      )}
       <p className="text-xs text-sky-800 mt-1">Datos: Open-Meteo</p>
     </div>
   );
