@@ -6,7 +6,9 @@ export async function TarjetaClima() {
     );
     if (!res.ok) return null;
     const data = await res.json();
-    temperatura = Math.round(data.current.temperature_2m);
+    const valor = data.current.temperature_2m;
+    if (typeof valor !== "number") return null;
+    temperatura = Math.round(valor);
   } catch {
     return null;
   }

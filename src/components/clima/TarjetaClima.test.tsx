@@ -56,4 +56,19 @@ describe("TarjetaClima", () => {
 
     expect(renderToStaticMarkup(tarjeta)).toBe("");
   });
+
+  it("I-4 sin temperatura numérica renderiza vacío, sin NaN", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ current: { weather_code: 2 } }), {
+          status: 200,
+        }),
+      ),
+    );
+
+    const tarjeta = await TarjetaClima();
+
+    expect(renderToStaticMarkup(tarjeta)).toBe("");
+  });
 });
