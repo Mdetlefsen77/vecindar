@@ -621,4 +621,47 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("Mín");
     expect(html).not.toContain("Lluvia");
   });
+
+  it("I-19 daily con máxima null omite solo la máxima", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [null],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Máx");
+  });
+
+  it("I-20 temperatura actual null oculta la tarjeta", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: null, weather_code: 2 },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toBe("");
+  });
 });
