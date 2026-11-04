@@ -30,6 +30,33 @@ describe("TarjetaClima", () => {
     expect(html).toContain("Datos: Open-Meteo");
   });
 
+  it("I-6 muestra máxima, mínima y lluvia del día además de lo actual", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Parcialmente nublado");
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+  });
+
   it("I-2 con un error de red renderiza vacío y no lanza", async () => {
     vi.stubGlobal(
       "fetch",
