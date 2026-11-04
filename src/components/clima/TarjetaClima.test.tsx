@@ -1,6 +1,7 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { TarjetaClima } from "@/components/clima/TarjetaClima";
+import { estadoDelCielo } from "@/lib/clima";
 
 afterEach(() => {
   vi.unstubAllGlobals();
@@ -194,5 +195,28 @@ describe("TarjetaClima", () => {
     const url = new URL(String(fetchMock.mock.calls[0][0]));
     expect(url.host).toBe("api.open-meteo.com");
     expect(url.searchParams.get("apikey")).toBe("abc");
+  });
+
+  it("I-5 con un código desconocido muestra solo la temperatura", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 46 },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    for (const codigo of [0, 1, 2, 3, 45, 51, 61, 71, 95]) {
+      const estado = estadoDelCielo(codigo)!;
+      expect(html).not.toContain(estado.texto);
+      expect(html).not.toContain(estado.icono);
+    }
   });
 });

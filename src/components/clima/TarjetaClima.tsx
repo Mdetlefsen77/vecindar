@@ -1,7 +1,9 @@
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
+import { estadoDelCielo } from "@/lib/clima";
 
 export async function TarjetaClima() {
   let temperatura: number;
+  let estado: ReturnType<typeof estadoDelCielo>;
   try {
     const [lat, lng] = BARRIO_CENTER;
     const controller = new AbortController();
@@ -18,6 +20,7 @@ export async function TarjetaClima() {
     const valor = data.current.temperature_2m;
     if (typeof valor !== "number") return null;
     temperatura = Math.round(valor);
+    estado = estadoDelCielo(data.current.weather_code);
   } catch {
     return null;
   }
@@ -25,9 +28,11 @@ export async function TarjetaClima() {
   return (
     <div>
       <p>{temperatura}°C</p>
-      <p>
-        <span>⛅</span> Parcialmente nublado
-      </p>
+      {estado && (
+        <p>
+          <span>{estado.icono}</span> {estado.texto}
+        </p>
+      )}
       <p>Datos: Open-Meteo</p>
     </div>
   );
