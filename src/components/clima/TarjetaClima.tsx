@@ -4,6 +4,7 @@ import { estadoDelCielo } from "@/lib/clima";
 export async function TarjetaClima() {
   let temperatura: number;
   let estado: ReturnType<typeof estadoDelCielo>;
+  let dia: { max?: number; min?: number; lluvia?: number } | null = null;
   try {
     const [lat, lng] = BARRIO_CENTER;
     const controller = new AbortController();
@@ -12,15 +13,25 @@ export async function TarjetaClima() {
     const clave = process.env.OPEN_METEO_API_KEY;
     const apikey = clave ? `&apikey=${clave}` : "";
     const res = await fetch(
-      `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code${apikey}`,
+      `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=1&timezone=America/Argentina/Cordoba${apikey}`,
       { next: { revalidate: 1800 }, signal: controller.signal },
     );
     if (!res.ok) return null;
     const data = await res.json();
     const valor = data.current.temperature_2m;
-    if (typeof valor !== "number") return null;
+    if (!Number.isFinite(valor)) return null;
     temperatura = Math.round(valor);
     estado = estadoDelCielo(data.current.weather_code);
+    if (data.daily) {
+      const max = data.daily.temperature_2m_max?.[0];
+      const min = data.daily.temperature_2m_min?.[0];
+      const lluvia = data.daily.precipitation_probability_max?.[0];
+      dia = {
+        max: Number.isFinite(max) ? Math.round(max) : undefined,
+        min: Number.isFinite(min) ? Math.round(min) : undefined,
+        lluvia: Number.isFinite(lluvia) ? lluvia : undefined,
+      };
+    }
   } catch {
     return null;
   }
@@ -31,6 +42,22 @@ export async function TarjetaClima() {
       {estado && (
         <p className="text-2xl font-semibold mt-1">
           <span aria-hidden="true">{estado.icono}</span> {estado.texto}
+        </p>
+      )}
+      {dia && (
+        <p className="text-xl font-semibold mt-1">
+          {[
+            dia.max !== undefined && `Máx ${dia.max}°C`,
+            dia.min !== undefined && `Mín ${dia.min}°C`,
+            dia.lluvia !== undefined && `Lluvia ${dia.lluvia}%`,
+          ]
+            .filter(Boolean)
+            .join(" · ")}
+        </p>
+      )}
+      {dia && dia.lluvia !== undefined && dia.lluvia >= 50 && (
+        <p className="text-xl font-bold mt-1">
+          <span aria-hidden="true">☔</span> Llevá paraguas
         </p>
       )}
       <p className="text-xs text-sky-800 mt-1">Datos: Open-Meteo</p>

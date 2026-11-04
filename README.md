@@ -60,7 +60,7 @@ Tests: `npm test` (vitest, no carga `.env`).
 
 ### Clima del inicio (opcionales)
 
-La tarjeta del clima de `/inicio` consulta [Open-Meteo](https://open-meteo.com) desde el servidor (caché de 30 min, timeout de 3 s). Si falla, la tarjeta no se muestra.
+La tarjeta del clima de `/inicio` consulta [Open-Meteo](https://open-meteo.com) desde el servidor (caché de 30 min, timeout de 3 s). Muestra la temperatura actual y el estado del cielo, y los datos de hoy en la zona horaria de Córdoba: máxima, mínima y probabilidad de lluvia ("Máx 24°C · Mín 15°C · Lluvia 49%"). Con 50% de lluvia o más agrega "☔ Llevá paraguas". Si un dato del día falta o no es un número válido, se omite solo ese; si falla la consulta o la temperatura actual, la tarjeta no se muestra.
 
 | Variable | Por defecto | Para qué |
 |---|---|---|

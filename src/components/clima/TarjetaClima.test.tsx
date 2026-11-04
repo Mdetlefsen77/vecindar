@@ -30,6 +30,82 @@ describe("TarjetaClima", () => {
     expect(html).toContain("Datos: Open-Meteo");
   });
 
+  it("I-6 muestra máxima, mínima y lluvia del día además de lo actual", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Parcialmente nublado");
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+  });
+
+  it("I-7 con 50% de lluvia destaca el paraguas, sin rojo", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [50],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("☔");
+    expect(html).toContain("Llevá paraguas");
+    expect(html).not.toContain("red-");
+  });
+
+  it("I-8 con 49% de lluvia solo muestra el porcentaje, sin paraguas", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Llevá paraguas");
+  });
+
   it("I-2 con un error de red renderiza vacío y no lanza", async () => {
     vi.stubGlobal(
       "fetch",
@@ -91,6 +167,27 @@ describe("TarjetaClima", () => {
     expect(url.searchParams.get("latitude")).toBe("-31.495963");
     expect(url.searchParams.get("longitude")).toBe("-64.277734");
     expect(url.searchParams.get("current")).toBe("temperature_2m,weather_code");
+  });
+
+  it("U-11 la URL pide los datos diarios de hoy en la zona horaria de Córdoba", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          current: { temperature_2m: 23.5, weather_code: 2 },
+        }),
+        { status: 200 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await TarjetaClima();
+
+    const url = new URL(String(fetchMock.mock.calls[0][0]));
+    expect(url.searchParams.get("daily")).toBe(
+      "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+    );
+    expect(url.searchParams.get("forecast_days")).toBe("1");
+    expect(url.searchParams.get("timezone")).toBe("America/Argentina/Cordoba");
   });
 
   it("U-2 fetch recibe next.revalidate 1800", async () => {
@@ -241,5 +338,330 @@ describe("TarjetaClima", () => {
 
     expect(html).toContain(`>${esperado}<`);
     expect(html).not.toContain("-0°C");
+  });
+
+  it.each([
+    [22.5, 14.3, "Máx 23°C"],
+    [22.3, 14.5, "Mín 15°C"],
+    [22.3, -0.4, "Mín 0°C"],
+  ])(
+    "U-10 redondea máxima %s y mínima %s: muestra %s",
+    async (max, min, esperado) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(
+            JSON.stringify({
+              current: { temperature_2m: 23.5, weather_code: 2 },
+              daily: {
+                temperature_2m_max: [max],
+                temperature_2m_min: [min],
+                precipitation_probability_max: [49],
+              },
+            }),
+            { status: 200 },
+          ),
+        ),
+      );
+
+      const html = renderToStaticMarkup(await TarjetaClima());
+
+      expect(html).toContain(esperado);
+      expect(html).not.toContain("-0°C");
+    },
+  );
+
+  it("I-9 sin daily muestra lo de HU-01 y nada del día", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Parcialmente nublado");
+    for (const ausente of ["Máx", "Mín", "Lluvia", "undefined", "NaN"]) {
+      expect(html).not.toContain(ausente);
+    }
+  });
+
+  it("I-10 daily sin la clave de la máxima muestra el resto", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Máx");
+    expect(html).not.toContain("NaN");
+  });
+
+  it("I-11 daily con probabilidad de lluvia null omite solo la lluvia", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [null],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).not.toContain("Lluvia");
+    expect(html).not.toContain("Llevá paraguas");
+    expect(html).not.toContain("null");
+  });
+
+  it("I-12 daily con mínima null omite solo la mínima", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [null],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Mín");
+    expect(html).not.toContain("null");
+  });
+
+  it("I-13 daily con máxima no finita (1e999) omite solo la máxima", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            '{"current":{"temperature_2m":23.5,"weather_code":2},"daily":{"temperature_2m_max":[1e999],"temperature_2m_min":[15.3],"precipitation_probability_max":[49]}}',
+            { status: 200 },
+          ),
+        ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Máx");
+    expect(html).not.toContain("Infinity");
+  });
+
+  it("I-14 temperatura actual no finita (1e999) oculta la tarjeta", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            '{"current":{"temperature_2m":1e999,"weather_code":2}}',
+            { status: 200 },
+          ),
+        ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toBe("");
+  });
+
+  it("I-15 daily con mínima no finita (1e999) omite solo la mínima", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            '{"current":{"temperature_2m":23.5,"weather_code":2},"daily":{"temperature_2m_max":[22.3],"temperature_2m_min":[1e999],"precipitation_probability_max":[49]}}',
+            { status: 200 },
+          ),
+        ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Mín");
+    expect(html).not.toContain("Infinity");
+  });
+
+  it("I-16 daily con lluvia no finita (1e999) omite solo la lluvia", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            '{"current":{"temperature_2m":23.5,"weather_code":2},"daily":{"temperature_2m_max":[22.3],"temperature_2m_min":[15.3],"precipitation_probability_max":[1e999]}}',
+            { status: 200 },
+          ),
+        ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).not.toContain("Lluvia");
+    expect(html).not.toContain("Llevá paraguas");
+    expect(html).not.toContain("Infinity");
+  });
+
+  it("I-17 daily solo con la máxima omite mínima y lluvia", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: { temperature_2m_max: [22.3] },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Máx 22°C");
+    expect(html).not.toContain("Mín");
+    expect(html).not.toContain("Lluvia");
+    expect(html).not.toContain("undefined");
+  });
+
+  it("U-12 daily sin la máxima arma la línea del día solo con mínima y lluvia", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain(">Mín 15°C · Lluvia 49%<");
+  });
+
+  it("I-18 daily null muestra solo lo actual", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: null,
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Parcialmente nublado");
+    expect(html).not.toContain("Máx");
+    expect(html).not.toContain("Mín");
+    expect(html).not.toContain("Lluvia");
+  });
+
+  it("I-19 daily con máxima null omite solo la máxima", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [null],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Máx");
+  });
+
+  it("I-20 temperatura actual null oculta la tarjeta", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: null, weather_code: 2 },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toBe("");
   });
 });
