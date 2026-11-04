@@ -4,6 +4,7 @@ export async function TarjetaClima() {
     const res = await fetch(
       "https://api.open-meteo.com/v1/forecast?current=temperature_2m,weather_code",
     );
+    if (!res.ok) return null;
     const data = await res.json();
     temperatura = Math.round(data.current.temperature_2m);
   } catch {

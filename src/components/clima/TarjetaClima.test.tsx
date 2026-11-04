@@ -38,4 +38,22 @@ describe("TarjetaClima", () => {
 
     expect(renderToStaticMarkup(tarjeta)).toBe("");
   });
+
+  it("I-3 con status 503 y cuerpo válido renderiza vacío", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+          }),
+          { status: 503 },
+        ),
+      ),
+    );
+
+    const tarjeta = await TarjetaClima();
+
+    expect(renderToStaticMarkup(tarjeta)).toBe("");
+  });
 });
