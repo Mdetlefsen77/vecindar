@@ -27,7 +27,7 @@ export async function TarjetaClima() {
       const min = data.daily.temperature_2m_min[0];
       const lluvia = data.daily.precipitation_probability_max[0];
       dia = {
-        max: max === undefined ? undefined : Math.round(max),
+        max: Number.isFinite(max) ? Math.round(max) : undefined,
         min: typeof min === "number" ? Math.round(min) : undefined,
         lluvia: typeof lluvia === "number" ? lluvia : undefined,
       };

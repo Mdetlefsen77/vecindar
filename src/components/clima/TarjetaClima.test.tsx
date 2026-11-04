@@ -471,4 +471,25 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("Mín");
     expect(html).not.toContain("null");
   });
+
+  it("I-13 daily con máxima no finita (1e999) omite solo la máxima", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            '{"current":{"temperature_2m":23.5,"weather_code":2},"daily":{"temperature_2m_max":[1e999],"temperature_2m_min":[15.3],"precipitation_probability_max":[49]}}',
+            { status: 200 },
+          ),
+        ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Máx");
+    expect(html).not.toContain("Infinity");
+  });
 });
