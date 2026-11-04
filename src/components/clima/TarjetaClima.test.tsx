@@ -153,4 +153,26 @@ describe("TarjetaClima", () => {
     expect(url.host).toBe("api.open-meteo.com");
     expect(url.searchParams.has("apikey")).toBe(false);
   });
+
+  it("U-5 con OPEN_METEO_URL y OPEN_METEO_API_KEY usa ese host y lleva apikey", async () => {
+    vi.stubEnv("OPEN_METEO_URL", "https://customer-api.open-meteo.com");
+    vi.stubEnv("OPEN_METEO_API_KEY", "abc");
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          current: { temperature_2m: 23.5, weather_code: 2 },
+        }),
+        { status: 200 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await TarjetaClima();
+
+    const llamada = String(fetchMock.mock.calls[0][0]);
+    expect(llamada.startsWith("https://customer-api.open-meteo.com")).toBe(
+      true,
+    );
+    expect(new URL(llamada).searchParams.get("apikey")).toBe("abc");
+  });
 });
