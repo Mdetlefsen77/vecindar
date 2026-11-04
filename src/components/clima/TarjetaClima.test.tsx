@@ -120,6 +120,27 @@ describe("TarjetaClima", () => {
     expect(url.searchParams.get("current")).toBe("temperature_2m,weather_code");
   });
 
+  it("U-11 la URL pide los datos diarios de hoy en la zona horaria de Córdoba", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          current: { temperature_2m: 23.5, weather_code: 2 },
+        }),
+        { status: 200 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await TarjetaClima();
+
+    const url = new URL(String(fetchMock.mock.calls[0][0]));
+    expect(url.searchParams.get("daily")).toBe(
+      "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+    );
+    expect(url.searchParams.get("forecast_days")).toBe("1");
+    expect(url.searchParams.get("timezone")).toBe("America/Argentina/Cordoba");
+  });
+
   it("U-2 fetch recibe next.revalidate 1800", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(
