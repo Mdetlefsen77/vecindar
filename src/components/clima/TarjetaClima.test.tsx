@@ -531,4 +531,26 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("Mín");
     expect(html).not.toContain("Infinity");
   });
+
+  it("I-16 daily con lluvia no finita (1e999) omite solo la lluvia", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            '{"current":{"temperature_2m":23.5,"weather_code":2},"daily":{"temperature_2m_max":[22.3],"temperature_2m_min":[15.3],"precipitation_probability_max":[1e999]}}',
+            { status: 200 },
+          ),
+        ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Máx 22°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).not.toContain("Lluvia");
+    expect(html).not.toContain("Llevá paraguas");
+    expect(html).not.toContain("Infinity");
+  });
 });

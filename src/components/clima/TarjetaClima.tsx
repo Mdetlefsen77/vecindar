@@ -29,7 +29,7 @@ export async function TarjetaClima() {
       dia = {
         max: Number.isFinite(max) ? Math.round(max) : undefined,
         min: Number.isFinite(min) ? Math.round(min) : undefined,
-        lluvia: typeof lluvia === "number" ? lluvia : undefined,
+        lluvia: Number.isFinite(lluvia) ? lluvia : undefined,
       };
     }
   } catch {
