@@ -370,4 +370,26 @@ describe("TarjetaClima", () => {
       expect(html).not.toContain("-0°C");
     },
   );
+
+  it("I-9 sin daily muestra lo de HU-01 y nada del día", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Parcialmente nublado");
+    for (const ausente of ["Máx", "Mín", "Lluvia", "undefined", "NaN"]) {
+      expect(html).not.toContain(ausente);
+    }
+  });
 });
