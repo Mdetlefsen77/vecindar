@@ -492,4 +492,22 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("Máx");
     expect(html).not.toContain("Infinity");
   });
+
+  it("I-14 temperatura actual no finita (1e999) oculta la tarjeta", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            '{"current":{"temperature_2m":1e999,"weather_code":2}}',
+            { status: 200 },
+          ),
+        ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toBe("");
+  });
 });

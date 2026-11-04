@@ -19,7 +19,7 @@ export async function TarjetaClima() {
     if (!res.ok) return null;
     const data = await res.json();
     const valor = data.current.temperature_2m;
-    if (typeof valor !== "number") return null;
+    if (!Number.isFinite(valor)) return null;
     temperatura = Math.round(valor);
     estado = estadoDelCielo(data.current.weather_code);
     if (data.daily) {
