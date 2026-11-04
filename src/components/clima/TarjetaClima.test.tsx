@@ -90,4 +90,20 @@ describe("TarjetaClima", () => {
     expect(url.searchParams.get("longitude")).toBe("-64.277734");
     expect(url.searchParams.get("current")).toBe("temperature_2m,weather_code");
   });
+
+  it("U-2 fetch recibe next.revalidate 1800", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          current: { temperature_2m: 23.5, weather_code: 2 },
+        }),
+        { status: 200 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await TarjetaClima();
+
+    expect(fetchMock.mock.calls[0][1].next.revalidate).toBe(1800);
+  });
 });

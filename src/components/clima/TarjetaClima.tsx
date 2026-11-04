@@ -6,6 +6,7 @@ export async function TarjetaClima() {
     const [lat, lng] = BARRIO_CENTER;
     const res = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code`,
+      { next: { revalidate: 1800 } },
     );
     if (!res.ok) return null;
     const data = await res.json();
