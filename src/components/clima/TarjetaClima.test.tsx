@@ -4,6 +4,7 @@ import { TarjetaClima } from "@/components/clima/TarjetaClima";
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
 
 describe("TarjetaClima", () => {
@@ -131,5 +132,25 @@ describe("TarjetaClima", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("U-4 sin variables usa el host por defecto y no lleva apikey", async () => {
+    vi.stubEnv("OPEN_METEO_URL", undefined);
+    vi.stubEnv("OPEN_METEO_API_KEY", undefined);
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          current: { temperature_2m: 23.5, weather_code: 2 },
+        }),
+        { status: 200 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await TarjetaClima();
+
+    const url = new URL(String(fetchMock.mock.calls[0][0]));
+    expect(url.host).toBe("api.open-meteo.com");
+    expect(url.searchParams.has("apikey")).toBe(false);
   });
 });
