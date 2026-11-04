@@ -26,14 +26,14 @@ export async function TarjetaClima() {
   }
 
   return (
-    <div>
-      <p>{temperatura}°C</p>
+    <div className="rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 px-4 py-3">
+      <p className="text-5xl font-bold leading-none">{temperatura}°C</p>
       {estado && (
-        <p>
-          <span>{estado.icono}</span> {estado.texto}
+        <p className="text-2xl font-semibold mt-1">
+          <span aria-hidden="true">{estado.icono}</span> {estado.texto}
         </p>
       )}
-      <p>Datos: Open-Meteo</p>
+      <p className="text-xs text-sky-800 mt-1">Datos: Open-Meteo</p>
     </div>
   );
 }

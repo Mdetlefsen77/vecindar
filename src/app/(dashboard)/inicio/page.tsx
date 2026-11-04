@@ -2,7 +2,9 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma/client";
 import { getUserId } from "@/lib/api/guard";
+import { Suspense } from "react";
 import Link from "next/link";
+import { TarjetaClima } from "@/components/clima/TarjetaClima";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
 import { invitacionesConPrimerPago } from "@/lib/crecimiento/beneficiosServer";
@@ -287,7 +289,7 @@ export default async function InicioPage() {
         </p>
       </div>
 
-      {/* ─── Modo alerta: lo único que va arriba del SOS ───────────── */}
+      {/* ─── Modo alerta: banners de emergencia, arriba de todo ─────── */}
       {alertaSos && (
         <Link
           href="/panico"
@@ -349,6 +351,10 @@ export default async function InicioPage() {
           </span>
         </Link>
       )}
+
+      <Suspense fallback={null}>
+        <TarjetaClima />
+      </Suspense>
 
       {/* ─── SOS: franja de todo el ancho, el único bloque rojo ──────── */}
       <Link
