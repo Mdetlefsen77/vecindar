@@ -392,4 +392,30 @@ describe("TarjetaClima", () => {
       expect(html).not.toContain(ausente);
     }
   });
+
+  it("I-10 daily sin la clave de la máxima muestra el resto", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Máx");
+    expect(html).not.toContain("NaN");
+  });
 });
