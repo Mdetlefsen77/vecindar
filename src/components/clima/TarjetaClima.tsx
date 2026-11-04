@@ -24,8 +24,8 @@ export async function TarjetaClima() {
     estado = estadoDelCielo(data.current.weather_code);
     if (data.daily) {
       const max = data.daily.temperature_2m_max?.[0];
-      const min = data.daily.temperature_2m_min[0];
-      const lluvia = data.daily.precipitation_probability_max[0];
+      const min = data.daily.temperature_2m_min?.[0];
+      const lluvia = data.daily.precipitation_probability_max?.[0];
       dia = {
         max: Number.isFinite(max) ? Math.round(max) : undefined,
         min: Number.isFinite(min) ? Math.round(min) : undefined,
