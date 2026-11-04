@@ -219,4 +219,27 @@ describe("TarjetaClima", () => {
       expect(html).not.toContain(estado.icono);
     }
   });
+
+  it.each([
+    [23.5, "24°C"],
+    [23.4, "23°C"],
+    [-0.4, "0°C"],
+  ])("U-8 redondea %s y lo formatea como %s", async (temperatura, esperado) => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: temperatura, weather_code: 2 },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain(`>${esperado}<`);
+    expect(html).not.toContain("-0°C");
+  });
 });
