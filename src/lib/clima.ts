@@ -14,3 +14,12 @@ export function estadoDelCielo(
   if (codigo >= 95 && codigo <= 99) return { texto: "Tormenta", icono: "⛈️" };
   return null;
 }
+
+export function nombreDelDia(fecha: string): string {
+  const texto = new Date(fecha).toLocaleDateString("es-AR", {
+    weekday: "long",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
