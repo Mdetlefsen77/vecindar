@@ -269,4 +269,35 @@ describe("TarjetaClima", () => {
     expect(html).toContain(`>${esperado}<`);
     expect(html).not.toContain("-0°C");
   });
+
+  it.each([
+    [22.5, 14.3, "Máx 23°C"],
+    [22.3, 14.5, "Mín 15°C"],
+    [22.3, -0.4, "Mín 0°C"],
+  ])(
+    "U-10 redondea máxima %s y mínima %s: muestra %s",
+    async (max, min, esperado) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(
+            JSON.stringify({
+              current: { temperature_2m: 23.5, weather_code: 2 },
+              daily: {
+                temperature_2m_max: [max],
+                temperature_2m_min: [min],
+                precipitation_probability_max: [49],
+              },
+            }),
+            { status: 200 },
+          ),
+        ),
+      );
+
+      const html = renderToStaticMarkup(await TarjetaClima());
+
+      expect(html).toContain(esperado);
+      expect(html).not.toContain("-0°C");
+    },
+  );
 });
