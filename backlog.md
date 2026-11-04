@@ -17,7 +17,7 @@ Como **vecino** quiero **ver arriba del inicio la temperatura actual y si está 
 - Si Open-Meteo falla o tarda demasiado, `/inicio` responde 200 igual, con el resto de las secciones y sin error visible.
 - Incluye el andamiaje: runner de tests instalado, script `npm test` y el primer test en verde.
 
-## HU-02 · Máxima, mínima y lluvia de hoy
+## ✅ HU-02 · Máxima, mínima y lluvia de hoy
 Como **vecino** quiero **ver en la tarjeta la máxima y la mínima del día y la probabilidad de lluvia** para **planear el día (ropa, riego, salir o no)**.
 - La tarjeta muestra la máxima y la mínima de hoy en °C y la probabilidad máxima de lluvia del día en %.
 - Si la probabilidad de lluvia supera un umbral, se destaca con un texto claro (por ejemplo, "Llevá paraguas").
@@ -29,11 +29,15 @@ Como **vecino** quiero **tocar la tarjeta del clima y ver el pronóstico de los 
 - `/clima` exige sesión: sin sesión, redirige a `/login`.
 - Si el servicio falla, `/clima` muestra un mensaje claro ("No pudimos traer el pronóstico, probá más tarde") y un botón para volver al inicio.
 
+- _A refinar:_ `TarjetaClima` hoy pide `forecast_days=1`; el pronóstico necesita más días (¿misma consulta con `forecast_days=4`, o una aparte para `/clima`?). Reusar `estadoDelCielo` y la validación con `Number.isFinite` de HU-02.
+
 ## HU-04 · Aviso de clima fuerte en el inicio
 Como **vecino** quiero **ver un cartel destacado cuando viene tormenta, granizo, viento fuerte o calor extremo** para **prepararme a tiempo (guardar el auto, entrar cosas, tomar agua)**.
 - Si el pronóstico de hoy o de mañana trae tormenta o granizo, ráfagas por encima de un umbral o una máxima por encima de un umbral, el inicio muestra un cartel arriba de la tarjeta con qué viene, cuándo (hoy o mañana) y un consejo práctico.
 - Sin clima fuerte en el pronóstico, no hay cartel.
 - El cartel no usa el rojo de emergencias: ese color queda para SOS y pánico.
+
+- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día.
 
 ## HU-05 · Notificación push por clima fuerte
 Como **vecino** quiero **recibir una notificación en el celular cuando se espera clima fuerte** para **enterarme aunque no abra la app**.
