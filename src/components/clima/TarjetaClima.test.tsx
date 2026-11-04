@@ -82,6 +82,30 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("red-");
   });
 
+  it("I-8 con 49% de lluvia solo muestra el porcentaje, sin paraguas", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+            daily: {
+              temperature_2m_max: [22.3],
+              temperature_2m_min: [15.3],
+              precipitation_probability_max: [49],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Lluvia 49%");
+    expect(html).not.toContain("Llevá paraguas");
+  });
+
   it("I-2 con un error de red renderiza vacío y no lanza", async () => {
     vi.stubGlobal(
       "fetch",
