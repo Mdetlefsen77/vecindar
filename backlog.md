@@ -10,7 +10,7 @@
 
 **Fuera de alcance:** otras ciudades o ubicación por GPS de cada vecino, historial del clima, radar o mapas meteorológicos, alertas oficiales del SMN, configuración de la tarjeta por vecino, guardar datos del clima en la base.
 
-## HU-01 · Clima actual en el inicio
+## ✅ HU-01 · Clima actual en el inicio
 Como **vecino** quiero **ver arriba del inicio la temperatura actual y si está soleado, nublado, lloviendo, etc.** para **saber cómo está el día sin salir de la app**.
 - Arriba de todo en `/inicio` aparece una tarjeta con la temperatura actual en °C, sin decimales, y el estado del cielo en castellano (Despejado, Parcialmente nublado, Nublado, Niebla, Llovizna, Lluvia, Tormenta, etc.) con su ícono.
 - Los datos salen de Open-Meteo para las coordenadas del barrio y se reutilizan por un tiempo fijo, sin pedirlos en cada visita.
@@ -44,6 +44,8 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 
 ## Notas
 - 2026-11-04 · (HU-05) En el plan Hobby de Vercel los crons son solo diarios: la push sale a una hora fija, así que una tormenta que se forma en el día puede no avisarse a tiempo. Hay que elegir la hora en `/story HU-05`.
-- 2026-11-04 · (HU-01) Los datos de Open-Meteo tienen licencia CC BY 4.0, que pide atribución: agregar un "Datos: Open-Meteo" chico en la tarjeta o en `/clima`. Su plan gratis es para uso no comercial; Vecindar cobra suscripción, así que hay que revisar en `/story HU-01` si alcanza o si conviene el plan pago.
+- 2026-11-04 · (HU-01) Los datos de Open-Meteo tienen licencia CC BY 4.0, que pide atribución: agregar un "Datos: Open-Meteo" chico en la tarjeta o en `/clima`. Su plan gratis es para uso no comercial; Vecindar cobra suscripción. Resuelto en HU-01: atribución en la tarjeta y plan gratis por ahora, con `OPEN_METEO_URL`/`OPEN_METEO_API_KEY` listas para pasar al plan comercial. **Pendiente:** decidir cuándo contratarlo.
 - 2026-11-04 · (HU-01) `npm install` informa vulnerabilidades en `npm audit`; no se revisaron.
 - 2026-11-04 · (HU-01) vitest quedó en 4.x porque vitest 5 pide `@types/node` ≥22 y el repo tiene 20 (Node local 22). Subir `@types/node` a ^22 destraba vitest 5.
+- 2026-11-04 · (HU-01) Temperatura no finita: un JSON con `1e999` se lee como `Infinity` y la tarjeta mostraría "Infinity°C". Open-Meteo real no lo envía; si se quiere blindar, `Number.isFinite` en vez de `typeof` en `TarjetaClima.tsx`.
+- 2026-11-04 · (HU-01) Hardening de la tarjeta del clima: `encodeURIComponent` sobre `OPEN_METEO_API_KEY` en la URL; rechazar `http://` en `OPEN_METEO_URL` (la key viajaría en claro); un test que fije que la URL (con la key) no se loguea; validar `typeof weather_code === "number"`.

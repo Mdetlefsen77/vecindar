@@ -55,3 +55,16 @@ npm run dev
 ```
 
 Requiere Postgres corriendo (`DATABASE_URL` en `.env`) y las migraciones aplicadas (`npx prisma migrate deploy`). Ver `.env` para el resto de las variables (NextAuth, VAPID, Supabase, Cron, MercadoPago).
+
+Tests: `npm test` (vitest, no carga `.env`).
+
+### Clima del inicio (opcionales)
+
+La tarjeta del clima de `/inicio` consulta [Open-Meteo](https://open-meteo.com) desde el servidor (caché de 30 min, timeout de 3 s). Si falla, la tarjeta no se muestra.
+
+| Variable | Por defecto | Para qué |
+|---|---|---|
+| `OPEN_METEO_URL` | `https://api.open-meteo.com` | URL base. Con el plan comercial: `https://customer-api.open-meteo.com` |
+| `OPEN_METEO_API_KEY` | (sin clave) | API key del plan comercial; se envía como `apikey=` |
+
+El plan gratis de Open-Meteo es para uso no comercial.
