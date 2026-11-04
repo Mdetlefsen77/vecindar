@@ -1,8 +1,11 @@
+import { BARRIO_CENTER } from "@/lib/barrio/constantes";
+
 export async function TarjetaClima() {
   let temperatura: number;
   try {
+    const [lat, lng] = BARRIO_CENTER;
     const res = await fetch(
-      "https://api.open-meteo.com/v1/forecast?current=temperature_2m,weather_code",
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code`,
     );
     if (!res.ok) return null;
     const data = await res.json();

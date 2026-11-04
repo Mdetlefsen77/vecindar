@@ -71,4 +71,23 @@ describe("TarjetaClima", () => {
 
     expect(renderToStaticMarkup(tarjeta)).toBe("");
   });
+
+  it("U-1 la URL pide las coordenadas del barrio y los campos actuales", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          current: { temperature_2m: 23.5, weather_code: 2 },
+        }),
+        { status: 200 },
+      ),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+
+    await TarjetaClima();
+
+    const url = new URL(String(fetchMock.mock.calls[0][0]));
+    expect(url.searchParams.get("latitude")).toBe("-31.495963");
+    expect(url.searchParams.get("longitude")).toBe("-64.277734");
+    expect(url.searchParams.get("current")).toBe("temperature_2m,weather_code");
+  });
 });
