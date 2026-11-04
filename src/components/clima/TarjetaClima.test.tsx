@@ -27,4 +27,15 @@ describe("TarjetaClima", () => {
     expect(html).toContain("⛅");
     expect(html).toContain("Datos: Open-Meteo");
   });
+
+  it("I-2 con un error de red renderiza vacío y no lanza", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValue(new TypeError("fetch failed")),
+    );
+
+    const tarjeta = await TarjetaClima();
+
+    expect(renderToStaticMarkup(tarjeta)).toBe("");
+  });
 });
