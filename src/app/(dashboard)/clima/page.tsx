@@ -37,13 +37,13 @@ export default async function ClimaPage() {
     return error;
   }
   const d = data?.daily;
-  if (!d || d.time.length < 4) return error;
+  if (!d || !d.time || d.time.length < 4) return error;
 
   const dias = [1, 2, 3].map((i) => {
-    const estado = estadoDelCielo(d.weather_code[i]);
-    const max = d.temperature_2m_max[i];
-    const min = d.temperature_2m_min[i];
-    const lluvia = d.precipitation_probability_max[i];
+    const estado = estadoDelCielo(d.weather_code?.[i]);
+    const max = d.temperature_2m_max?.[i];
+    const min = d.temperature_2m_min?.[i];
+    const lluvia = d.precipitation_probability_max?.[i];
     return {
       nombre: i === 1 ? "Mañana" : nombreDelDia(d.time[i]),
       estado,

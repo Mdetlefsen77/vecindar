@@ -39,6 +39,12 @@ function respuestaOpenMeteo(
   return new Response(texto, { status });
 }
 
+function esperarError(html: string) {
+  expect(html).toContain("No pudimos traer el pronóstico, probá más tarde");
+  expect(html).toMatch(/<a [^>]*href="\/inicio"[^>]*>Volver al inicio<\/a>/);
+  expect(html).not.toContain("Mañana");
+}
+
 describe("/clima", () => {
   it("I-21 muestra mañana y los dos días siguientes, sin hoy", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(respuestaOpenMeteo()));
@@ -215,14 +221,6 @@ describe("/clima", () => {
   });
 
   describe("I-32 responde 200 pero el cuerpo no sirve", () => {
-    function esperarError(html: string) {
-      expect(html).toContain("No pudimos traer el pronóstico, probá más tarde");
-      expect(html).toMatch(
-        /<a [^>]*href="\/inicio"[^>]*>Volver al inicio<\/a>/,
-      );
-      expect(html).not.toContain("Mañana");
-    }
-
     it("(a) el cuerpo no es JSON: mensaje y enlace, sin lanzar", async () => {
       vi.stubGlobal(
         "fetch",
@@ -281,6 +279,109 @@ describe("/clima", () => {
       } finally {
         vi.useRealTimers();
       }
+    });
+  });
+
+  describe("I-33 responde 200 pero la forma del cuerpo es rara", () => {
+    function sinSerie(nombre: string) {
+      const daily: Record<string, unknown> = { ...DIAS };
+      delete daily[nombre];
+      return daily;
+    }
+
+    function responde(cuerpo: unknown) {
+      vi.stubGlobal(
+        "fetch",
+        vi
+          .fn()
+          .mockResolvedValue(
+            new Response(JSON.stringify(cuerpo), { status: 200 }),
+          ),
+      );
+    }
+
+    it("(a) el cuerpo es el JSON null: mensaje y enlace, sin lanzar", async () => {
+      responde(null);
+
+      esperarError(renderToStaticMarkup(await ClimaPage()));
+    });
+
+    it("(b) daily no trae time: mensaje y enlace, sin lanzar", async () => {
+      responde({ daily: sinSerie("time") });
+
+      esperarError(renderToStaticMarkup(await ClimaPage()));
+    });
+
+    function esperarTresDias(html: string) {
+      expect(html).not.toContain("No pudimos traer");
+      expect(html).toContain("Mañana");
+      expect(html).toContain("Viernes 6");
+      expect(html).toContain("Sábado 7");
+    }
+
+    it("(c) falta la serie temperature_2m_max entera: los 3 días sin Máx y con sus otros datos", async () => {
+      responde({ daily: sinSerie("temperature_2m_max") });
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      esperarTresDias(html);
+      expect(html).not.toContain("Máx");
+      expect(html).toContain("Mín 15°C");
+      expect(html).toContain("Mín 16°C");
+      expect(html).toContain("Mín 14°C");
+      expect(html).toContain("Lluvia 10%");
+      expect(html).toContain("Lluvia 30%");
+      expect(html).toContain("Lluvia 80%");
+      expect(html).toContain("Nublado");
+    });
+
+    it("(d) falta la serie temperature_2m_min entera: los 3 días sin Mín y con sus otros datos", async () => {
+      responde({ daily: sinSerie("temperature_2m_min") });
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      esperarTresDias(html);
+      expect(html).not.toContain("Mín");
+      expect(html).toContain("Máx 25°C");
+      expect(html).toContain("Máx 27°C");
+      expect(html).toContain("Máx 22°C");
+      expect(html).toContain("Lluvia 10%");
+      expect(html).toContain("Lluvia 30%");
+      expect(html).toContain("Lluvia 80%");
+      expect(html).toContain("Nublado");
+    });
+
+    it("(e) falta la serie precipitation_probability_max entera: los 3 días sin Lluvia y con sus otros datos", async () => {
+      responde({ daily: sinSerie("precipitation_probability_max") });
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      esperarTresDias(html);
+      // "Lluvia" también es el estado del cielo del día 3 (código 61)
+      expect(html).not.toMatch(/Lluvia \d/);
+      expect(html).not.toContain("%");
+      expect(html).toContain("Máx 25°C");
+      expect(html).toContain("Máx 27°C");
+      expect(html).toContain("Máx 22°C");
+      expect(html).toContain("Mín 15°C");
+      expect(html).toContain("Mín 16°C");
+      expect(html).toContain("Mín 14°C");
+      expect(html).toContain("Nublado");
+    });
+
+    it("(f) falta la serie weather_code entera: los 3 días sin estado y con sus otros datos", async () => {
+      responde({ daily: sinSerie("weather_code") });
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      esperarTresDias(html);
+      expect(html).not.toContain("aria-hidden");
+      expect(html).not.toContain("Nublado");
+      expect(html).not.toContain("Parcialmente nublado");
+      expect(html).toContain("Máx 25°C");
+      expect(html).toContain("Mín 16°C");
+      expect(html).toContain("Lluvia 30%");
+      expect(html).toContain("Lluvia 80%");
     });
   });
 
