@@ -748,6 +748,35 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("red-");
   });
 
+  it("I-53 el cartel de tormenta tiene fondo y texto ámbar, cada clase por separado", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [95, 0],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    const cartel = html.slice(0, html.indexOf("<a "));
+    expect(cartel).toContain("Tormenta hoy");
+    expect(cartel).toContain("bg-amber-");
+    expect(cartel).toContain("text-amber-");
+  });
+
   it("I-52 con hoy calmo y tormenta mañana muestra el cartel de mañana con su consejo", async () => {
     vi.stubGlobal(
       "fetch",
