@@ -102,6 +102,14 @@ describe("/clima", () => {
     expect(url.searchParams.has("apikey")).toBe(false);
   });
 
+  it("I-24 muestra la atribución a Open-Meteo", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(respuestaOpenMeteo()));
+
+    const html = renderToStaticMarkup(await ClimaPage());
+
+    expect(html).toContain("Datos: Open-Meteo");
+  });
+
   describe("I-23 datos raros por día", () => {
     async function pagina(cambios: Record<string, unknown[]>) {
       vi.stubGlobal(
