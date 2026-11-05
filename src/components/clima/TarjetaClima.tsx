@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
 import { estadoDelCielo } from "@/lib/clima";
 
@@ -37,7 +38,10 @@ export async function TarjetaClima() {
   }
 
   return (
-    <div className="rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 px-4 py-3">
+    <Link
+      href="/clima"
+      className="block rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 px-4 py-3"
+    >
       <p className="text-5xl font-bold leading-none">{temperatura}°C</p>
       {estado && (
         <p className="text-2xl font-semibold mt-1">
@@ -61,6 +65,7 @@ export async function TarjetaClima() {
         </p>
       )}
       <p className="text-xs text-sky-800 mt-1">Datos: Open-Meteo</p>
-    </div>
+      <p className="text-xl font-semibold mt-1">Ver pronóstico ›</p>
+    </Link>
   );
 }

@@ -106,6 +106,27 @@ describe("TarjetaClima", () => {
     expect(html).not.toContain("Llevá paraguas");
   });
 
+  it("I-25 la tarjeta es un enlace a /clima con 'Ver pronóstico ›'", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 23.5, weather_code: 2 },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    const enlace = html.match(/<a [^>]*href="\/clima"[^>]*>(.*)<\/a>/s);
+    expect(enlace).not.toBeNull();
+    expect(enlace![1]).toContain("24°C");
+    expect(enlace![1]).toContain("Ver pronóstico ›");
+  });
+
   it("I-2 con un error de red renderiza vacío y no lanza", async () => {
     vi.stubGlobal(
       "fetch",
