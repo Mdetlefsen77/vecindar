@@ -100,3 +100,14 @@ describe("climaFuerte sin alerta", () => {
     expect(climaFuerte({ weather_code: [codigo, 0] })).toBeNull();
   });
 });
+
+describe("climaFuerte viento", () => {
+  it("ráfagas de 60 → Viento fuerte hoy", () => {
+    expect(
+      climaFuerte({ weather_code: [0, 0], wind_gusts_10m_max: [60, 10] }),
+    ).toEqual({
+      titulo: "Viento fuerte hoy",
+      consejo: "Asegurá lo que se pueda volar",
+    });
+  });
+});
