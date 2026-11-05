@@ -87,7 +87,7 @@ describe("climaFuerte", () => {
     [97, "Tormenta hoy", "Entrá las cosas de afuera"],
     [98, "Tormenta hoy", "Entrá las cosas de afuera"],
     [99, "Granizo hoy", "Guardá el auto bajo techo"],
-  ])("código %i → %s", (codigo, titulo, consejo) => {
+  ])("U-25 código %i → %s", (codigo, titulo, consejo) => {
     expect(climaFuerte({ weather_code: [codigo, 0] })).toEqual({
       titulo,
       consejo,
@@ -96,13 +96,13 @@ describe("climaFuerte", () => {
 });
 
 describe("climaFuerte sin alerta", () => {
-  it.each([94, 100, 0, 3, 61, 82])("código %i → null", (codigo) => {
+  it.each([94, 100, 0, 3, 61, 82])("U-26 código %i → null", (codigo) => {
     expect(climaFuerte({ weather_code: [codigo, 0] })).toBeNull();
   });
 });
 
 describe("climaFuerte viento", () => {
-  it("ráfagas de 60 → Viento fuerte hoy", () => {
+  it("U-27 ráfagas de 60 → Viento fuerte hoy", () => {
     expect(
       climaFuerte({ weather_code: [0, 0], wind_gusts_10m_max: [60, 10] }),
     ).toEqual({
@@ -111,7 +111,7 @@ describe("climaFuerte viento", () => {
     });
   });
 
-  it("ráfagas de 59.9 → null", () => {
+  it("U-28 ráfagas de 59.9 → null", () => {
     expect(
       climaFuerte({ weather_code: [0, 0], wind_gusts_10m_max: [59.9, 10] }),
     ).toBeNull();
@@ -119,7 +119,7 @@ describe("climaFuerte viento", () => {
 });
 
 describe("climaFuerte calor", () => {
-  it.each([38, 37.5])("máxima de %s → Calor extremo hoy", (maxima) => {
+  it.each([38, 37.5])("U-29 máxima de %s → Calor extremo hoy", (maxima) => {
     expect(
       climaFuerte({ weather_code: [0, 0], temperature_2m_max: [maxima, 20] }),
     ).toEqual({
@@ -128,7 +128,7 @@ describe("climaFuerte calor", () => {
     });
   });
 
-  it("máxima de 37.4 → null", () => {
+  it("U-30 máxima de 37.4 → null", () => {
     expect(
       climaFuerte({ weather_code: [0, 0], temperature_2m_max: [37.4, 20] }),
     ).toBeNull();
@@ -149,13 +149,13 @@ describe("climaFuerte mañana", () => {
       "Calor extremo mañana",
       "Tomá agua y evitá el sol del mediodía",
     ],
-  ])("hoy calmo y mañana fuerte → %s", (daily, titulo, consejo) => {
+  ])("U-31 hoy calmo y mañana fuerte → %s", (daily, titulo, consejo) => {
     expect(climaFuerte(daily)).toEqual({ titulo, consejo });
   });
 });
 
 describe("climaFuerte hoy primero", () => {
-  it("hoy viento y mañana granizo → Viento fuerte hoy", () => {
+  it("U-32 hoy viento y mañana granizo → Viento fuerte hoy", () => {
     expect(
       climaFuerte({
         weather_code: [0, 96],
@@ -173,7 +173,7 @@ describe("climaFuerte prioridad el mismo día", () => {
     [96, "Granizo hoy"],
     [95, "Tormenta hoy"],
     [0, "Viento fuerte hoy"],
-  ])("código %s con ráfagas y calor → %s", (codigo, titulo) => {
+  ])("U-33 código %s con ráfagas y calor → %s", (codigo, titulo) => {
     expect(
       climaFuerte({
         weather_code: [codigo, 0],
@@ -191,7 +191,7 @@ describe("climaFuerte con datos inválidos", () => {
     ["máxima Infinity", { temperature_2m_max: JSON.parse("[1e999, 20]") }],
     ["máxima texto", { temperature_2m_max: ["40", 20] }],
     ["código texto", { weather_code: ["95", 0] }],
-  ])("%s → null", (_nombre, serie) => {
+  ])("U-34 %s → null", (_nombre, serie) => {
     expect(climaFuerte({ weather_code: [0, 0], ...serie })).toBeNull();
   });
 });
@@ -217,7 +217,7 @@ describe("climaFuerte con datos faltantes", () => {
       { weather_code: [95, 0] },
       "Tormenta hoy",
     ],
-  ])("%s", (_nombre, daily, titulo) => {
+  ])("U-35 %s", (_nombre, daily, titulo) => {
     expect(climaFuerte(daily as never)?.titulo).toBe(titulo);
   });
 });
