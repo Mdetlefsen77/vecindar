@@ -12,6 +12,7 @@ import ClimaPage from "@/app/(dashboard)/clima/page";
 
 afterEach(() => {
   vi.unstubAllGlobals();
+  vi.unstubAllEnvs();
 });
 
 const DIAS = {
@@ -73,6 +74,32 @@ describe("/clima", () => {
       "weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max",
     );
     expect(fetchMock.mock.calls[0][1].next.revalidate).toBe(1800);
+  });
+
+  it("I-31 con OPEN_METEO_URL y OPEN_METEO_API_KEY la consulta va a esa base con apikey; sin ellas, al host por defecto sin apikey", async () => {
+    vi.stubEnv("OPEN_METEO_URL", "https://customer-api.open-meteo.com");
+    vi.stubEnv("OPEN_METEO_API_KEY", "abc");
+    const conVariables = vi.fn().mockResolvedValue(respuestaOpenMeteo());
+    vi.stubGlobal("fetch", conVariables);
+
+    await ClimaPage();
+
+    const llamada = String(conVariables.mock.calls[0][0]);
+    expect(llamada.startsWith("https://customer-api.open-meteo.com/")).toBe(
+      true,
+    );
+    expect(new URL(llamada).searchParams.get("apikey")).toBe("abc");
+
+    vi.stubEnv("OPEN_METEO_URL", undefined);
+    vi.stubEnv("OPEN_METEO_API_KEY", undefined);
+    const sinVariables = vi.fn().mockResolvedValue(respuestaOpenMeteo());
+    vi.stubGlobal("fetch", sinVariables);
+
+    await ClimaPage();
+
+    const url = new URL(String(sinVariables.mock.calls[0][0]));
+    expect(url.host).toBe("api.open-meteo.com");
+    expect(url.searchParams.has("apikey")).toBe(false);
   });
 
   describe("I-23 datos raros por día", () => {

@@ -9,8 +9,10 @@ export default async function ClimaPage() {
 
   const [lat, lng] = BARRIO_CENTER;
   const base = process.env.OPEN_METEO_URL ?? "https://api.open-meteo.com";
+  const clave = process.env.OPEN_METEO_API_KEY;
+  const apikey = clave ? `&apikey=${clave}` : "";
   const res = await fetch(
-    `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=4&timezone=America/Argentina/Cordoba`,
+    `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=4&timezone=America/Argentina/Cordoba${apikey}`,
     { next: { revalidate: 1800 } },
   );
   const data = await res.json();
