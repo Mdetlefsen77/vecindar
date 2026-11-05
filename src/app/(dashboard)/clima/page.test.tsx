@@ -84,4 +84,81 @@ describe("/clima", () => {
     );
     expect(fetchMock.mock.calls[0][1].next.revalidate).toBe(1800);
   });
+
+  describe("I-23 datos raros por día", () => {
+    const base = {
+      time: ["2026-11-04", "2026-11-05", "2026-11-06", "2026-11-07"],
+      weather_code: [0, 2, 3, 1],
+      temperature_2m_max: [31.4, 25.2, 26.6, 22.1],
+      temperature_2m_min: [17.4, 15.2, 16.1, 14.3],
+      precipitation_probability_max: [0, 10, 30, 80],
+    };
+
+    // JSON.stringify convierte Infinity en null: se arma el texto con 1e999 literal
+    const INF = "__INF__";
+
+    async function pagina(cambios: Record<string, unknown[]>) {
+      const texto = JSON.stringify({ daily: { ...base, ...cambios } }).replace(
+        `"${INF}"`,
+        "1e999",
+      );
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(new Response(texto, { status: 200 })),
+      );
+      const html = renderToStaticMarkup(await ClimaPage());
+      expect(html).not.toContain("No pudimos traer el pronóstico");
+      expect(html).not.toContain("undefined");
+      expect(html).not.toContain("NaN");
+      expect(html).not.toContain("Infinity");
+      const desde = html.indexOf("Viernes 6");
+      expect(desde).toBeGreaterThan(-1);
+      const hasta = html.indexOf("Sábado 7");
+      return {
+        html,
+        viernes: html.slice(desde, hasta),
+        resto: html.slice(0, desde) + html.slice(hasta),
+      };
+    }
+
+    it("(a) máxima null: ese día sin Máx, los otros con Máx", async () => {
+      const { viernes, resto } = await pagina({
+        temperature_2m_max: [31.4, 25.2, null, 22.1],
+      });
+      expect(viernes).not.toContain("Máx");
+      expect(viernes).toContain("Mín 16°C");
+      expect(viernes).toContain("Lluvia 30%");
+      expect(resto).toContain("Máx 25°C");
+      expect(resto).toContain("Máx 22°C");
+    });
+
+    it("(b) lluvia inválida: ese día sin Lluvia", async () => {
+      const { viernes, resto } = await pagina({
+        precipitation_probability_max: [0, 10, INF, 80],
+      });
+      expect(viernes).not.toContain("Lluvia");
+      expect(viernes).toContain("Máx 27°C");
+      expect(viernes).toContain("Mín 16°C");
+      expect(resto).toContain("Lluvia 10%");
+    });
+
+    it("(c) weather_code desconocido: ese día sin estado", async () => {
+      const { viernes } = await pagina({ weather_code: [0, 2, 999, 1] });
+      expect(viernes).not.toContain("Nublado");
+      expect(viernes).not.toContain("aria-hidden");
+      expect(viernes).toContain("Máx 27°C");
+      expect(viernes).toContain("Lluvia 30%");
+    });
+
+    it("(d) mínima inválida: ese día sin Mín, los otros con Mín", async () => {
+      const { viernes, resto } = await pagina({
+        temperature_2m_min: [17.4, 15.2, INF, 14.3],
+      });
+      expect(viernes).not.toContain("Mín");
+      expect(viernes).toContain("Máx 27°C");
+      expect(viernes).toContain("Lluvia 30%");
+      expect(resto).toContain("Mín 15°C");
+      expect(resto).toContain("Mín 14°C");
+    });
+  });
 });

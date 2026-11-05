@@ -18,12 +18,15 @@ export default async function ClimaPage() {
 
   const dias = [1, 2, 3].map((i) => {
     const estado = estadoDelCielo(d.weather_code[i]);
+    const max = d.temperature_2m_max[i];
+    const min = d.temperature_2m_min[i];
+    const lluvia = d.precipitation_probability_max[i];
     return {
       nombre: i === 1 ? "Mañana" : nombreDelDia(d.time[i]),
       estado,
-      max: Math.round(d.temperature_2m_max[i]),
-      min: Math.round(d.temperature_2m_min[i]),
-      lluvia: d.precipitation_probability_max[i],
+      max: Number.isFinite(max) ? Math.round(max) : undefined,
+      min: Number.isFinite(min) ? Math.round(min) : undefined,
+      lluvia: Number.isFinite(lluvia) ? lluvia : undefined,
     };
   });
 
@@ -42,7 +45,13 @@ export default async function ClimaPage() {
             </p>
           )}
           <p className="text-xl font-semibold mt-1">
-            {`Máx ${dia.max}°C · Mín ${dia.min}°C · Lluvia ${dia.lluvia}%`}
+            {[
+              dia.max !== undefined && `Máx ${dia.max}°C`,
+              dia.min !== undefined && `Mín ${dia.min}°C`,
+              dia.lluvia !== undefined && `Lluvia ${dia.lluvia}%`,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
           </p>
         </div>
       ))}
