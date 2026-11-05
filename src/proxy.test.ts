@@ -95,4 +95,8 @@ describe("proxy", () => {
     expect(res.status).toBe(200);
     expect(res.headers.get("location")).toBeNull();
   });
+
+  it("U-22 · el matcher incluye /login", () => {
+    expect(config.matcher).toContain("/login");
+  });
 });
