@@ -62,6 +62,8 @@ Tests: `npm test` (vitest, no carga `.env`).
 
 La tarjeta del clima de `/inicio` consulta [Open-Meteo](https://open-meteo.com) desde el servidor (caché de 30 min, timeout de 3 s). Muestra la temperatura actual y el estado del cielo, y los datos de hoy en la zona horaria de Córdoba: máxima, mínima y probabilidad de lluvia ("Máx 24°C · Mín 15°C · Lluvia 49%"). Con 50% de lluvia o más agrega "☔ Llevá paraguas". Si un dato del día falta o no es un número válido, se omite solo ese; si falla la consulta o la temperatura actual, la tarjeta no se muestra.
 
+Si el pronóstico de hoy o de mañana trae clima fuerte, arriba de la tarjeta aparece un cartel ámbar con qué viene, cuándo y un consejo ("Tormenta hoy", "Entrá las cosas de afuera"). Lo disparan los códigos de tormenta (95, 97 y 98) y granizo (96 y 99), ráfagas de 60 km/h o más y una máxima de 38 °C o más. Se muestra uno solo: primero hoy y, dentro del día, granizo, tormenta, viento y calor, en ese orden. El granizo solo aparece si el modelo lo informa. Si falla la consulta no hay cartel, y un dato inválido no dispara nada.
+
 Toda la tarjeta es un enlace a `/clima` ("Ver pronóstico ›"), una página que exige sesión y muestra los próximos 3 días, sin repetir hoy: "Mañana" y los dos siguientes con su nombre ("Sábado 7"), cada uno con ícono, estado del cielo, máxima, mínima y probabilidad de lluvia. Hace su propia consulta a Open-Meteo (`forecast_days=4`, misma caché y timeout). Un dato inválido se omite solo en ese día; si la consulta falla o no trae los 4 días, muestra "No pudimos traer el pronóstico, probá más tarde" y un enlace al inicio.
 
 | Variable | Por defecto | Para qué |
