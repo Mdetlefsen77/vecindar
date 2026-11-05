@@ -18,6 +18,7 @@ const RUTAS_PROTEGIDAS = [
   "/avisos",
   "/mas",
   "/admin",
+  "/clima",
 ];
 
 export async function proxy(request: NextRequest) {
