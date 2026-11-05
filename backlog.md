@@ -23,13 +23,13 @@ Como **vecino** quiero **ver en la tarjeta la máxima y la mínima del día y la
 - Si la probabilidad de lluvia supera un umbral, se destaca con un texto claro (por ejemplo, "Llevá paraguas").
 - Si falta algún dato del día, la tarjeta muestra lo que tiene y no muestra "undefined" ni "NaN".
 
-## HU-03 · Pronóstico de los próximos días
+## ✅ HU-03 · Pronóstico de los próximos días
 Como **vecino** quiero **tocar la tarjeta del clima y ver el pronóstico de los próximos 3 días** para **organizar la semana**.
 - Al tocar la tarjeta se abre `/clima`, que muestra los próximos 3 días con el nombre del día, el ícono y estado, la máxima, la mínima y la probabilidad de lluvia.
 - `/clima` exige sesión: sin sesión, redirige a `/login`.
 - Si el servicio falla, `/clima` muestra un mensaje claro ("No pudimos traer el pronóstico, probá más tarde") y un botón para volver al inicio.
 
-- _A refinar:_ `TarjetaClima` hoy pide `forecast_days=1`; el pronóstico necesita más días (¿misma consulta con `forecast_days=4`, o una aparte para `/clima`?). Reusar `estadoDelCielo` y la validación con `Number.isFinite` de HU-02.
+- _A refinar:_ `TarjetaClima` hoy pide `forecast_days=1`; el pronóstico necesita más días (¿misma consulta con `forecast_days=4`, o una aparte para `/clima`?). Reusar `estadoDelCielo` y la validación con `Number.isFinite` de HU-02. → Resuelto en `stories/HU-03.md`: consulta propia de `/clima` con `forecast_days=4`.
 
 ## HU-04 · Aviso de clima fuerte en el inicio
 Como **vecino** quiero **ver un cartel destacado cuando viene tormenta, granizo, viento fuerte o calor extremo** para **prepararme a tiempo (guardar el auto, entrar cosas, tomar agua)**.
@@ -37,7 +37,7 @@ Como **vecino** quiero **ver un cartel destacado cuando viene tormenta, granizo,
 - Sin clima fuerte en el pronóstico, no hay cartel.
 - El cartel no usa el rojo de emergencias: ese color queda para SOS y pánico.
 
-- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día.
+- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día. La consulta de `/clima` (HU-03) ya trae 4 días con `weather_code`; faltarían las ráfagas.
 
 ## HU-05 · Notificación push por clima fuerte
 Como **vecino** quiero **recibir una notificación en el celular cuando se espera clima fuerte** para **enterarme aunque no abra la app**.
@@ -55,3 +55,11 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 - 2026-11-04 · (HU-02) I-5 (`TarjetaClima.test.tsx`) prohíbe los textos de una muestra de estados, entre ellos "Lluvia"; choca con la etiqueta "Lluvia" del bloque del día. Hoy no falla (I-5 no trae `daily`), pero un test con código desconocido y `daily` lo rompería: conviene que I-5 mire la línea del estado, no todo el HTML.
 - 2026-11-04 · (HU-02) Si `daily` existe pero faltan Máx, Mín y Lluvia a la vez, la tarjeta pinta un `<p>` vacío (sin texto visible). Ningún criterio lo pide; ajustar si molesta.
 - 2026-11-04 · (HU-02) Hardening de los datos del día: la lluvia no se acota a [0, 100] ni se redondea (`1e300` → "Lluvia 1e+300%" y activa el paraguas); máxima/mínima absurdas (`1e21`) salen en notación exponencial. Open-Meteo real no lo manda.
+- 2026-11-05 · (HU-03) `/clima` no valida cada fecha de `daily.time`: `nombreDelDia(null)` da "Jueves 1" y `nombreDelDia("x")` da "Invalid Date". Open-Meteo real no debería mandarlo. Si se corrige, tratarlo como "sin fechas" (mensaje de error).
+- 2026-11-05 · (HU-03) Riesgo aceptado, deducido y no reproducido: con `revalidate: 1800`, una respuesta guardada antes de medianoche puede servirse hasta 30 min después, y entonces `/clima` rotula hoy como "Mañana". Evitarlo pide comparar con la fecha actual en Córdoba, o sea, volver a usar el reloj del servidor.
+- 2026-11-05 · (HU-03) El hardening de `OPEN_METEO_API_KEY` y `OPEN_METEO_URL` anotado en HU-01 ahora aplica en dos sitios: `TarjetaClima.tsx` y `clima/page.tsx`.
+- 2026-11-05 · (seguridad, sospecha sin confirmar) `login/page.tsx:9,37` hace `router.push(callbackUrl || "/inicio")` sin exigir mismo origen, y `registro/page.tsx:62,150` lo propaga. Falta comprobar qué hace `router.push` con una URL externa o con otro esquema.
+- 2026-11-05 · (seguridad) Confirmado en el código de la librería: `proxy.ts:25-30` llama a `getToken` sin `secureCookie`, así que busca `authjs.session-token`, mientras que con `https:` Auth.js emite `__Secure-authjs.session-token`, y `src/lib/auth.ts` no fija `useSecureCookies` ni `cookies`. Si producción sirve por https, el proxy mandaría a `/login` a vecinos con sesión (falla cerrado: es disponibilidad, no un bypass). Falta mirar qué cookie emite producción.
+- 2026-11-05 · (seguridad) `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)`, no tiene layout propio y un grep no encuentra `auth()` ni `redirect(` en `src/app/wrapped/[anio]/page.tsx`. El barrido de HU-03 no siguió el caso: falta ver qué datos muestra, si otra capa lo protege y la ruta `imagen` de esa carpeta. Conviene una historia aparte. `/mi-suscripcion` y `/reportes` tampoco están en la lista, pero se protegen con `auth()` en la página.
+- 2026-11-05 · (seguridad, sospecha sin confirmar) `verificado` solo se comprueba en `authorize` (`src/lib/auth.ts:48`), la sesión JWT dura 90 días (`src/lib/auth.ts:97`) y el layout solo relee `pruebaHasta` (`layout.tsx:44-47`). Una cuenta desaprobada podría conservar el acceso hasta que venza el token. Falta revisar si existe otro mecanismo de revocación.
+- 2026-11-05 · (seguridad, hardening) El bloqueo de prueba vencida está solo en el layout (`layout.tsx:54-55`), no en cada página. Falta comprobar si una navegación RSC reejecuta el layout. En `/clima` no importa porque son datos públicos, pero sí en páginas con datos de vecinos.

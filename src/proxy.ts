@@ -18,6 +18,7 @@ const RUTAS_PROTEGIDAS = [
   "/avisos",
   "/mas",
   "/admin",
+  "/clima",
 ];
 
 export async function proxy(request: NextRequest) {
@@ -62,6 +63,7 @@ export const config = {
     "/avisos/:path*",
     "/mas/:path*",
     "/admin/:path*",
+    "/clima/:path*",
     "/login",
   ],
 };
