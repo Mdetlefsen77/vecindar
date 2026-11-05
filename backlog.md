@@ -37,7 +37,7 @@ Como **vecino** quiero **ver un cartel destacado cuando viene tormenta, granizo,
 - Sin clima fuerte en el pronóstico, no hay cartel.
 - El cartel no usa el rojo de emergencias: ese color queda para SOS y pánico.
 
-- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día. La consulta de `/clima` (HU-03) ya trae 4 días con `weather_code`; faltarían las ráfagas.
+- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día. La consulta de `/clima` (HU-03) ya trae 4 días con `weather_code`; faltarían las ráfagas. → Resuelto en `stories/HU-04.md`.
 
 ## HU-05 · Notificación push por clima fuerte
 Como **vecino** quiero **recibir una notificación en el celular cuando se espera clima fuerte** para **enterarme aunque no abra la app**.
@@ -45,6 +45,8 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 - Sin el token correcto responde 401 y no manda nada.
 - No repite la misma alerta para el mismo día aunque el cron corra más de una vez.
 - Sin clima fuerte, responde 200 sin mandar push.
+
+- _Pendiente de HU-04:_ usar las mismas reglas de `src/lib/clima.ts` (umbrales 60 km/h y 38 °C, un solo fenómeno, hoy antes que mañana). El granizo solo llega si el modelo lo informa: la push no puede prometerlo.
 
 ## Notas
 - 2026-11-04 · (HU-05) En el plan Hobby de Vercel los crons son solo diarios: la push sale a una hora fija, así que una tormenta que se forma en el día puede no avisarse a tiempo. Hay que elegir la hora en `/story HU-05`.
