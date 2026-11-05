@@ -8,6 +8,8 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import ClimaPage from "@/app/(dashboard)/clima/page";
 
 afterEach(() => {
@@ -108,6 +110,20 @@ describe("/clima", () => {
     const html = renderToStaticMarkup(await ClimaPage());
 
     expect(html).toContain("Datos: Open-Meteo");
+  });
+
+  it("I-26 sin sesión redirige a /login y no llama a fetch", async () => {
+    vi.mocked(auth).mockResolvedValueOnce(null as never);
+    vi.mocked(redirect).mockImplementationOnce(() => {
+      throw new Error("NEXT_REDIRECT;replace;/login;307;");
+    });
+    const fetchMock = vi.fn().mockResolvedValue(respuestaOpenMeteo());
+    vi.stubGlobal("fetch", fetchMock);
+
+    await expect(ClimaPage()).rejects.toThrow("NEXT_REDIRECT;replace;/login");
+
+    expect(redirect).toHaveBeenCalledWith("/login");
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
   describe("I-23 datos raros por día", () => {
