@@ -195,3 +195,29 @@ describe("climaFuerte con datos inválidos", () => {
     expect(climaFuerte({ weather_code: [0, 0], ...serie })).toBeNull();
   });
 });
+
+describe("climaFuerte con datos faltantes", () => {
+  it.each([
+    [
+      "ráfagas null y máxima 40 → calor",
+      {
+        weather_code: [0, 0],
+        wind_gusts_10m_max: [null, 10],
+        temperature_2m_max: [40, 20],
+      },
+      "Calor extremo hoy",
+    ],
+    [
+      "código null y ráfagas 70 → viento",
+      { weather_code: [null, 0], wind_gusts_10m_max: [70, 10] },
+      "Viento fuerte hoy",
+    ],
+    [
+      "serie de ráfagas ausente y código 95 → tormenta",
+      { weather_code: [95, 0] },
+      "Tormenta hoy",
+    ],
+  ])("%s", (_nombre, daily, titulo) => {
+    expect(climaFuerte(daily as never)?.titulo).toBe(titulo);
+  });
+});
