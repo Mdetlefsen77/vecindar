@@ -127,4 +127,10 @@ describe("climaFuerte calor", () => {
       consejo: "Tomá agua y evitá el sol del mediodía",
     });
   });
+
+  it("máxima de 37.4 → null", () => {
+    expect(
+      climaFuerte({ weather_code: [0, 0], temperature_2m_max: [37.4, 20] }),
+    ).toBeNull();
+  });
 });
