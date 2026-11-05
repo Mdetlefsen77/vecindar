@@ -190,7 +190,7 @@ describe("TarjetaClima", () => {
     expect(url.searchParams.get("current")).toBe("temperature_2m,weather_code");
   });
 
-  it("U-11 la URL pide los datos diarios de hoy en la zona horaria de Córdoba", async () => {
+  it("U-11 la URL pide los datos diarios de hoy y mañana en la zona horaria de Córdoba", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(
         JSON.stringify({
@@ -205,9 +205,9 @@ describe("TarjetaClima", () => {
 
     const url = new URL(String(fetchMock.mock.calls[0][0]));
     expect(url.searchParams.get("daily")).toBe(
-      "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+      "temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,wind_gusts_10m_max",
     );
-    expect(url.searchParams.get("forecast_days")).toBe("1");
+    expect(url.searchParams.get("forecast_days")).toBe("2");
     expect(url.searchParams.get("timezone")).toBe("America/Argentina/Cordoba");
   });
 

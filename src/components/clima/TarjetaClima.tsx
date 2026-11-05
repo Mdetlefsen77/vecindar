@@ -15,7 +15,7 @@ export async function TarjetaClima() {
     const clave = process.env.OPEN_METEO_API_KEY;
     const apikey = clave ? `&apikey=${clave}` : "";
     const res = await fetch(
-      `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=1&timezone=America/Argentina/Cordoba${apikey}`,
+      `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,wind_gusts_10m_max&forecast_days=2&timezone=America/Argentina/Cordoba${apikey}`,
       { next: { revalidate: 1800 }, signal: controller.signal },
     );
     if (!res.ok) return null;
