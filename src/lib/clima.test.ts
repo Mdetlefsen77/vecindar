@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { estadoDelCielo } from "@/lib/clima";
+import { estadoDelCielo, nombreDelDia } from "@/lib/clima";
 
 describe("estadoDelCielo", () => {
   it.each([
@@ -34,4 +34,10 @@ describe("estadoDelCielo", () => {
       expect(estadoDelCielo(codigo)).toBeNull();
     },
   );
+});
+
+describe("nombreDelDia", () => {
+  it("U-13 fecha ISO → día de la semana en mayúscula inicial y número", () => {
+    expect(nombreDelDia("2026-11-06")).toBe("Viernes 6");
+  });
 });
