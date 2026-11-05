@@ -94,3 +94,9 @@ describe("climaFuerte", () => {
     });
   });
 });
+
+describe("climaFuerte sin alerta", () => {
+  it.each([94, 100, 0, 3, 61, 82])("código %i → null", (codigo) => {
+    expect(climaFuerte({ weather_code: [codigo, 0] })).toBeNull();
+  });
+});
