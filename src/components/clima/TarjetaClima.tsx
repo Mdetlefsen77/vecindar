@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
-import { estadoDelCielo } from "@/lib/clima";
+import { estadoDelCielo, fondoDelCielo } from "@/lib/clima";
 
 export async function TarjetaClima() {
   let temperatura: number;
@@ -40,16 +40,31 @@ export async function TarjetaClima() {
   return (
     <Link
       href="/clima"
-      className="block rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 px-4 py-3"
+      className={`relative block overflow-hidden rounded-2xl ${fondoDelCielo(estado)} text-white px-4 py-3 shadow-md transition-all active:scale-[0.99] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-300`}
     >
-      <p className="text-5xl font-bold leading-none">{temperatura}°C</p>
-      {estado && (
-        <p className="text-2xl font-semibold mt-1">
-          <span aria-hidden="true">{estado.icono}</span> {estado.texto}
-        </p>
-      )}
+      <div className="absolute -top-10 -right-8 w-36 h-36 rounded-full bg-white/10 blur-2xl" />
+      <div className="relative flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <p className="text-4xl font-semibold leading-none tracking-tight tabular-nums">
+            {temperatura}°C
+          </p>
+          {estado && (
+            <p className="text-lg font-medium leading-snug mt-1.5">
+              {estado.texto}
+            </p>
+          )}
+        </div>
+        {estado && (
+          <span
+            aria-hidden="true"
+            className="text-4xl leading-none drop-shadow-md"
+          >
+            {estado.icono}
+          </span>
+        )}
+      </div>
       {dia && (
-        <p className="text-xl font-semibold mt-1">
+        <p className="relative text-base text-white/90 mt-1 tabular-nums">
           {[
             dia.max !== undefined && `Máx ${dia.max}°C`,
             dia.min !== undefined && `Mín ${dia.min}°C`,
@@ -60,12 +75,14 @@ export async function TarjetaClima() {
         </p>
       )}
       {dia && dia.lluvia !== undefined && dia.lluvia >= 50 && (
-        <p className="text-xl font-bold mt-1">
+        <p className="relative inline-block rounded-full bg-white/10 px-3 py-0.5 text-base font-semibold mt-2">
           <span aria-hidden="true">☔</span> Llevá paraguas
         </p>
       )}
-      <p className="text-xs text-sky-800 mt-1">Datos: Open-Meteo</p>
-      <p className="text-xl font-semibold mt-1">Ver pronóstico ›</p>
+      <div className="relative flex items-center justify-between gap-3 border-t border-white/20 mt-2.5 pt-2">
+        <p className="text-xs text-white/90">Datos: Open-Meteo</p>
+        <p className="text-base font-semibold">Ver pronóstico ›</p>
+      </div>
     </Link>
   );
 }

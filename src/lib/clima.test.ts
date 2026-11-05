@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { estadoDelCielo, nombreDelDia } from "@/lib/clima";
+import { estadoDelCielo, nombreDelDia, fondoDelCielo } from "@/lib/clima";
 
 describe("estadoDelCielo", () => {
   it.each([
@@ -52,5 +52,25 @@ describe("nombreDelDia", () => {
       process.env.TZ = "America/Argentina/Cordoba";
       expect(nombreDelDia("2026-11-06")).toBe("Viernes 6");
     });
+  });
+});
+
+describe("fondoDelCielo", () => {
+  it("U-23 cada cielo tiene su fondo, y sin estado usa el de cielo claro", () => {
+    const lluvia = fondoDelCielo(estadoDelCielo(61));
+    const tormenta = fondoDelCielo(estadoDelCielo(95));
+
+    expect(lluvia).not.toBe(tormenta);
+    expect(fondoDelCielo(null)).toBe(fondoDelCielo(estadoDelCielo(0)));
+  });
+
+  it("U-24 ningún fondo usa el rojo de las emergencias", () => {
+    const codigos = [0, 1, 2, 3, 45, 51, 61, 71, 95];
+
+    for (const codigo of codigos) {
+      const fondo = fondoDelCielo(estadoDelCielo(codigo));
+      expect(fondo).toContain("bg-gradient-to-br");
+      expect(fondo).not.toContain("red-");
+    }
   });
 });

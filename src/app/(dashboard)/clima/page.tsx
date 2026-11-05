@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
-import { estadoDelCielo, nombreDelDia } from "@/lib/clima";
+import { estadoDelCielo, fondoDelCielo, nombreDelDia } from "@/lib/clima";
 
 export default async function ClimaPage() {
   const session = await auth();
@@ -13,13 +13,18 @@ export default async function ClimaPage() {
   const clave = process.env.OPEN_METEO_API_KEY;
   const apikey = clave ? `&apikey=${clave}` : "";
   const error = (
-    <div className="p-4 space-y-3">
-      <p className="text-2xl font-semibold">
-        No pudimos traer el pronóstico, probá más tarde
-      </p>
-      <Link href="/inicio" className="block text-xl font-semibold underline">
-        Volver al inicio
-      </Link>
+    <div className="max-w-2xl mx-auto px-4 py-6">
+      <div className="rounded-2xl bg-white border border-gray-200 shadow-sm px-4 py-4 space-y-2">
+        <p className="text-lg font-semibold text-gray-900">
+          No pudimos traer el pronóstico, probá más tarde
+        </p>
+        <Link
+          href="/inicio"
+          className="inline-block text-base font-semibold text-sky-800 underline underline-offset-4"
+        >
+          Volver al inicio
+        </Link>
+      </div>
     </div>
   );
   let res: Response;
@@ -54,31 +59,53 @@ export default async function ClimaPage() {
   });
 
   return (
-    <div className="p-4 space-y-3">
-      {dias.map((dia) => (
-        <div
-          key={dia.nombre}
-          className="rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 px-4 py-3"
-        >
-          <p className="text-2xl font-bold">{dia.nombre}</p>
-          {dia.estado && (
-            <p className="text-2xl font-semibold mt-1">
-              <span aria-hidden="true">{dia.estado.icono}</span>{" "}
-              {dia.estado.texto}
-            </p>
-          )}
-          <p className="text-xl font-semibold mt-1">
-            {[
-              dia.max !== undefined && `Máx ${dia.max}°C`,
-              dia.min !== undefined && `Mín ${dia.min}°C`,
-              dia.lluvia !== undefined && `Lluvia ${dia.lluvia}%`,
-            ]
-              .filter(Boolean)
-              .join(" · ")}
-          </p>
-        </div>
-      ))}
-      <p className="text-xs text-sky-800">Datos: Open-Meteo</p>
+    <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Pronóstico</h1>
+        <p className="text-base text-gray-600">
+          Los próximos 3 días en el barrio
+        </p>
+      </div>
+      <ul className="space-y-2.5">
+        {dias.map((dia) => (
+          <li
+            key={dia.nombre}
+            className={`relative overflow-hidden rounded-2xl ${fondoDelCielo(dia.estado)} text-white px-4 py-3 shadow-md`}
+          >
+            <div className="absolute -top-10 -right-8 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
+            <div className="relative flex items-center justify-between gap-3">
+              <div className="min-w-0">
+                <p className="text-lg font-semibold leading-snug">
+                  {dia.nombre}
+                </p>
+                {dia.estado && (
+                  <p className="text-base font-medium text-white/90 leading-snug">
+                    {dia.estado.texto}
+                  </p>
+                )}
+                <p className="text-base text-white/90 leading-snug mt-1 tabular-nums">
+                  {[
+                    dia.max !== undefined && `Máx ${dia.max}°C`,
+                    dia.min !== undefined && `Mín ${dia.min}°C`,
+                    dia.lluvia !== undefined && `Lluvia ${dia.lluvia}%`,
+                  ]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </p>
+              </div>
+              {dia.estado && (
+                <span
+                  aria-hidden="true"
+                  className="text-4xl leading-none drop-shadow-md"
+                >
+                  {dia.estado.icono}
+                </span>
+              )}
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p className="text-xs text-gray-600">Datos: Open-Meteo</p>
     </div>
   );
 }
