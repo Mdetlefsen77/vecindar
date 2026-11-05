@@ -110,4 +110,10 @@ describe("climaFuerte viento", () => {
       consejo: "Asegurá lo que se pueda volar",
     });
   });
+
+  it("ráfagas de 59.9 → null", () => {
+    expect(
+      climaFuerte({ weather_code: [0, 0], wind_gusts_10m_max: [59.9, 10] }),
+    ).toBeNull();
+  });
 });
