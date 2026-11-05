@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { estadoDelCielo, nombreDelDia, fondoDelCielo } from "@/lib/clima";
+import {
+  climaFuerte,
+  estadoDelCielo,
+  nombreDelDia,
+  fondoDelCielo,
+} from "@/lib/clima";
 
 describe("estadoDelCielo", () => {
   it.each([
@@ -72,5 +77,20 @@ describe("fondoDelCielo", () => {
       expect(fondo).toContain("bg-gradient-to-br");
       expect(fondo).not.toContain("red-");
     }
+  });
+});
+
+describe("climaFuerte", () => {
+  it.each([
+    [95, "Tormenta hoy", "Entrá las cosas de afuera"],
+    [96, "Granizo hoy", "Guardá el auto bajo techo"],
+    [97, "Tormenta hoy", "Entrá las cosas de afuera"],
+    [98, "Tormenta hoy", "Entrá las cosas de afuera"],
+    [99, "Granizo hoy", "Guardá el auto bajo techo"],
+  ])("código %i → %s", (codigo, titulo, consejo) => {
+    expect(climaFuerte({ weather_code: [codigo, 0] })).toEqual({
+      titulo,
+      consejo,
+    });
   });
 });

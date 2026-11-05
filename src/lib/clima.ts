@@ -50,7 +50,10 @@ export function climaFuerte(daily: {
   weather_code?: unknown[];
 }): ClimaFuerte | null {
   const codigo = daily.weather_code?.[0];
-  if (codigo === 95) {
+  if (codigo === 96 || codigo === 99) {
+    return { titulo: "Granizo hoy", consejo: "Guardá el auto bajo techo" };
+  }
+  if (typeof codigo === "number" && codigo >= 95 && codigo <= 98) {
     return { titulo: "Tormenta hoy", consejo: "Entrá las cosas de afuera" };
   }
   return null;
