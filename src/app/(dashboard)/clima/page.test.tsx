@@ -540,5 +540,48 @@ describe("/clima", () => {
 
       expect(html.match(/<p class="text-2xl font-bold">/g)).toHaveLength(3);
     });
+
+    it("I-40 la consulta va a la ruta /v1/forecast", async () => {
+      const fetchMock = vi.fn().mockResolvedValue(respuestaOpenMeteo());
+      vi.stubGlobal("fetch", fetchMock);
+
+      await ClimaPage();
+
+      expect(new URL(String(fetchMock.mock.calls[0][0])).pathname).toBe(
+        "/v1/forecast",
+      );
+    });
+
+    it("I-41 sin OPEN_METEO_URL el origen de la consulta es exactamente https://api.open-meteo.com", async () => {
+      vi.stubEnv("OPEN_METEO_URL", undefined);
+      const fetchMock = vi.fn().mockResolvedValue(respuestaOpenMeteo());
+      vi.stubGlobal("fetch", fetchMock);
+
+      await ClimaPage();
+
+      expect(new URL(String(fetchMock.mock.calls[0][0])).origin).toBe(
+        "https://api.open-meteo.com",
+      );
+    });
+
+    for (const [serie, etiqueta] of series) {
+      it(`I-42 ${serie} con el texto "x" en Viernes 6: ese día sin ${etiqueta}, sin NaN`, async () => {
+        const base = DIAS[serie as keyof typeof DIAS] as unknown[];
+        responde({
+          weather_code: [0, 2, 3, 1],
+          [serie]: [base[0], base[1], "x", base[3]],
+        });
+
+        const html = renderToStaticMarkup(await ClimaPage());
+        const desde = html.indexOf("Viernes 6");
+        const viernes = html.slice(desde, html.indexOf("Sábado 7"));
+
+        expect(html).not.toContain("No pudimos traer");
+        expect(desde).toBeGreaterThan(-1);
+        expect(viernes).not.toContain(etiqueta);
+        expect(html).not.toContain("NaN");
+        expect(html.slice(0, desde)).toContain(etiqueta);
+      });
+    }
   });
 });
