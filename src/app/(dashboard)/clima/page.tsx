@@ -23,6 +23,7 @@ export default async function ClimaPage() {
     </div>
   );
   let res: Response;
+  let data;
   const controller = new AbortController();
   setTimeout(() => controller.abort(), 3000);
   try {
@@ -30,13 +31,13 @@ export default async function ClimaPage() {
       `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=4&timezone=America/Argentina/Cordoba${apikey}`,
       { next: { revalidate: 1800 }, signal: controller.signal },
     );
+    if (!res.ok) return error;
+    data = await res.json();
   } catch {
     return error;
   }
-  if (!res.ok) return error;
-  const data = await res.json();
-  const d = data.daily;
-  if (d.time.length < 4) return error;
+  const d = data?.daily;
+  if (!d || d.time.length < 4) return error;
 
   const dias = [1, 2, 3].map((i) => {
     const estado = estadoDelCielo(d.weather_code[i]);

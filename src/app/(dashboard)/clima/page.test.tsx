@@ -214,6 +214,76 @@ describe("/clima", () => {
     expect(html).not.toContain("Viernes 6");
   });
 
+  describe("I-32 responde 200 pero el cuerpo no sirve", () => {
+    function esperarError(html: string) {
+      expect(html).toContain("No pudimos traer el pronóstico, probá más tarde");
+      expect(html).toMatch(
+        /<a [^>]*href="\/inicio"[^>]*>Volver al inicio<\/a>/,
+      );
+      expect(html).not.toContain("Mañana");
+    }
+
+    it("(a) el cuerpo no es JSON: mensaje y enlace, sin lanzar", async () => {
+      vi.stubGlobal(
+        "fetch",
+        vi
+          .fn()
+          .mockResolvedValue(
+            new Response("<html>Bad gateway</html>", { status: 200 }),
+          ),
+      );
+
+      esperarError(renderToStaticMarkup(await ClimaPage()));
+    });
+
+    it("(b) el JSON no trae daily: mensaje y enlace, sin lanzar", async () => {
+      vi.stubGlobal(
+        "fetch",
+        vi
+          .fn()
+          .mockResolvedValue(
+            new Response(JSON.stringify({ error: true }), { status: 200 }),
+          ),
+      );
+
+      esperarError(renderToStaticMarkup(await ClimaPage()));
+    });
+
+    it("(c) el cuerpo se cuelga y a los 3000 ms se aborta: mensaje y enlace, sin lanzar", async () => {
+      vi.useFakeTimers();
+      try {
+        vi.stubGlobal(
+          "fetch",
+          vi.fn((_url: string, init: { signal: AbortSignal }) => {
+            const cuerpo = new ReadableStream({
+              start(controlador) {
+                init.signal.addEventListener("abort", () =>
+                  controlador.error(new DOMException("aborted", "AbortError")),
+                );
+              },
+            });
+            return Promise.resolve(new Response(cuerpo, { status: 200 }));
+          }),
+        );
+        let terminada = false;
+        const pagina = ClimaPage().then((r) => {
+          terminada = true;
+          return r;
+        });
+
+        await vi.advanceTimersByTimeAsync(2999);
+        expect(terminada).toBe(false);
+        await vi.advanceTimersByTimeAsync(1);
+        const html = renderToStaticMarkup(await pagina);
+
+        expect(terminada).toBe(true);
+        esperarError(html);
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+  });
+
   describe("I-23 datos raros por día", () => {
     async function pagina(cambios: Record<string, unknown[]>) {
       vi.stubGlobal(
