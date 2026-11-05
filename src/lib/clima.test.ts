@@ -167,3 +167,19 @@ describe("climaFuerte hoy primero", () => {
     });
   });
 });
+
+describe("climaFuerte prioridad el mismo día", () => {
+  it.each([
+    [96, "Granizo hoy"],
+    [95, "Tormenta hoy"],
+    [0, "Viento fuerte hoy"],
+  ])("código %s con ráfagas y calor → %s", (codigo, titulo) => {
+    expect(
+      climaFuerte({
+        weather_code: [codigo, 0],
+        wind_gusts_10m_max: [70, 10],
+        temperature_2m_max: [40, 20],
+      })?.titulo,
+    ).toBe(titulo);
+  });
+});
