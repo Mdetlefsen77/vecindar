@@ -14,25 +14,28 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+const DIAS = {
+  time: ["2026-11-04", "2026-11-05", "2026-11-06", "2026-11-07"],
+  weather_code: [0, 2, 3, 61],
+  temperature_2m_max: [31.4, 25.2, 26.6, 22.1],
+  temperature_2m_min: [17.4, 15.2, 16.1, 14.3],
+  precipitation_probability_max: [0, 10, 30, 80],
+};
+
+// JSON.stringify convierte Infinity en null: se arma el texto con 1e999 literal
+const INF = "__INF__";
+
+function respuestaOpenMeteo(cambios: Record<string, unknown[]> = {}) {
+  const texto = JSON.stringify({ daily: { ...DIAS, ...cambios } }).replace(
+    `"${INF}"`,
+    "1e999",
+  );
+  return new Response(texto, { status: 200 });
+}
+
 describe("/clima", () => {
   it("I-21 muestra mañana y los dos días siguientes, sin hoy", async () => {
-    vi.stubGlobal(
-      "fetch",
-      vi.fn().mockResolvedValue(
-        new Response(
-          JSON.stringify({
-            daily: {
-              time: ["2026-11-04", "2026-11-05", "2026-11-06", "2026-11-07"],
-              weather_code: [0, 2, 3, 61],
-              temperature_2m_max: [31.4, 25.2, 26.6, 22.1],
-              temperature_2m_min: [17.4, 15.2, 16.1, 14.3],
-              precipitation_probability_max: [0, 10, 30, 80],
-            },
-          }),
-          { status: 200 },
-        ),
-      ),
-    );
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(respuestaOpenMeteo()));
 
     const html = renderToStaticMarkup(await ClimaPage());
 
@@ -56,20 +59,7 @@ describe("/clima", () => {
   });
 
   it("I-22 la consulta pide coordenadas, 4 días, zona de Córdoba, campos diarios y revalidate 1800", async () => {
-    const fetchMock = vi.fn().mockResolvedValue(
-      new Response(
-        JSON.stringify({
-          daily: {
-            time: ["2026-11-04", "2026-11-05", "2026-11-06", "2026-11-07"],
-            weather_code: [0, 2, 3, 61],
-            temperature_2m_max: [31.4, 25.2, 26.6, 22.1],
-            temperature_2m_min: [17.4, 15.2, 16.1, 14.3],
-            precipitation_probability_max: [0, 10, 30, 80],
-          },
-        }),
-        { status: 200 },
-      ),
-    );
+    const fetchMock = vi.fn().mockResolvedValue(respuestaOpenMeteo());
     vi.stubGlobal("fetch", fetchMock);
 
     await ClimaPage();
@@ -86,25 +76,14 @@ describe("/clima", () => {
   });
 
   describe("I-23 datos raros por día", () => {
-    const base = {
-      time: ["2026-11-04", "2026-11-05", "2026-11-06", "2026-11-07"],
-      weather_code: [0, 2, 3, 1],
-      temperature_2m_max: [31.4, 25.2, 26.6, 22.1],
-      temperature_2m_min: [17.4, 15.2, 16.1, 14.3],
-      precipitation_probability_max: [0, 10, 30, 80],
-    };
-
-    // JSON.stringify convierte Infinity en null: se arma el texto con 1e999 literal
-    const INF = "__INF__";
-
     async function pagina(cambios: Record<string, unknown[]>) {
-      const texto = JSON.stringify({ daily: { ...base, ...cambios } }).replace(
-        `"${INF}"`,
-        "1e999",
-      );
       vi.stubGlobal(
         "fetch",
-        vi.fn().mockResolvedValue(new Response(texto, { status: 200 })),
+        vi
+          .fn()
+          .mockResolvedValue(
+            respuestaOpenMeteo({ weather_code: [0, 2, 3, 1], ...cambios }),
+          ),
       );
       const html = renderToStaticMarkup(await ClimaPage());
       expect(html).not.toContain("No pudimos traer el pronóstico");
