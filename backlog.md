@@ -23,7 +23,7 @@ Como **vecino** quiero **ver en la tarjeta la máxima y la mínima del día y la
 - Si la probabilidad de lluvia supera un umbral, se destaca con un texto claro (por ejemplo, "Llevá paraguas").
 - Si falta algún dato del día, la tarjeta muestra lo que tiene y no muestra "undefined" ni "NaN".
 
-## HU-03 · Pronóstico de los próximos días
+## ✅ HU-03 · Pronóstico de los próximos días
 Como **vecino** quiero **tocar la tarjeta del clima y ver el pronóstico de los próximos 3 días** para **organizar la semana**.
 - Al tocar la tarjeta se abre `/clima`, que muestra los próximos 3 días con el nombre del día, el ícono y estado, la máxima, la mínima y la probabilidad de lluvia.
 - `/clima` exige sesión: sin sesión, redirige a `/login`.
