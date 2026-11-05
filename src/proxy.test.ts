@@ -22,6 +22,15 @@ describe("proxy", () => {
     );
   });
 
+  it("U-17 · /clima con token pasa sin redirigir", async () => {
+    getToken.mockResolvedValue({ sub: "u1" });
+
+    const res = await proxy(new NextRequest("http://localhost:3000/clima"));
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("location")).toBeNull();
+  });
+
   it('U-16 · el matcher incluye "/clima/:path*"', () => {
     expect(config.matcher).toContain("/clima/:path*");
   });
