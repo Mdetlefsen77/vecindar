@@ -86,4 +86,13 @@ describe("proxy", () => {
       expect(config.matcher, ruta).toContain(`${ruta}/:path*`);
     }
   });
+
+  it("U-21 · /login sin token pasa sin redirigir", async () => {
+    getToken.mockResolvedValue(null);
+
+    const res = await proxy(new NextRequest("http://localhost:3000/login"));
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("location")).toBeNull();
+  });
 });
