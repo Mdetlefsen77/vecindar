@@ -256,3 +256,9 @@ describe("climaFuerte un dato inválido no corta el resto", () => {
     expect(climaFuerte(daily as never)?.titulo).toBe(titulo);
   });
 });
+
+describe("climaFuerte granizo con código de texto", () => {
+  it.each([["96"], ["99"]])("U-37 código de texto %j → null", (codigo) => {
+    expect(climaFuerte({ weather_code: [codigo, 0] })).toBeNull();
+  });
+});
