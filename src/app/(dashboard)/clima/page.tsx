@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
@@ -15,6 +16,18 @@ export default async function ClimaPage() {
     `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=4&timezone=America/Argentina/Cordoba${apikey}`,
     { next: { revalidate: 1800 } },
   );
+  if (!res.ok) {
+    return (
+      <div className="p-4 space-y-3">
+        <p className="text-2xl font-semibold">
+          No pudimos traer el pronóstico, probá más tarde
+        </p>
+        <Link href="/inicio" className="block text-xl font-semibold underline">
+          Volver al inicio
+        </Link>
+      </div>
+    );
+  }
   const data = await res.json();
   const d = data.daily;
 

@@ -28,12 +28,15 @@ const DIAS = {
 // JSON.stringify convierte Infinity en null: se arma el texto con 1e999 literal
 const INF = "__INF__";
 
-function respuestaOpenMeteo(cambios: Record<string, unknown[]> = {}) {
+function respuestaOpenMeteo(
+  cambios: Record<string, unknown[]> = {},
+  status = 200,
+) {
   const texto = JSON.stringify({ daily: { ...DIAS, ...cambios } }).replace(
     `"${INF}"`,
     "1e999",
   );
-  return new Response(texto, { status: 200 });
+  return new Response(texto, { status });
 }
 
 describe("/clima", () => {
@@ -124,6 +127,19 @@ describe("/clima", () => {
 
     expect(redirect).toHaveBeenCalledWith("/login");
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("I-27 si Open-Meteo responde 500 muestra el mensaje y el enlace a /inicio, sin días", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(respuestaOpenMeteo({}, 500)),
+    );
+
+    const html = renderToStaticMarkup(await ClimaPage());
+
+    expect(html).toContain("No pudimos traer el pronóstico, probá más tarde");
+    expect(html).toMatch(/<a [^>]*href="\/inicio"[^>]*>Volver al inicio<\/a>/);
+    expect(html).not.toContain("Mañana");
   });
 
   describe("I-23 datos raros por día", () => {
