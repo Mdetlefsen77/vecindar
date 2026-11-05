@@ -221,3 +221,38 @@ describe("climaFuerte con datos faltantes", () => {
     expect(climaFuerte(daily as never)?.titulo).toBe(titulo);
   });
 });
+
+describe("climaFuerte un dato inválido no corta el resto", () => {
+  it.each([
+    [
+      "U-36 ráfagas Infinity y máxima 40 → calor",
+      {
+        weather_code: [0, 0],
+        wind_gusts_10m_max: JSON.parse("[1e999, 10]"),
+        temperature_2m_max: [40, 20],
+      },
+      "Calor extremo hoy",
+    ],
+    [
+      'U-36 ráfagas "70" y máxima 40 → calor',
+      {
+        weather_code: [0, 0],
+        wind_gusts_10m_max: ["70", 10],
+        temperature_2m_max: [40, 20],
+      },
+      "Calor extremo hoy",
+    ],
+    [
+      'U-36 código "95" y ráfagas 70 → viento',
+      { weather_code: ["95", 0], wind_gusts_10m_max: [70, 10] },
+      "Viento fuerte hoy",
+    ],
+    [
+      "U-36 código null hoy y 95 mañana → tormenta mañana",
+      { weather_code: [null, 95] },
+      "Tormenta mañana",
+    ],
+  ])("%s", (_nombre, daily, titulo) => {
+    expect(climaFuerte(daily as never)?.titulo).toBe(titulo);
+  });
+});
