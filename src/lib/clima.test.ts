@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { estadoDelCielo, nombreDelDia } from "@/lib/clima";
 
 describe("estadoDelCielo", () => {
@@ -39,5 +39,18 @@ describe("estadoDelCielo", () => {
 describe("nombreDelDia", () => {
   it("U-13 fecha ISO → día de la semana en mayúscula inicial y número", () => {
     expect(nombreDelDia("2026-11-06")).toBe("Viernes 6");
+  });
+
+  describe("con otra zona horaria en el proceso", () => {
+    const tzOriginal = process.env.TZ;
+    afterEach(() => {
+      if (tzOriginal === undefined) delete process.env.TZ;
+      else process.env.TZ = tzOriginal;
+    });
+
+    it("U-14 con TZ=America/Argentina/Cordoba sigue siendo Viernes 6", () => {
+      process.env.TZ = "America/Argentina/Cordoba";
+      expect(nombreDelDia("2026-11-06")).toBe("Viernes 6");
+    });
   });
 });
