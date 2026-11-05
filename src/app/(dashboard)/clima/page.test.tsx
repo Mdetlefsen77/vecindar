@@ -532,5 +532,13 @@ describe("/clima", () => {
       expect(redirect).toHaveBeenCalledWith("/login");
       expect(fetchMock).not.toHaveBeenCalled();
     });
+
+    it("I-39 con hoy y 3 días más muestra exactamente 3 filas", async () => {
+      responde({});
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      expect(html.match(/<p class="text-2xl font-bold">/g)).toHaveLength(3);
+    });
   });
 });
