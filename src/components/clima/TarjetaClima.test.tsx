@@ -843,6 +843,46 @@ describe("TarjetaClima", () => {
     },
   );
 
+  it.each([
+    [
+      "ráfagas [20, 70]",
+      { wind_gusts_10m_max: [20, 70], temperature_2m_max: [27, 28] },
+      "Viento fuerte mañana",
+    ],
+    [
+      "máxima [27, 40]",
+      { wind_gusts_10m_max: [20, 20], temperature_2m_max: [27, 40] },
+      "Calor extremo mañana",
+    ],
+  ])(
+    "I-57 con código 0 y %s la tarjeta muestra %s",
+    async (_caso, serie, titulo) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(
+            JSON.stringify({
+              current: { temperature_2m: 24, weather_code: 0 },
+              daily: {
+                time: ["2026-11-05", "2026-11-06"],
+                weather_code: [0, 0],
+                temperature_2m_min: [15, 16],
+                precipitation_probability_max: [10, 20],
+                ...serie,
+              },
+            }),
+            { status: 200 },
+          ),
+        ),
+      );
+
+      const html = renderToStaticMarkup(await TarjetaClima());
+
+      const cartel = html.slice(0, html.indexOf("<a "));
+      expect(cartel).toContain(titulo);
+    },
+  );
+
   it("I-52 con hoy calmo y tormenta mañana muestra el cartel de mañana con su consejo", async () => {
     vi.stubGlobal(
       "fetch",

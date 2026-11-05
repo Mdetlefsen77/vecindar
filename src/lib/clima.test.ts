@@ -262,3 +262,29 @@ describe("climaFuerte granizo con código de texto", () => {
     expect(climaFuerte({ weather_code: [codigo, 0] })).toBeNull();
   });
 });
+
+describe("climaFuerte un dato inválido hoy no corta mañana", () => {
+  it.each([
+    [
+      "U-38 ráfagas [null, 70] → Viento fuerte mañana",
+      { weather_code: [0, 0], wind_gusts_10m_max: [null, 70] },
+      "Viento fuerte mañana",
+    ],
+    [
+      "U-38 máxima [null, 40] → Calor extremo mañana",
+      { weather_code: [0, 0], temperature_2m_max: [null, 40] },
+      "Calor extremo mañana",
+    ],
+  ])("%s", (_nombre, daily, titulo) => {
+    expect(climaFuerte(daily)?.titulo).toBe(titulo);
+  });
+});
+
+describe("climaFuerte ráfagas con decimales", () => {
+  it("U-39 ráfagas 60.5 → Viento fuerte hoy", () => {
+    expect(
+      climaFuerte({ weather_code: [0, 0], wind_gusts_10m_max: [60.5, 10] })
+        ?.titulo,
+    ).toBe("Viento fuerte hoy");
+  });
+});
