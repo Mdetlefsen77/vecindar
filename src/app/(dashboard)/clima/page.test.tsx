@@ -191,6 +191,29 @@ describe("/clima", () => {
     }
   });
 
+  it("I-30 si daily trae solo 3 días muestra el mensaje, sin días a medias", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        respuestaOpenMeteo({
+          time: DIAS.time.slice(0, 3),
+          weather_code: DIAS.weather_code.slice(0, 3),
+          temperature_2m_max: DIAS.temperature_2m_max.slice(0, 3),
+          temperature_2m_min: DIAS.temperature_2m_min.slice(0, 3),
+          precipitation_probability_max:
+            DIAS.precipitation_probability_max.slice(0, 3),
+        }),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await ClimaPage());
+
+    expect(html).toContain("No pudimos traer el pronóstico, probá más tarde");
+    expect(html).toMatch(/<a [^>]*href="\/inicio"[^>]*>Volver al inicio<\/a>/);
+    expect(html).not.toContain("Mañana");
+    expect(html).not.toContain("Viernes 6");
+  });
+
   describe("I-23 datos raros por día", () => {
     async function pagina(cambios: Record<string, unknown[]>) {
       vi.stubGlobal(

@@ -36,6 +36,7 @@ export default async function ClimaPage() {
   if (!res.ok) return error;
   const data = await res.json();
   const d = data.daily;
+  if (d.time.length < 4) return error;
 
   const dias = [1, 2, 3].map((i) => {
     const estado = estadoDelCielo(d.weather_code[i]);
