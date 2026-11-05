@@ -43,3 +43,15 @@ export function nombreDelDia(fecha: string): string {
   });
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
+
+export type ClimaFuerte = { titulo: string; consejo: string };
+
+export function climaFuerte(daily: {
+  weather_code?: unknown[];
+}): ClimaFuerte | null {
+  const codigo = daily.weather_code?.[0];
+  if (codigo === 95) {
+    return { titulo: "Tormenta hoy", consejo: "Entrá las cosas de afuera" };
+  }
+  return null;
+}
