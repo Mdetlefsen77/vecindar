@@ -450,4 +450,87 @@ describe("/clima", () => {
       expect(resto).toContain("Mín 14°C");
     });
   });
+
+  describe("regresiones de la revisión", () => {
+    function responde(cambios: Record<string, unknown[]>) {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(respuestaOpenMeteo(cambios)),
+      );
+    }
+
+    it("I-34 un dato omitido desaparece limpio del texto, sin false", async () => {
+      responde({ temperature_2m_max: [31.4, 25.2, null, 22.1] });
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      expect(html).toContain(">Mín 16°C · Lluvia 30%</p>");
+      expect(html).not.toContain("false");
+    });
+
+    it("I-35 el valor 0 es válido en máxima, mínima y lluvia", async () => {
+      responde({
+        temperature_2m_max: [31.4, 0, 26.6, 22.1],
+        temperature_2m_min: [17.4, 0, 16.1, 14.3],
+        precipitation_probability_max: [0, 0, 30, 80],
+      });
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      expect(html).toContain(">Máx 0°C · Mín 0°C · Lluvia 0%</p>");
+    });
+
+    it("I-36 una mínima con fracción .5 se redondea hacia arriba", async () => {
+      responde({ temperature_2m_min: [17.4, 14.5, 16.1, 14.3] });
+
+      const html = renderToStaticMarkup(await ClimaPage());
+
+      expect(html).toContain("Mín 15°C");
+    });
+
+    const series: [string, string][] = [
+      ["temperature_2m_max", "Máx"],
+      ["temperature_2m_min", "Mín"],
+      ["precipitation_probability_max", "Lluvia"],
+    ];
+    const valores: [string, unknown][] = [
+      ["null", null],
+      ["1e999", INF],
+    ];
+    for (const [serie, etiqueta] of series) {
+      for (const [nombreValor, valor] of valores) {
+        it(`I-37 ${serie} con ${nombreValor} en Viernes 6: ese día sin ${etiqueta}`, async () => {
+          const base = DIAS[serie as keyof typeof DIAS] as unknown[];
+          responde({
+            weather_code: [0, 2, 3, 1],
+            [serie]: [base[0], base[1], valor, base[3]],
+          });
+
+          const html = renderToStaticMarkup(await ClimaPage());
+          const desde = html.indexOf("Viernes 6");
+          const viernes = html.slice(desde, html.indexOf("Sábado 7"));
+
+          expect(html).not.toContain("No pudimos traer");
+          expect(desde).toBeGreaterThan(-1);
+          expect(viernes).not.toContain(etiqueta);
+          expect(viernes).not.toMatch(/undefined|NaN|Infinity|null|false/);
+          expect(html.slice(0, desde)).toContain(etiqueta);
+        });
+      }
+    }
+
+    it("I-38 una sesión sin user redirige a /login y no llama a fetch", async () => {
+      vi.mocked(auth).mockResolvedValueOnce({} as never);
+      vi.mocked(redirect).mockImplementationOnce(() => {
+        throw new Error("NEXT_REDIRECT;replace;/login;307;");
+      });
+      const fetchMock = vi.fn().mockResolvedValue(respuestaOpenMeteo());
+      vi.stubGlobal("fetch", fetchMock);
+
+      await expect(ClimaPage()).rejects.toThrow("NEXT_REDIRECT;replace;/login");
+
+      expect(redirect).toHaveBeenCalledWith("/login");
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+  });
 });
