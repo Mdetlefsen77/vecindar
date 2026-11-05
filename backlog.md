@@ -31,13 +31,13 @@ Como **vecino** quiero **tocar la tarjeta del clima y ver el pronóstico de los 
 
 - _A refinar:_ `TarjetaClima` hoy pide `forecast_days=1`; el pronóstico necesita más días (¿misma consulta con `forecast_days=4`, o una aparte para `/clima`?). Reusar `estadoDelCielo` y la validación con `Number.isFinite` de HU-02. → Resuelto en `stories/HU-03.md`: consulta propia de `/clima` con `forecast_days=4`.
 
-## HU-04 · Aviso de clima fuerte en el inicio
+## ✅ HU-04 · Aviso de clima fuerte en el inicio
 Como **vecino** quiero **ver un cartel destacado cuando viene tormenta, granizo, viento fuerte o calor extremo** para **prepararme a tiempo (guardar el auto, entrar cosas, tomar agua)**.
 - Si el pronóstico de hoy o de mañana trae tormenta o granizo, ráfagas por encima de un umbral o una máxima por encima de un umbral, el inicio muestra un cartel arriba de la tarjeta con qué viene, cuándo (hoy o mañana) y un consejo práctico.
 - Sin clima fuerte en el pronóstico, no hay cartel.
 - El cartel no usa el rojo de emergencias: ese color queda para SOS y pánico.
 
-- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día. La consulta de `/clima` (HU-03) ya trae 4 días con `weather_code`; faltarían las ráfagas.
+- _A refinar:_ "hoy o mañana" necesita `daily` de al menos 2 días (hoy la tarjeta pide 1) y, para tormenta/granizo/viento, `weather_code` y ráfagas del día. La consulta de `/clima` (HU-03) ya trae 4 días con `weather_code`; faltarían las ráfagas. → Resuelto en `stories/HU-04.md`.
 
 ## HU-05 · Notificación push por clima fuerte
 Como **vecino** quiero **recibir una notificación en el celular cuando se espera clima fuerte** para **enterarme aunque no abra la app**.
@@ -45,6 +45,9 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 - Sin el token correcto responde 401 y no manda nada.
 - No repite la misma alerta para el mismo día aunque el cron corra más de una vez.
 - Sin clima fuerte, responde 200 sin mandar push.
+
+- _Pendiente de HU-04:_ usar las mismas reglas de `src/lib/clima.ts` (umbrales 60 km/h y 38 °C, un solo fenómeno, hoy antes que mañana). El granizo solo llega si el modelo lo informa: la push no puede prometerlo.
+- _Pendiente de HU-04:_ `climaFuerte` rotula "hoy" y "mañana" por posición, sin mirar la fecha. Antes de mandar una push, comparar `daily.time[0]` con la fecha de hoy en Córdoba (pasándola como parámetro, para que `src/lib/clima.ts` siga sin imports de servidor) y decidir qué pasa si falta `time`, o usar una consulta sin caché. La comparación sola no cubre una entrada vieja del mismo día ni un aviso perdido. Ver la nota de seguridad de HU-04 en `## Notas`.
 
 ## Notas
 - 2026-11-04 · (HU-05) En el plan Hobby de Vercel los crons son solo diarios: la push sale a una hora fija, así que una tormenta que se forma en el día puede no avisarse a tiempo. Hay que elegir la hora en `/story HU-05`.
@@ -63,3 +66,6 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 - 2026-11-05 · (seguridad) `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)`, no tiene layout propio y un grep no encuentra `auth()` ni `redirect(` en `src/app/wrapped/[anio]/page.tsx`. El barrido de HU-03 no siguió el caso: falta ver qué datos muestra, si otra capa lo protege y la ruta `imagen` de esa carpeta. Conviene una historia aparte. `/mi-suscripcion` y `/reportes` tampoco están en la lista, pero se protegen con `auth()` en la página.
 - 2026-11-05 · (seguridad, sospecha sin confirmar) `verificado` solo se comprueba en `authorize` (`src/lib/auth.ts:48`), la sesión JWT dura 90 días (`src/lib/auth.ts:97`) y el layout solo relee `pruebaHasta` (`layout.tsx:44-47`). Una cuenta desaprobada podría conservar el acceso hasta que venza el token. Falta revisar si existe otro mecanismo de revocación.
 - 2026-11-05 · (seguridad, hardening) El bloqueo de prueba vencida está solo en el layout (`layout.tsx:54-55`), no en cada página. Falta comprobar si una navegación RSC reejecuta el layout. En `/clima` no importa porque son datos públicos, pero sí en páginas con datos de vecinos.
+- 2026-11-05 · (HU-04, seguridad, needs_validation) El cartel del inicio rotula "hoy" y "mañana" por posición y nadie compara `daily.time` con la fecha real. Con el manejador de caché por defecto de Next, una entrada vencida se sirve sin edad máxima mientras revalida en segundo plano, y solo se guardan respuestas 200: con Open-Meteo caído seguiría saliendo un "Tormenta hoy" viejo, y el tope de 30 min aceptado en HU-03 y HU-04 no se sostendría. No hace falta la caída: la primera visita después de horas sin tráfico también recibe la entrada vieja, y la caída solo lo alarga. Un test que lo reproduzca tiene que traer `current.temperature_2m` finita: sin ella la tarjeta sale por el `catch` y el verde no prueba nada. Comparar `daily.time` con la fecha real no alcanza por sí solo: una entrada de la mañana servida a la tarde del mismo día pasa la comparación, y un aviso perdido sigue perdido; para eso hace falta una consulta sin caché o con edad acotada. Que `next.config.ts` no declare `cacheHandler` no significa que se use el manejador por defecto. Falta validar en Vercel si inyecta su propio `FetchCache`, si sirve entradas vencidas mientras la revalidación falla y con qué edad máxima. Si se confirma, ocultar solo el cartel deja igual la temperatura, Máx, Mín y Lluvia viejos, y `/clima` rotula "Mañana" por posición con la misma caché.
+- 2026-11-05 · (HU-04, seguridad, hardening) La consulta de la tarjeta no fija `wind_speed_unit=kmh` y no lee `daily_units`: el umbral de 60 depende del valor por defecto de la API. `clima.ts:67` acepta códigos no enteros como 95.5. La revalidación en segundo plano corre sin el timeout de 3 s, porque Next quita el `signal`. El `fetch` de la tarjeta sigue redirecciones (sin `redirect: "error"`): el proveedor podría hacer que el servidor pida otra URL, aunque de esa respuesta solo se usarían campos de clima.
+- 2026-11-05 · (HU-04) Los umbrales del cartel (60 km/h y 38 °C) son fijos y no se validaron con datos del barrio. Quedó fuera de HU-04: revisarlos si el cartel sale de más o de menos.

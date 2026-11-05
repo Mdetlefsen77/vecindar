@@ -190,7 +190,7 @@ describe("TarjetaClima", () => {
     expect(url.searchParams.get("current")).toBe("temperature_2m,weather_code");
   });
 
-  it("U-11 la URL pide los datos diarios de hoy en la zona horaria de Córdoba", async () => {
+  it("U-11 la URL pide los datos diarios de hoy y mañana en la zona horaria de Córdoba", async () => {
     const fetchMock = vi.fn().mockResolvedValue(
       new Response(
         JSON.stringify({
@@ -205,9 +205,9 @@ describe("TarjetaClima", () => {
 
     const url = new URL(String(fetchMock.mock.calls[0][0]));
     expect(url.searchParams.get("daily")).toBe(
-      "temperature_2m_max,temperature_2m_min,precipitation_probability_max",
+      "temperature_2m_max,temperature_2m_min,precipitation_probability_max,weather_code,wind_gusts_10m_max",
     );
-    expect(url.searchParams.get("forecast_days")).toBe("1");
+    expect(url.searchParams.get("forecast_days")).toBe("2");
     expect(url.searchParams.get("timezone")).toBe("America/Argentina/Cordoba");
   });
 
@@ -679,6 +679,367 @@ describe("TarjetaClima", () => {
           { status: 200 },
         ),
       ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toBe("");
+  });
+
+  it("I-44 con tormenta hoy muestra el cartel antes del enlace y fuera de él", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [95, 0],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    const ancla = html.match(/<a [^>]*href="\/clima"[^>]*>(.*)<\/a>/s);
+    expect(ancla).not.toBeNull();
+    const posicionAncla = html.indexOf(ancla![0]);
+    const antes = html.slice(0, posicionAncla);
+    expect(antes).toContain("Tormenta hoy");
+    expect(antes).toContain("Entrá las cosas de afuera");
+    expect(ancla![1]).not.toContain("Tormenta hoy");
+    expect(ancla![1]).not.toContain("Entrá las cosas de afuera");
+  });
+
+  it("I-46 el cartel de tormenta es ámbar y no rojo", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [95, 0],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    const cartel = html.slice(0, html.indexOf("<a "));
+    expect(cartel).toContain("Tormenta hoy");
+    expect(cartel).toContain("amber-");
+    expect(html).not.toContain("red-");
+  });
+
+  it("I-53 el cartel de tormenta tiene fondo y texto ámbar, cada clase por separado", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [95, 0],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    const cartel = html.slice(0, html.indexOf("<a "));
+    expect(cartel).toContain("Tormenta hoy");
+    expect(cartel).toContain("bg-amber-");
+    expect(cartel).toContain("text-amber-");
+  });
+
+  it("I-56 con código 95 el cartel Tormenta hoy aparece una sola vez", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [95, 0],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html.split("Tormenta hoy")).toHaveLength(2);
+  });
+
+  it.each([
+    [
+      "ráfagas 70",
+      { wind_gusts_10m_max: [70, 20], temperature_2m_max: [27, 28] },
+      "Viento fuerte hoy",
+    ],
+    [
+      "máxima 40",
+      { wind_gusts_10m_max: [20, 20], temperature_2m_max: [40, 28] },
+      "Calor extremo hoy",
+    ],
+  ])(
+    "I-54 con código 0 y %s la tarjeta muestra %s",
+    async (_caso, serie, titulo) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(
+            JSON.stringify({
+              current: { temperature_2m: 24, weather_code: 0 },
+              daily: {
+                time: ["2026-11-05", "2026-11-06"],
+                weather_code: [0, 0],
+                temperature_2m_min: [15, 16],
+                precipitation_probability_max: [10, 20],
+                ...serie,
+              },
+            }),
+            { status: 200 },
+          ),
+        ),
+      );
+
+      const html = renderToStaticMarkup(await TarjetaClima());
+
+      const cartel = html.slice(0, html.indexOf("<a "));
+      expect(cartel).toContain(titulo);
+    },
+  );
+
+  it.each([
+    [
+      "ráfagas [20, 70]",
+      { wind_gusts_10m_max: [20, 70], temperature_2m_max: [27, 28] },
+      "Viento fuerte mañana",
+    ],
+    [
+      "máxima [27, 40]",
+      { wind_gusts_10m_max: [20, 20], temperature_2m_max: [27, 40] },
+      "Calor extremo mañana",
+    ],
+  ])(
+    "I-57 con código 0 y %s la tarjeta muestra %s",
+    async (_caso, serie, titulo) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(
+            JSON.stringify({
+              current: { temperature_2m: 24, weather_code: 0 },
+              daily: {
+                time: ["2026-11-05", "2026-11-06"],
+                weather_code: [0, 0],
+                temperature_2m_min: [15, 16],
+                precipitation_probability_max: [10, 20],
+                ...serie,
+              },
+            }),
+            { status: 200 },
+          ),
+        ),
+      );
+
+      const html = renderToStaticMarkup(await TarjetaClima());
+
+      const cartel = html.slice(0, html.indexOf("<a "));
+      expect(cartel).toContain(titulo);
+    },
+  );
+
+  it("I-52 con hoy calmo y tormenta mañana muestra el cartel de mañana con su consejo", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [0, 95],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    const cartel = html.slice(0, html.indexOf("<a "));
+    expect(cartel).toContain("Tormenta mañana");
+    expect(cartel).toContain("Entrá las cosas de afuera");
+  });
+
+  it("I-45 con hoy y mañana calmos no muestra cartel y deja la temperatura y el enlace", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [0, 1],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).not.toMatch(/hoy|mañana/i);
+    expect(html).toContain("24°C");
+    expect(html).toContain("Ver pronóstico ›");
+    expect(html).not.toContain("amber-");
+    expect(html.startsWith("<a ")).toBe(true);
+  });
+
+  it("I-48 con dos días distintos muestra máxima, mínima y lluvia de hoy y nada de mañana", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [0, 0],
+              temperature_2m_max: [27.2, 33.4],
+              temperature_2m_min: [15.1, 8.6],
+              precipitation_probability_max: [10, 30],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("Máx 27°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).toContain("Lluvia 10%");
+    expect(html).not.toContain("33");
+    expect(html).not.toContain("9°C");
+    expect(html).not.toContain("30%");
+  });
+
+  it("I-49 con daily sin weather_code ni ráfagas muestra la tarjeta sin cartel ni undefined", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              temperature_2m_max: [27],
+              temperature_2m_min: [15],
+              precipitation_probability_max: [10],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toContain("24°C");
+    expect(html).toContain("Máx 27°C");
+    expect(html).toContain("Mín 15°C");
+    expect(html).not.toContain("amber-");
+    expect(html.startsWith("<a ")).toBe(true);
+    expect(html).not.toMatch(/hoy|mañana/i);
+    expect(html).not.toContain("undefined");
+    expect(html).not.toContain("NaN");
+  });
+
+  it("I-50 con status 500 y cuerpo con tormenta renderiza vacío", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            current: { temperature_2m: 24, weather_code: 0 },
+            daily: {
+              time: ["2026-11-05", "2026-11-06"],
+              weather_code: [95, 0],
+              temperature_2m_max: [27, 28],
+              temperature_2m_min: [15, 16],
+              precipitation_probability_max: [10, 20],
+              wind_gusts_10m_max: [20, 20],
+            },
+          }),
+          { status: 500 },
+        ),
+      ),
+    );
+
+    const html = renderToStaticMarkup(await TarjetaClima());
+
+    expect(html).toBe("");
+  });
+
+  it("I-51 con temperatura actual no finita y tormenta en daily renderiza vacío", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(
+            `{"current":{"temperature_2m":1e999,"weather_code":0},"daily":{"time":["2026-11-05","2026-11-06"],"weather_code":[95,0],"temperature_2m_max":[27,28],"temperature_2m_min":[15,16],"precipitation_probability_max":[10,20],"wind_gusts_10m_max":[20,20]}}`,
+            { status: 200 },
+          ),
+        ),
     );
 
     const html = renderToStaticMarkup(await TarjetaClima());
