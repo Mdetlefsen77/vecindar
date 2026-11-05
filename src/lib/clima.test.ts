@@ -153,3 +153,17 @@ describe("climaFuerte mañana", () => {
     expect(climaFuerte(daily)).toEqual({ titulo, consejo });
   });
 });
+
+describe("climaFuerte hoy primero", () => {
+  it("hoy viento y mañana granizo → Viento fuerte hoy", () => {
+    expect(
+      climaFuerte({
+        weather_code: [0, 96],
+        wind_gusts_10m_max: [70, 10],
+      }),
+    ).toEqual({
+      titulo: "Viento fuerte hoy",
+      consejo: "Asegurá lo que se pueda volar",
+    });
+  });
+});
