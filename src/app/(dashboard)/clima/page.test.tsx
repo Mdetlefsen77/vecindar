@@ -142,6 +142,19 @@ describe("/clima", () => {
     expect(html).not.toContain("Mañana");
   });
 
+  it("I-28 si fetch rechaza muestra el mensaje y el enlace a /inicio, sin lanzar", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockRejectedValue(new TypeError("fetch failed")),
+    );
+
+    const html = renderToStaticMarkup(await ClimaPage());
+
+    expect(html).toContain("No pudimos traer el pronóstico, probá más tarde");
+    expect(html).toMatch(/<a [^>]*href="\/inicio"[^>]*>Volver al inicio<\/a>/);
+    expect(html).not.toContain("Mañana");
+  });
+
   describe("I-23 datos raros por día", () => {
     async function pagina(cambios: Record<string, unknown[]>) {
       vi.stubGlobal(

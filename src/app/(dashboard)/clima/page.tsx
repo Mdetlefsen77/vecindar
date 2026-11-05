@@ -12,22 +12,26 @@ export default async function ClimaPage() {
   const base = process.env.OPEN_METEO_URL ?? "https://api.open-meteo.com";
   const clave = process.env.OPEN_METEO_API_KEY;
   const apikey = clave ? `&apikey=${clave}` : "";
-  const res = await fetch(
-    `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=4&timezone=America/Argentina/Cordoba${apikey}`,
-    { next: { revalidate: 1800 } },
+  const error = (
+    <div className="p-4 space-y-3">
+      <p className="text-2xl font-semibold">
+        No pudimos traer el pronóstico, probá más tarde
+      </p>
+      <Link href="/inicio" className="block text-xl font-semibold underline">
+        Volver al inicio
+      </Link>
+    </div>
   );
-  if (!res.ok) {
-    return (
-      <div className="p-4 space-y-3">
-        <p className="text-2xl font-semibold">
-          No pudimos traer el pronóstico, probá más tarde
-        </p>
-        <Link href="/inicio" className="block text-xl font-semibold underline">
-          Volver al inicio
-        </Link>
-      </div>
+  let res: Response;
+  try {
+    res = await fetch(
+      `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=4&timezone=America/Argentina/Cordoba${apikey}`,
+      { next: { revalidate: 1800 } },
     );
+  } catch {
+    return error;
   }
+  if (!res.ok) return error;
   const data = await res.json();
   const d = data.daily;
 
