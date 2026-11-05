@@ -183,3 +183,15 @@ describe("climaFuerte prioridad el mismo día", () => {
     ).toBe(titulo);
   });
 });
+
+describe("climaFuerte con datos inválidos", () => {
+  it.each([
+    ["ráfagas Infinity", { wind_gusts_10m_max: JSON.parse("[1e999, 10]") }],
+    ["ráfagas texto", { wind_gusts_10m_max: ["70", 10] }],
+    ["máxima Infinity", { temperature_2m_max: JSON.parse("[1e999, 20]") }],
+    ["máxima texto", { temperature_2m_max: ["40", 20] }],
+    ["código texto", { weather_code: ["95", 0] }],
+  ])("%s → null", (_nombre, serie) => {
+    expect(climaFuerte({ weather_code: [0, 0], ...serie })).toBeNull();
+  });
+});

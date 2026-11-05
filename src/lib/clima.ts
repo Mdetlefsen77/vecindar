@@ -71,14 +71,14 @@ function climaFuerteDelDia(
     };
   }
   const rafagas = daily.wind_gusts_10m_max?.[dia];
-  if (typeof rafagas === "number" && rafagas >= 60) {
+  if (Number.isFinite(rafagas) && (rafagas as number) >= 60) {
     return {
       titulo: `Viento fuerte ${cuando}`,
       consejo: "Asegurá lo que se pueda volar",
     };
   }
   const maxima = daily.temperature_2m_max?.[dia];
-  if (typeof maxima === "number" && Math.round(maxima) >= 38) {
+  if (Number.isFinite(maxima) && Math.round(maxima as number) >= 38) {
     return {
       titulo: `Calor extremo ${cuando}`,
       consejo: "Tomá agua y evitá el sol del mediodía",
