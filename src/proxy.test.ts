@@ -4,7 +4,7 @@ import { NextRequest } from "next/server";
 const getToken = vi.hoisted(() => vi.fn());
 vi.mock("next-auth/jwt", () => ({ getToken }));
 
-import { proxy } from "./proxy";
+import { config, proxy } from "./proxy";
 
 describe("proxy", () => {
   beforeEach(() => {
@@ -20,5 +20,9 @@ describe("proxy", () => {
     expect(res.headers.get("location")).toBe(
       "http://localhost:3000/login?callbackUrl=%2Fclima",
     );
+  });
+
+  it('U-16 · el matcher incluye "/clima/:path*"', () => {
+    expect(config.matcher).toContain("/clima/:path*");
   });
 });

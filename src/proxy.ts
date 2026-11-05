@@ -63,6 +63,7 @@ export const config = {
     "/avisos/:path*",
     "/mas/:path*",
     "/admin/:path*",
+    "/clima/:path*",
     "/login",
   ],
 };
