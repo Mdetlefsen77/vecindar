@@ -134,3 +134,22 @@ describe("climaFuerte calor", () => {
     ).toBeNull();
   });
 });
+
+describe("climaFuerte mañana", () => {
+  it.each([
+    [{ weather_code: [0, 95] }, "Tormenta mañana", "Entrá las cosas de afuera"],
+    [{ weather_code: [0, 96] }, "Granizo mañana", "Guardá el auto bajo techo"],
+    [
+      { weather_code: [0, 0], wind_gusts_10m_max: [10, 70] },
+      "Viento fuerte mañana",
+      "Asegurá lo que se pueda volar",
+    ],
+    [
+      { weather_code: [0, 0], temperature_2m_max: [20, 40] },
+      "Calor extremo mañana",
+      "Tomá agua y evitá el sol del mediodía",
+    ],
+  ])("hoy calmo y mañana fuerte → %s", (daily, titulo, consejo) => {
+    expect(climaFuerte(daily)).toEqual({ titulo, consejo });
+  });
+});

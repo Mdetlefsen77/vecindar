@@ -46,31 +46,49 @@ export function nombreDelDia(fecha: string): string {
 
 export type ClimaFuerte = { titulo: string; consejo: string };
 
-export function climaFuerte(daily: {
+type DailyClima = {
   weather_code?: unknown[];
   wind_gusts_10m_max?: unknown[];
   temperature_2m_max?: unknown[];
-}): ClimaFuerte | null {
-  const codigo = daily.weather_code?.[0];
+};
+
+function climaFuerteDelDia(
+  daily: DailyClima,
+  dia: number,
+  cuando: string,
+): ClimaFuerte | null {
+  const codigo = daily.weather_code?.[dia];
   if (codigo === 96 || codigo === 99) {
-    return { titulo: "Granizo hoy", consejo: "Guardá el auto bajo techo" };
+    return {
+      titulo: `Granizo ${cuando}`,
+      consejo: "Guardá el auto bajo techo",
+    };
   }
   if (typeof codigo === "number" && codigo >= 95 && codigo <= 98) {
-    return { titulo: "Tormenta hoy", consejo: "Entrá las cosas de afuera" };
+    return {
+      titulo: `Tormenta ${cuando}`,
+      consejo: "Entrá las cosas de afuera",
+    };
   }
-  const rafagas = daily.wind_gusts_10m_max?.[0];
+  const rafagas = daily.wind_gusts_10m_max?.[dia];
   if (typeof rafagas === "number" && rafagas >= 60) {
     return {
-      titulo: "Viento fuerte hoy",
+      titulo: `Viento fuerte ${cuando}`,
       consejo: "Asegurá lo que se pueda volar",
     };
   }
-  const maxima = daily.temperature_2m_max?.[0];
+  const maxima = daily.temperature_2m_max?.[dia];
   if (typeof maxima === "number" && Math.round(maxima) >= 38) {
     return {
-      titulo: "Calor extremo hoy",
+      titulo: `Calor extremo ${cuando}`,
       consejo: "Tomá agua y evitá el sol del mediodía",
     };
   }
   return null;
+}
+
+export function climaFuerte(daily: DailyClima): ClimaFuerte | null {
+  return (
+    climaFuerteDelDia(daily, 0, "hoy") ?? climaFuerteDelDia(daily, 1, "mañana")
+  );
 }
