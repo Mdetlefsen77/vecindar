@@ -777,6 +777,46 @@ describe("TarjetaClima", () => {
     expect(cartel).toContain("text-amber-");
   });
 
+  it.each([
+    [
+      "ráfagas 70",
+      { wind_gusts_10m_max: [70, 20], temperature_2m_max: [27, 28] },
+      "Viento fuerte hoy",
+    ],
+    [
+      "máxima 40",
+      { wind_gusts_10m_max: [20, 20], temperature_2m_max: [40, 28] },
+      "Calor extremo hoy",
+    ],
+  ])(
+    "I-54 con código 0 y %s la tarjeta muestra %s",
+    async (_caso, serie, titulo) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(
+          new Response(
+            JSON.stringify({
+              current: { temperature_2m: 24, weather_code: 0 },
+              daily: {
+                time: ["2026-11-05", "2026-11-06"],
+                weather_code: [0, 0],
+                temperature_2m_min: [15, 16],
+                precipitation_probability_max: [10, 20],
+                ...serie,
+              },
+            }),
+            { status: 200 },
+          ),
+        ),
+      );
+
+      const html = renderToStaticMarkup(await TarjetaClima());
+
+      const cartel = html.slice(0, html.indexOf("<a "));
+      expect(cartel).toContain(titulo);
+    },
+  );
+
   it("I-52 con hoy calmo y tormenta mañana muestra el cartel de mañana con su consejo", async () => {
     vi.stubGlobal(
       "fetch",
@@ -831,6 +871,8 @@ describe("TarjetaClima", () => {
     expect(html).not.toMatch(/hoy|mañana/i);
     expect(html).toContain("24°C");
     expect(html).toContain("Ver pronóstico ›");
+    expect(html).not.toContain("amber-");
+    expect(html.startsWith("<a ")).toBe(true);
   });
 
   it("I-48 con dos días distintos muestra máxima, mínima y lluvia de hoy y nada de mañana", async () => {
@@ -888,7 +930,8 @@ describe("TarjetaClima", () => {
     expect(html).toContain("24°C");
     expect(html).toContain("Máx 27°C");
     expect(html).toContain("Mín 15°C");
-    expect(html).not.toContain('<div class="rounded-2xl bg-amber');
+    expect(html).not.toContain("amber-");
+    expect(html.startsWith("<a ")).toBe(true);
     expect(html).not.toMatch(/hoy|mañana/i);
     expect(html).not.toContain("undefined");
     expect(html).not.toContain("NaN");
