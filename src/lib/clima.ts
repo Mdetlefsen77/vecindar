@@ -15,6 +15,26 @@ export function estadoDelCielo(
   return null;
 }
 
+// Fondo de las tarjetas según el cielo. Todos son lo bastante oscuros para el
+// texto blanco (contraste 4.5:1 o más) y ninguno es rojo: ese color es de las
+// emergencias. Las clases van completas para que Tailwind las encuentre.
+const FONDO_POR_DEFECTO = "bg-gradient-to-br from-sky-700 to-blue-700";
+const FONDOS: Record<string, string> = {
+  Despejado: FONDO_POR_DEFECTO,
+  "Mayormente despejado": FONDO_POR_DEFECTO,
+  "Parcialmente nublado": "bg-gradient-to-br from-sky-700 to-slate-600",
+  Nublado: "bg-gradient-to-br from-slate-600 to-slate-700",
+  Niebla: "bg-gradient-to-br from-slate-600 to-gray-700",
+  Llovizna: "bg-gradient-to-br from-blue-700 to-slate-700",
+  Lluvia: "bg-gradient-to-br from-blue-800 to-slate-800",
+  Nieve: "bg-gradient-to-br from-cyan-800 to-slate-700",
+  Tormenta: "bg-gradient-to-br from-indigo-800 to-slate-900",
+};
+
+export function fondoDelCielo(estado: { texto: string } | null): string {
+  return (estado && FONDOS[estado.texto]) ?? FONDO_POR_DEFECTO;
+}
+
 export function nombreDelDia(fecha: string): string {
   const texto = new Date(fecha).toLocaleDateString("es-AR", {
     weekday: "long",

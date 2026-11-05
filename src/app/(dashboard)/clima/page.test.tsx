@@ -549,7 +549,7 @@ describe("/clima", () => {
 
       const html = renderToStaticMarkup(await ClimaPage());
 
-      expect(html.match(/<p class="text-2xl font-bold">/g)).toHaveLength(3);
+      expect(html.match(/<li /g)).toHaveLength(3);
     });
 
     it("I-40 la consulta va a la ruta /v1/forecast", async () => {
