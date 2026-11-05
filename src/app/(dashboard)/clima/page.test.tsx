@@ -155,6 +155,42 @@ describe("/clima", () => {
     expect(html).not.toContain("Mañana");
   });
 
+  it("I-29 si Open-Meteo no responde, a los 3000 ms muestra el mensaje", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn(
+          (_url: string, init: { signal: AbortSignal }) =>
+            new Promise((_resolve, reject) => {
+              init.signal.addEventListener("abort", () =>
+                reject(new DOMException("aborted", "AbortError")),
+              );
+            }),
+        ),
+      );
+      let terminada = false;
+      const pagina = ClimaPage().then((r) => {
+        terminada = true;
+        return r;
+      });
+
+      await vi.advanceTimersByTimeAsync(2999);
+      expect(terminada).toBe(false);
+      await vi.advanceTimersByTimeAsync(1);
+      const html = renderToStaticMarkup(await pagina);
+
+      expect(terminada).toBe(true);
+      expect(html).toContain("No pudimos traer el pronóstico, probá más tarde");
+      expect(html).toMatch(
+        /<a [^>]*href="\/inicio"[^>]*>Volver al inicio<\/a>/,
+      );
+      expect(html).not.toContain("Mañana");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   describe("I-23 datos raros por día", () => {
     async function pagina(cambios: Record<string, unknown[]>) {
       vi.stubGlobal(
