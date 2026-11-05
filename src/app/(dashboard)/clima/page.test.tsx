@@ -121,6 +121,17 @@ describe("/clima", () => {
     expect(html).toContain("Datos: Open-Meteo");
   });
 
+  it("I-43 la atribución a Open-Meteo va después de la última fila", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(respuestaOpenMeteo()));
+
+    const html = renderToStaticMarkup(await ClimaPage());
+
+    expect(html.indexOf("Datos: Open-Meteo")).toBeGreaterThan(
+      html.indexOf("Sábado 7"),
+    );
+    expect(html.indexOf("Sábado 7")).toBeGreaterThan(-1);
+  });
+
   it("I-26 sin sesión redirige a /login y no llama a fetch", async () => {
     vi.mocked(auth).mockResolvedValueOnce(null as never);
     vi.mocked(redirect).mockImplementationOnce(() => {
