@@ -49,6 +49,7 @@ export type ClimaFuerte = { titulo: string; consejo: string };
 export function climaFuerte(daily: {
   weather_code?: unknown[];
   wind_gusts_10m_max?: unknown[];
+  temperature_2m_max?: unknown[];
 }): ClimaFuerte | null {
   const codigo = daily.weather_code?.[0];
   if (codigo === 96 || codigo === 99) {
@@ -62,6 +63,13 @@ export function climaFuerte(daily: {
     return {
       titulo: "Viento fuerte hoy",
       consejo: "Asegurá lo que se pueda volar",
+    };
+  }
+  const maxima = daily.temperature_2m_max?.[0];
+  if (typeof maxima === "number" && Math.round(maxima) >= 38) {
+    return {
+      titulo: "Calor extremo hoy",
+      consejo: "Tomá agua y evitá el sol del mediodía",
     };
   }
   return null;

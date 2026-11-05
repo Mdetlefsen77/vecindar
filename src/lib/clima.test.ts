@@ -117,3 +117,14 @@ describe("climaFuerte viento", () => {
     ).toBeNull();
   });
 });
+
+describe("climaFuerte calor", () => {
+  it.each([38, 37.5])("máxima de %s → Calor extremo hoy", (maxima) => {
+    expect(
+      climaFuerte({ weather_code: [0, 0], temperature_2m_max: [maxima, 20] }),
+    ).toEqual({
+      titulo: "Calor extremo hoy",
+      consejo: "Tomá agua y evitá el sol del mediodía",
+    });
+  });
+});
