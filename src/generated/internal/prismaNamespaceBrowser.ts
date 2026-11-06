@@ -79,7 +79,8 @@ export const ModelName = {
   RecomendacionOficio: 'RecomendacionOficio',
   ReporteOficio: 'ReporteOficio',
   Aviso: 'Aviso',
-  ConfirmacionAviso: 'ConfirmacionAviso'
+  ConfirmacionAviso: 'ConfirmacionAviso',
+  AlertaClima: 'AlertaClima'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -513,6 +514,15 @@ export const ConfirmacionAvisoScalarFieldEnum = {
 } as const
 
 export type ConfirmacionAvisoScalarFieldEnum = (typeof ConfirmacionAvisoScalarFieldEnum)[keyof typeof ConfirmacionAvisoScalarFieldEnum]
+
+
+export const AlertaClimaScalarFieldEnum = {
+  id: 'id',
+  fecha: 'fecha',
+  createdAt: 'createdAt'
+} as const
+
+export type AlertaClimaScalarFieldEnum = (typeof AlertaClimaScalarFieldEnum)[keyof typeof AlertaClimaScalarFieldEnum]
 
 
 export const SortOrder = {

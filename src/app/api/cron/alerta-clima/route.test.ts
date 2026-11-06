@@ -6,6 +6,11 @@ const { enviarPushBroadcast } = vi.hoisted(() => ({
 }));
 vi.mock("@/lib/push/enviarPush", () => ({ enviarPushBroadcast }));
 
+const { crearAlerta } = vi.hoisted(() => ({ crearAlerta: vi.fn() }));
+vi.mock("@/lib/prisma/client", () => ({
+  prisma: { alertaClima: { create: crearAlerta } },
+}));
+
 import { GET } from "./route";
 
 function pedido() {
@@ -33,6 +38,7 @@ beforeEach(() => {
   vi.setSystemTime(new Date("2026-11-06T12:00:00Z"));
   vi.stubEnv("CRON_SECRET", "prueba");
   enviarPushBroadcast.mockReset();
+  crearAlerta.mockReset();
 });
 
 afterEach(() => {
@@ -73,7 +79,6 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(await res.json()).toMatchObject({ ok: true, enviado: true });
   });
 
-  // El registro del día aún no existe: "sin registro" lo cubre I-61 cuando aparezca.
   it.each([
     ["sin Authorization", undefined, "prueba"],
     ["con otro token", "Bearer otro", "prueba"],
@@ -92,7 +97,24 @@ describe("GET /api/cron/alerta-clima", () => {
 
       expect(res.status).toBe(401);
       expect(fetchMock).not.toHaveBeenCalled();
+      expect(crearAlerta).not.toHaveBeenCalled();
       expect(enviarPushBroadcast).not.toHaveBeenCalled();
     },
   );
+
+  it("I-61 si el día ya está registrado (P2002) responde enviado: false sin push", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
+    crearAlerta.mockRejectedValue(
+      Object.assign(new Error("Unique constraint failed"), { code: "P2002" }),
+    );
+
+    const res = await GET(pedido());
+
+    expect(crearAlerta).toHaveBeenCalledWith({
+      data: { fecha: "2026-11-06" },
+    });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toMatchObject({ ok: true, enviado: false });
+    expect(enviarPushBroadcast).not.toHaveBeenCalled();
+  });
 });

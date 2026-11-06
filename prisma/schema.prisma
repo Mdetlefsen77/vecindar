@@ -876,3 +876,13 @@ enum TipoConfirmacion {
   SIGUE
   RESUELTO
 }
+
+// Una fila por día de Córdoba en que el cron alerta-clima mandó la push. La
+// fecha única impide un segundo envío el mismo día. No guarda datos del clima.
+model AlertaClima {
+  id        Int      @id @default(autoincrement())
+  fecha     String   @unique
+  createdAt DateTime @default(now())
+
+  @@map("alertas_clima")
+}

@@ -412,7 +412,8 @@ export const ModelName = {
   RecomendacionOficio: 'RecomendacionOficio',
   ReporteOficio: 'ReporteOficio',
   Aviso: 'Aviso',
-  ConfirmacionAviso: 'ConfirmacionAviso'
+  ConfirmacionAviso: 'ConfirmacionAviso',
+  AlertaClima: 'AlertaClima'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "promoOficio" | "recomendacionOficio" | "reporteOficio" | "aviso" | "confirmacionAviso"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "promoOficio" | "recomendacionOficio" | "reporteOficio" | "aviso" | "confirmacionAviso" | "alertaClima"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2578,6 +2579,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AlertaClima: {
+      payload: Prisma.$AlertaClimaPayload<ExtArgs>
+      fields: Prisma.AlertaClimaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AlertaClimaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AlertaClimaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>
+        }
+        findFirst: {
+          args: Prisma.AlertaClimaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AlertaClimaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>
+        }
+        findMany: {
+          args: Prisma.AlertaClimaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>[]
+        }
+        create: {
+          args: Prisma.AlertaClimaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>
+        }
+        createMany: {
+          args: Prisma.AlertaClimaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.AlertaClimaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>[]
+        }
+        delete: {
+          args: Prisma.AlertaClimaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>
+        }
+        update: {
+          args: Prisma.AlertaClimaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>
+        }
+        deleteMany: {
+          args: Prisma.AlertaClimaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AlertaClimaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.AlertaClimaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>[]
+        }
+        upsert: {
+          args: Prisma.AlertaClimaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AlertaClimaPayload>
+        }
+        aggregate: {
+          args: Prisma.AlertaClimaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAlertaClima>
+        }
+        groupBy: {
+          args: Prisma.AlertaClimaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AlertaClimaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AlertaClimaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AlertaClimaCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3032,6 +3107,15 @@ export const ConfirmacionAvisoScalarFieldEnum = {
 } as const
 
 export type ConfirmacionAvisoScalarFieldEnum = (typeof ConfirmacionAvisoScalarFieldEnum)[keyof typeof ConfirmacionAvisoScalarFieldEnum]
+
+
+export const AlertaClimaScalarFieldEnum = {
+  id: 'id',
+  fecha: 'fecha',
+  createdAt: 'createdAt'
+} as const
+
+export type AlertaClimaScalarFieldEnum = (typeof AlertaClimaScalarFieldEnum)[keyof typeof AlertaClimaScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3644,6 +3728,7 @@ export type GlobalOmitConfig = {
   reporteOficio?: Prisma.ReporteOficioOmit
   aviso?: Prisma.AvisoOmit
   confirmacionAviso?: Prisma.ConfirmacionAvisoOmit
+  alertaClima?: Prisma.AlertaClimaOmit
 }
 
 /* Types for Logging */

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
 import { climaFuerte } from "@/lib/clima";
+import { prisma } from "@/lib/prisma/client";
 import { enviarPushBroadcast } from "@/lib/push/enviarPush";
 
 export async function GET(req: NextRequest) {
@@ -26,6 +27,16 @@ export async function GET(req: NextRequest) {
   }
 
   const fecha = new Date().toISOString().slice(0, 10);
+  try {
+    await prisma.alertaClima.create({ data: { fecha } });
+  } catch {
+    return NextResponse.json({
+      ok: true,
+      enviado: false,
+      motivo: "ya avisado hoy",
+    });
+  }
+
   await enviarPushBroadcast({
     title: aviso.titulo,
     body: aviso.consejo,
