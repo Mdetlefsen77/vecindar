@@ -72,4 +72,27 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(res.status).toBe(200);
     expect(await res.json()).toMatchObject({ ok: true, enviado: true });
   });
+
+  // El registro del día aún no existe: "sin registro" lo cubre I-61 cuando aparezca.
+  it.each([
+    ["sin Authorization", undefined, "prueba"],
+    ["con otro token", "Bearer otro", "prueba"],
+    ["sin CRON_SECRET con Bearer undefined", "Bearer undefined", undefined],
+  ])(
+    "I-59 %s responde 401 sin consultar el clima ni mandar push",
+    async (_n, header, secret) => {
+      const fetchMock = vi.fn().mockResolvedValue(clima(95));
+      vi.stubGlobal("fetch", fetchMock);
+      vi.stubEnv("CRON_SECRET", secret);
+
+      const req = new NextRequest("http://localhost/api/cron/alerta-clima", {
+        headers: header ? { authorization: header } : {},
+      });
+      const res = await GET(req);
+
+      expect(res.status).toBe(401);
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(enviarPushBroadcast).not.toHaveBeenCalled();
+    },
+  );
 });
