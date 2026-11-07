@@ -241,6 +241,48 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(crearAlerta).not.toHaveBeenCalled();
   });
 
+  it.each([
+    [
+      "fetch rechaza con la URL en el mensaje",
+      () =>
+        vi
+          .fn()
+          .mockRejectedValue(
+            new TypeError(
+              "fetch failed https://api.open-meteo.com/v1/forecast?apikey=clave-secreta-123",
+            ),
+          ),
+    ],
+    [
+      "responde 500 con la clave en res.url",
+      () =>
+        vi.fn().mockResolvedValue({
+          ok: false,
+          status: 500,
+          url: "https://api.open-meteo.com/v1/forecast?apikey=clave-secreta-123",
+        } as unknown as Response),
+    ],
+  ])(
+    "I-67 si %s, ni la respuesta ni el log muestran la clave",
+    async (_caso, crearFetch) => {
+      vi.stubEnv("OPEN_METEO_API_KEY", "clave-secreta-123");
+      vi.stubGlobal("fetch", crearFetch());
+      const log = vi.spyOn(console, "error").mockImplementation(() => {});
+      log.mockClear();
+
+      const res = await GET(pedido());
+
+      expect(res.status).toBe(502);
+      expect(await res.text()).not.toContain("clave-secreta-123");
+      expect(log).toHaveBeenCalled();
+      for (const llamada of log.mock.calls) {
+        for (const arg of llamada) {
+          expect(String(arg)).not.toContain("clave-secreta-123");
+        }
+      }
+    },
+  );
+
   it("I-73 si Open-Meteo no responde sigue pendiente a los 4999 ms y da 502 a los 5000 ms", async () => {
     vi.useFakeTimers({ toFake: ["Date", "setTimeout", "clearTimeout"] });
     vi.setSystemTime(new Date("2026-11-06T12:00:00Z"));
