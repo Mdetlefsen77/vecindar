@@ -102,6 +102,17 @@ describe("GET /api/cron/alerta-clima", () => {
     },
   );
 
+  it("I-60 con códigos calmos hoy y mañana responde enviado: false sin push ni registro", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(0)));
+
+    const res = await GET(pedido());
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toMatchObject({ ok: true, enviado: false });
+    expect(enviarPushBroadcast).not.toHaveBeenCalled();
+    expect(crearAlerta).not.toHaveBeenCalled();
+  });
+
   it("I-61 si el día ya está registrado (P2002) responde enviado: false sin push", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
     crearAlerta.mockRejectedValue(
