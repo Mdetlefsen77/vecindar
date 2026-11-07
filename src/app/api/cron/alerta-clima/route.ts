@@ -12,31 +12,31 @@ export async function GET(req: NextRequest) {
 
   const [lat, lng] = BARRIO_CENTER;
   const base = process.env.OPEN_METEO_URL ?? "https://api.open-meteo.com";
-  let res: Response;
   const control = new AbortController();
   const plazo = setTimeout(() => control.abort(), 5000);
+  let data;
   try {
-    res = await fetch(
+    const res = await fetch(
       `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,wind_gusts_10m_max,temperature_2m_max&forecast_days=2&timezone=America/Argentina/Cordoba`,
       { cache: "no-store", signal: control.signal },
     );
+    if (!res.ok) {
+      console.error("alerta-clima: Open-Meteo respondió", res.status);
+      return NextResponse.json(
+        { error: "No se pudo consultar el clima." },
+        { status: 502 },
+      );
+    }
+    data = await res.json();
   } catch {
-    clearTimeout(plazo);
     console.error("alerta-clima: no se pudo consultar Open-Meteo");
     return NextResponse.json(
       { error: "No se pudo consultar el clima." },
       { status: 502 },
     );
+  } finally {
+    clearTimeout(plazo);
   }
-  clearTimeout(plazo);
-  if (!res.ok) {
-    console.error("alerta-clima: Open-Meteo respondió", res.status);
-    return NextResponse.json(
-      { error: "No se pudo consultar el clima." },
-      { status: 502 },
-    );
-  }
-  const data = await res.json();
   const aviso = climaFuerte(data.daily);
   if (!aviso) {
     return NextResponse.json({
