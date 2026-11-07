@@ -352,6 +352,28 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(crearAlerta).not.toHaveBeenCalled();
   });
 
+  it("I-68 consulta sin caché, 2 días, las tres series, la zona de Córdoba y las coordenadas del barrio", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(clima(0));
+    vi.stubGlobal("fetch", fetchMock);
+
+    await GET(pedido());
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url, init] = fetchMock.mock.calls[0];
+    const params = new URL(url).searchParams;
+    expect(init.cache).toBe("no-store");
+    expect(init.next).toBeUndefined();
+    expect(params.get("forecast_days")).toBe("2");
+    expect(params.get("daily")?.split(",").sort()).toEqual([
+      "temperature_2m_max",
+      "weather_code",
+      "wind_gusts_10m_max",
+    ]);
+    expect(params.get("timezone")).toBe("America/Argentina/Cordoba");
+    expect(params.get("latitude")).toBe("-31.495963");
+    expect(params.get("longitude")).toBe("-64.277734");
+  });
+
   it.each([
     ["2026-11-07T02:59:59Z", "2026-11-06"],
     ["2026-11-07T03:00:00Z", "2026-11-07"],
