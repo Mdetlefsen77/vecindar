@@ -46,12 +46,20 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  await enviarPushBroadcast({
-    title: aviso.titulo,
-    body: aviso.consejo,
-    url: "/inicio",
-    tag: `alerta-clima-${fecha}`,
-  });
+  try {
+    await enviarPushBroadcast({
+      title: aviso.titulo,
+      body: aviso.consejo,
+      url: "/inicio",
+      tag: `alerta-clima-${fecha}`,
+    });
+  } catch (err) {
+    console.error("alerta-clima: falló el envío de la push", err);
+    return NextResponse.json(
+      { error: "No se pudo enviar la push." },
+      { status: 500 },
+    );
+  }
 
   return NextResponse.json({
     ok: true,

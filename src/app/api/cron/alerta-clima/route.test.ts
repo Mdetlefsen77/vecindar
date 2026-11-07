@@ -140,6 +140,26 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(enviarPushBroadcast).not.toHaveBeenCalled();
   });
 
+  it("I-72 si enviarPushBroadcast rechaza responde 500, con el día registrado y sin la clave en el log", async () => {
+    vi.stubEnv("OPEN_METEO_API_KEY", "clave-secreta-123");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
+    crearAlerta.mockResolvedValue({});
+    enviarPushBroadcast.mockRejectedValue(new Error("fallo del envío"));
+    const log = vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const res = await GET(pedido());
+
+    expect(res.status).toBe(500);
+    expect(crearAlerta).toHaveBeenCalledWith({
+      data: { fecha: "2026-11-06" },
+    });
+    for (const llamada of log.mock.calls) {
+      for (const arg of llamada) {
+        expect(String(arg)).not.toContain("clave-secreta-123");
+      }
+    }
+  });
+
   it.each([
     ["2026-11-07T02:59:59Z", "2026-11-06"],
     ["2026-11-07T03:00:00Z", "2026-11-07"],
