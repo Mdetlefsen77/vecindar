@@ -475,4 +475,36 @@ describe("GET /api/cron/alerta-clima", () => {
       expect.objectContaining({ title: "Calor extremo hoy" }),
     );
   });
+
+  it("I-76 la respuesta trae fecha y titulo al mandar la push, y el motivo sin clima fuerte o ya avisado", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
+    enviarPushBroadcast.mockResolvedValue(undefined);
+    crearAlerta.mockResolvedValue({});
+    const enviada = await GET(pedido());
+    expect(await enviada.json()).toEqual({
+      ok: true,
+      enviado: true,
+      fecha: "2026-11-06",
+      titulo: "Tormenta hoy",
+    });
+
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(0)));
+    const calma = await GET(pedido());
+    expect(await calma.json()).toEqual({
+      ok: true,
+      enviado: false,
+      motivo: "sin clima fuerte",
+    });
+
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
+    crearAlerta.mockRejectedValue(
+      Object.assign(new Error("Unique constraint failed"), { code: "P2002" }),
+    );
+    const repetida = await GET(pedido());
+    expect(await repetida.json()).toEqual({
+      ok: true,
+      enviado: false,
+      motivo: "ya avisado hoy",
+    });
+  });
 });
