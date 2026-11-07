@@ -374,6 +374,27 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(params.get("longitude")).toBe("-64.277734");
   });
 
+  it("I-69 con OPEN_METEO_URL y OPEN_METEO_API_KEY consulta esa base con apikey; sin ellas, la base pública y sin apikey", async () => {
+    const fetchMock = vi.fn().mockImplementation(async () => clima(0));
+    vi.stubGlobal("fetch", fetchMock);
+
+    vi.stubEnv("OPEN_METEO_URL", "https://clima.ejemplo.test");
+    vi.stubEnv("OPEN_METEO_API_KEY", "clave-de-prueba");
+    await GET(pedido());
+    const configurada = new URL(fetchMock.mock.calls[0][0]);
+    expect(configurada.origin).toBe("https://clima.ejemplo.test");
+    expect(configurada.pathname).toBe("/v1/forecast");
+    expect(configurada.searchParams.get("apikey")).toBe("clave-de-prueba");
+
+    vi.stubEnv("OPEN_METEO_URL", undefined);
+    vi.stubEnv("OPEN_METEO_API_KEY", undefined);
+    await GET(pedido());
+    const porDefecto = new URL(fetchMock.mock.calls[1][0]);
+    expect(porDefecto.origin).toBe("https://api.open-meteo.com");
+    expect(porDefecto.pathname).toBe("/v1/forecast");
+    expect(porDefecto.searchParams.has("apikey")).toBe(false);
+  });
+
   it.each([
     ["2026-11-07T02:59:59Z", "2026-11-06"],
     ["2026-11-07T03:00:00Z", "2026-11-07"],

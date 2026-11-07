@@ -12,12 +12,13 @@ export async function GET(req: NextRequest) {
 
   const [lat, lng] = BARRIO_CENTER;
   const base = process.env.OPEN_METEO_URL ?? "https://api.open-meteo.com";
+  const clave = process.env.OPEN_METEO_API_KEY;
   const control = new AbortController();
   const plazo = setTimeout(() => control.abort(), 5000);
   let data;
   try {
     const res = await fetch(
-      `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,wind_gusts_10m_max,temperature_2m_max&forecast_days=2&timezone=America/Argentina/Cordoba`,
+      `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,wind_gusts_10m_max,temperature_2m_max&forecast_days=2&timezone=America/Argentina/Cordoba${clave ? `&apikey=${clave}` : ""}`,
       { cache: "no-store", signal: control.signal },
     );
     if (!res.ok) {
