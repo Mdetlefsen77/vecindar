@@ -26,7 +26,9 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  const fecha = new Date().toISOString().slice(0, 10);
+  const fecha = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Argentina/Cordoba",
+  }).format(new Date());
   try {
     await prisma.alertaClima.create({ data: { fecha } });
   } catch (err) {

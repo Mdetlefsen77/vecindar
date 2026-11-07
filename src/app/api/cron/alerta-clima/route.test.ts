@@ -139,4 +139,31 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(res.status).toBe(500);
     expect(enviarPushBroadcast).not.toHaveBeenCalled();
   });
+
+  it.each([
+    ["2026-11-07T02:59:59Z", "2026-11-06"],
+    ["2026-11-07T03:00:00Z", "2026-11-07"],
+  ])(
+    "U-40 a las %s registra y etiqueta el día de Córdoba %s",
+    async (ahora, dia) => {
+      const tzOriginal = process.env.TZ;
+      process.env.TZ = "UTC";
+      try {
+        vi.setSystemTime(new Date(ahora));
+        vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
+        enviarPushBroadcast.mockResolvedValue(undefined);
+        crearAlerta.mockResolvedValue({});
+
+        await GET(pedido());
+
+        expect(crearAlerta).toHaveBeenCalledWith({ data: { fecha: dia } });
+        expect(enviarPushBroadcast).toHaveBeenCalledWith(
+          expect.objectContaining({ tag: `alerta-clima-${dia}` }),
+        );
+      } finally {
+        if (tzOriginal === undefined) delete process.env.TZ;
+        else process.env.TZ = tzOriginal;
+      }
+    },
+  );
 });
