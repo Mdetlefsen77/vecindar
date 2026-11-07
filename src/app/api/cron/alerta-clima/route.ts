@@ -37,8 +37,13 @@ export async function GET(req: NextRequest) {
   } finally {
     clearTimeout(plazo);
   }
-  if (!data?.daily) {
-    console.error("alerta-clima: Open-Meteo respondió sin daily");
+  if (
+    !data?.daily ||
+    !data.daily.weather_code ||
+    !data.daily.wind_gusts_10m_max ||
+    !data.daily.temperature_2m_max
+  ) {
+    console.error("alerta-clima: Open-Meteo respondió sin daily completo");
     return NextResponse.json(
       { error: "No se pudo consultar el clima." },
       { status: 502 },

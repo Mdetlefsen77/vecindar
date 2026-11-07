@@ -193,6 +193,40 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(crearAlerta).not.toHaveBeenCalled();
   });
 
+  const serieCompleta = {
+    time: ["2026-11-06", "2026-11-07"],
+    weather_code: [95, 0],
+    wind_gusts_10m_max: [20, 20],
+    temperature_2m_max: [27, 28],
+  };
+  const sinSerie = (clave: string) => {
+    const daily: Record<string, unknown> = { ...serieCompleta };
+    delete daily[clave];
+    return JSON.stringify({ daily });
+  };
+  it.each([
+    ["daily vacío", JSON.stringify({ daily: {} })],
+    ["sin weather_code", sinSerie("weather_code")],
+    ["sin wind_gusts_10m_max", sinSerie("wind_gusts_10m_max")],
+    ["sin temperature_2m_max", sinSerie("temperature_2m_max")],
+    ["cuerpo que no es JSON", "<html>no es json</html>"],
+  ])(
+    "I-74 si Open-Meteo responde 200 con %s responde 502 sin push ni registro",
+    async (_caso, cuerpo) => {
+      vi.stubGlobal(
+        "fetch",
+        vi.fn().mockResolvedValue(new Response(cuerpo, { status: 200 })),
+      );
+      vi.spyOn(console, "error").mockImplementation(() => {});
+
+      const res = await GET(pedido());
+
+      expect(res.status).toBe(502);
+      expect(enviarPushBroadcast).not.toHaveBeenCalled();
+      expect(crearAlerta).not.toHaveBeenCalled();
+    },
+  );
+
   it("I-65 si fetch rechaza responde 502 sin push ni registro", async () => {
     vi.stubGlobal(
       "fetch",
