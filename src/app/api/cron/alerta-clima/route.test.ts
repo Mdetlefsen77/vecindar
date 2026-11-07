@@ -140,6 +140,21 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(enviarPushBroadcast).not.toHaveBeenCalled();
   });
 
+  it("I-77 si el registro falla con un error de Prisma P2024 responde 500 sin push", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
+    crearAlerta.mockRejectedValue(
+      Object.assign(new Error("Timed out fetching a new connection"), {
+        code: "P2024",
+      }),
+    );
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const res = await GET(pedido());
+
+    expect(res.status).toBe(500);
+    expect(enviarPushBroadcast).not.toHaveBeenCalled();
+  });
+
   it("I-72 si enviarPushBroadcast rechaza responde 500, con el día registrado y sin la clave en el log", async () => {
     vi.stubEnv("OPEN_METEO_API_KEY", "clave-secreta-123");
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
