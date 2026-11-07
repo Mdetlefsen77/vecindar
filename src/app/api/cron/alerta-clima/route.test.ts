@@ -179,6 +179,20 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(crearAlerta).not.toHaveBeenCalled();
   });
 
+  it("I-66 si Open-Meteo responde 200 sin daily responde 502 sin push ni registro", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(new Response("{}", { status: 200 })),
+    );
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const res = await GET(pedido());
+
+    expect(res.status).toBe(502);
+    expect(enviarPushBroadcast).not.toHaveBeenCalled();
+    expect(crearAlerta).not.toHaveBeenCalled();
+  });
+
   it("I-65 si fetch rechaza responde 502 sin push ni registro", async () => {
     vi.stubGlobal(
       "fetch",
