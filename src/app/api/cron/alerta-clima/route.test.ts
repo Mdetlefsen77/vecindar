@@ -421,4 +421,58 @@ describe("GET /api/cron/alerta-clima", () => {
       }
     },
   );
+
+  it("I-70 con hoy calmo y ráfagas de 70 mañana la push dice Viento fuerte mañana", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            daily: {
+              time: ["2026-11-06", "2026-11-07"],
+              weather_code: [0, 0],
+              wind_gusts_10m_max: [20, 70],
+              temperature_2m_max: [27, 28],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+    enviarPushBroadcast.mockResolvedValue(undefined);
+    crearAlerta.mockResolvedValue({});
+
+    await GET(pedido());
+
+    expect(enviarPushBroadcast).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Viento fuerte mañana" }),
+    );
+  });
+
+  it("I-71 con máxima de 40 hoy la push dice Calor extremo hoy", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(
+        new Response(
+          JSON.stringify({
+            daily: {
+              time: ["2026-11-06", "2026-11-07"],
+              weather_code: [0, 0],
+              wind_gusts_10m_max: [20, 20],
+              temperature_2m_max: [40, 28],
+            },
+          }),
+          { status: 200 },
+        ),
+      ),
+    );
+    enviarPushBroadcast.mockResolvedValue(undefined);
+    crearAlerta.mockResolvedValue({});
+
+    await GET(pedido());
+
+    expect(enviarPushBroadcast).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Calor extremo hoy" }),
+    );
+  });
 });
