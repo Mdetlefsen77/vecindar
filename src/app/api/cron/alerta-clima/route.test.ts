@@ -193,6 +193,38 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(crearAlerta).not.toHaveBeenCalled();
   });
 
+  it("I-73 si Open-Meteo no responde sigue pendiente a los 4999 ms y da 502 a los 5000 ms", async () => {
+    vi.useFakeTimers({ toFake: ["Date", "setTimeout", "clearTimeout"] });
+    vi.setSystemTime(new Date("2026-11-06T12:00:00Z"));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        (_url: string, init?: RequestInit) =>
+          new Promise<Response>((_resolve, reject) => {
+            init?.signal?.addEventListener("abort", () =>
+              reject(new DOMException("aborted", "AbortError")),
+            );
+          }),
+      ),
+    );
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    let status: number | undefined;
+    const respuesta = GET(pedido()).then((r) => {
+      status = r.status;
+      return r;
+    });
+
+    await vi.advanceTimersByTimeAsync(4999);
+    expect(status).toBeUndefined();
+
+    await vi.advanceTimersByTimeAsync(1);
+    expect(status).toBe(502);
+    await respuesta;
+    expect(enviarPushBroadcast).not.toHaveBeenCalled();
+    expect(crearAlerta).not.toHaveBeenCalled();
+  });
+
   it.each([
     ["2026-11-07T02:59:59Z", "2026-11-06"],
     ["2026-11-07T03:00:00Z", "2026-11-07"],
