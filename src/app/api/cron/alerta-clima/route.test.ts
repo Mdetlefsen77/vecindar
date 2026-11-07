@@ -128,4 +128,15 @@ describe("GET /api/cron/alerta-clima", () => {
     expect(await res.json()).toMatchObject({ ok: true, enviado: false });
     expect(enviarPushBroadcast).not.toHaveBeenCalled();
   });
+
+  it("I-62 si el registro falla con otro error responde 500 sin push", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(clima(95)));
+    crearAlerta.mockRejectedValue(new Error("connection refused"));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const res = await GET(pedido());
+
+    expect(res.status).toBe(500);
+    expect(enviarPushBroadcast).not.toHaveBeenCalled();
+  });
 });
