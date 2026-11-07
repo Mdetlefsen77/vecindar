@@ -160,6 +160,25 @@ describe("GET /api/cron/alerta-clima", () => {
     }
   });
 
+  it("I-64 si Open-Meteo responde 500 con un cuerpo de tormenta responde 502 sin push ni registro", async () => {
+    const respuesta = clima(95);
+    vi.stubGlobal(
+      "fetch",
+      vi
+        .fn()
+        .mockResolvedValue(
+          new Response(await respuesta.text(), { status: 500 }),
+        ),
+    );
+    vi.spyOn(console, "error").mockImplementation(() => {});
+
+    const res = await GET(pedido());
+
+    expect(res.status).toBe(502);
+    expect(enviarPushBroadcast).not.toHaveBeenCalled();
+    expect(crearAlerta).not.toHaveBeenCalled();
+  });
+
   it.each([
     ["2026-11-07T02:59:59Z", "2026-11-06"],
     ["2026-11-07T03:00:00Z", "2026-11-07"],

@@ -16,6 +16,13 @@ export async function GET(req: NextRequest) {
     `${base}/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weather_code,wind_gusts_10m_max,temperature_2m_max&forecast_days=2&timezone=America/Argentina/Cordoba`,
     { cache: "no-store" },
   );
+  if (!res.ok) {
+    console.error("alerta-clima: Open-Meteo respondió", res.status);
+    return NextResponse.json(
+      { error: "No se pudo consultar el clima." },
+      { status: 502 },
+    );
+  }
   const data = await res.json();
   const aviso = climaFuerte(data.daily);
   if (!aviso) {
