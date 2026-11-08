@@ -1,6 +1,9 @@
-# Backlog · Clima en el inicio
+# Backlog · Vecindar
+
+HU-01..05: clima en el inicio. HU-06 en adelante: pendientes de `pendientes.md`, por tandas.
 
 ## Decisiones del MVP
+**Clima (HU-01..05)**
 - **Recurso:** el clima de Córdoba, solo lectura. No se guarda en la base de datos.
 - **Fuente:** Open-Meteo (`api.open-meteo.com`), gratis y sin API key. Se consulta desde el servidor con caché de Next (`revalidate`) para no llamar al servicio en cada visita.
 - **Ubicación:** coordenadas fijas del barrio en Córdoba. El valor exacto se decide en `/story HU-01`.
@@ -8,7 +11,14 @@
 - **Stack:** el de `## Proyecto` en `CLAUDE.md`. No hay tests todavía: la HU-01 monta el runner (vitest sugerido).
 - **Si el servicio falla:** el inicio carga igual, sin la tarjeta o con un texto neutro. Nunca un error.
 
-**Fuera de alcance:** otras ciudades o ubicación por GPS de cada vecino, historial del clima, radar o mapas meteorológicos, alertas oficiales del SMN, configuración de la tarjeta por vecino, guardar datos del clima en la base.
+**Tanda 1 de pendientes (HU-06..09)**
+- **Recurso:** la sesión de cada cuenta (estado de aprobación y rol), el workflow que dispara el recordatorio de parte y la página pública del Wrapped.
+- **Sesión:** sigue siendo JWT de 90 días; lo que cambia es que la aprobación y el rol se leen de la base en cada petición en vez de confiar en el token. Cómo (callback `jwt`, layout, `requireSession`) se decide en `/story`.
+- **Wrapped:** sigue pública a propósito (nivel difusión, para compartir); solo se acota a los años con datos.
+- **Recordatorio de parte:** lo dispara GitHub Actions (Vercel Hobby solo admite crons diarios); el workflow ya está escrito en la rama `feat/oficios-seguridad`.
+- **Stack:** el de `## Proyecto` en `CLAUDE.md`.
+
+**Fuera de alcance:** otras ciudades o ubicación por GPS de cada vecino, historial del clima, radar o mapas meteorológicos, alertas oficiales del SMN, configuración de la tarjeta por vecino, guardar datos del clima en la base. De la tanda 1: cerrar sesiones activas a mano o listar dispositivos, acortar los 90 días de la sesión, poner login al Wrapped, mover el recordatorio de parte a otro scheduler.
 
 ## ✅ HU-01 · Clima actual en el inicio
 Como **vecino** quiero **ver arriba del inicio la temperatura actual y si está soleado, nublado, lloviendo, etc.** para **saber cómo está el día sin salir de la app**.
@@ -49,6 +59,29 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 - ✅ _Pendiente de HU-04 (cubierto en HU-05: la push usa `climaFuerte`):_ usar las mismas reglas de `src/lib/clima.ts` (umbrales 60 km/h y 38 °C, un solo fenómeno, hoy antes que mañana). El granizo solo llega si el modelo lo informa: la push no puede prometerlo.
 - ✅ _Pendiente de HU-04 (cubierto en HU-05: consulta sin caché y fecha del reloj de Córdoba):_ `climaFuerte` rotula "hoy" y "mañana" por posición, sin mirar la fecha. Antes de mandar una push, comparar `daily.time[0]` con la fecha de hoy en Córdoba (pasándola como parámetro, para que `src/lib/clima.ts` siga sin imports de servidor) y decidir qué pasa si falta `time`, o usar una consulta sin caché. La comparación sola no cubre una entrada vieja del mismo día ni un aviso perdido. Ver la nota de seguridad de HU-04 en `## Notas`.
 
+## HU-06 · Una cuenta desaprobada pierde el acceso
+Como **administrador** quiero **que una cuenta que desapruebo deje de entrar en el momento** para **no tener que esperar a que venza su sesión de 90 días**.
+- Con la cuenta desaprobada (`verificado: false`), su próxima visita a una página del dashboard la saca a `/login`, aunque tenga un token vigente.
+- Sus pedidos a las APIs que exigen sesión responden 401 y no hacen nada.
+- Si se la vuelve a aprobar, puede loguearse y entrar como antes.
+
+## HU-07 · Un cambio de rol rige en la próxima petición
+Como **administrador** quiero **que un cambio de rol se aplique enseguida** para **que alguien a quien le saco permisos no los siga usando con su sesión abierta**.
+- Si a un `ADMIN` se le cambia el rol a `VECINO`, su próxima visita a `/admin` ya no lo deja entrar y las APIs de gestión le responden 403.
+- Si a un `VECINO` se le da un rol de gestión, lo tiene en su próxima petición, sin volver a loguearse.
+- Lo que se muestra según el rol (menú, accesos) usa el rol actual.
+
+## HU-08 · El recordatorio de parte se dispara solo
+Como **guardia** quiero **recibir el recordatorio si no cargué el parte de mi turno** para **no olvidarme de cargarlo**.
+- Un workflow de GitHub Actions llama a `GET /api/cron/recordatorio-parte` con `Authorization: Bearer ${CRON_SECRET}` media hora después de cada turno (08:30, 13:30, 18:30 y 23:30 de Argentina).
+- Si faltan el secret `CRON_SECRET` o la variable `SITE_URL` del repo, el workflow falla con un mensaje que lo dice.
+- Se puede correr a mano (`workflow_dispatch`) para probarlo.
+
+## HU-09 · El Wrapped responde solo para años con datos
+Como **vecino** quiero **compartir el resumen anual del barrio** para **mostrar lo que hace la guardia**, sin que la página pública sirva para cargar la base pidiendo cualquier año.
+- `/wrapped/<año>` y `/wrapped/<año>/imagen` responden 200 para los años desde que existe Vecindar hasta el actual, y 404 para el resto (años anteriores, futuros o absurdos).
+- Siguen públicas y muestran solo números agregados del barrio.
+
 ## Notas
 - 2026-11-04 · (HU-05) En el plan Hobby de Vercel los crons son solo diarios: la push sale a una hora fija, así que una tormenta que se forma en el día puede no avisarse a tiempo. Hay que elegir la hora en `/story HU-05`.
 - 2026-11-04 · (HU-01) Los datos de Open-Meteo tienen licencia CC BY 4.0, que pide atribución: agregar un "Datos: Open-Meteo" chico en la tarjeta o en `/clima`. Su plan gratis es para uso no comercial; Vecindar cobra suscripción. Resuelto en HU-01: atribución en la tarjeta y plan gratis por ahora, con `OPEN_METEO_URL`/`OPEN_METEO_API_KEY` listas para pasar al plan comercial. **Pendiente:** decidir cuándo contratarlo.
@@ -63,12 +96,9 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 - 2026-11-05 · (HU-03) El hardening de `OPEN_METEO_API_KEY` y `OPEN_METEO_URL` anotado en HU-01 ahora aplica en dos sitios: `TarjetaClima.tsx` y `clima/page.tsx`.
 - 2026-11-05 · (seguridad, sospecha sin confirmar) `login/page.tsx:9,37` hace `router.push(callbackUrl || "/inicio")` sin exigir mismo origen, y `registro/page.tsx:62,150` lo propaga. Falta comprobar qué hace `router.push` con una URL externa o con otro esquema.
 - 2026-11-05 · (seguridad) Confirmado en el código de la librería: `proxy.ts:25-30` llama a `getToken` sin `secureCookie`, así que busca `authjs.session-token`, mientras que con `https:` Auth.js emite `__Secure-authjs.session-token`, y `src/lib/auth.ts` no fija `useSecureCookies` ni `cookies`. Si producción sirve por https, el proxy mandaría a `/login` a vecinos con sesión (falla cerrado: es disponibilidad, no un bypass). Falta mirar qué cookie emite producción.
-- 2026-11-05 · (seguridad) `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)`, no tiene layout propio y un grep no encuentra `auth()` ni `redirect(` en `src/app/wrapped/[anio]/page.tsx`. El barrido de HU-03 no siguió el caso: falta ver qué datos muestra, si otra capa lo protege y la ruta `imagen` de esa carpeta. Conviene una historia aparte. `/mi-suscripcion` y `/reportes` tampoco están en la lista, pero se protegen con `auth()` en la página.
-- 2026-11-05 · (seguridad, sospecha sin confirmar) `verificado` solo se comprueba en `authorize` (`src/lib/auth.ts:48`), la sesión JWT dura 90 días (`src/lib/auth.ts:97`) y el layout solo relee `pruebaHasta` (`layout.tsx:44-47`). Una cuenta desaprobada podría conservar el acceso hasta que venza el token. Falta revisar si existe otro mecanismo de revocación.
 - 2026-11-05 · (seguridad, hardening) El bloqueo de prueba vencida está solo en el layout (`layout.tsx:54-55`), no en cada página. Falta comprobar si una navegación RSC reejecuta el layout. En `/clima` no importa porque son datos públicos, pero sí en páginas con datos de vecinos.
 - 2026-11-05 · (HU-04, seguridad, needs_validation) El cartel del inicio rotula "hoy" y "mañana" por posición y nadie compara `daily.time` con la fecha real. Con el manejador de caché por defecto de Next, una entrada vencida se sirve sin edad máxima mientras revalida en segundo plano, y solo se guardan respuestas 200: con Open-Meteo caído seguiría saliendo un "Tormenta hoy" viejo, y el tope de 30 min aceptado en HU-03 y HU-04 no se sostendría. No hace falta la caída: la primera visita después de horas sin tráfico también recibe la entrada vieja, y la caída solo lo alarga. Un test que lo reproduzca tiene que traer `current.temperature_2m` finita: sin ella la tarjeta sale por el `catch` y el verde no prueba nada. Comparar `daily.time` con la fecha real no alcanza por sí solo: una entrada de la mañana servida a la tarde del mismo día pasa la comparación, y un aviso perdido sigue perdido; para eso hace falta una consulta sin caché o con edad acotada. Que `next.config.ts` no declare `cacheHandler` no significa que se use el manejador por defecto. Falta validar en Vercel si inyecta su propio `FetchCache`, si sirve entradas vencidas mientras la revalidación falla y con qué edad máxima. Si se confirma, ocultar solo el cartel deja igual la temperatura, Máx, Mín y Lluvia viejos, y `/clima` rotula "Mañana" por posición con la misma caché.
 - 2026-11-05 · (HU-04, seguridad, hardening) La consulta de la tarjeta no fija `wind_speed_unit=kmh` y no lee `daily_units`: el umbral de 60 depende del valor por defecto de la API. `clima.ts:67` acepta códigos no enteros como 95.5. La revalidación en segundo plano corre sin el timeout de 3 s, porque Next quita el `signal`. El `fetch` de la tarjeta sigue redirecciones (sin `redirect: "error"`): el proveedor podría hacer que el servidor pida otra URL, aunque de esa respuesta solo se usarían campos de clima.
 - 2026-11-05 · (HU-04) Los umbrales del cartel (60 km/h y 38 °C) son fijos y no se validaron con datos del barrio. Quedó fuera de HU-04: revisarlos si el cartel sale de más o de menos.
-- 2026-11-06 · (HU-05) `src/app/api/cron/recordatorio-parte/route.ts` dice que lo dispara `.github/workflows/recordatorio-parte.yml`, pero el repo no tiene `.github/` y `vercel.json` no lo programa. Falta ver si ese cron corre desde algún lado.
 - 2026-11-07 · (HU-05, seguridad, hardening) Cron `/api/cron/alerta-clima`: compara el token con `!==` y no en tiempo constante (igual que los otros crons); mete `OPEN_METEO_API_KEY` en la URL sin `encodeURIComponent`; `res.json()` no limita el tamaño del cuerpo (dentro de los 5 s); loguea el error completo de Prisma y de la push (podría traer datos de conexión). Los previews de Vercel comparten la DB de prod: si un preview tiene `CRON_SECRET` (y otro `OPEN_METEO_URL`), quien tenga ese secreto puede gastar el aviso del día de producción o mandar la push desde el preview (needs_validation: depende de la config de entornos en Vercel).
 - 2026-11-07 · (HU-05) Quedó fuera de la push de clima: avisar una tormenta que se forma después de las 8 (Hobby: un cron diario); elegir por vecino si recibe esta push; reintentar un envío fallido o volver a avisar si el pronóstico cambia en el día; limpiar las filas viejas de `alertas_clima` (una por día con alerta).
