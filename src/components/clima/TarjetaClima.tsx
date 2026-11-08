@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
-import { climaFuerte, estadoDelCielo, fondoDelCielo } from "@/lib/clima";
+import {
+  COLOR_CLIMA,
+  climaFuerte,
+  estadoDelCielo,
+  fondoDelCielo,
+} from "@/lib/clima";
 
 export async function TarjetaClima() {
   let temperatura: number;
@@ -42,14 +47,26 @@ export async function TarjetaClima() {
   return (
     <>
       {aviso && (
-        <div className="rounded-2xl bg-amber-100 text-amber-950 px-4 py-3 mb-3">
-          <p className="text-xl font-semibold">{aviso.titulo}</p>
-          <p className="text-lg">{aviso.consejo}</p>
+        <div
+          role="status"
+          className="flex items-center gap-3 rounded-2xl border border-amber-300 bg-amber-50 text-amber-900 px-4 py-3 min-h-[60px]"
+        >
+          <span aria-hidden="true" className="text-3xl leading-none">
+            {aviso.icono}
+          </span>
+          <span className="flex-1 min-w-0">
+            <span className="block text-lg font-bold leading-snug">
+              {aviso.titulo}
+            </span>
+            <span className="block text-base text-amber-800">
+              {aviso.consejo}
+            </span>
+          </span>
         </div>
       )}
       <Link
         href="/clima"
-        className={`relative block overflow-hidden rounded-2xl ${fondoDelCielo(estado)} text-white px-4 py-3 shadow-md transition-all active:scale-[0.99] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-sky-300`}
+        className={`relative block overflow-hidden rounded-2xl ${fondoDelCielo(estado)} text-white px-4 py-3 shadow-md transition-all active:scale-[0.99] focus-visible:outline-none focus-visible:ring-4 ${COLOR_CLIMA.foco}`}
       >
         <div className="absolute -top-10 -right-8 w-36 h-36 rounded-full bg-white/10 blur-2xl" />
         <div className="relative flex items-start justify-between gap-3">

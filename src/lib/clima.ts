@@ -35,6 +35,14 @@ export function fondoDelCielo(estado: { texto: string } | null): string {
   return (estado && FONDOS[estado.texto]) ?? FONDO_POR_DEFECTO;
 }
 
+// Color de clima fuera de las secciones del menú: celeste, como el cielo.
+// Clases completas para que Tailwind las encuentre.
+export const COLOR_CLIMA = {
+  chip: "bg-sky-100 text-sky-700",
+  enlace: "text-sky-800",
+  foco: "focus-visible:ring-sky-300",
+};
+
 export function nombreDelDia(fecha: string): string {
   const texto = new Date(fecha).toLocaleDateString("es-AR", {
     weekday: "long",
@@ -44,7 +52,7 @@ export function nombreDelDia(fecha: string): string {
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
 
-export type ClimaFuerte = { titulo: string; consejo: string };
+export type ClimaFuerte = { titulo: string; consejo: string; icono: string };
 
 type DailyClima = {
   weather_code?: unknown[];
@@ -61,12 +69,14 @@ function climaFuerteDelDia(
   if (codigo === 96 || codigo === 99) {
     return {
       titulo: `Granizo ${cuando}`,
+      icono: "🧊",
       consejo: "Guardá el auto bajo techo",
     };
   }
   if (typeof codigo === "number" && codigo >= 95 && codigo <= 98) {
     return {
       titulo: `Tormenta ${cuando}`,
+      icono: "⛈️",
       consejo: "Entrá las cosas de afuera",
     };
   }
@@ -74,6 +84,7 @@ function climaFuerteDelDia(
   if (Number.isFinite(rafagas) && (rafagas as number) >= 60) {
     return {
       titulo: `Viento fuerte ${cuando}`,
+      icono: "💨",
       consejo: "Asegurá lo que se pueda volar",
     };
   }
@@ -81,6 +92,7 @@ function climaFuerteDelDia(
   if (Number.isFinite(maxima) && Math.round(maxima as number) >= 38) {
     return {
       titulo: `Calor extremo ${cuando}`,
+      icono: "🌡️",
       consejo: "Tomá agua y evitá el sol del mediodía",
     };
   }
