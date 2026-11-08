@@ -386,7 +386,7 @@ describe("/clima", () => {
       const html = renderToStaticMarkup(await ClimaPage());
 
       esperarTresDias(html);
-      expect(html).not.toContain("aria-hidden");
+      expect(html.slice(html.indexOf("<ul"))).not.toContain("aria-hidden");
       expect(html).not.toContain("Nublado");
       expect(html).not.toContain("Parcialmente nublado");
       expect(html).toContain("Máx 25°C");

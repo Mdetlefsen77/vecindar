@@ -2,7 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { BARRIO_CENTER } from "@/lib/barrio/constantes";
-import { estadoDelCielo, fondoDelCielo, nombreDelDia } from "@/lib/clima";
+import {
+  COLOR_CLIMA,
+  estadoDelCielo,
+  fondoDelCielo,
+  nombreDelDia,
+} from "@/lib/clima";
 
 export default async function ClimaPage() {
   const session = await auth();
@@ -20,7 +25,7 @@ export default async function ClimaPage() {
         </p>
         <Link
           href="/inicio"
-          className="inline-block text-base font-semibold text-sky-800 underline underline-offset-4"
+          className={`inline-block text-base font-semibold ${COLOR_CLIMA.enlace} underline underline-offset-4`}
         >
           Volver al inicio
         </Link>
@@ -59,10 +64,18 @@ export default async function ClimaPage() {
   });
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 space-y-4">
+    <div className="max-w-2xl mx-auto px-4 py-6 space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Pronóstico</h1>
-        <p className="text-base text-gray-600">
+        <div className="flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 text-2xl ${COLOR_CLIMA.chip}`}
+          >
+            🌤️
+          </span>
+          <h1 className="text-2xl font-bold text-gray-900">Pronóstico</h1>
+        </div>
+        <p className="text-sm text-gray-500">
           Los próximos 3 días en el barrio
         </p>
       </div>

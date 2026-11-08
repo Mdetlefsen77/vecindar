@@ -82,15 +82,16 @@ describe("fondoDelCielo", () => {
 
 describe("climaFuerte", () => {
   it.each([
-    [95, "Tormenta hoy", "Entrá las cosas de afuera"],
-    [96, "Granizo hoy", "Guardá el auto bajo techo"],
-    [97, "Tormenta hoy", "Entrá las cosas de afuera"],
-    [98, "Tormenta hoy", "Entrá las cosas de afuera"],
-    [99, "Granizo hoy", "Guardá el auto bajo techo"],
-  ])("U-25 código %i → %s", (codigo, titulo, consejo) => {
+    [95, "Tormenta hoy", "Entrá las cosas de afuera", "⛈️"],
+    [96, "Granizo hoy", "Guardá el auto bajo techo", "🧊"],
+    [97, "Tormenta hoy", "Entrá las cosas de afuera", "⛈️"],
+    [98, "Tormenta hoy", "Entrá las cosas de afuera", "⛈️"],
+    [99, "Granizo hoy", "Guardá el auto bajo techo", "🧊"],
+  ])("U-25 código %i → %s", (codigo, titulo, consejo, icono) => {
     expect(climaFuerte({ weather_code: [codigo, 0] })).toEqual({
       titulo,
       consejo,
+      icono,
     });
   });
 });
@@ -108,6 +109,7 @@ describe("climaFuerte viento", () => {
     ).toEqual({
       titulo: "Viento fuerte hoy",
       consejo: "Asegurá lo que se pueda volar",
+      icono: "💨",
     });
   });
 
@@ -125,6 +127,7 @@ describe("climaFuerte calor", () => {
     ).toEqual({
       titulo: "Calor extremo hoy",
       consejo: "Tomá agua y evitá el sol del mediodía",
+      icono: "🌡️",
     });
   });
 
@@ -137,20 +140,32 @@ describe("climaFuerte calor", () => {
 
 describe("climaFuerte mañana", () => {
   it.each([
-    [{ weather_code: [0, 95] }, "Tormenta mañana", "Entrá las cosas de afuera"],
-    [{ weather_code: [0, 96] }, "Granizo mañana", "Guardá el auto bajo techo"],
+    [
+      { weather_code: [0, 95] },
+      "Tormenta mañana",
+      "Entrá las cosas de afuera",
+      "⛈️",
+    ],
+    [
+      { weather_code: [0, 96] },
+      "Granizo mañana",
+      "Guardá el auto bajo techo",
+      "🧊",
+    ],
     [
       { weather_code: [0, 0], wind_gusts_10m_max: [10, 70] },
       "Viento fuerte mañana",
       "Asegurá lo que se pueda volar",
+      "💨",
     ],
     [
       { weather_code: [0, 0], temperature_2m_max: [20, 40] },
       "Calor extremo mañana",
       "Tomá agua y evitá el sol del mediodía",
+      "🌡️",
     ],
-  ])("U-31 hoy calmo y mañana fuerte → %s", (daily, titulo, consejo) => {
-    expect(climaFuerte(daily)).toEqual({ titulo, consejo });
+  ])("U-31 hoy calmo y mañana fuerte → %s", (daily, titulo, consejo, icono) => {
+    expect(climaFuerte(daily)).toEqual({ titulo, consejo, icono });
   });
 });
 
@@ -164,6 +179,7 @@ describe("climaFuerte hoy primero", () => {
     ).toEqual({
       titulo: "Viento fuerte hoy",
       consejo: "Asegurá lo que se pueda volar",
+      icono: "💨",
     });
   });
 });
