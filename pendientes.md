@@ -10,8 +10,8 @@ Prioridad: **A** riesgo real o algo roto · **B** mejora con valor claro · **C*
 
 | # | Prio | Qué | Estado | Dónde |
 |---|---|---|---|---|
-| S-1 | A | `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)` y no llama a `auth()`. Falta ver qué datos muestra, si otra capa la protege y la ruta `imagen` | sin confirmar | `src/app/wrapped/[anio]/`, `src/proxy.ts` |
-| S-2 | A | Una cuenta desaprobada podría conservar el acceso hasta que venza el JWT (90 días): `verificado` solo se mira en `authorize` | sospecha | `src/lib/auth.ts:48,97`, `layout.tsx:44-47` |
+| S-1 | A | → **HU-09** (sigue pública, acotada a años con datos). `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)` y no llama a `auth()`. Falta ver qué datos muestra, si otra capa la protege y la ruta `imagen` | sin confirmar | `src/app/wrapped/[anio]/`, `src/proxy.ts` |
+| S-2 | A | → **HU-06** (desaprobada) y **HU-07** (cambio de rol, que tampoco rige hasta el próximo login). Una cuenta desaprobada podría conservar el acceso hasta que venza el JWT (90 días): `verificado` solo se mira en `authorize` | sospecha | `src/lib/auth.ts:48,97`, `layout.tsx:44-47` |
 | S-3 | B | `router.push(callbackUrl \|\| "/inicio")` sin exigir mismo origen en login y registro (posible redirect abierto) | sospecha | `login/page.tsx:9,37`, `registro/page.tsx:62,150` |
 | S-4 | B | Con https, el proxy busca `authjs.session-token` y Auth.js emite `__Secure-authjs.session-token`: mandaría a `/login` a vecinos con sesión | confirmado en la librería, falta ver producción | `src/proxy.ts:25-30`, `src/lib/auth.ts` |
 | S-5 | B | El bloqueo de prueba vencida está solo en el layout; falta ver si una navegación RSC lo reejecuta | sospecha | `layout.tsx:54-55` |
@@ -22,7 +22,7 @@ Prioridad: **A** riesgo real o algo roto · **B** mejora con valor claro · **C*
 
 | # | Prio | Qué | Dónde |
 |---|---|---|---|
-| R-1 | A | El cron `recordatorio-parte` no lo dispara nadie: el workflow de GitHub Actions que lo programa quedó en la rama `feat/oficios-seguridad`, sin integrar (ver §6) | `src/app/api/cron/recordatorio-parte/route.ts` |
+| R-1 | A | → **HU-08**. El cron `recordatorio-parte` no lo dispara nadie: el workflow de GitHub Actions que lo programa quedó en la rama `feat/oficios-seguridad`, sin integrar (ver §6) | `src/app/api/cron/recordatorio-parte/route.ts` |
 | R-2 | A | Variables de entorno en Vercel a confirmar: `CRON_SECRET` (crons de cobranza, avisos, clima), y para MercadoPago `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`, `NEXT_PUBLIC_SITE_URL` | Vercel |
 | R-3 | B | Asignar el rol `TESORERO` a una persona real | `/admin/usuarios/[id]` |
 | R-4 | C | `npm audit` informa vulnerabilidades sin revisar; vitest quedó en 4.x hasta subir `@types/node` a ^22 | `package.json` |
