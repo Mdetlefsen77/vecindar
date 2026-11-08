@@ -64,6 +64,17 @@ La tarjeta del clima de `/inicio` consulta [Open-Meteo](https://open-meteo.com) 
 
 Si el pronóstico de hoy o de mañana trae clima fuerte, arriba de la tarjeta aparece un cartel ámbar con qué viene, cuándo y un consejo ("Tormenta hoy", "Entrá las cosas de afuera"). Lo disparan los códigos de tormenta (95, 97 y 98) y granizo (96 y 99), ráfagas de 60 km/h o más y una máxima de 38 °C o más. Se muestra uno solo: primero hoy y, dentro del día, granizo, tormenta, viento y calor, en ese orden. El granizo solo aparece si el modelo lo informa. Si falla la consulta no hay cartel, y un dato inválido no dispara nada.
 
+Con la misma regla, el cron `/api/cron/alerta-clima` (`vercel.json`, `0 11 * * *`: las 8:00 de Córdoba) manda una push a todos los suscritos con el título y el consejo del cartel, que abre `/inicio`. Exige `Authorization: Bearer ${CRON_SECRET}` (si no, 401) y avisa una sola vez por día de Córdoba: registra el día en la tabla `alertas_clima` antes de enviar, y la segunda corrida del día no manda nada. Consulta Open-Meteo sin caché, con `forecast_days=2` y un plazo de 5 s; si la consulta falla, tarda más o la respuesta viene incompleta, responde 502 sin avisar. Si el registro del día falla responde 500 sin push, y si falla el envío responde 500 con el día ya registrado (ese día no se reintenta).
+
+```
+$ curl -s -H 'Authorization: Bearer …' /api/cron/alerta-clima
+{"ok":true,"enviado":true,"fecha":"2026-11-07","titulo":"Tormenta hoy"}
+$ curl -s -H 'Authorization: Bearer …' /api/cron/alerta-clima
+{"ok":true,"enviado":false,"motivo":"ya avisado hoy"}
+```
+
+Sin clima fuerte responde `{"ok":true,"enviado":false,"motivo":"sin clima fuerte"}`.
+
 Toda la tarjeta es un enlace a `/clima` ("Ver pronóstico ›"), una página que exige sesión y muestra los próximos 3 días, sin repetir hoy: "Mañana" y los dos siguientes con su nombre ("Sábado 7"), cada uno con ícono, estado del cielo, máxima, mínima y probabilidad de lluvia. Hace su propia consulta a Open-Meteo (`forecast_days=4`, misma caché y timeout). Un dato inválido se omite solo en ese día; si la consulta falla o no trae los 4 días, muestra "No pudimos traer el pronóstico, probá más tarde" y un enlace al inicio.
 
 | Variable | Por defecto | Para qué |

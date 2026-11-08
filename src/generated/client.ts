@@ -184,3 +184,8 @@ export type Aviso = Prisma.AvisoModel
  * 
  */
 export type ConfirmacionAviso = Prisma.ConfirmacionAvisoModel
+/**
+ * Model AlertaClima
+ * 
+ */
+export type AlertaClima = Prisma.AlertaClimaModel
