@@ -11,7 +11,7 @@
 - **Estructura:** `src/app/(dashboard)/` páginas autenticadas · `src/app/(auth)/` login/registro · `src/app/api/<recurso>/route.ts` · `src/components/<módulo>/` · `src/lib/` dominio y helpers (`api/guard.ts`, `api/validation.ts`, `validation/` zod, `permisos.ts`, `secciones.ts`, `push/`, `prisma/client.ts`) · `src/generated/` cliente Prisma · `src/scripts/` seeds · `src/proxy.ts` guard de sesión · `prisma/` schema y migraciones · `docs/` specs y `dev-rules.md` · `openspec/`
 - **Arquitectura:** `route.ts` / `page.tsx` → `@/lib/prisma/client` directo → PostgreSQL (sin services ni repositories). `src/components/` no importa prisma. Los componentes cliente usan `fetch("/api/…")`. Las reglas de roles están en `src/lib/permisos.ts` (ver `docs/dev-rules.md`).
 - **Receta · endpoint (ejemplo: `POST /api/avisos`):**
-  1. `prisma/schema.prisma` + `npx prisma migrate dev --name <nombre>` (el cliente se regenera en `src/generated/`, deducido)
+  1. `prisma/schema.prisma` + `npx prisma migrate dev --name <nombre>` y después `npx prisma generate` (con Prisma 7.4.1 `migrate dev` no regenera el cliente en `src/generated/`; comprobado en HU-05)
   2. schema zod en `src/lib/validation/<módulo>.ts`
   3. constantes y labels en `src/lib/<módulo>.ts`, sin imports de servidor
   4. `src/app/api/<recurso>/route.ts`: `requireSession()` → `schema.safeParse(await req.json().catch(() => ({})))` → `respuestaValidacion(parsed.error)` → `prisma.*` → `NextResponse.json(…, { status: 201 })`
