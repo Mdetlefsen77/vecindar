@@ -13,6 +13,7 @@ vi.mock("@/lib/prisma/client", () => ({
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma/client";
+import { redirect } from "next/navigation";
 import CuentaNoAprobadaPage from "@/app/cuenta-no-aprobada/page";
 
 beforeEach(() => {
@@ -33,5 +34,25 @@ describe("/cuenta-no-aprobada", () => {
     expect(html).toContain("Tu cuenta no está aprobada");
     expect(html).toContain("administrador");
     expect(html).toContain("Cerrar sesión");
+  });
+
+  it("I-82 con una cuenta aprobada redirige a /inicio", async () => {
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      verificado: true,
+    } as never);
+
+    await expect(CuentaNoAprobadaPage()).rejects.toThrow("NEXT_REDIRECT");
+
+    expect(redirect).toHaveBeenCalledTimes(1);
+    expect(redirect).toHaveBeenCalledWith("/inicio");
+  });
+
+  it("I-82 sin sesión redirige a /login", async () => {
+    vi.mocked(auth).mockResolvedValue(null as never);
+
+    await expect(CuentaNoAprobadaPage()).rejects.toThrow("NEXT_REDIRECT");
+
+    expect(redirect).toHaveBeenCalledTimes(1);
+    expect(redirect).toHaveBeenCalledWith("/login");
   });
 });
