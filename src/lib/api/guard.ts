@@ -37,8 +37,11 @@ async function bloqueoPorPrueba(
 ): Promise<NextResponse | null> {
   const cuenta = await prisma.usuario.findUnique({
     where: { id: usuarioId },
-    select: { pruebaHasta: true },
+    select: { pruebaHasta: true, verificado: true },
   });
+  if (cuenta?.verificado === false) {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
   if (estadoPrueba(cuenta?.pruebaHasta) !== "vencida") return null;
   return NextResponse.json(
     {
