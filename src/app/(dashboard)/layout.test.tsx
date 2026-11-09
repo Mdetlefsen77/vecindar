@@ -47,4 +47,17 @@ describe("layout del dashboard", () => {
     );
     expect(redirect).toHaveBeenCalledWith("/cuenta-no-aprobada");
   });
+
+  it("I-80 con verificado: false y la prueba vencida redirige una sola vez, a /cuenta-no-aprobada", async () => {
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      pruebaHasta: new Date("2020-01-01T00:00:00Z"),
+      verificado: false,
+    } as never);
+
+    await expect(DashboardLayout({ children: null })).rejects.toThrow(
+      "NEXT_REDIRECT",
+    );
+    expect(redirect).toHaveBeenCalledTimes(1);
+    expect(redirect).toHaveBeenCalledWith("/cuenta-no-aprobada");
+  });
 });
