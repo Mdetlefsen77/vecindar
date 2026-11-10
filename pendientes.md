@@ -53,6 +53,26 @@ Según lo que dejó cada módulo; verificar contra el código antes de armar la 
 | M-5 | C | Mapa | Lugares del barrio (faltan las ubicaciones reales); etapa 2: coordenadas y pines en avisos, pedidos y mascotas; etapa 3: manzanas por incidentes, cámaras, luminarias |
 | M-6 | C | Reportes | Fases siguientes de `docs/tasks-reportes.md` |
 | M-7 | C | Crecimiento | Email (en pausa por falta de dominio para Resend); incentivo por referido sin aprobar |
+| M-8 | B | Encuesta de experiencia (nuevo) | Encuesta dentro de la app para medir cómo les va a los vecinos con la app. Ver detalle abajo |
+
+### M-8 · Encuesta de experiencia en la app
+
+Propuesta charlada el 2026-11-09 (además se armó una versión por WhatsApp, por fuera de la app). Decisiones tomadas:
+
+- **Lo que no se pregunta:** uso y secciones más visitadas, porque salen de `VistaSeccion`.
+- **Para el vecino:** tarjeta grande en el Inicio, *"¿Nos contás cómo te va con la app? Son 5 preguntas"*, con **Responder** / **Ahora no**. Una pregunta por paso y botones grandes. Cuando responde, la tarjeta desaparece hasta la próxima ronda.
+- **Cuándo aparece:** solo si la cuenta tiene más de 2 semanas.
+- **Preguntas fijas en código** (`src/lib/encuesta.ts`), sin editor de encuestas para el admin en la v1:
+  1. ¿Qué tan fácil te resulta usar la app? (5 caritas, 1 a 5)
+  2. ¿Se leen bien los textos y botones? (Sí / Más o menos / No)
+  3. Del 0 al 10, ¿cuánto se la recomendarías a un vecino? (NPS)
+  4. ¿Qué es lo que más te gusta? (texto, opcional)
+  5. Si pudieras cambiar o agregar una sola cosa, ¿cuál sería? (texto, opcional)
+- **Rondas:** cada respuesta va asociada a una ronda (por ejemplo `2026-T4`) y vale una por vecino en cada ronda (único `usuarioId` + `ronda`), para poder comparar las rondas entre sí.
+- **Privacidad:** se guarda quién respondió (para no volver a preguntarle), pero **los resultados no muestran nombres**.
+- **Modelo:** tabla `RespuestaEncuesta` (usuario, ronda, respuestas, fecha) · `POST /api/encuesta` con zod + `requireSession` (receta de endpoint).
+- **Admin:** `/admin/encuesta` muestra el promedio de facilidad, el % de "se lee bien", el NPS de la ronda y los comentarios abiertos sin nombre.
+- **Para más adelante:** editor de encuestas para el admin (servirían también para votaciones del barrio).
 
 ## 5. Calidad y deuda
 
