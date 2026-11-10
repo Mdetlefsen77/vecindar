@@ -84,7 +84,9 @@ async function enviarASuscripciones(
 /** Envía una notificación push a todos los ADMIN y SEGURIDAD suscritos. */
 export async function enviarPushAdmins(payload: PushPayload): Promise<void> {
   const suscripciones = await prisma.pushSubscription.findMany({
-    where: { usuario: { rol: { in: [...GESTORES_PANICO] } } },
+    where: {
+      usuario: { rol: { in: [...GESTORES_PANICO] }, verificado: true },
+    },
   });
   await enviarASuscripciones(suscripciones, payload);
 }
@@ -101,7 +103,7 @@ export async function enviarPushVecinos(
 ): Promise<void> {
   const suscripciones = await prisma.pushSubscription.findMany({
     where: {
-      usuario: { rol: { notIn: [...GESTORES_PANICO] } },
+      usuario: { rol: { notIn: [...GESTORES_PANICO] }, verificado: true },
       ...(excluirUsuarioId ? { usuarioId: { not: excluirUsuarioId } } : {}),
     },
   });
@@ -115,7 +117,9 @@ export async function enviarPushVecinos(
  */
 export async function enviarPushSoloAdmin(payload: PushPayload): Promise<void> {
   const suscripciones = await prisma.pushSubscription.findMany({
-    where: { usuario: { rol: { in: [...GESTORES_USUARIOS] } } },
+    where: {
+      usuario: { rol: { in: [...GESTORES_USUARIOS] }, verificado: true },
+    },
   });
   await enviarASuscripciones(suscripciones, payload);
 }
@@ -126,7 +130,7 @@ export async function enviarPushUsuario(
   payload: PushPayload,
 ): Promise<void> {
   const suscripciones = await prisma.pushSubscription.findMany({
-    where: { usuarioId },
+    where: { usuarioId, usuario: { verificado: true } },
   });
   await enviarASuscripciones(suscripciones, payload);
 }
@@ -139,9 +143,10 @@ export async function enviarPushBroadcast(
   payload: PushPayload,
   excluirUsuarioId?: number,
 ): Promise<void> {
-  const where: Prisma.PushSubscriptionWhereInput = excluirUsuarioId
-    ? { usuarioId: { not: excluirUsuarioId } }
-    : {};
+  const where: Prisma.PushSubscriptionWhereInput = {
+    usuario: { verificado: true },
+    ...(excluirUsuarioId ? { usuarioId: { not: excluirUsuarioId } } : {}),
+  };
 
   const suscripciones = await prisma.pushSubscription.findMany({ where });
   await enviarASuscripciones(suscripciones, payload);
