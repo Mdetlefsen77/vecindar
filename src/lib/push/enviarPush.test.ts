@@ -64,4 +64,46 @@ describe("enviarPush: solo cuentas aprobadas", () => {
       expect.objectContaining({ verificado: true }),
     );
   });
+
+  it("U-44 enviarPushUsuario filtra por el destinatario y verificado", async () => {
+    await enviarPushUsuario(7, payload);
+    expect(whereUsado()).toEqual({
+      usuarioId: 7,
+      usuario: { verificado: true },
+    });
+  });
+
+  it("U-44 enviarPushVecinos filtra por rol fuera de gestores y verificado", async () => {
+    await enviarPushVecinos(payload);
+    expect(whereUsado()).toEqual({
+      usuario: { rol: { notIn: ["ADMIN", "SEGURIDAD"] }, verificado: true },
+    });
+  });
+
+  it("U-44 enviarPushAdmins filtra por ADMIN y SEGURIDAD y verificado", async () => {
+    await enviarPushAdmins(payload);
+    expect(whereUsado()).toEqual({
+      usuario: { rol: { in: ["ADMIN", "SEGURIDAD"] }, verificado: true },
+    });
+  });
+
+  it("U-44 enviarPushSoloAdmin filtra por ADMIN y verificado", async () => {
+    await enviarPushSoloAdmin(payload);
+    expect(whereUsado()).toEqual({
+      usuario: { rol: { in: ["ADMIN"] }, verificado: true },
+    });
+  });
+
+  it("U-44 enviarPushBroadcast sin exclusión filtra solo por verificado", async () => {
+    await enviarPushBroadcast(payload);
+    expect(whereUsado()).toEqual({ usuario: { verificado: true } });
+  });
+
+  it("U-44 enviarPushBroadcast con excluirUsuarioId excluye a ese usuario", async () => {
+    await enviarPushBroadcast(payload, 7);
+    expect(whereUsado()).toEqual({
+      usuario: { verificado: true },
+      usuarioId: { not: 7 },
+    });
+  });
 });

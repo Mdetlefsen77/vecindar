@@ -92,4 +92,12 @@ describe("GET /api/lotes con una cuenta aprobada o sin sesión", () => {
       ],
     });
   });
+
+  it("I-92 con sesión del usuario 7 consulta la aprobación de ese usuario", async () => {
+    await GET(new NextRequest("http://localhost/api/lotes"));
+
+    expect(prisma.usuario.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: 7 } }),
+    );
+  });
 });
