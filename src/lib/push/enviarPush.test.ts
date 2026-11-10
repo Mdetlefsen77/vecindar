@@ -73,6 +73,14 @@ describe("enviarPush: solo cuentas aprobadas", () => {
     });
   });
 
+  it("U-45 enviarPushVecinos con excluirUsuarioId excluye a ese usuario", async () => {
+    await enviarPushVecinos(payload, 7);
+    expect(whereUsado()).toEqual({
+      usuario: { rol: { notIn: ["ADMIN", "SEGURIDAD"] }, verificado: true },
+      usuarioId: { not: 7 },
+    });
+  });
+
   it("U-44 enviarPushVecinos filtra por rol fuera de gestores y verificado", async () => {
     await enviarPushVecinos(payload);
     expect(whereUsado()).toEqual({
