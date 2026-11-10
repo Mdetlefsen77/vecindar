@@ -60,3 +60,36 @@ describe("GET /api/lotes con una cuenta desaprobada", () => {
     });
   });
 });
+
+describe("GET /api/lotes con una cuenta aprobada o sin sesión", () => {
+  it("I-89 con sesión y verificado true responde 200", async () => {
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      verificado: true,
+      pruebaHasta: null,
+    } as never);
+
+    const res = await GET(new NextRequest("http://localhost/api/lotes"));
+
+    expect(res.status).toBe(200);
+  });
+
+  it("I-90 sin sesión y ?disponibles=true responde 200 con los lotes disponibles", async () => {
+    vi.mocked(auth).mockResolvedValue(null as never);
+
+    const res = await GET(
+      new NextRequest("http://localhost/api/lotes?disponibles=true"),
+    );
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      lotes: [
+        {
+          id: 1,
+          numero: 12,
+          calleFrente: "Calle 1",
+          manzana: { numero: 3, zona: "A" },
+        },
+      ],
+    });
+  });
+});

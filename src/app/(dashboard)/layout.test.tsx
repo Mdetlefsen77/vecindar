@@ -61,3 +61,17 @@ describe("layout del dashboard", () => {
     expect(redirect).toHaveBeenCalledWith("/cuenta-no-aprobada");
   });
 });
+
+describe("layout del dashboard con una cuenta aprobada", () => {
+  it("I-86 con verificado: true muestra la página sin redirigir", async () => {
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      pruebaHasta: null,
+      verificado: true,
+    } as never);
+
+    const res = await DashboardLayout({ children: null });
+
+    expect(res).toBeTruthy();
+    expect(redirect).not.toHaveBeenCalled();
+  });
+});

@@ -63,3 +63,36 @@ describe("requireRoleSession con una cuenta desaprobada", () => {
     expect(registrarActividad).not.toHaveBeenCalled();
   });
 });
+
+describe("requireSession con una cuenta aprobada", () => {
+  it("I-87 con verificado true devuelve la sesión y registra la actividad", async () => {
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      verificado: true,
+      pruebaHasta: null,
+    } as never);
+
+    const res = await requireSession();
+
+    expect(res.response).toBeUndefined();
+    expect(res.session?.user.id).toBe("7");
+    expect(registrarActividad).toHaveBeenCalledWith(7);
+  });
+});
+
+describe("requireRoleSession con una cuenta aprobada", () => {
+  it("I-88 con un ADMIN con verificado true devuelve la sesión y registra la actividad", async () => {
+    vi.mocked(auth).mockResolvedValue({
+      user: { id: "7", name: "Ana", email: "ana@x.com", role: "ADMIN" },
+    } as never);
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      verificado: true,
+      pruebaHasta: null,
+    } as never);
+
+    const res = await requireRoleSession(["ADMIN"]);
+
+    expect(res.response).toBeUndefined();
+    expect(res.session?.user.id).toBe("7");
+    expect(registrarActividad).toHaveBeenCalledWith(7);
+  });
+});
