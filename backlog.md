@@ -59,9 +59,9 @@ Como **vecino** quiero **recibir una notificación en el celular cuando se esper
 - ✅ _Pendiente de HU-04 (cubierto en HU-05: la push usa `climaFuerte`):_ usar las mismas reglas de `src/lib/clima.ts` (umbrales 60 km/h y 38 °C, un solo fenómeno, hoy antes que mañana). El granizo solo llega si el modelo lo informa: la push no puede prometerlo.
 - ✅ _Pendiente de HU-04 (cubierto en HU-05: consulta sin caché y fecha del reloj de Córdoba):_ `climaFuerte` rotula "hoy" y "mañana" por posición, sin mirar la fecha. Antes de mandar una push, comparar `daily.time[0]` con la fecha de hoy en Córdoba (pasándola como parámetro, para que `src/lib/clima.ts` siga sin imports de servidor) y decidir qué pasa si falta `time`, o usar una consulta sin caché. La comparación sola no cubre una entrada vieja del mismo día ni un aviso perdido. Ver la nota de seguridad de HU-04 en `## Notas`.
 
-## HU-06 · Una cuenta desaprobada pierde el acceso
+## ✅ HU-06 · Una cuenta desaprobada pierde el acceso
 Como **administrador** quiero **que una cuenta que desapruebo deje de entrar en el momento** para **no tener que esperar a que venza su sesión de 90 días**.
-- Con la cuenta desaprobada (`verificado: false`), su próxima visita a una página del dashboard la saca a `/login`, aunque tenga un token vigente.
+- Con la cuenta desaprobada (`verificado: false`), su próxima visita a una página del dashboard la saca a `/login`, aunque tenga un token vigente. _(Refinado en `/story`: va a `/cuenta-no-aprobada`, porque `/login` con token redirige a `/inicio`; ver `stories/HU-06.md`.)_
 - Sus pedidos a las APIs que exigen sesión responden 401 y no hacen nada.
 - Si se la vuelve a aprobar, puede loguearse y entrar como antes.
 
