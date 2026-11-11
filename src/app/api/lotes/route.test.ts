@@ -93,6 +93,32 @@ describe("GET /api/lotes con una cuenta aprobada o sin sesión", () => {
     });
   });
 
+  it("I-93 un ADMIN desaprobado con ?disponibles=true recibe el payload mínimo de sin sesión", async () => {
+    vi.mocked(auth).mockResolvedValue({
+      user: { id: "7", name: "Ana", email: "ana@x.com", role: "ADMIN" },
+    } as never);
+
+    const res = await GET(
+      new NextRequest("http://localhost/api/lotes?disponibles=true"),
+    );
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({
+      lotes: [
+        {
+          id: 1,
+          numero: 12,
+          calleFrente: "Calle 1",
+          manzana: { numero: 3, zona: "A" },
+        },
+      ],
+    });
+    const include = vi.mocked(prisma.lote.findMany).mock.calls[0][0]!
+      .include as Record<string, unknown>;
+    expect(include).not.toHaveProperty("usuarios");
+    expect(include).not.toHaveProperty("incidentes");
+  });
+
   it("I-92 con sesión del usuario 7 consulta la aprobación de ese usuario", async () => {
     await GET(new NextRequest("http://localhost/api/lotes"));
 

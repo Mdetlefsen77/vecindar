@@ -55,4 +55,16 @@ describe("/cuenta-no-aprobada", () => {
     expect(redirect).toHaveBeenCalledTimes(1);
     expect(redirect).toHaveBeenCalledWith("/login");
   });
+
+  it("I-94 con la sesión del usuario 7 consulta la aprobación de ese usuario", async () => {
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      verificado: false,
+    } as never);
+
+    await CuentaNoAprobadaPage();
+
+    expect(prisma.usuario.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: 7 } }),
+    );
+  });
 });
