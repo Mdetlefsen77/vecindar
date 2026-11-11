@@ -43,9 +43,11 @@ export default async function DashboardLayout({
     }),
     prisma.usuario.findUnique({
       where: { id: Number(session.user?.id) },
-      select: { pruebaHasta: true },
+      select: { pruebaHasta: true, verificado: true },
     }),
   ]);
+  // Cuenta desaprobada = sin acceso en el momento; se lee de la base, no del JWT.
+  if (cuenta?.verificado === false) redirect("/cuenta-no-aprobada");
   const cobranzaVencida = estadoCobranza(suscripcion) === "vencida";
 
   // Prueba vencida = bloqueo total hasta que pague o un admin lo apruebe

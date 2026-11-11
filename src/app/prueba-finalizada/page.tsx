@@ -21,10 +21,12 @@ export default async function PruebaFinalizadaPage() {
   const usuario = await prisma.usuario.findUnique({
     where: { id: getUserId(session) },
     select: {
+      verificado: true,
       pruebaHasta: true,
       suscripcion: { select: { montoMensual: true } },
     },
   });
+  if (usuario?.verificado === false) redirect("/cuenta-no-aprobada");
   if (estadoPrueba(usuario?.pruebaHasta) !== "vencida") redirect("/inicio");
 
   const cuota = montoDeSuscripcion(usuario?.suscripcion);

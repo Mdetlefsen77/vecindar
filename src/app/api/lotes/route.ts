@@ -21,8 +21,16 @@ export async function GET(req: NextRequest) {
     const manzanaId = parseId(searchParams.get("manzanaId"));
 
     const session = await auth();
-    const publico = !session?.user;
-    const detalle = !publico && esGestor(session.user.role, VEN_DETALLE_LOTES);
+    // La aprobación se lee de la base, no del JWT: una cuenta desaprobada
+    // recibe lo mismo que quien no tiene sesión.
+    const cuenta = session?.user
+      ? await prisma.usuario.findUnique({
+          where: { id: Number(session.user.id) },
+          select: { verificado: true },
+        })
+      : null;
+    const publico = !session?.user || cuenta?.verificado === false;
+    const detalle = !publico && esGestor(session!.user.role, VEN_DETALLE_LOTES);
 
     if (publico && !soloDisponibles) {
       return NextResponse.json({ error: "No autorizado." }, { status: 401 });

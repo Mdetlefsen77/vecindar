@@ -34,11 +34,18 @@ export function parseId(raw: string | undefined | null): number | null {
  */
 async function bloqueoPorPrueba(
   usuarioId: number,
+  statusDesaprobada = 401,
 ): Promise<NextResponse | null> {
   const cuenta = await prisma.usuario.findUnique({
     where: { id: usuarioId },
-    select: { pruebaHasta: true },
+    select: { pruebaHasta: true, verificado: true },
   });
+  if (cuenta?.verificado === false) {
+    return NextResponse.json(
+      { error: "No autorizado" },
+      { status: statusDesaprobada },
+    );
+  }
   if (estadoPrueba(cuenta?.pruebaHasta) !== "vencida") return null;
   return NextResponse.json(
     {
@@ -98,7 +105,7 @@ export async function requireRoleSession(
   if (!session?.user || !allowed.includes(session.user.role)) {
     return { response: NextResponse.json({ error: message }, { status: 403 }) };
   }
-  const bloqueo = await bloqueoPorPrueba(Number(session.user.id));
+  const bloqueo = await bloqueoPorPrueba(Number(session.user.id), 403);
   if (bloqueo) return { response: bloqueo };
   registrarActividad(Number(session.user.id));
   return { session: session as AuthedSession };

@@ -11,10 +11,10 @@ Prioridad: **A** riesgo real o algo roto · **B** mejora con valor claro · **C*
 | # | Prio | Qué | Estado | Dónde |
 |---|---|---|---|---|
 | S-1 | A | → **HU-09** (sigue pública, acotada a años con datos). `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)` y no llama a `auth()`. Falta ver qué datos muestra, si otra capa la protege y la ruta `imagen` | sin confirmar | `src/app/wrapped/[anio]/`, `src/proxy.ts` |
-| S-2 | A | → **HU-06** (desaprobada) y **HU-07** (cambio de rol, que tampoco rige hasta el próximo login). Una cuenta desaprobada podría conservar el acceso hasta que venza el JWT (90 días): `verificado` solo se mira en `authorize` | sospecha | `src/lib/auth.ts:48,97`, `layout.tsx:44-47` |
+| S-2 | A | → ✅ **HU-06** (desaprobada, hecha 2026-11-11) y **HU-07** (cambio de rol, que tampoco rige hasta el próximo login). Una cuenta desaprobada podría conservar el acceso hasta que venza el JWT (90 días): `verificado` solo se mira en `authorize` | sospecha | `src/lib/auth.ts:48,97`, `layout.tsx:44-47` |
 | S-3 | B | `router.push(callbackUrl \|\| "/inicio")` sin exigir mismo origen en login y registro (posible redirect abierto) | sospecha | `login/page.tsx:9,37`, `registro/page.tsx:62,150` |
 | S-4 | B | Con https, el proxy busca `authjs.session-token` y Auth.js emite `__Secure-authjs.session-token`: mandaría a `/login` a vecinos con sesión | confirmado en la librería, falta ver producción | `src/proxy.ts:25-30`, `src/lib/auth.ts` |
-| S-5 | B | El bloqueo de prueba vencida está solo en el layout; falta ver si una navegación RSC lo reejecuta | sospecha | `layout.tsx:54-55` |
+| S-5 | B | El bloqueo de prueba vencida y, desde HU-06, el de cuenta desaprobada están solo en el layout (el proxy mira solo el JWT y las páginas leen `prisma` con `auth()`); falta ver si una navegación RSC lo reejecuta. Si no, una cuenta desaprobada o vencida podría abrir otras pantallas del dashboard con datos frescos, no solo la que tenía abierta, también con una petición RSC armada a mano (`Next-Router-State-Tree` que dé el layout por cargado) (barridos de HU-06, 2026-11-10 y 2026-11-11; comprobarlo en Next 16) | sospecha | `layout.tsx:50-57` |
 | S-6 | B | Previews de Vercel con la DB de producción: si un preview tiene `CRON_SECRET`, puede gastar el aviso de clima del día o mandar push reales | validar config de Vercel | Vercel → env vars por entorno |
 | S-7 | C | Hardening de crons y Open-Meteo: token comparado con `!==` (no en tiempo constante), `apikey` sin `encodeURIComponent`, `fetch` sin `redirect: "error"`, cuerpo sin límite, log del error completo de Prisma/push, rechazar `http://` en `OPEN_METEO_URL` | hardening | `src/app/api/cron/*`, `TarjetaClima.tsx`, `clima/page.tsx` |
 
@@ -53,6 +53,26 @@ Según lo que dejó cada módulo; verificar contra el código antes de armar la 
 | M-5 | C | Mapa | Lugares del barrio (faltan las ubicaciones reales); etapa 2: coordenadas y pines en avisos, pedidos y mascotas; etapa 3: manzanas por incidentes, cámaras, luminarias |
 | M-6 | C | Reportes | Fases siguientes de `docs/tasks-reportes.md` |
 | M-7 | C | Crecimiento | Email (en pausa por falta de dominio para Resend); incentivo por referido sin aprobar |
+| M-8 | B | Encuesta de experiencia (nuevo) | Encuesta dentro de la app para medir cómo les va a los vecinos con la app. Ver detalle abajo |
+
+### M-8 · Encuesta de experiencia en la app
+
+Propuesta charlada el 2026-11-09 (además se armó una versión por WhatsApp, por fuera de la app). Decisiones tomadas:
+
+- **Lo que no se pregunta:** uso y secciones más visitadas, porque salen de `VistaSeccion`.
+- **Para el vecino:** tarjeta grande en el Inicio, *"¿Nos contás cómo te va con la app? Son 5 preguntas"*, con **Responder** / **Ahora no**. Una pregunta por paso y botones grandes. Cuando responde, la tarjeta desaparece hasta la próxima ronda.
+- **Cuándo aparece:** solo si la cuenta tiene más de 2 semanas.
+- **Preguntas fijas en código** (`src/lib/encuesta.ts`), sin editor de encuestas para el admin en la v1:
+  1. ¿Qué tan fácil te resulta usar la app? (5 caritas, 1 a 5)
+  2. ¿Se leen bien los textos y botones? (Sí / Más o menos / No)
+  3. Del 0 al 10, ¿cuánto se la recomendarías a un vecino? (NPS)
+  4. ¿Qué es lo que más te gusta? (texto, opcional)
+  5. Si pudieras cambiar o agregar una sola cosa, ¿cuál sería? (texto, opcional)
+- **Rondas:** cada respuesta va asociada a una ronda (por ejemplo `2026-T4`) y vale una por vecino en cada ronda (único `usuarioId` + `ronda`), para poder comparar las rondas entre sí.
+- **Privacidad:** se guarda quién respondió (para no volver a preguntarle), pero **los resultados no muestran nombres**.
+- **Modelo:** tabla `RespuestaEncuesta` (usuario, ronda, respuestas, fecha) · `POST /api/encuesta` con zod + `requireSession` (receta de endpoint).
+- **Admin:** `/admin/encuesta` muestra el promedio de facilidad, el % de "se lee bien", el NPS de la ronda y los comentarios abiertos sin nombre.
+- **Para más adelante:** editor de encuestas para el admin (servirían también para votaciones del barrio).
 
 ## 5. Calidad y deuda
 
