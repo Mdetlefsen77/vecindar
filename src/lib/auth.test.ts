@@ -27,4 +27,13 @@ describe("callbacks de NextAuth", () => {
 
     expect(session.user.role).toBe("VECINO");
   });
+
+  it("I-96 · un rol de gestión dado en la base rige sin volver a loguearse", async () => {
+    findUnique.mockResolvedValue({ rol: "SEGURIDAD" });
+    const token = { id: "7", role: "VECINO", loteId: 3 };
+
+    const jwt = await authConfig.callbacks.jwt({ token } as never);
+
+    expect(jwt.role).toBe("SEGURIDAD");
+  });
 });
