@@ -14,7 +14,7 @@ class CuentaNoVerificada extends CredentialsSignin {
   code = "no_verificado";
 }
 
-const authConfig = {
+export const authConfig = {
   providers: [
     Credentials({
       credentials: {
@@ -75,6 +75,12 @@ const authConfig = {
         token.id = user.id as string;
         token.role = user.role;
         token.loteId = user.loteId;
+      } else {
+        const actual = await prisma.usuario.findUnique({
+          where: { id: Number(token.id) },
+          select: { rol: true },
+        });
+        if (actual) token.role = actual.rol;
       }
       return token;
     },
