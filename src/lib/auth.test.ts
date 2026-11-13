@@ -36,4 +36,16 @@ describe("callbacks de NextAuth", () => {
 
     expect(jwt.role).toBe("SEGURIDAD");
   });
+
+  it("I-97 · consulta el rol del usuario del token", async () => {
+    findUnique.mockClear();
+    findUnique.mockResolvedValue({ rol: "VECINO" });
+    const token = { id: "7", role: "VECINO", loteId: 3 };
+
+    await authConfig.callbacks.jwt({ token } as never);
+
+    expect(findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: 7 } }),
+    );
+  });
 });
