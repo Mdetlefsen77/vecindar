@@ -49,6 +49,19 @@ describe("callbacks de NextAuth", () => {
     );
   });
 
+  it("I-101 · la consulta del rol no trae otras columnas", async () => {
+    findUnique.mockClear();
+    findUnique.mockResolvedValue({ rol: "VECINO" });
+    const token = { id: "7", role: "VECINO", loteId: 3 };
+
+    await authConfig.callbacks.jwt({ token } as never);
+
+    expect(findUnique).toHaveBeenCalledWith({
+      where: { id: 7 },
+      select: { rol: true },
+    });
+  });
+
   it("I-98 · si la base falla, conserva el rol del token y lo registra", async () => {
     const error = new Error("base caída");
     findUnique.mockRejectedValue(error);

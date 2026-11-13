@@ -2,8 +2,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const { Sidebar, MobileHeader } = vi.hoisted(() => ({
-  Sidebar: vi.fn((_props: Record<string, unknown>) => null),
-  MobileHeader: vi.fn((_props: Record<string, unknown>) => null),
+  Sidebar: vi.fn<(props: Record<string, unknown>) => null>(() => null),
+  MobileHeader: vi.fn<(props: Record<string, unknown>) => null>(() => null),
 }));
 
 vi.mock("@/lib/auth", () => ({ auth: vi.fn() }));
