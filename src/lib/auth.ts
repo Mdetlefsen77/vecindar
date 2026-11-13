@@ -76,11 +76,17 @@ export const authConfig = {
         token.role = user.role;
         token.loteId = user.loteId;
       } else {
-        const actual = await prisma.usuario.findUnique({
-          where: { id: Number(token.id) },
-          select: { rol: true },
-        });
-        if (actual) token.role = actual.rol;
+        try {
+          const actual = await prisma.usuario.findUnique({
+            where: { id: Number(token.id) },
+            select: { rol: true },
+          });
+          if (actual) token.role = actual.rol;
+        } catch (error) {
+          // Si la base falla se conserva el rol del token: lanzar cerraría la
+          // sesión de todo el barrio.
+          console.error("Auth jwt: no se pudo leer el rol:", error);
+        }
       }
       return token;
     },

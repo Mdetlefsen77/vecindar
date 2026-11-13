@@ -48,4 +48,19 @@ describe("callbacks de NextAuth", () => {
       expect.objectContaining({ where: { id: 7 } }),
     );
   });
+
+  it("I-98 · si la base falla, conserva el rol del token y lo registra", async () => {
+    const error = new Error("base caída");
+    findUnique.mockRejectedValue(error);
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const token = { id: "7", role: "ADMIN", loteId: 3 };
+
+    const jwt = await authConfig.callbacks.jwt({ token } as never);
+
+    expect(jwt).toEqual(expect.objectContaining({ role: "ADMIN" }));
+    expect(consoleError).toHaveBeenCalled();
+    consoleError.mockRestore();
+  });
 });
