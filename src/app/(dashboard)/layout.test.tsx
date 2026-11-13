@@ -1,4 +1,10 @@
+import { renderToStaticMarkup } from "react-dom/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+const { Sidebar, MobileHeader } = vi.hoisted(() => ({
+  Sidebar: vi.fn((_props: Record<string, unknown>) => null),
+  MobileHeader: vi.fn((_props: Record<string, unknown>) => null),
+}));
 
 vi.mock("@/lib/auth", () => ({ auth: vi.fn() }));
 vi.mock("next/navigation", () => ({
@@ -13,9 +19,9 @@ vi.mock("@/lib/prisma/client", () => ({
     usuario: { findUnique: vi.fn() },
   },
 }));
-vi.mock("@/components/ui/Sidebar", () => ({ default: () => null }));
+vi.mock("@/components/ui/Sidebar", () => ({ default: Sidebar }));
 vi.mock("@/components/ui/BottomNav", () => ({ default: () => null }));
-vi.mock("@/components/ui/MobileHeader", () => ({ default: () => null }));
+vi.mock("@/components/ui/MobileHeader", () => ({ default: MobileHeader }));
 vi.mock("@/components/ui/InstallPrompt", () => ({ default: () => null }));
 vi.mock("@/components/ui/PushOptInBanner", () => ({ default: () => null }));
 vi.mock("@/components/ui/CobranzaBanner", () => ({ default: () => null }));
@@ -73,5 +79,22 @@ describe("layout del dashboard con una cuenta aprobada", () => {
 
     expect(res).toBeTruthy();
     expect(redirect).not.toHaveBeenCalled();
+  });
+});
+
+describe("layout del dashboard con el menú", () => {
+  it("I-100 pasa el rol de la sesión al Sidebar y al MobileHeader", async () => {
+    vi.mocked(auth).mockResolvedValue({
+      user: { id: "7", name: "Ana", email: "ana@x.com", role: "ADMIN" },
+    } as never);
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+      pruebaHasta: null,
+      verificado: true,
+    } as never);
+
+    renderToStaticMarkup(await DashboardLayout({ children: null }));
+
+    expect(Sidebar.mock.calls[0][0]).toMatchObject({ userRole: "ADMIN" });
+    expect(MobileHeader.mock.calls[0][0]).toMatchObject({ userRole: "ADMIN" });
   });
 });

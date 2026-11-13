@@ -63,4 +63,14 @@ describe("callbacks de NextAuth", () => {
     expect(consoleError).toHaveBeenCalled();
     consoleError.mockRestore();
   });
+
+  it("I-99 · en el login el token lleva id, rol y lote del usuario", async () => {
+    findUnique.mockResolvedValue({ rol: "VECINO" });
+    const token = {};
+    const user = { id: "9", role: "ADMIN", loteId: 5 };
+
+    const jwt = await authConfig.callbacks.jwt({ token, user } as never);
+
+    expect(jwt).toEqual({ id: "9", role: "ADMIN", loteId: 5 });
+  });
 });
