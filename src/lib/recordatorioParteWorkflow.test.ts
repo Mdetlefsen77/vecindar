@@ -114,4 +114,16 @@ describe("workflow recordatorio-parte", () => {
       SITE_URL: "${{ vars.SITE_URL }}",
     });
   });
+
+  it("I-107 · los schedule.cron son las 4 horas de CA-1 (08:30, 13:30, 18:30 y 23:30 de Argentina)", () => {
+    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
+    const crons = (workflow.on.schedule as { cron: string }[]).map(
+      (s) => s.cron,
+    );
+
+    expect(crons).toHaveLength(4);
+    expect(new Set(crons)).toEqual(
+      new Set(["30 11 * * *", "30 16 * * *", "30 21 * * *", "30 2 * * *"]),
+    );
+  });
 });

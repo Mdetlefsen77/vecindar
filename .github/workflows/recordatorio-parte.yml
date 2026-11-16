@@ -2,6 +2,11 @@
 name: Recordatorio de parte de turno
 
 on:
+  schedule:
+    - cron: "30 11 * * *"
+    - cron: "30 16 * * *"
+    - cron: "30 21 * * *"
+    - cron: "30 2 * * *"
   workflow_dispatch:
 
 jobs:
