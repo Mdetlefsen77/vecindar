@@ -162,4 +162,9 @@ describe("workflow recordatorio-parte", () => {
 
     expect(salida).toContain("401");
   });
+
+  it("I-111 · el workflow no da permisos al GITHUB_TOKEN (permissions: {})", () => {
+    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
+    expect(workflow.permissions).toEqual({});
+  });
 });
