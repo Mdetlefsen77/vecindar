@@ -13,11 +13,15 @@ const RUTA_WORKFLOW = join(
 
 type Paso = { run?: string; env?: Record<string, string> };
 
-function scriptDelPaso(): string {
+function pasoFinal(): Paso {
   const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
   const pasos: Paso[] = Object.values<{ steps: Paso[] }>(workflow.jobs)[0]
     .steps;
-  return pasos.at(-1)!.run!;
+  return pasos.at(-1)!;
+}
+
+function scriptDelPaso(): string {
+  return pasoFinal().run!;
 }
 
 type Peticion = Pick<IncomingMessage, "method" | "url" | "headers">;
@@ -102,5 +106,12 @@ describe("workflow recordatorio-parte", () => {
     });
 
     expect(code).not.toBe(0);
+  });
+
+  it("I-106 · el env del paso toma CRON_SECRET de secrets y SITE_URL de vars", () => {
+    expect(pasoFinal().env).toEqual({
+      CRON_SECRET: "${{ secrets.CRON_SECRET }}",
+      SITE_URL: "${{ vars.SITE_URL }}",
+    });
   });
 });
