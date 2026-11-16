@@ -126,4 +126,10 @@ describe("workflow recordatorio-parte", () => {
       new Set(["30 11 * * *", "30 16 * * *", "30 21 * * *", "30 2 * * *"]),
     );
   });
+
+  it("I-108 · el workflow se puede lanzar a mano (workflow_dispatch)", () => {
+    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
+
+    expect(workflow.on).toHaveProperty("workflow_dispatch");
+  });
 });
