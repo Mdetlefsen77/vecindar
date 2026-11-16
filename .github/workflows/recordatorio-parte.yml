@@ -17,6 +17,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Llamar al endpoint
+        shell: bash
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           SITE_URL: ${{ vars.SITE_URL }}

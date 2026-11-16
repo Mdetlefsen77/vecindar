@@ -12,7 +12,7 @@ const RUTA_WORKFLOW = join(
   ".github/workflows/recordatorio-parte.yml",
 );
 
-type Paso = { run?: string; env?: Record<string, string> };
+type Paso = { run?: string; shell?: string; env?: Record<string, string> };
 
 function workflow() {
   return parse(readFileSync(RUTA_WORKFLOW, "utf8"));
@@ -177,5 +177,9 @@ describe("workflow recordatorio-parte", () => {
     expect(minutos).toBeGreaterThanOrEqual(1);
     expect(minutos).toBeLessThanOrEqual(10);
     expect(maxTime).toBeLessThan(minutos * 60);
+  });
+
+  it("I-114 · el paso que llama al endpoint corre en bash (shell: bash)", () => {
+    expect(pasoFinal().shell).toBe("bash");
   });
 });
