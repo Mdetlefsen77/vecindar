@@ -14,6 +14,7 @@ permissions: {}
 jobs:
   recordar:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Llamar al endpoint
         env:
@@ -24,6 +25,6 @@ jobs:
             echo "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo."
             exit 1
           fi
-          curl -fsS \
+          curl -fsS --max-time 60 \
             -H "Authorization: Bearer $CRON_SECRET" \
             "$SITE_URL/api/cron/recordatorio-parte"

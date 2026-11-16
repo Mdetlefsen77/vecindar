@@ -167,4 +167,10 @@ describe("workflow recordatorio-parte", () => {
     const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
     expect(workflow.permissions).toEqual({});
   });
+
+  it("I-112 · el job tiene timeout-minutes y el curl del paso tiene --max-time", () => {
+    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
+    expect(workflow.jobs.recordar["timeout-minutes"]).toBeGreaterThan(0);
+    expect(scriptDelPaso()).toMatch(/--max-time\s+\d+/);
+  });
 });
