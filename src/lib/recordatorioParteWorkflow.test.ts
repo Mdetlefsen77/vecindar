@@ -151,4 +151,15 @@ describe("workflow recordatorio-parte", () => {
     expect(turnos).not.toContain(undefined);
     expect(new Set(turnos).size).toBe(4);
   });
+
+  it("I-110 · si el endpoint responde 401 la salida contiene 401 (el motivo queda en el log)", async () => {
+    const { url } = await servidorLocal(401);
+
+    const { salida } = await correrScript({
+      CRON_SECRET: "secreto-equivocado",
+      SITE_URL: url,
+    });
+
+    expect(salida).toContain("401");
+  });
 });
