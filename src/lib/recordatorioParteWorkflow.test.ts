@@ -170,4 +170,12 @@ describe("workflow recordatorio-parte", () => {
     expect(workflow().jobs.recordar["timeout-minutes"]).toBeGreaterThan(0);
     expect(scriptDelPaso()).toMatch(/--max-time\s+\d+/);
   });
+
+  it("I-113 · timeout-minutes está entre 1 y 10 y --max-time (s) es menor que timeout-minutes × 60", () => {
+    const minutos = workflow().jobs.recordar["timeout-minutes"];
+    const maxTime = Number(scriptDelPaso().match(/--max-time\s+(\d+)/)?.[1]);
+    expect(minutos).toBeGreaterThanOrEqual(1);
+    expect(minutos).toBeLessThanOrEqual(10);
+    expect(maxTime).toBeLessThan(minutos * 60);
+  });
 });
