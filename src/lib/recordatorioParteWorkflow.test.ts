@@ -14,9 +14,12 @@ const RUTA_WORKFLOW = join(
 
 type Paso = { run?: string; env?: Record<string, string> };
 
+function workflow() {
+  return parse(readFileSync(RUTA_WORKFLOW, "utf8"));
+}
+
 function pasoFinal(): Paso {
-  const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
-  const pasos: Paso[] = Object.values<{ steps: Paso[] }>(workflow.jobs)[0]
+  const pasos: Paso[] = Object.values<{ steps: Paso[] }>(workflow().jobs)[0]
     .steps;
   return pasos.at(-1)!;
 }
@@ -117,8 +120,7 @@ describe("workflow recordatorio-parte", () => {
   });
 
   it("I-107 · los schedule.cron son las 4 horas de CA-1 (08:30, 13:30, 18:30 y 23:30 de Argentina)", () => {
-    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
-    const crons = (workflow.on.schedule as { cron: string }[]).map(
+    const crons = (workflow().on.schedule as { cron: string }[]).map(
       (s) => s.cron,
     );
 
@@ -129,14 +131,11 @@ describe("workflow recordatorio-parte", () => {
   });
 
   it("I-108 · el workflow se puede lanzar a mano (workflow_dispatch)", () => {
-    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
-
-    expect(workflow.on).toHaveProperty("workflow_dispatch");
+    expect(workflow().on).toHaveProperty("workflow_dispatch");
   });
 
   it("I-109 · cada cron, como hora UTC de un día fijo, cae en la ventana de un turno distinto y salen los 4", () => {
-    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
-    const crons = (workflow.on.schedule as { cron: string }[]).map(
+    const crons = (workflow().on.schedule as { cron: string }[]).map(
       (s) => s.cron,
     );
 
@@ -164,13 +163,11 @@ describe("workflow recordatorio-parte", () => {
   });
 
   it("I-111 · el workflow no da permisos al GITHUB_TOKEN (permissions: {})", () => {
-    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
-    expect(workflow.permissions).toEqual({});
+    expect(workflow().permissions).toEqual({});
   });
 
   it("I-112 · el job tiene timeout-minutes y el curl del paso tiene --max-time", () => {
-    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
-    expect(workflow.jobs.recordar["timeout-minutes"]).toBeGreaterThan(0);
+    expect(workflow().jobs.recordar["timeout-minutes"]).toBeGreaterThan(0);
     expect(scriptDelPaso()).toMatch(/--max-time\s+\d+/);
   });
 });
