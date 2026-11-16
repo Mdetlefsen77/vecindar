@@ -81,4 +81,15 @@ describe("workflow recordatorio-parte", () => {
     );
     expect(peticiones).toHaveLength(0);
   });
+
+  it("I-104 · sin SITE_URL sale con 1 y avisa con ::error::", async () => {
+    const { code, salida } = await correrScript({
+      CRON_SECRET: "secreto-de-prueba",
+    });
+
+    expect(code).toBe(1);
+    expect(salida).toContain(
+      "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo.",
+    );
+  });
 });
