@@ -22,7 +22,7 @@ Prioridad: **A** riesgo real o algo roto · **B** mejora con valor claro · **C*
 
 | # | Prio | Qué | Dónde |
 |---|---|---|---|
-| R-1 | A | → **HU-08**. El cron `recordatorio-parte` no lo dispara nadie: el workflow de GitHub Actions que lo programa quedó en la rama `feat/oficios-seguridad`, sin integrar (ver §6) | `src/app/api/cron/recordatorio-parte/route.ts` |
+| R-1 | A | → ✅ **HU-08** (workflow integrado, hecha 2026-11-16; falta después del merge: cargar el secret `CRON_SECRET` y la variable `SITE_URL` en GitHub y probarlo con `workflow_dispatch`). El cron `recordatorio-parte` no lo dispara nadie: el workflow de GitHub Actions que lo programa quedó en la rama `feat/oficios-seguridad`, sin integrar (ver §6) | `src/app/api/cron/recordatorio-parte/route.ts` |
 | R-2 | A | Variables de entorno en Vercel a confirmar: `CRON_SECRET` (crons de cobranza, avisos, clima), y para MercadoPago `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`, `NEXT_PUBLIC_SITE_URL` | Vercel |
 | R-3 | B | Asignar el rol `TESORERO` a una persona real | `/admin/usuarios/[id]` |
 | R-4 | C | `npm audit` informa vulnerabilidades sin revisar; vitest quedó en 4.x hasta subir `@types/node` a ^22 | `package.json` |
@@ -54,6 +54,7 @@ Según lo que dejó cada módulo; verificar contra el código antes de armar la 
 | M-6 | C | Reportes | Fases siguientes de `docs/tasks-reportes.md` |
 | M-7 | C | Crecimiento | Email (en pausa por falta de dominio para Resend); incentivo por referido sin aprobar |
 | M-8 | B | Encuesta de experiencia (nuevo) | Encuesta dentro de la app para medir cómo les va a los vecinos con la app. Ver detalle abajo |
+| M-9 | B | Compartir con adelanto (nuevo) | Al compartir en WhatsApp, mostrar solo las primeras palabras del detalle + "…" para que entren a la app. Avisos, incidentes, pedidos y mascotas; partes no. Ver detalle abajo |
 
 ### M-8 · Encuesta de experiencia en la app
 
@@ -74,6 +75,19 @@ Propuesta charlada el 2026-11-09 (además se armó una versión por WhatsApp, po
 - **Admin:** `/admin/encuesta` muestra el promedio de facilidad, el % de "se lee bien", el NPS de la ronda y los comentarios abiertos sin nombre.
 - **Para más adelante:** editor de encuestas para el admin (servirían también para votaciones del barrio).
 
+### M-9 · Compartir en WhatsApp con adelanto del detalle
+
+Propuesta del guardia de seguridad (2026-11-16) para que más vecinos usen la app: el mensaje compartido queda igual que ahora, pero el detalle se corta en las primeras palabras y sigue con "…" (ejemplos suyos: *"Comparto aviso por…"*, *"2 sujetos me…"*).
+
+- **Estado actual** (`src/lib/notificaciones-externas/plantillas.ts`): el **aviso** comparte el detalle completo (más lugar, imagen y vencimiento). **Incidente, pedido y mascota** no comparten ninguna descripción, solo el tipo, el autor y el link.
+- **Alcance:** avisos, incidentes, pedidos y mascotas. **Los partes de turno no se tocan** (`mensajeParte` en `src/lib/partes.ts` sigue completo).
+- **Qué cambia:**
+  - **Aviso:** se recorta el detalle. La imagen, el lugar (📍), el tipo, el autor, el vencimiento y el cierre con el link quedan iguales.
+  - **Incidente, pedido y mascota:** se agrega el adelanto, que hoy no tienen, entre la línea del autor y el link.
+- **Cómo:** una sola función `adelanto(texto, palabras)` que corte en palabra entera y agregue "…" (sin "…" si el texto ya es corto), usada por todas las plantillas. Si no hay detalle, el mensaje queda como hoy.
+- **Sin decidir:** cuántas palabras. El guardia propuso 2. Se sugirió 4 o 5, porque con 2 un incidente ("2 sujetos me…") puede alarmar al grupo sin dar contexto.
+- **No cambia:** la vista previa del link (Open Graph, `vistaPrevia.ts`) ya no muestra contenido.
+
 ## 5. Calidad y deuda
 
 | # | Prio | Qué |
@@ -89,5 +103,5 @@ Cuatro ramas tienen commits que no están en `main`. Todas salieron de un `main`
 |---|---|---|---|---|
 | `feat/mercadopago-cobranza` | `c4399da` 2026-09-05 | MercadoPago Fase 3d: `src/lib/mercadopago.ts`, `POST /api/cobranza/mp/checkout`, `POST /api/cobranza/mp/webhook` (HMAC), tarjeta "Pagar online" en `/mi-suscripcion` | La migración ya se trajo a `main` (`d79748a`, para destrabar migraciones), pero el código no. Quedó a la espera de crear la app de MP y cargar las variables, y de decidir con el compañero el débito automático | Reemplazada por la `-actualizada`: borrar esta |
 | `feat/mercadopago-cobranza-actualizada` | `971e1d2` 2026-09-22 | El mismo commit, con `main` mergeado encima (7 archivos, +653) | Igual que la anterior | Historia de cobranza (M-1): rebase sobre `main`, tests del webhook (firma, idempotencia), probar en sandbox de MP, configurar variables (R-2). Tiene `Seguridad: sí` (webhook público + pagos) |
-| `feat/oficios-seguridad` | `57a4d34` 2026-10-13 | Solo `.github/workflows/recordatorio-parte.yml`: GitHub Actions llama al cron 4 veces por día (30 min después de cada turno) | El endpoint se mergeó (PR #36) pero el workflow quedó en esta rama con un nombre que no tiene que ver. Pide el secret `CRON_SECRET` y la variable `SITE_URL` en GitHub | Historia corta (R-1): integrar el workflow, cargar el secret y la variable, probarlo con `workflow_dispatch` |
+| `feat/oficios-seguridad` | `57a4d34` 2026-10-13 | Solo `.github/workflows/recordatorio-parte.yml`: GitHub Actions llama al cron 4 veces por día (30 min después de cada turno) | El endpoint se mergeó (PR #36) pero el workflow quedó en esta rama con un nombre que no tiene que ver. Pide el secret `CRON_SECRET` y la variable `SITE_URL` en GitHub | ✅ HU-08 reescribió el workflow con tests en `main`: borrar esta rama |
 | `fix/vapid-error-claro` | `b2bd127` 2026-08-05 | Mensaje claro si falla la clave VAPID al activar las notificaciones (`fetchPublicKey` que tira error en vez de `undefined`) | Solo local, nunca se pusheó. `usePushNotifications.ts` cambió mucho después (`ceee1f4`) y hoy sigue sin manejar ese error | Rehacer sobre el código actual como un fix chico con su test; borrar la rama |

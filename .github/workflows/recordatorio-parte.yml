@@ -1,0 +1,31 @@
+# Recordatorio a la guardia si no cargó el parte de turno.
+name: Recordatorio de parte de turno
+
+on:
+  schedule:
+    - cron: "30 11 * * *"
+    - cron: "30 16 * * *"
+    - cron: "30 21 * * *"
+    - cron: "30 2 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  recordar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Llamar al endpoint
+        shell: bash
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: |
+          if [ -z "$CRON_SECRET" ] || [ -z "$SITE_URL" ]; then
+            echo "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo."
+            exit 1
+          fi
+          curl -fsS --max-time 60 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$SITE_URL/api/cron/recordatorio-parte"

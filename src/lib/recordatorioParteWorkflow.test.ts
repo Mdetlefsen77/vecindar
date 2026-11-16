@@ -1,0 +1,185 @@
+import { execFile } from "node:child_process";
+import { readFileSync } from "node:fs";
+import { createServer, type IncomingMessage } from "node:http";
+import type { AddressInfo } from "node:net";
+import { join } from "node:path";
+import { afterEach, describe, expect, it } from "vitest";
+import { parse } from "yaml";
+import { turnoRecienTerminado } from "./partes";
+
+const RUTA_WORKFLOW = join(
+  process.cwd(),
+  ".github/workflows/recordatorio-parte.yml",
+);
+
+type Paso = { run?: string; shell?: string; env?: Record<string, string> };
+
+function workflow() {
+  return parse(readFileSync(RUTA_WORKFLOW, "utf8"));
+}
+
+function pasoFinal(): Paso {
+  const pasos: Paso[] = Object.values<{ steps: Paso[] }>(workflow().jobs)[0]
+    .steps;
+  return pasos.at(-1)!;
+}
+
+function scriptDelPaso(): string {
+  return pasoFinal().run!;
+}
+
+type Peticion = Pick<IncomingMessage, "method" | "url" | "headers">;
+
+let cerrar: (() => void) | null = null;
+afterEach(() => cerrar?.());
+
+async function servidorLocal(status = 200) {
+  const peticiones: Peticion[] = [];
+  const server = createServer((req, res) => {
+    peticiones.push({ method: req.method, url: req.url, headers: req.headers });
+    res.statusCode = status;
+    res.end(JSON.stringify({ ok: status === 200 }));
+  });
+  await new Promise<void>((r) => server.listen(0, "127.0.0.1", r));
+  cerrar = () => server.close();
+  const { port } = server.address() as AddressInfo;
+  return { peticiones, url: `http://127.0.0.1:${port}` };
+}
+
+function correrScript(env: Record<string, string>) {
+  return new Promise<{ code: number; salida: string }>((resolve) => {
+    execFile(
+      "bash",
+      ["-c", scriptDelPaso()],
+      { env: { PATH: process.env.PATH ?? "", NODE_ENV: "test", ...env } },
+      (error, stdout, stderr) => {
+        const code = error ? Number(error.code ?? 1) : 0;
+        resolve({ code, salida: stdout + stderr });
+      },
+    );
+  });
+}
+
+describe("workflow recordatorio-parte", () => {
+  it("I-102 · llama GET /api/cron/recordatorio-parte con Bearer y sale con 0", async () => {
+    const { peticiones, url } = await servidorLocal();
+
+    const { code } = await correrScript({
+      CRON_SECRET: "secreto-de-prueba",
+      SITE_URL: url,
+    });
+
+    expect(code).toBe(0);
+    expect(peticiones).toHaveLength(1);
+    expect(peticiones[0].method).toBe("GET");
+    expect(peticiones[0].url).toBe("/api/cron/recordatorio-parte");
+    expect(peticiones[0].headers.authorization).toBe(
+      "Bearer secreto-de-prueba",
+    );
+  });
+
+  it("I-103 · sin CRON_SECRET sale con 1, avisa con ::error:: y no llama al servidor", async () => {
+    const { peticiones, url } = await servidorLocal();
+
+    const { code, salida } = await correrScript({ SITE_URL: url });
+
+    expect(code).toBe(1);
+    expect(salida).toContain(
+      "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo.",
+    );
+    expect(peticiones).toHaveLength(0);
+  });
+
+  it("I-104 · sin SITE_URL sale con 1 y avisa con ::error::", async () => {
+    const { code, salida } = await correrScript({
+      CRON_SECRET: "secreto-de-prueba",
+    });
+
+    expect(code).toBe(1);
+    expect(salida).toContain(
+      "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo.",
+    );
+  });
+
+  it("I-105 · si el endpoint responde 401 el script sale con un código distinto de 0", async () => {
+    const { url } = await servidorLocal(401);
+
+    const { code } = await correrScript({
+      CRON_SECRET: "secreto-equivocado",
+      SITE_URL: url,
+    });
+
+    expect(code).not.toBe(0);
+  });
+
+  it("I-106 · el env del paso toma CRON_SECRET de secrets y SITE_URL de vars", () => {
+    expect(pasoFinal().env).toEqual({
+      CRON_SECRET: "${{ secrets.CRON_SECRET }}",
+      SITE_URL: "${{ vars.SITE_URL }}",
+    });
+  });
+
+  it("I-107 · los schedule.cron son las 4 horas de CA-1 (08:30, 13:30, 18:30 y 23:30 de Argentina)", () => {
+    const crons = (workflow().on.schedule as { cron: string }[]).map(
+      (s) => s.cron,
+    );
+
+    expect(crons).toHaveLength(4);
+    expect(new Set(crons)).toEqual(
+      new Set(["30 11 * * *", "30 16 * * *", "30 21 * * *", "30 2 * * *"]),
+    );
+  });
+
+  it("I-108 · el workflow se puede lanzar a mano (workflow_dispatch)", () => {
+    expect(workflow().on).toHaveProperty("workflow_dispatch");
+  });
+
+  it("I-109 · cada cron, como hora UTC de un día fijo, cae en la ventana de un turno distinto y salen los 4", () => {
+    const crons = (workflow().on.schedule as { cron: string }[]).map(
+      (s) => s.cron,
+    );
+
+    const turnos = crons.map((cron) => {
+      const [minuto, hora] = cron.split(" ");
+      const ahora = new Date(
+        `2026-03-10T${hora.padStart(2, "0")}:${minuto.padStart(2, "0")}:00Z`,
+      );
+      return turnoRecienTerminado(ahora)?.turno;
+    });
+
+    expect(turnos).not.toContain(undefined);
+    expect(new Set(turnos).size).toBe(4);
+  });
+
+  it("I-110 · si el endpoint responde 401 la salida contiene 401 (el motivo queda en el log)", async () => {
+    const { url } = await servidorLocal(401);
+
+    const { salida } = await correrScript({
+      CRON_SECRET: "secreto-equivocado",
+      SITE_URL: url,
+    });
+
+    expect(salida).toContain("401");
+  });
+
+  it("I-111 · el workflow no da permisos al GITHUB_TOKEN (permissions: {})", () => {
+    expect(workflow().permissions).toEqual({});
+  });
+
+  it("I-112 · el job tiene timeout-minutes y el curl del paso tiene --max-time", () => {
+    expect(workflow().jobs.recordar["timeout-minutes"]).toBeGreaterThan(0);
+    expect(scriptDelPaso()).toMatch(/--max-time\s+\d+/);
+  });
+
+  it("I-113 · timeout-minutes está entre 1 y 10 y --max-time (s) es menor que timeout-minutes × 60", () => {
+    const minutos = workflow().jobs.recordar["timeout-minutes"];
+    const maxTime = Number(scriptDelPaso().match(/--max-time\s+(\d+)/)?.[1]);
+    expect(minutos).toBeGreaterThanOrEqual(1);
+    expect(minutos).toBeLessThanOrEqual(10);
+    expect(maxTime).toBeLessThan(minutos * 60);
+  });
+
+  it("I-114 · el paso que llama al endpoint corre en bash (shell: bash)", () => {
+    expect(pasoFinal().shell).toBe("bash");
+  });
+});
