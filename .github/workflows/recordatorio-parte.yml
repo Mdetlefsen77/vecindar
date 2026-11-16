@@ -13,6 +13,10 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           SITE_URL: ${{ vars.SITE_URL }}
         run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo."
+            exit 1
+          fi
           curl -sS \
             -H "Authorization: Bearer $CRON_SECRET" \
             "$SITE_URL/api/cron/recordatorio-parte"

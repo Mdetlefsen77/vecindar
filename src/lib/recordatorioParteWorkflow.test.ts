@@ -69,4 +69,16 @@ describe("workflow recordatorio-parte", () => {
       "Bearer secreto-de-prueba",
     );
   });
+
+  it("I-103 · sin CRON_SECRET sale con 1, avisa con ::error:: y no llama al servidor", async () => {
+    const { peticiones, url } = await servidorLocal();
+
+    const { code, salida } = await correrScript({ SITE_URL: url });
+
+    expect(code).toBe(1);
+    expect(salida).toContain(
+      "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo.",
+    );
+    expect(peticiones).toHaveLength(0);
+  });
 });
