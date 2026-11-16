@@ -54,6 +54,7 @@ Según lo que dejó cada módulo; verificar contra el código antes de armar la 
 | M-6 | C | Reportes | Fases siguientes de `docs/tasks-reportes.md` |
 | M-7 | C | Crecimiento | Email (en pausa por falta de dominio para Resend); incentivo por referido sin aprobar |
 | M-8 | B | Encuesta de experiencia (nuevo) | Encuesta dentro de la app para medir cómo les va a los vecinos con la app. Ver detalle abajo |
+| M-9 | B | Compartir con adelanto (nuevo) | Al compartir en WhatsApp, mostrar solo las primeras palabras del detalle + "…" para que entren a la app. Avisos, incidentes, pedidos y mascotas; partes no. Ver detalle abajo |
 
 ### M-8 · Encuesta de experiencia en la app
 
@@ -73,6 +74,19 @@ Propuesta charlada el 2026-11-09 (además se armó una versión por WhatsApp, po
 - **Modelo:** tabla `RespuestaEncuesta` (usuario, ronda, respuestas, fecha) · `POST /api/encuesta` con zod + `requireSession` (receta de endpoint).
 - **Admin:** `/admin/encuesta` muestra el promedio de facilidad, el % de "se lee bien", el NPS de la ronda y los comentarios abiertos sin nombre.
 - **Para más adelante:** editor de encuestas para el admin (servirían también para votaciones del barrio).
+
+### M-9 · Compartir en WhatsApp con adelanto del detalle
+
+Propuesta del guardia de seguridad (2026-11-16) para que más vecinos usen la app: el mensaje compartido queda igual que ahora, pero el detalle se corta en las primeras palabras y sigue con "…" (ejemplos suyos: *"Comparto aviso por…"*, *"2 sujetos me…"*).
+
+- **Estado actual** (`src/lib/notificaciones-externas/plantillas.ts`): el **aviso** comparte el detalle completo (más lugar, imagen y vencimiento). **Incidente, pedido y mascota** no comparten ninguna descripción, solo el tipo, el autor y el link.
+- **Alcance:** avisos, incidentes, pedidos y mascotas. **Los partes de turno no se tocan** (`mensajeParte` en `src/lib/partes.ts` sigue completo).
+- **Qué cambia:**
+  - **Aviso:** se recorta el detalle. La imagen, el lugar (📍), el tipo, el autor, el vencimiento y el cierre con el link quedan iguales.
+  - **Incidente, pedido y mascota:** se agrega el adelanto, que hoy no tienen, entre la línea del autor y el link.
+- **Cómo:** una sola función `adelanto(texto, palabras)` que corte en palabra entera y agregue "…" (sin "…" si el texto ya es corto), usada por todas las plantillas. Si no hay detalle, el mensaje queda como hoy.
+- **Sin decidir:** cuántas palabras. El guardia propuso 2. Se sugirió 4 o 5, porque con 2 un incidente ("2 sujetos me…") puede alarmar al grupo sin dar contexto.
+- **No cambia:** la vista previa del link (Open Graph, `vistaPrevia.ts`) ya no muestra contenido.
 
 ## 5. Calidad y deuda
 
