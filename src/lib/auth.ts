@@ -14,7 +14,7 @@ class CuentaNoVerificada extends CredentialsSignin {
   code = "no_verificado";
 }
 
-const authConfig = {
+export const authConfig = {
   providers: [
     Credentials({
       credentials: {
@@ -75,6 +75,18 @@ const authConfig = {
         token.id = user.id as string;
         token.role = user.role;
         token.loteId = user.loteId;
+      } else {
+        try {
+          const actual = await prisma.usuario.findUnique({
+            where: { id: Number(token.id) },
+            select: { rol: true },
+          });
+          if (actual) token.role = actual.rol;
+        } catch (error) {
+          // Si la base falla se conserva el rol del token: lanzar cerraría la
+          // sesión de todo el barrio.
+          console.error("Auth jwt: no se pudo leer el rol:", error);
+        }
       }
       return token;
     },
