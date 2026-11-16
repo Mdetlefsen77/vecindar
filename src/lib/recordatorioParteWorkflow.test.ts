@@ -92,4 +92,15 @@ describe("workflow recordatorio-parte", () => {
       "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo.",
     );
   });
+
+  it("I-105 · si el endpoint responde 401 el script sale con un código distinto de 0", async () => {
+    const { url } = await servidorLocal(401);
+
+    const { code } = await correrScript({
+      CRON_SECRET: "secreto-equivocado",
+      SITE_URL: url,
+    });
+
+    expect(code).not.toBe(0);
+  });
 });

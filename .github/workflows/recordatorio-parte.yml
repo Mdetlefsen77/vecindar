@@ -17,6 +17,6 @@ jobs:
             echo "::error::Faltan el secret CRON_SECRET o la variable SITE_URL del repo."
             exit 1
           fi
-          curl -sS \
+          curl -fsS \
             -H "Authorization: Bearer $CRON_SECRET" \
             "$SITE_URL/api/cron/recordatorio-parte"
