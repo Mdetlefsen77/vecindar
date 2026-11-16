@@ -65,7 +65,7 @@ Como **administrador** quiero **que una cuenta que desapruebo deje de entrar en 
 - Sus pedidos a las APIs que exigen sesión responden 401 y no hacen nada.
 - Si se la vuelve a aprobar, puede loguearse y entrar como antes.
 
-## HU-07 · Un cambio de rol rige en la próxima petición
+## ✅ HU-07 · Un cambio de rol rige en la próxima petición
 Como **administrador** quiero **que un cambio de rol se aplique enseguida** para **que alguien a quien le saco permisos no los siga usando con su sesión abierta**.
 - Si a un `ADMIN` se le cambia el rol a `VECINO`, su próxima visita a `/admin` ya no lo deja entrar y las APIs de gestión le responden 403.
 - Si a un `VECINO` se le da un rol de gestión, lo tiene en su próxima petición, sin volver a loguearse.
@@ -105,3 +105,4 @@ Como **vecino** quiero **compartir el resumen anual del barrio** para **mostrar 
 - 2026-11-09 · (HU-06, seguridad) Un usuario borrado de la base que conserva un JWT vigente no queda afuera: el layout del dashboard y el guard de las APIs comparan `cuenta?.verificado === false`, y con la cuenta inexistente (`null`) dejan pasar; `/cuenta-no-aprobada` lo manda a `/inicio`. Pasaba igual antes de HU-06. Falta ver si las rutas fallan después al buscar al usuario, o si conviene tratar "no existe" como desaprobada.
 - 2026-11-10 · (HU-06, seguridad, hardening) El layout del dashboard llama a `registrarActividad` antes de mirar `verificado` (`layout.tsx:33` vs `:50`): una cuenta desaprobada que carga una página sigue actualizando su última actividad, a diferencia de las APIs (CA-3). No afecta a otros usuarios; solo ensucia las métricas de actividad.
 - 2026-11-13 · (HU-07, seguridad, hardening) El callback `jwt` de `src/lib/auth.ts` consulta el rol con `Number(token.id)` sin comprobar que sea un entero positivo; `parseId` de `src/lib/api/guard.ts:23` lo haría explícito. Hoy nadie puede aprovecharlo (el token va firmado). Además, el `catch` no distingue un corte de la base de un error de programación: los dos conservan el rol del token.
+- 2026-11-16 · (HU-07) Quedó fuera de HU-07: el callback `jwt` solo refresca el rol; nombre, email y lote del token siguen con el valor del login hasta volver a loguearse. Tampoco se cachea la lectura del rol: es una consulta por cada `auth()`. Revisarlo si la carga de la base lo pide.
