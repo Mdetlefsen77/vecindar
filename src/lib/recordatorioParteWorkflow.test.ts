@@ -5,6 +5,7 @@ import type { AddressInfo } from "node:net";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { parse } from "yaml";
+import { turnoRecienTerminado } from "./partes";
 
 const RUTA_WORKFLOW = join(
   process.cwd(),
@@ -131,5 +132,23 @@ describe("workflow recordatorio-parte", () => {
     const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
 
     expect(workflow.on).toHaveProperty("workflow_dispatch");
+  });
+
+  it("I-109 · cada cron, como hora UTC de un día fijo, cae en la ventana de un turno distinto y salen los 4", () => {
+    const workflow = parse(readFileSync(RUTA_WORKFLOW, "utf8"));
+    const crons = (workflow.on.schedule as { cron: string }[]).map(
+      (s) => s.cron,
+    );
+
+    const turnos = crons.map((cron) => {
+      const [minuto, hora] = cron.split(" ");
+      const ahora = new Date(
+        `2026-03-10T${hora.padStart(2, "0")}:${minuto.padStart(2, "0")}:00Z`,
+      );
+      return turnoRecienTerminado(ahora)?.turno;
+    });
+
+    expect(turnos).not.toContain(undefined);
+    expect(new Set(turnos).size).toBe(4);
   });
 });
