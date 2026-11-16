@@ -71,7 +71,7 @@ Como **administrador** quiero **que un cambio de rol se aplique enseguida** para
 - Si a un `VECINO` se le da un rol de gestión, lo tiene en su próxima petición, sin volver a loguearse.
 - Lo que se muestra según el rol (menú, accesos) usa el rol actual.
 
-## HU-08 · El recordatorio de parte se dispara solo
+## ✅ HU-08 · El recordatorio de parte se dispara solo
 Como **guardia** quiero **recibir el recordatorio si no cargué el parte de mi turno** para **no olvidarme de cargarlo**.
 - Un workflow de GitHub Actions llama a `GET /api/cron/recordatorio-parte` con `Authorization: Bearer ${CRON_SECRET}` media hora después de cada turno (08:30, 13:30, 18:30 y 23:30 de Argentina).
 - Si faltan el secret `CRON_SECRET` o la variable `SITE_URL` del repo, el workflow falla con un mensaje que lo dice.
