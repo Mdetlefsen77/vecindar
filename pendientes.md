@@ -22,7 +22,7 @@ Prioridad: **A** riesgo real o algo roto · **B** mejora con valor claro · **C*
 
 | # | Prio | Qué | Dónde |
 |---|---|---|---|
-| R-1 | A | → ✅ **HU-08** (workflow integrado, hecha 2026-11-16; falta después del merge: cargar el secret `CRON_SECRET` y la variable `SITE_URL` en GitHub y probarlo con `workflow_dispatch`). El cron `recordatorio-parte` no lo dispara nadie: el workflow de GitHub Actions que lo programa quedó en la rama `feat/oficios-seguridad`, sin integrar (ver §6) | `src/app/api/cron/recordatorio-parte/route.ts` |
+| R-1 | A | → ✅ **HU-08** (workflow integrado, hecha 2026-11-16; secret `CRON_SECRET` y variable `SITE_URL` cargados en GitHub, `workflow_dispatch` en verde el 2026-11-16 con `"ok":true`). El cron `recordatorio-parte` no lo dispara nadie: el workflow de GitHub Actions que lo programa quedó en la rama `feat/oficios-seguridad`, sin integrar (ver §6) | `src/app/api/cron/recordatorio-parte/route.ts` |
 | R-2 | A | Variables de entorno en Vercel a confirmar: `CRON_SECRET` (crons de cobranza, avisos, clima), y para MercadoPago `MP_ACCESS_TOKEN`, `MP_WEBHOOK_SECRET`, `NEXT_PUBLIC_SITE_URL` | Vercel |
 | R-3 | B | Asignar el rol `TESORERO` a una persona real | `/admin/usuarios/[id]` |
 | R-4 | C | `npm audit` informa vulnerabilidades sin revisar; vitest quedó en 4.x hasta subir `@types/node` a ^22 | `package.json` |
