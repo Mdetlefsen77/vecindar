@@ -60,6 +60,16 @@ El sistema SHALL impedir que el mismo evento sea compartido por el mismo canal m
 ### Requirement: El mensaje compartido nunca incluye datos sensibles
 El mensaje compuesto para compartir un evento SHALL incluir únicamente: tipo de evento, autor identificado como nombre más inicial de apellido (salvo que el usuario haya optado por no mostrarse), fecha, y el link rastreable. SHALL NOT incluir la descripción libre del evento, ubicación exacta, fotos o adjuntos, datos de contacto, ni nombres de terceros.
 
+Excepción (HU-11): el mensaje de un incidente SHALL incluir un adelanto de la descripción: sus primeras 5 palabras en una sola línea, seguidas de "…" solo si había más, entre la línea del autor y el link. Así el grupo sabe de qué se trata y tiene que entrar a la app para leer el resto (propuesta del guardia, M-9 de `pendientes.md`). El riesgo de que esas 5 palabras nombren a un tercero o una casa queda aceptado. Un incidente con `visibleVecinos: false` SHALL NOT compartirse.
+
+#### Scenario: Incidente con el adelanto de la descripción
+- **WHEN** se comparte un incidente visible cuya descripción es "Dos sujetos merodeando por la plaza del lote 12"
+- **THEN** el mensaje incluye la línea "Dos sujetos merodeando por la…" y no incluye el resto de la descripción
+
+#### Scenario: Incidente restringido
+- **WHEN** se intenta compartir un incidente con `visibleVecinos: false`
+- **THEN** el sistema responde 404 y no genera ningún mensaje
+
 #### Scenario: Mensaje de mascota perdida sin foto ni contacto
 - **WHEN** se comparte una mascota perdida
 - **THEN** el mensaje generado no incluye la foto de la mascota ni el dato de contacto cargado
