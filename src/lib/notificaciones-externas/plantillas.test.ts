@@ -45,3 +45,27 @@ describe("plantillaAviso · adelanto del detalle", () => {
     expect(lineaDetalle("Corte de\nluz")).toBe("Corte de luz");
   });
 });
+
+describe("plantillaAviso · mensaje completo", () => {
+  const aviso = {
+    emoji: "💡",
+    tipo: "Corte de luz",
+    ubicacion: "calle K esq. 3",
+    vencimiento: "Vence hoy a las 18:00",
+  };
+  const link = "https://vecindar.test/avisos";
+
+  it("U-51 · sin detalle el mensaje queda como siempre, sin línea extra", () => {
+    expect(plantillaAviso(autor, { ...aviso, detalle: null }, link)).toBe(
+      "💡 AVISO DEL BARRIO: CORTE DE LUZ\n\n📍 *calle K esq. 3*\n\nAvisó Ana P. · vence hoy a las 18:00\n\nSi ya se resolvió, avisá en Vecindar 👉 https://vecindar.test/avisos",
+    );
+  });
+
+  it("U-52 · con detalle corto el mensaje completo es el de siempre", () => {
+    expect(
+      plantillaAviso(autor, { ...aviso, detalle: "Vuelve a la tarde" }, link),
+    ).toBe(
+      "💡 AVISO DEL BARRIO: CORTE DE LUZ\n\n📍 *calle K esq. 3*\nVuelve a la tarde\n\nAvisó Ana P. · vence hoy a las 18:00\n\nSi ya se resolvió, avisá en Vecindar 👉 https://vecindar.test/avisos",
+    );
+  });
+});
