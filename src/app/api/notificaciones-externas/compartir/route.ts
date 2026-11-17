@@ -23,6 +23,7 @@ async function resolverIncidente(entidadId: number) {
     select: {
       id: true,
       visibleVecinos: true,
+      descripcion: true,
       reportadoPor: {
         select: {
           nombre: true,
@@ -41,7 +42,11 @@ async function resolverIncidente(entidadId: number) {
   return {
     urlDestino: `/incidentes/${inc.id}`,
     construirMensaje: (link: string) =>
-      plantillaIncidente(inc.reportadoPor as AutorPlantilla, link),
+      plantillaIncidente(
+        inc.reportadoPor as AutorPlantilla,
+        inc.descripcion,
+        link,
+      ),
   };
 }
 

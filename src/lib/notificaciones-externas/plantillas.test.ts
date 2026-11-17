@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { plantillaAviso, type AutorPlantilla } from "./plantillas";
+import {
+  plantillaAviso,
+  plantillaIncidente,
+  type AutorPlantilla,
+} from "./plantillas";
 
 const autor: AutorPlantilla = {
   nombre: "Ana",
@@ -65,11 +69,44 @@ describe("plantillaAviso · mensaje completo", () => {
     );
   });
 
+  it("U-57 · un detalle de solo espacios y saltos es como no tener detalle, sin línea vacía", () => {
+    expect(plantillaAviso(autor, { ...aviso, detalle: "  \n " }, link)).toBe(
+      "💡 AVISO DEL BARRIO: CORTE DE LUZ\n\n📍 *calle K esq. 3*\n\nAvisó Ana P. · vence hoy a las 18:00\n\nSi ya se resolvió, avisá en Vecindar 👉 https://vecindar.test/avisos",
+    );
+  });
+
   it("U-52 · con detalle corto el mensaje completo es el de siempre", () => {
     expect(
       plantillaAviso(autor, { ...aviso, detalle: "Vuelve a la tarde" }, link),
     ).toBe(
       "💡 AVISO DEL BARRIO: CORTE DE LUZ\n\n📍 *calle K esq. 3*\nVuelve a la tarde\n\nAvisó Ana P. · vence hoy a las 18:00\n\nSi ya se resolvió, avisá en Vecindar 👉 https://vecindar.test/avisos",
+    );
+  });
+});
+
+describe("plantillaIncidente · adelanto de la descripción", () => {
+  const linkInc = "https://vecindar.test/incidentes";
+
+  it("U-54 · con 6 palabras el mensaje lleva 5 y … entre el autor y el link", () => {
+    expect(
+      plantillaIncidente(autor, "uno dos tres cuatro cinco seis", linkInc),
+    ).toBe(
+      "🚨 NUEVO INCIDENTE\n\nAna P. reportó un incidente de seguridad en el barrio.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/incidentes",
+    );
+  });
+
+  it("U-55 · con salto de línea, tab y espacio doble sale en una línea y sin …", () => {
+    const mensaje = plantillaIncidente(
+      autor,
+      "Ruidos\nfuertes en\t la esquina",
+      linkInc,
+    );
+    expect(mensaje.split("\n")[4]).toBe("Ruidos fuertes en la esquina");
+  });
+
+  it("U-56 · con descripción de solo espacios el mensaje es el de siempre", () => {
+    expect(plantillaIncidente(autor, "  \n ", linkInc)).toBe(
+      "🚨 NUEVO INCIDENTE\n\nAna P. reportó un incidente de seguridad en el barrio.\n\nVer detalle 👉 https://vecindar.test/incidentes",
     );
   });
 });

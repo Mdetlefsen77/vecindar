@@ -30,9 +30,19 @@ function nombrePublico(autor: AutorPlantilla): string {
 }
 
 /**
+ * Primeras 5 palabras de un texto libre, en una sola línea, con "…" solo si
+ * se cortó algo. Vacío si no hay palabras. Lo usan el aviso y el incidente.
+ */
+function adelanto(texto: string | null): string {
+  const palabras = texto?.split(/\s+/).filter(Boolean) ?? [];
+  return `${palabras.slice(0, 5).join(" ")}${palabras.length > 5 ? "…" : ""}`;
+}
+
+/**
  * Plantillas del mensaje "teaser" (spec funcional §4 y §7): tipo de evento,
  * autor, fecha implícita (se comparte al momento) y el link — nunca
- * descripción, ubicación exacta, fotos, ni datos de contacto.
+ * ubicación exacta, fotos, ni datos de contacto. De la descripción solo sale
+ * el adelanto de 5 palabras (incidente y aviso); pedidos y mascotas, nada.
  */
 /**
  * Oficio del catálogo. A diferencia del resto no es un teaser de un evento,
@@ -73,15 +83,19 @@ export function plantillaAviso(
   },
   link: string,
 ): string {
-  const palabras = aviso.detalle?.split(/\s+/).filter(Boolean) ?? [];
-  const detalle = aviso.detalle
-    ? `\n${palabras.slice(0, 5).join(" ")}${palabras.length > 5 ? "…" : ""}`
-    : "";
+  const resumen = adelanto(aviso.detalle);
+  const detalle = resumen ? `\n${resumen}` : "";
   return `${aviso.emoji} AVISO DEL BARRIO: ${aviso.tipo.toUpperCase()}\n\n📍 *${aviso.ubicacion}*${detalle}\n\nAvisó ${nombrePublico(autor)} · ${aviso.vencimiento.toLowerCase()}\n\nSi ya se resolvió, avisá en Vecindar 👉 ${link}`;
 }
 
-export function plantillaIncidente(autor: AutorPlantilla, link: string): string {
-  return `🚨 NUEVO INCIDENTE\n\n${nombrePublico(autor)} reportó un incidente de seguridad en el barrio.\n\nVer detalle 👉 ${link}`;
+export function plantillaIncidente(
+  autor: AutorPlantilla,
+  descripcion: string,
+  link: string,
+): string {
+  const resumen = adelanto(descripcion);
+  const parrafo = resumen ? `${resumen}\n\n` : "";
+  return `🚨 NUEVO INCIDENTE\n\n${nombrePublico(autor)} reportó un incidente de seguridad en el barrio.\n\n${parrafo}Ver detalle 👉 ${link}`;
 }
 
 export function plantillaRequerimiento(
