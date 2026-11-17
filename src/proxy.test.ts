@@ -87,6 +87,17 @@ describe("proxy", () => {
     }
   });
 
+  it("U-46 · /wrapped/2026 sin token no redirige a /login (es pública)", async () => {
+    getToken.mockResolvedValue(null);
+
+    const res = await proxy(
+      new NextRequest("http://localhost:3000/wrapped/2026"),
+    );
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("location")).toBeNull();
+  });
+
   it("U-21 · /login sin token pasa sin redirigir", async () => {
     getToken.mockResolvedValue(null);
 

@@ -85,4 +85,24 @@ describe("GET /wrapped/[anio]/imagen", () => {
     expect(res.status).toBe(200);
     expect(construirWrapped).toHaveBeenCalledWith(2027);
   });
+
+  it("I-122 un año mal escrito (2026abc, 02026) responde 404 sin llamar a construirWrapped", async () => {
+    vi.setSystemTime(new Date("2026-11-16T15:00:00Z"));
+
+    for (const anio of ["2026abc", "02026"]) {
+      const res = await llamar(anio);
+
+      expect(res.status, anio).toBe(404);
+    }
+    expect(construirWrapped).not.toHaveBeenCalled();
+  });
+
+  it("I-123 un año absurdo (99999999) responde 404 sin llamar a construirWrapped", async () => {
+    vi.setSystemTime(new Date("2026-11-16T15:00:00Z"));
+
+    const res = await llamar("99999999");
+
+    expect(res.status).toBe(404);
+    expect(construirWrapped).not.toHaveBeenCalled();
+  });
 });
