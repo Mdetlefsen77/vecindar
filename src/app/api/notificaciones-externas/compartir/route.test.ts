@@ -89,4 +89,33 @@ describe("POST /api/notificaciones-externas/compartir con un incidente", () => {
     expect(mensaje).toContain("Dos sujetos merodeando por la…");
     expect(mensaje).not.toContain("plaza");
   });
+
+  it("I-128 un incidente no visible para vecinos no se comparte", async () => {
+    vi.mocked(prisma.incidente.findUnique).mockResolvedValue({
+      id: 4,
+      visibleVecinos: false,
+      descripcion: "Robo en la casa del lote 9",
+      reportadoPor: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "INCIDENTE", entidadId: 4 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(404);
+    expect(await res.json()).toEqual({
+      error: "Este incidente no está visible para vecinos.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
+  });
 });
