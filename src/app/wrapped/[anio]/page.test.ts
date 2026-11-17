@@ -47,4 +47,14 @@ describe("página /wrapped/[anio]", () => {
     expect(html).toContain("2026 en tu barrio");
     expect(construirWrapped).toHaveBeenCalledWith(2026);
   });
+
+  it.each(["2025", "2027"])(
+    "I-121 /wrapped/%s con el reloj en 2026 da notFound sin llamar a construirWrapped",
+    async (anio) => {
+      vi.setSystemTime(new Date("2026-11-16T15:00:00Z"));
+
+      await expect(renderizar(anio)).rejects.toThrow("NEXT_NOT_FOUND");
+      expect(construirWrapped).not.toHaveBeenCalled();
+    },
+  );
 });
