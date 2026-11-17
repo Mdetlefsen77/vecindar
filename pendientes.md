@@ -54,7 +54,7 @@ Según lo que dejó cada módulo; verificar contra el código antes de armar la 
 | M-6 | C | Reportes | Fases siguientes de `docs/tasks-reportes.md` |
 | M-7 | C | Crecimiento | Email (en pausa por falta de dominio para Resend); incentivo por referido sin aprobar |
 | M-8 | B | Encuesta de experiencia (nuevo) | Encuesta dentro de la app para medir cómo les va a los vecinos con la app. Ver detalle abajo |
-| M-9 | B | Compartir con adelanto (nuevo) | Al compartir en WhatsApp, mostrar solo las primeras palabras del detalle + "…" para que entren a la app. Avisos, incidentes, pedidos y mascotas; partes no. Ver detalle abajo |
+| M-9 | B | Compartir con adelanto (nuevo) → **HU-10..12** | Al compartir en WhatsApp, mostrar solo las primeras palabras del detalle + "…" para que entren a la app. Avisos, incidentes, pedidos y mascotas; partes no. Ver detalle abajo |
 
 ### M-8 · Encuesta de experiencia en la app
 
