@@ -73,7 +73,10 @@ export function plantillaAviso(
   },
   link: string,
 ): string {
-  const detalle = aviso.detalle ? `\n${aviso.detalle}` : "";
+  const palabras = aviso.detalle?.split(/\s+/).filter(Boolean) ?? [];
+  const detalle = aviso.detalle
+    ? `\n${palabras.slice(0, 5).join(" ")}${palabras.length > 5 ? "…" : ""}`
+    : "";
   return `${aviso.emoji} AVISO DEL BARRIO: ${aviso.tipo.toUpperCase()}\n\n📍 *${aviso.ubicacion}*${detalle}\n\nAvisó ${nombrePublico(autor)} · ${aviso.vencimiento.toLowerCase()}\n\nSi ya se resolvió, avisá en Vecindar 👉 ${link}`;
 }
 
