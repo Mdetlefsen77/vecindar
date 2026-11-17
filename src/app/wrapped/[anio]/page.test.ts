@@ -57,4 +57,18 @@ describe("página /wrapped/[anio]", () => {
       expect(construirWrapped).not.toHaveBeenCalled();
     },
   );
+
+  it("I-124 el 31/12 23:30 ART con TZ=UTC, /wrapped/2027 da notFound sin llamar a construirWrapped", async () => {
+    const tzOriginal = process.env.TZ;
+    process.env.TZ = "UTC";
+    try {
+      vi.setSystemTime(new Date("2027-01-01T02:30:00Z")); // 2026-12-31 23:30 ART
+
+      await expect(renderizar("2027")).rejects.toThrow("NEXT_NOT_FOUND");
+      expect(construirWrapped).not.toHaveBeenCalled();
+    } finally {
+      if (tzOriginal === undefined) delete process.env.TZ;
+      else process.env.TZ = tzOriginal;
+    }
+  });
 });
