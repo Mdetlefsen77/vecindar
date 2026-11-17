@@ -60,4 +60,20 @@ describe("GET /wrapped/[anio]/imagen", () => {
     expect(res.status).toBe(404);
     expect(construirWrapped).not.toHaveBeenCalled();
   });
+
+  it("I-118 el 31/12 a las 23:30 ART un año futuro sigue en 404 aunque en UTC ya sea 1/1", async () => {
+    const tzOriginal = process.env.TZ;
+    process.env.TZ = "UTC";
+    try {
+      vi.setSystemTime(new Date("2027-01-01T02:30:00Z")); // 31/12/2026 23:30 ART
+
+      const res = await llamar("2027");
+
+      expect(res.status).toBe(404);
+      expect(construirWrapped).not.toHaveBeenCalled();
+    } finally {
+      if (tzOriginal === undefined) delete process.env.TZ;
+      else process.env.TZ = tzOriginal;
+    }
+  });
 });
