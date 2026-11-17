@@ -105,4 +105,13 @@ describe("GET /wrapped/[anio]/imagen", () => {
     expect(res.status).toBe(404);
     expect(construirWrapped).not.toHaveBeenCalled();
   });
+
+  it("I-125 un año no numérico (NaN) responde 404 sin llamar a construirWrapped", async () => {
+    vi.setSystemTime(new Date("2026-11-16T15:00:00Z"));
+
+    const res = await llamar("NaN");
+
+    expect(res.status).toBe(404);
+    expect(construirWrapped).not.toHaveBeenCalled();
+  });
 });
