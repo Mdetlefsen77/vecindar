@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { construirWrapped } from "@/lib/crecimiento/wrapped";
+import { anioWrapped, construirWrapped } from "@/lib/crecimiento/wrapped";
 import WrappedAcciones from "@/components/crecimiento/WrappedAcciones";
 
 type Params = { params: Promise<{ anio: string }> };
@@ -8,8 +8,8 @@ type Params = { params: Promise<{ anio: string }> };
 // compartir. Ver docs/proposal-crecimiento.md §1.
 export default async function WrappedPage({ params }: Params) {
   const { anio } = await params;
-  const anioNum = Number.parseInt(anio, 10);
-  if (!Number.isInteger(anioNum) || anio !== String(anioNum)) notFound();
+  const anioNum = anioWrapped(anio);
+  if (anioNum === null) notFound();
   const modelo = await construirWrapped(anioNum);
   const imagenUrl = `/wrapped/${anioNum}/imagen`;
 

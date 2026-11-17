@@ -16,6 +16,33 @@ const MINIMO_PARTES = 5;
  * por `ReporteModelo` cuando exista — es el único punto que debería cambiar.
  */
 
+// Vecindar arrancó en 2026: no hay Wrapped de años anteriores.
+export const PRIMER_ANIO_WRAPPED = 2026;
+
+/** Año actual en hora del barrio (no el del reloj UTC del servidor). */
+export function anioActualBarrio(): number {
+  return Number(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Argentina/Cordoba",
+      year: "numeric",
+    }).format(new Date()),
+  );
+}
+
+/** Año del segmento de la URL si es válido (entero limpio, de 2026 a hoy); si no, null. */
+export function anioWrapped(anio: string): number | null {
+  const anioNum = Number.parseInt(anio, 10);
+  if (
+    !Number.isInteger(anioNum) ||
+    anio !== String(anioNum) ||
+    anioNum < PRIMER_ANIO_WRAPPED ||
+    anioNum > anioActualBarrio()
+  ) {
+    return null;
+  }
+  return anioNum;
+}
+
 export interface WrappedModelo {
   anio: number;
   // Partes de turno de la guardia (src/lib/partes.ts). null = menos de
