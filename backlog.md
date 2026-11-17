@@ -1,6 +1,6 @@
 # Backlog · Vecindar
 
-HU-01..05: clima en el inicio. HU-06 en adelante: pendientes de `pendientes.md`, por tandas.
+HU-01..05: clima en el inicio. HU-06 en adelante: pendientes de `pendientes.md`, por tandas (tanda 1: HU-06..09; tanda 2: HU-10..12).
 
 ## Decisiones del MVP
 **Clima (HU-01..05)**
@@ -18,7 +18,12 @@ HU-01..05: clima en el inicio. HU-06 en adelante: pendientes de `pendientes.md`,
 - **Recordatorio de parte:** lo dispara GitHub Actions (Vercel Hobby solo admite crons diarios); el workflow ya está escrito en la rama `feat/oficios-seguridad`.
 - **Stack:** el de `## Proyecto` en `CLAUDE.md`.
 
-**Fuera de alcance:** otras ciudades o ubicación por GPS de cada vecino, historial del clima, radar o mapas meteorológicos, alertas oficiales del SMN, configuración de la tarjeta por vecino, guardar datos del clima en la base. De la tanda 1: cerrar sesiones activas a mano o listar dispositivos, acortar los 90 días de la sesión, poner login al Wrapped, mover el recordatorio de parte a otro scheduler.
+**Tanda 2 de pendientes (HU-10..12)** · M-9 de `pendientes.md`, propuesta del guardia (2026-11-16)
+- **Recurso:** el texto que se comparte por WhatsApp desde la app (`src/lib/notificaciones-externas/plantillas.ts`). No cambia la base ni la vista previa del link (Open Graph).
+- **Adelanto:** el detalle se corta en palabra entera y sigue con "…"; si el texto ya es corto, va completo y sin "…"; sin detalle, el mensaje queda como hoy. La misma regla para las cuatro plantillas. Cuántas palabras (el guardia propuso 2; se sugirió 4 o 5) se decide en `/story HU-10`.
+- **Orden:** HU-10 recorta el aviso, que ya comparte el detalle; HU-11 y HU-12 agregan el adelanto donde hoy no hay descripción. Eso cambia la regla actual de las plantillas ("nunca descripción", `docs/proposal-whatsapp-bridge.md`): sale texto escrito por un vecino fuera de la app.
+
+**Fuera de alcance:** otras ciudades o ubicación por GPS de cada vecino, historial del clima, radar o mapas meteorológicos, alertas oficiales del SMN, configuración de la tarjeta por vecino, guardar datos del clima en la base. De la tanda 1: cerrar sesiones activas a mano o listar dispositivos, acortar los 90 días de la sesión, poner login al Wrapped, mover el recordatorio de parte a otro scheduler. De la tanda 2: los partes de turno (`mensajeParte` sigue completo), la vista previa del link, los oficios, el número de palabras por tipo o configurable.
 
 ## ✅ HU-01 · Clima actual en el inicio
 Como **vecino** quiero **ver arriba del inicio la temperatura actual y si está soleado, nublado, lloviendo, etc.** para **saber cómo está el día sin salir de la app**.
@@ -81,6 +86,24 @@ Como **guardia** quiero **recibir el recordatorio si no cargué el parte de mi t
 Como **vecino** quiero **compartir el resumen anual del barrio** para **mostrar lo que hace la guardia**, sin que la página pública sirva para cargar la base pidiendo cualquier año.
 - `/wrapped/<año>` y `/wrapped/<año>/imagen` responden 200 para los años desde que existe Vecindar hasta el actual, y 404 para el resto (años anteriores, futuros o absurdos).
 - Siguen públicas y muestran solo números agregados del barrio.
+
+## HU-10 · El aviso compartido muestra solo un adelanto del detalle
+Como **vecino** quiero **que el aviso que comparto por WhatsApp muestre solo las primeras palabras del detalle** para **que los vecinos entren a la app a leerlo entero**.
+- El detalle del aviso sale cortado en las primeras N palabras, en palabra entera, seguido de "…".
+- Un detalle de N palabras o menos sale completo y sin "…"; un aviso sin detalle queda como hoy.
+- El resto del mensaje no cambia: tipo, 📍 lugar, autor, vencimiento y el link.
+
+## HU-11 · El incidente compartido lleva un adelanto de la descripción
+Como **vecino** quiero **que el incidente que comparto por WhatsApp diga en pocas palabras qué pasó** para **que el grupo sepa de qué se trata y entre a la app a ver el detalle**.
+- El mensaje del incidente agrega el adelanto de la descripción (la misma regla de HU-10) entre la línea del autor y el link.
+- Sin descripción, el mensaje queda como hoy.
+- No sale nada más del incidente: ni ubicación exacta, ni fotos, ni datos de contacto.
+
+## HU-12 · El pedido y la mascota compartidos llevan un adelanto
+Como **vecino** quiero **que el pedido y la mascota que comparto por WhatsApp muestren las primeras palabras de la descripción** para **que el grupo sepa de qué se trata y entre a la app**.
+- Los mensajes del pedido y de la mascota (perdida y encontrada) agregan el adelanto de la descripción, con la regla de HU-10, entre la línea del autor y el link.
+- Sin descripción, cada mensaje queda como hoy.
+- No sale nada más: ni ubicación exacta, ni fotos, ni datos de contacto.
 
 ## Notas
 - 2026-11-04 · (HU-05) En el plan Hobby de Vercel los crons son solo diarios: la push sale a una hora fija, así que una tormenta que se forma en el día puede no avisarse a tiempo. Hay que elegir la hora en `/story HU-05`.
