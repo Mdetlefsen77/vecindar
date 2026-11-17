@@ -44,6 +44,10 @@ describe("plantillaAviso · adelanto del detalle", () => {
   it("U-50 · un detalle corto con salto de línea sale en una sola línea, sin …", () => {
     expect(lineaDetalle("Corte de\nluz")).toBe("Corte de luz");
   });
+
+  it("U-53 · los espacios al principio y el salto al final no dejan huecos en la línea", () => {
+    expect(lineaDetalle("  Corte de luz\n")).toBe("Corte de luz");
+  });
 });
 
 describe("plantillaAviso · mensaje completo", () => {
