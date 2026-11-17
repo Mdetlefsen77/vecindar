@@ -77,7 +77,7 @@ Como **guardia** quiero **recibir el recordatorio si no cargué el parte de mi t
 - Si faltan el secret `CRON_SECRET` o la variable `SITE_URL` del repo, el workflow falla con un mensaje que lo dice.
 - Se puede correr a mano (`workflow_dispatch`) para probarlo.
 
-## HU-09 · El Wrapped responde solo para años con datos
+## ✅ HU-09 · El Wrapped responde solo para años con datos
 Como **vecino** quiero **compartir el resumen anual del barrio** para **mostrar lo que hace la guardia**, sin que la página pública sirva para cargar la base pidiendo cualquier año.
 - `/wrapped/<año>` y `/wrapped/<año>/imagen` responden 200 para los años desde que existe Vecindar hasta el actual, y 404 para el resto (años anteriores, futuros o absurdos).
 - Siguen públicas y muestran solo números agregados del barrio.
@@ -110,3 +110,4 @@ Como **vecino** quiero **compartir el resumen anual del barrio** para **mostrar 
 - 2026-11-16 · (HU-08, seguridad, hardening) Workflow `recordatorio-parte.yml`: no exige que `SITE_URL` sea `https://` (con `http://` el Bearer viaja en claro; se puede rechazar en la misma condición del `::error::`, pero rompe una prueba local contra `http://localhost`); el JSON del endpoint (turno, `destinatarios`) queda en el log de cada corrida, visible para cualquiera si el repo es público (`-o /dev/null` lo evita, a costa del diagnóstico); quien tiene escritura en el repo puede empujar un workflow modificado a otra rama y exfiltrar `CRON_SECRET` con `workflow_dispatch` (la defensa es un `environment` protegido en GitHub); `CRON_SECRET` es uno solo para todos los `/api/cron/*` (ver S-6 y S-7 de `pendientes.md`).
 - 2026-11-16 · (HU-08, seguridad, hardening) En `recordatorio-parte.yml`, `"$SITE_URL/api/cron/recordatorio-parte"` va a curl como argumento posicional: si `SITE_URL` empezara con `-`, curl lo tomaría como opción. Solo lo fija un administrador del repo; `--url "$SITE_URL/…"` lo cierra.
 - 2026-11-16 · (HU-09) El Wrapped de un año ya cerrado se recalcula en cada visita (12 consultas en `construirWrapped`). Con el rango acotado es 1 año por petición válida; si el tráfico lo pide, cachearlo (por ejemplo `revalidate` en las dos rutas para los años cerrados).
+- 2026-11-16 · (HU-09) `construirWrapped` (`src/lib/crecimiento/wrapped.ts`) no tiene tests contra la base: HU-09 la mockea y solo fija el rango de años. Las 12 consultas y las métricas que arma quedan sin cubrir.

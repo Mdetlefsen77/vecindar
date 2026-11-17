@@ -10,7 +10,7 @@ Prioridad: **A** riesgo real o algo roto · **B** mejora con valor claro · **C*
 
 | # | Prio | Qué | Estado | Dónde |
 |---|---|---|---|---|
-| S-1 | A | → **HU-09** (sigue pública, acotada a años con datos). `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)` y no llama a `auth()`. Falta ver qué datos muestra, si otra capa la protege y la ruta `imagen` | sin confirmar | `src/app/wrapped/[anio]/`, `src/proxy.ts` |
+| S-1 | A | → ✅ **HU-09** (sigue pública, acotada a años con datos: 404 fuera de 2026..año actual en ART, sin consultar la base). `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)` y no llama a `auth()`. Falta ver qué datos muestra, si otra capa la protege y la ruta `imagen` | sin confirmar | `src/app/wrapped/[anio]/`, `src/proxy.ts` |
 | S-2 | A | → ✅ **HU-06** (desaprobada, hecha 2026-11-11) y ✅ **HU-07** (cambio de rol, hecha 2026-11-16: el rol se lee de la base en cada `auth()`). Una cuenta desaprobada podría conservar el acceso hasta que venza el JWT (90 días): `verificado` solo se mira en `authorize` | sospecha | `src/lib/auth.ts:48,97`, `layout.tsx:44-47` |
 | S-3 | B | `router.push(callbackUrl \|\| "/inicio")` sin exigir mismo origen en login y registro (posible redirect abierto) | sospecha | `login/page.tsx:9,37`, `registro/page.tsx:62,150` |
 | S-4 | B | Con https, el proxy busca `authjs.session-token` y Auth.js emite `__Secure-authjs.session-token`: mandaría a `/login` a vecinos con sesión | confirmado en la librería, falta ver producción | `src/proxy.ts:25-30`, `src/lib/auth.ts` |
