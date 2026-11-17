@@ -16,6 +16,9 @@ const MINIMO_PARTES = 5;
  * por `ReporteModelo` cuando exista — es el único punto que debería cambiar.
  */
 
+// Vecindar arrancó en 2026: no hay Wrapped de años anteriores.
+export const PRIMER_ANIO_WRAPPED = 2026;
+
 export interface WrappedModelo {
   anio: number;
   // Partes de turno de la guardia (src/lib/partes.ts). null = menos de

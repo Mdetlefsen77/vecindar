@@ -42,4 +42,13 @@ describe("GET /wrapped/[anio]/imagen", () => {
     expect(res.headers.get("content-type")).toBe("image/png");
     expect(construirWrapped).toHaveBeenCalledWith(2026);
   });
+
+  it("I-116 con un año anterior a Vecindar responde 404 sin llamar a construirWrapped", async () => {
+    vi.setSystemTime(new Date("2026-11-16T15:00:00Z"));
+
+    const res = await llamar("2025");
+
+    expect(res.status).toBe(404);
+    expect(construirWrapped).not.toHaveBeenCalled();
+  });
 });

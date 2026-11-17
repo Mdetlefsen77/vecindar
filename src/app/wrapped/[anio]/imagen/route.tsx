@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { construirWrapped } from "@/lib/crecimiento/wrapped";
+import { construirWrapped, PRIMER_ANIO_WRAPPED } from "@/lib/crecimiento/wrapped";
 
 type Params = { params: Promise<{ anio: string }> };
 
@@ -8,7 +8,7 @@ type Params = { params: Promise<{ anio: string }> };
 export async function GET(_req: Request, { params }: Params) {
   const { anio } = await params;
   const anioNum = Number.parseInt(anio, 10);
-  if (!Number.isInteger(anioNum) || anio !== String(anioNum)) {
+  if (!Number.isInteger(anioNum) || anio !== String(anioNum) || anioNum < PRIMER_ANIO_WRAPPED) {
     return new Response("No encontrado", { status: 404 });
   }
   const modelo = await construirWrapped(anioNum);
