@@ -5,7 +5,10 @@ vi.mock("@/lib/api/guard", () => ({
   getUserId: vi.fn(() => 7),
 }));
 vi.mock("@/lib/prisma/client", () => ({
-  prisma: { aviso: { findFirst: vi.fn() } },
+  prisma: {
+    aviso: { findFirst: vi.fn() },
+    incidente: { findUnique: vi.fn() },
+  },
 }));
 vi.mock("@/lib/notificaciones-externas/compartir", () => ({
   compartirEvento: vi.fn(),
@@ -56,5 +59,34 @@ describe("POST /api/notificaciones-externas/compartir con un aviso", () => {
 
     expect(mensaje).toContain("Se cortó la luz en…");
     expect(mensaje).not.toContain("toda");
+  });
+});
+
+describe("POST /api/notificaciones-externas/compartir con un incidente", () => {
+  it("I-127 la descripción sale cortada a las 5 primeras palabras", async () => {
+    vi.mocked(prisma.incidente.findUnique).mockResolvedValue({
+      id: 3,
+      visibleVecinos: true,
+      descripcion: "Dos sujetos merodeando por la plaza del lote 12",
+      reportadoPor: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "INCIDENTE", entidadId: 3 }),
+        },
+      ),
+    );
+    const { mensaje } = await res.json();
+
+    expect(mensaje).toContain("Dos sujetos merodeando por la…");
+    expect(mensaje).not.toContain("plaza");
   });
 });
