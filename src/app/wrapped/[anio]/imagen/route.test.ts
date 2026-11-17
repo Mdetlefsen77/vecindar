@@ -76,4 +76,13 @@ describe("GET /wrapped/[anio]/imagen", () => {
       else process.env.TZ = tzOriginal;
     }
   });
+
+  it("I-119 el 1/1 a las 00:30 ART el año nuevo ya responde 200", async () => {
+    vi.setSystemTime(new Date("2027-01-01T03:30:00Z")); // 00:30 ART
+
+    const res = await llamar("2027");
+
+    expect(res.status).toBe(200);
+    expect(construirWrapped).toHaveBeenCalledWith(2027);
+  });
 });
