@@ -29,6 +29,20 @@ export function anioActualBarrio(): number {
   );
 }
 
+/** Año del segmento de la URL si es válido (entero limpio, de 2026 a hoy); si no, null. */
+export function anioWrapped(anio: string): number | null {
+  const anioNum = Number.parseInt(anio, 10);
+  if (
+    !Number.isInteger(anioNum) ||
+    anio !== String(anioNum) ||
+    anioNum < PRIMER_ANIO_WRAPPED ||
+    anioNum > anioActualBarrio()
+  ) {
+    return null;
+  }
+  return anioNum;
+}
+
 export interface WrappedModelo {
   anio: number;
   // Partes de turno de la guardia (src/lib/partes.ts). null = menos de

@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { anioActualBarrio, construirWrapped, PRIMER_ANIO_WRAPPED } from "@/lib/crecimiento/wrapped";
+import { anioWrapped, construirWrapped } from "@/lib/crecimiento/wrapped";
 
 type Params = { params: Promise<{ anio: string }> };
 
@@ -7,13 +7,8 @@ type Params = { params: Promise<{ anio: string }> };
 // Nivel DIFUSION siempre: mismo contenido para cualquiera que la pida, nada personalizado.
 export async function GET(_req: Request, { params }: Params) {
   const { anio } = await params;
-  const anioNum = Number.parseInt(anio, 10);
-  if (
-    !Number.isInteger(anioNum) ||
-    anio !== String(anioNum) ||
-    anioNum < PRIMER_ANIO_WRAPPED ||
-    anioNum > anioActualBarrio()
-  ) {
+  const anioNum = anioWrapped(anio);
+  if (anioNum === null) {
     return new Response("No encontrado", { status: 404 });
   }
   const modelo = await construirWrapped(anioNum);
