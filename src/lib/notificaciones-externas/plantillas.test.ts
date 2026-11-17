@@ -69,6 +69,12 @@ describe("plantillaAviso · mensaje completo", () => {
     );
   });
 
+  it("U-57 · un detalle de solo espacios y saltos es como no tener detalle, sin línea vacía", () => {
+    expect(plantillaAviso(autor, { ...aviso, detalle: "  \n " }, link)).toBe(
+      "💡 AVISO DEL BARRIO: CORTE DE LUZ\n\n📍 *calle K esq. 3*\n\nAvisó Ana P. · vence hoy a las 18:00\n\nSi ya se resolvió, avisá en Vecindar 👉 https://vecindar.test/avisos",
+    );
+  });
+
   it("U-52 · con detalle corto el mensaje completo es el de siempre", () => {
     expect(
       plantillaAviso(autor, { ...aviso, detalle: "Vuelve a la tarde" }, link),
