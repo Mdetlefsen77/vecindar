@@ -19,6 +19,16 @@ const MINIMO_PARTES = 5;
 // Vecindar arrancó en 2026: no hay Wrapped de años anteriores.
 export const PRIMER_ANIO_WRAPPED = 2026;
 
+/** Año actual en hora del barrio (no el del reloj UTC del servidor). */
+export function anioActualBarrio(): number {
+  return Number(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone: "America/Argentina/Cordoba",
+      year: "numeric",
+    }).format(new Date()),
+  );
+}
+
 export interface WrappedModelo {
   anio: number;
   // Partes de turno de la guardia (src/lib/partes.ts). null = menos de
