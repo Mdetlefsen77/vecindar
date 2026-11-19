@@ -145,4 +145,14 @@ describe("plantillaMascota · adelanto de la descripción", () => {
       "🐕 MASCOTA PERDIDA\n\nAna P. publicó la búsqueda de una mascota.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/mascotas",
     );
   });
+
+  it("U-60 · encontrada con 5 palabras normaliza espacios y no lleva …", () => {
+    const msg = plantillaMascota(
+      autor,
+      "ENCONTRADA",
+      "Gato\nblanco en\t la vereda",
+      linkMasc,
+    );
+    expect(msg.split("\n\n")[2]).toBe("Gato blanco en la vereda");
+  });
 });
