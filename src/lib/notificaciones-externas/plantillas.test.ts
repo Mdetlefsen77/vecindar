@@ -134,6 +134,16 @@ describe("plantillaRequerimiento · adelanto de la descripción", () => {
       "📋 NUEVO PEDIDO\n\nAna P. cargó un pedido de Iluminación.\n\nVer detalle 👉 https://vecindar.test/requerimientos",
     );
   });
+
+  it('U-63 · con categoría OTRO la línea del autor no lleva " de …"', () => {
+    const msg = plantillaRequerimiento(
+      autor,
+      "OTRO",
+      "arreglar el cerco",
+      linkReq,
+    );
+    expect(msg.split("\n\n")[1]).toBe("Ana P. cargó un pedido.");
+  });
 });
 
 describe("plantillaMascota · adelanto de la descripción", () => {
@@ -160,6 +170,14 @@ describe("plantillaMascota · adelanto de la descripción", () => {
       linkMasc,
     );
     expect(msg.split("\n\n")[2]).toBe("Gato blanco en la vereda");
+  });
+
+  it("U-64 · encontrada lleva su encabezado y su línea del autor", () => {
+    expect(
+      plantillaMascota(autor, "ENCONTRADA", "gato blanco", linkMasc),
+    ).toMatch(
+      /^🐾 MASCOTA ENCONTRADA\n\nAna P\. avisó que encontró una mascota\.\n\n/,
+    );
   });
 
   it.each(["", "  \n "])(
