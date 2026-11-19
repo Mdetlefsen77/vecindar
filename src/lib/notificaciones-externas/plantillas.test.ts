@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   plantillaAviso,
   plantillaIncidente,
+  plantillaMascota,
   plantillaRequerimiento,
   type AutorPlantilla,
 } from "./plantillas";
@@ -125,6 +126,23 @@ describe("plantillaRequerimiento · adelanto de la descripción", () => {
       ),
     ).toBe(
       "📋 NUEVO PEDIDO\n\nAna P. cargó un pedido de Iluminación.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/requerimientos",
+    );
+  });
+});
+
+describe("plantillaMascota · adelanto de la descripción", () => {
+  const linkMasc = "https://vecindar.test/mascotas";
+
+  it("U-59 · perdida con 6 palabras lleva 5 y … entre el autor y el link", () => {
+    expect(
+      plantillaMascota(
+        autor,
+        "PERDIDA",
+        "uno dos tres cuatro cinco seis",
+        linkMasc,
+      ),
+    ).toBe(
+      "🐕 MASCOTA PERDIDA\n\nAna P. publicó la búsqueda de una mascota.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/mascotas",
     );
   });
 });
