@@ -85,6 +85,7 @@ async function resolverMascota(entidadId: number) {
     select: {
       id: true,
       tipo: true,
+      descripcion: true,
       usuario: {
         select: {
           nombre: true,
@@ -98,7 +99,12 @@ async function resolverMascota(entidadId: number) {
   return {
     urlDestino: `/mascotas/${m.id}`,
     construirMensaje: (link: string) =>
-      plantillaMascota(m.usuario as AutorPlantilla, m.tipo, link),
+      plantillaMascota(
+        m.usuario as AutorPlantilla,
+        m.tipo,
+        m.descripcion,
+        link,
+      ),
   };
 }
 

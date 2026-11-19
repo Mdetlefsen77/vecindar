@@ -152,3 +152,40 @@ describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
     expect(mensaje).not.toContain("Reclamo urgente");
   });
 });
+
+describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
+  it("I-130 la descripción sale cortada a las 5 primeras palabras y nada más de la mascota", async () => {
+    vi.mocked(prisma.mascotaPerdida.findUnique).mockResolvedValue({
+      id: 9,
+      tipo: "PERDIDA",
+      nombre: "Toby",
+      zona: "Plaza central",
+      contacto: "351 555 1234",
+      foto: "https://fotos.test/toby.jpg",
+      descripcion: "Perro marrón con collar rojo, muy asustado",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "MASCOTA", entidadId: 9 }),
+        },
+      ),
+    );
+    const { mensaje } = await res.json();
+
+    expect(mensaje).toContain("Perro marrón con collar rojo,…");
+    expect(mensaje).not.toContain("asustado");
+    expect(mensaje).not.toContain("Toby");
+    expect(mensaje).not.toContain("Plaza central");
+    expect(mensaje).not.toContain("351 555 1234");
+    expect(mensaje).not.toContain("fotos.test");
+  });
+});
