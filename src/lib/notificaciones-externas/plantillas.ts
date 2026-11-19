@@ -101,10 +101,13 @@ export function plantillaIncidente(
 export function plantillaRequerimiento(
   autor: AutorPlantilla,
   categoria: CategoriaReq,
+  descripcion: string,
   link: string,
 ): string {
   const de = categoria === "OTRO" ? "" : ` de ${CATEGORIA_REQ_LABEL[categoria]}`;
-  return `📋 NUEVO PEDIDO\n\n${nombrePublico(autor)} cargó un pedido${de}.\n\nVer detalle 👉 ${link}`;
+  const resumen = adelanto(descripcion);
+  const parrafo = resumen ? `${resumen}\n\n` : "";
+  return `📋 NUEVO PEDIDO\n\n${nombrePublico(autor)} cargó un pedido${de}.\n\n${parrafo}Ver detalle 👉 ${link}`;
 }
 
 export function plantillaMascota(
