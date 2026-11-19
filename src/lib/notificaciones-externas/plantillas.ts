@@ -31,7 +31,7 @@ function nombrePublico(autor: AutorPlantilla): string {
 
 /**
  * Primeras 5 palabras de un texto libre, en una sola línea, con "…" solo si
- * se cortó algo. Vacío si no hay palabras. Lo usan el aviso y el incidente.
+ * se cortó algo. Vacío si no hay palabras. Lo usan el aviso, el incidente, el pedido y la mascota.
  */
 function adelanto(texto: string | null): string {
   const palabras = texto?.split(/\s+/).filter(Boolean) ?? [];
