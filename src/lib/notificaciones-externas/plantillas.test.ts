@@ -161,4 +161,13 @@ describe("plantillaMascota · adelanto de la descripción", () => {
     );
     expect(msg.split("\n\n")[2]).toBe("Gato blanco en la vereda");
   });
+
+  it.each(["", "  \n "])(
+    "U-62 · con la descripción %j el mensaje es el de siempre, sin párrafo",
+    (descripcion) => {
+      expect(plantillaMascota(autor, "PERDIDA", descripcion, linkMasc)).toBe(
+        "🐕 MASCOTA PERDIDA\n\nAna P. publicó la búsqueda de una mascota.\n\nVer detalle 👉 https://vecindar.test/mascotas",
+      );
+    },
+  );
 });
