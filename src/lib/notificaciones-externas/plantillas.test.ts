@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   plantillaAviso,
   plantillaIncidente,
+  plantillaRequerimiento,
   type AutorPlantilla,
 } from "./plantillas";
 
@@ -107,6 +108,23 @@ describe("plantillaIncidente · adelanto de la descripción", () => {
   it("U-56 · con descripción de solo espacios el mensaje es el de siempre", () => {
     expect(plantillaIncidente(autor, "  \n ", linkInc)).toBe(
       "🚨 NUEVO INCIDENTE\n\nAna P. reportó un incidente de seguridad en el barrio.\n\nVer detalle 👉 https://vecindar.test/incidentes",
+    );
+  });
+});
+
+describe("plantillaRequerimiento · adelanto de la descripción", () => {
+  const linkReq = "https://vecindar.test/requerimientos";
+
+  it("U-58 · con 6 palabras el mensaje lleva 5 y … entre el autor y el link", () => {
+    expect(
+      plantillaRequerimiento(
+        autor,
+        "ILUMINACION",
+        "uno dos tres cuatro cinco seis",
+        linkReq,
+      ),
+    ).toBe(
+      "📋 NUEVO PEDIDO\n\nAna P. cargó un pedido de Iluminación.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/requerimientos",
     );
   });
 });
