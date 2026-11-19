@@ -128,6 +128,12 @@ describe("plantillaRequerimiento · adelanto de la descripción", () => {
       "📋 NUEVO PEDIDO\n\nAna P. cargó un pedido de Iluminación.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/requerimientos",
     );
   });
+
+  it("U-61 · con una descripción de solo espacios y saltos no deja línea vacía", () => {
+    expect(plantillaRequerimiento(autor, "ILUMINACION", "  \n ", linkReq)).toBe(
+      "📋 NUEVO PEDIDO\n\nAna P. cargó un pedido de Iluminación.\n\nVer detalle 👉 https://vecindar.test/requerimientos",
+    );
+  });
 });
 
 describe("plantillaMascota · adelanto de la descripción", () => {
