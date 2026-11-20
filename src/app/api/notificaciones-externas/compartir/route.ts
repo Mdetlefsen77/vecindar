@@ -63,6 +63,7 @@ async function resolverRequerimiento(entidadId: number) {
     select: {
       id: true,
       categoria: true,
+      estado: true,
       descripcion: true,
       usuario: {
         select: {
@@ -74,6 +75,12 @@ async function resolverRequerimiento(entidadId: number) {
     },
   });
   if (!req) return { error: "No encontrado." as const };
+  if (req.estado === "RESUELTO") {
+    return {
+      error: "Este pedido ya está cerrado y no se comparte." as const,
+      status: 409,
+    };
+  }
   return {
     urlDestino: `/requerimientos/${req.id}`,
     construirMensaje: (link: string) =>
