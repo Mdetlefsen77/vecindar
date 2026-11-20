@@ -130,13 +130,13 @@ Como **vecino** quiero **que al iniciar sesión o registrarme desde un link me l
 - Lo mismo para el link entre login y registro (`/registro?callbackUrl=…` y `/login?callbackUrl=…`): un `callbackUrl` externo no se pasa de una pantalla a la otra.
 - _A refinar:_ (S-3 de `pendientes.md`) `router.push(callbackUrl || "/inicio")` en `src/app/(auth)/login/page.tsx:37` y el `callbackUrl` de `src/app/(auth)/registro/page.tsx:62,150`. Revisar también el destino que el registro deja asociado a la cuenta pendiente de aprobación. → Resuelto en `stories/HU-14.md`: el registro no guarda destino (solo lo pasa a `/login`); se valida en el login y en los dos links, por mismo origen.
 
-## HU-15 · Lo que ya se cerró no se comparte
+## ✅ HU-15 · Lo que ya se cerró no se comparte
 Como **vecino** quiero **que un incidente, pedido o mascota ya cerrados no se puedan compartir por WhatsApp** para **que el grupo no reciba como novedad algo que ya pasó, ni una falsa alarma que nombra a alguien**.
 - `POST /api/notificaciones-externas/compartir` con un incidente `RESUELTO` o `FALSA_ALARMA`, un pedido `RESUELTO` o `CERRADO` o una mascota resuelta (`estado: false`) → `409` con un mensaje claro, sin generar publicación ni mensaje.
 - Con un incidente `ACTIVO`, un pedido `NUEVO` o `EN_PROGRESO` y una mascota abierta, compartir funciona como hoy.
 - En el detalle de un evento cerrado, la app no muestra el botón de compartir.
-- _Pendiente de HU-11:_ `resolverIncidente` (`src/app/api/notificaciones-externas/compartir/route.ts:21-41`) no mira `estado`; desde HU-11 eso incluye el adelanto de la descripción.
-- _Pendiente de HU-12:_ `resolverRequerimiento` y `resolverMascota` (`route.ts:53-108`) tampoco miran el estado; desde HU-12 también comparten el adelanto.
+- ✅ _Pendiente de HU-11 (cubierto por HU-15):_ `resolverIncidente` (`src/app/api/notificaciones-externas/compartir/route.ts:21-41`) no mira `estado`; desde HU-11 eso incluye el adelanto de la descripción.
+- ✅ _Pendiente de HU-12 (cubierto por HU-15):_ `resolverRequerimiento` y `resolverMascota` (`route.ts:53-108`) tampoco miran el estado; desde HU-12 también comparten el adelanto.
 
 ## HU-16 · El vecino responde la encuesta de experiencia
 Como **vecino** quiero **contestar en pocos toques cómo me va con la app** para **que los que la hacen sepan qué mejorar**.
@@ -202,3 +202,4 @@ Como **admin** quiero **ver los resultados de cada ronda de la encuesta** para *
 - 2026-11-20 · (HU-13, seguridad) `/mi-suscripcion` y `/reportes` (`src/app/(dashboard)/`) no están en `RUTAS_PROTEGIDAS` ni en `config.matcher` de `src/proxy.ts`: solo los protege el `auth()` del layout, sin la primera barrera del proxy (viene de antes de HU-13). Las rutas fuera del dashboard (`wrapped`, `i`, `r`, `prueba-finalizada`, `cuenta-no-aprobada`) no se revisaron. Decidir si se agregan al proxy.
 - 2026-11-20 · (HU-14) `src/app/(auth)/login/page.tsx` no pasa `npx prettier --check` desde antes de HU-14 (ya fallaba en `main`): formatearlo aparte, sin mezclarlo con un cambio de comportamiento.
 - 2026-11-20 · (HU-14, seguridad, hardening) `destinoSeguro` (`src/lib/destino-login.ts`) acepta cualquier ruta del mismo origen después del login, incluidas `/api/…`. Hoy ninguna ruta del sitio redirige afuera con datos que controle quien arma el link (revisados `src/app/r/[codigo]/ir/route.ts`, `src/app/i/[codigo]/route.ts`, `src/proxy.ts` y el `redirect` por defecto de Auth.js), así que no hay camino. Si se agrega una ruta que redirija a un destino externo, quedaría encadenable desde `/login?callbackUrl=…`: en ese caso, limitar `destinoSeguro` a rutas de páginas o validar el destino en esa ruta.
+- 2026-11-20 · (HU-15) `src/app/api/notificaciones-externas/compartir/route.ts` no pasa `npx prettier --check` desde antes de HU-15 (el `mensajeParte(...)` de `resolverParteTurno` y el `select` de `promo` en `resolverOficio`): formatearlo aparte, junto con `login/page.tsx`.

@@ -45,7 +45,9 @@ export default async function DetalleMascotaPage({ params }: Params) {
   const esDuenio = getUserId(session) === mascota.usuario.id;
   const puedeGestionar = esGestor(session.user.role, GESTORES_MASCOTAS);
 
-  const puedeCompartir = esGestor(session.user.role, COMPARTIDORES_EXTERNOS);
+  const abierto = mascota.estado;
+  const puedeCompartir =
+    esGestor(session.user.role, COMPARTIDORES_EXTERNOS) && abierto;
 
   const yaCompartido = puedeCompartir
     ? await obtenerCompartido("WHATSAPP", "MASCOTA", mascota.id)

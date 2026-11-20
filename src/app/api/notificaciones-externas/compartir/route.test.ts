@@ -69,6 +69,7 @@ describe("POST /api/notificaciones-externas/compartir con un incidente", () => {
     vi.mocked(prisma.incidente.findUnique).mockResolvedValue({
       id: 3,
       visibleVecinos: true,
+      estado: "ACTIVO",
       descripcion: "Dos sujetos merodeando por la plaza del lote 12",
       reportadoPor: {
         nombre: "Ana",
@@ -120,6 +121,66 @@ describe("POST /api/notificaciones-externas/compartir con un incidente", () => {
     });
     expect(compartirEvento).not.toHaveBeenCalled();
   });
+
+  it("I-136 un incidente RESUELTO no se comparte: 409 y no se registra la publicación", async () => {
+    vi.mocked(prisma.incidente.findUnique).mockResolvedValue({
+      id: 5,
+      visibleVecinos: true,
+      estado: "RESUELTO",
+      descripcion: "Dos sujetos merodeando por la plaza del lote 12",
+      reportadoPor: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "INCIDENTE", entidadId: 5 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Este incidente ya está cerrado y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
+  });
+
+  it("I-137 un incidente FALSA_ALARMA no se comparte: 409", async () => {
+    vi.mocked(prisma.incidente.findUnique).mockResolvedValue({
+      id: 5,
+      visibleVecinos: true,
+      estado: "FALSA_ALARMA",
+      descripcion: "Dos sujetos merodeando por la plaza del lote 12",
+      reportadoPor: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "INCIDENTE", entidadId: 5 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Este incidente ya está cerrado y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
+  });
 });
 
 describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
@@ -128,6 +189,7 @@ describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
       id: 4,
       categoria: "ILUMINACION",
       titulo: "Reclamo urgente",
+      estado: "NUEVO",
       descripcion: "Hay un poste de luz caído sobre la calle 5",
       usuario: {
         nombre: "Ana",
@@ -151,6 +213,94 @@ describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
     expect(mensaje).not.toContain("caído");
     expect(mensaje).not.toContain("Reclamo urgente");
   });
+
+  it("I-138 un pedido RESUELTO no se comparte: 409 y no se registra la publicación", async () => {
+    vi.mocked(prisma.requerimiento.findUnique).mockResolvedValue({
+      id: 4,
+      categoria: "ILUMINACION",
+      estado: "RESUELTO",
+      descripcion: "Hay un poste de luz caído sobre la calle 5",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "REQUERIMIENTO", entidadId: 4 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Este pedido ya está cerrado y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
+  });
+
+  it("I-139 un pedido CERRADO no se comparte: 409 y no se registra la publicación", async () => {
+    vi.mocked(prisma.requerimiento.findUnique).mockResolvedValue({
+      id: 4,
+      categoria: "ILUMINACION",
+      estado: "CERRADO",
+      descripcion: "Hay un poste de luz caído sobre la calle 5",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "REQUERIMIENTO", entidadId: 4 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Este pedido ya está cerrado y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
+  });
+
+  it("I-142 un pedido EN_PROGRESO se comparte: 200 con el mensaje", async () => {
+    vi.mocked(prisma.requerimiento.findUnique).mockResolvedValue({
+      id: 4,
+      categoria: "ILUMINACION",
+      estado: "EN_PROGRESO",
+      descripcion: "Hay un poste de luz caído sobre la calle 5",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "REQUERIMIENTO", entidadId: 4 }),
+        },
+      ),
+    );
+    const { mensaje } = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(mensaje).toContain("Hay un poste de luz…");
+  });
 });
 
 describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
@@ -158,6 +308,7 @@ describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
     vi.mocked(prisma.mascotaPerdida.findUnique).mockResolvedValue({
       id: 9,
       tipo: "PERDIDA",
+      estado: true,
       nombre: "Toby",
       zona: "Plaza central",
       contacto: "351 555 1234",
@@ -187,5 +338,35 @@ describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
     expect(mensaje).not.toContain("Plaza central");
     expect(mensaje).not.toContain("351 555 1234");
     expect(mensaje).not.toContain("fotos.test");
+  });
+
+  it("I-140 una mascota resuelta no se comparte (409)", async () => {
+    vi.mocked(prisma.mascotaPerdida.findUnique).mockResolvedValue({
+      id: 9,
+      tipo: "PERDIDA",
+      estado: false,
+      descripcion: "Perro marrón con collar rojo",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "MASCOTA", entidadId: 9 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Esta mascota ya está resuelta y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
   });
 });

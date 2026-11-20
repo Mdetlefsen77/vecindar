@@ -67,8 +67,11 @@ export default async function DetalleIncidentePage({ params }: Params) {
   const puedeGestionar =
     session.user.role === "ADMIN" || session.user.role === "SEGURIDAD";
 
+  const abierto = inc.estado !== "RESUELTO" && inc.estado !== "FALSA_ALARMA";
   const puedeCompartir =
-    esGestor(session.user.role, COMPARTIDORES_EXTERNOS) && inc.visibleVecinos;
+    esGestor(session.user.role, COMPARTIDORES_EXTERNOS) &&
+    inc.visibleVecinos &&
+    abierto;
 
   const yaCompartido = puedeCompartir
     ? await obtenerCompartido("WHATSAPP", "INCIDENTE", inc.id)

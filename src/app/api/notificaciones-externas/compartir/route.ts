@@ -23,6 +23,7 @@ async function resolverIncidente(entidadId: number) {
     select: {
       id: true,
       visibleVecinos: true,
+      estado: true,
       descripcion: true,
       reportadoPor: {
         select: {
@@ -38,6 +39,12 @@ async function resolverIncidente(entidadId: number) {
   // notificaciones-externas/spec.md.
   if (!inc.visibleVecinos) {
     return { error: "Este incidente no está visible para vecinos." as const };
+  }
+  if (inc.estado === "RESUELTO" || inc.estado === "FALSA_ALARMA") {
+    return {
+      error: "Este incidente ya está cerrado y no se comparte." as const,
+      status: 409,
+    };
   }
   return {
     urlDestino: `/incidentes/${inc.id}`,
@@ -56,6 +63,7 @@ async function resolverRequerimiento(entidadId: number) {
     select: {
       id: true,
       categoria: true,
+      estado: true,
       descripcion: true,
       usuario: {
         select: {
@@ -67,6 +75,12 @@ async function resolverRequerimiento(entidadId: number) {
     },
   });
   if (!req) return { error: "No encontrado." as const };
+  if (req.estado === "RESUELTO" || req.estado === "CERRADO") {
+    return {
+      error: "Este pedido ya está cerrado y no se comparte." as const,
+      status: 409,
+    };
+  }
   return {
     urlDestino: `/requerimientos/${req.id}`,
     construirMensaje: (link: string) =>
@@ -85,6 +99,7 @@ async function resolverMascota(entidadId: number) {
     select: {
       id: true,
       tipo: true,
+      estado: true,
       descripcion: true,
       usuario: {
         select: {
@@ -96,6 +111,12 @@ async function resolverMascota(entidadId: number) {
     },
   });
   if (!m) return { error: "No encontrado." as const };
+  if (!m.estado) {
+    return {
+      error: "Esta mascota ya está resuelta y no se comparte." as const,
+      status: 409,
+    };
+  }
   return {
     urlDestino: `/mascotas/${m.id}`,
     construirMensaje: (link: string) =>
@@ -248,7 +269,10 @@ export async function POST(req: NextRequest) {
 
   const resuelto = await RESOLVERS[tipoEvento](entidadId);
   if ("error" in resuelto) {
-    return NextResponse.json({ error: resuelto.error }, { status: 404 });
+    return NextResponse.json(
+      { error: resuelto.error },
+      { status: "status" in resuelto ? resuelto.status : 404 },
+    );
   }
 
   const resultado = await compartirEvento({
