@@ -34,9 +34,8 @@ function LoginForm() {
       } else if (result?.error) {
         setError("Email o contraseña incorrectos");
       } else {
-        // Preserva el destino original si se llegó desde un link externo
-        // (ver src/proxy.ts, que ya setea callbackUrl) — antes se ignoraba
-        // y siempre mandaba a /inicio.
+        // Va al destino del callbackUrl (ver src/proxy.ts, que lo setea) solo
+        // si queda en el sitio (destinoSeguro); si no, a /inicio.
         router.push(destinoSeguro(callbackUrl, window.location.origin));
         router.refresh();
       }
