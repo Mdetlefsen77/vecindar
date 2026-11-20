@@ -1,8 +1,9 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { destinoSeguro, hrefConDestino } from "@/lib/destino-login";
 
 function LoginForm() {
   const router = useRouter();
@@ -11,6 +12,8 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [origen, setOrigen] = useState("");
+  useEffect(() => setOrigen(window.location.origin), []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,10 +34,9 @@ function LoginForm() {
       } else if (result?.error) {
         setError("Email o contraseña incorrectos");
       } else {
-        // Preserva el destino original si se llegó desde un link externo
-        // (ver src/proxy.ts, que ya setea callbackUrl) — antes se ignoraba
-        // y siempre mandaba a /inicio.
-        router.push(callbackUrl || "/inicio");
+        // Va al destino del callbackUrl (ver src/proxy.ts, que lo setea) solo
+        // si queda en el sitio (destinoSeguro); si no, a /inicio.
+        router.push(destinoSeguro(callbackUrl, window.location.origin));
         router.refresh();
       }
     } catch {
@@ -44,9 +46,7 @@ function LoginForm() {
     }
   };
 
-  const hrefRegistro = callbackUrl
-    ? `/registro?callbackUrl=${encodeURIComponent(callbackUrl)}`
-    : "/registro";
+  const hrefRegistro = hrefConDestino("/registro", callbackUrl, origen);
 
   return (
     <div className="min-h-dvh flex items-center justify-center bg-brand-surface px-4 py-12">

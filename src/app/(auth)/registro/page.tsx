@@ -10,6 +10,7 @@ import {
   DialogTitle,
   Description,
 } from "@headlessui/react";
+import { hrefConDestino } from "@/lib/destino-login";
 import { AVISO_SUSCRIPCION } from "@/lib/prueba";
 import { formatoPesos } from "@/lib/cobranza";
 import {
@@ -81,6 +82,8 @@ function RegistroForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [origen, setOrigen] = useState("");
+  useEffect(() => setOrigen(window.location.origin), []);
 
   // Cargar lotes disponibles
   useEffect(() => {
@@ -146,9 +149,7 @@ function RegistroForm() {
     }
   };
 
-  const hrefLogin = callbackUrl
-    ? `/login?callbackUrl=${encodeURIComponent(callbackUrl)}`
-    : "/login";
+  const hrefLogin = hrefConDestino("/login", callbackUrl, origen);
 
   return (
     <>
