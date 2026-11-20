@@ -31,4 +31,8 @@ describe("destinoSeguro", () => {
       "/%2F%2Fotro.sitio",
     );
   });
+
+  it("U-81 · /.//otro.sitio (ruta resultante //otro.sitio) va a /inicio", () => {
+    expect(destinoSeguro("/.//otro.sitio", ORIGEN)).toBe("/inicio");
+  });
 });

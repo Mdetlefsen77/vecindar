@@ -8,6 +8,7 @@ export function destinoSeguro(
   try {
     const url = new URL(callbackUrl, origen);
     if (url.origin !== origen) return POR_DEFECTO;
+    if (url.pathname.startsWith("//")) return POR_DEFECTO;
     return url.pathname + url.search + url.hash;
   } catch {
     return POR_DEFECTO;
