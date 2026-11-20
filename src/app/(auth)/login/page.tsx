@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { destinoSeguro } from "@/lib/destino-login";
@@ -12,6 +12,8 @@ function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [origen, setOrigen] = useState("");
+  useEffect(() => setOrigen(window.location.origin), []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +47,11 @@ function LoginForm() {
     }
   };
 
-  const hrefRegistro = callbackUrl
-    ? `/registro?callbackUrl=${encodeURIComponent(callbackUrl)}`
-    : "/registro";
+  const destino = origen ? destinoSeguro(callbackUrl, origen) : "/inicio";
+  const hrefRegistro =
+    destino !== "/inicio"
+      ? `/registro?callbackUrl=${encodeURIComponent(destino)}`
+      : "/registro";
 
   return (
     <div className="min-h-dvh flex items-center justify-center bg-brand-surface px-4 py-12">

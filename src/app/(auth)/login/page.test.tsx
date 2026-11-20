@@ -38,4 +38,21 @@ describe("login · destino tras iniciar sesión", () => {
     await enviar("callbackUrl=" + encodeURIComponent("https://otro.sitio"));
     expect(push).toHaveBeenCalledWith("/inicio");
   });
+
+  it("I-133 · el link de registro no lleva un callbackUrl externo y sí uno interno", async () => {
+    query = "callbackUrl=" + encodeURIComponent("https://otro.sitio");
+    render(<LoginPage />);
+    expect(screen.getByText("Registrate aquí").getAttribute("href")).toBe(
+      "/registro",
+    );
+    cleanup();
+
+    query = "callbackUrl=" + encodeURIComponent("/incidentes/12");
+    render(<LoginPage />);
+    await vi.waitFor(() =>
+      expect(screen.getByText("Registrate aquí").getAttribute("href")).toBe(
+        "/registro?callbackUrl=%2Fincidentes%2F12",
+      ),
+    );
+  });
 });
