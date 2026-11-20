@@ -76,7 +76,9 @@ export default async function DetalleRequerimientoPage({ params }: Params) {
     session.user.role,
   );
 
-  const puedeCompartir = esGestor(session.user.role, COMPARTIDORES_EXTERNOS);
+  const abierto = r.estado !== "RESUELTO" && r.estado !== "CERRADO";
+  const puedeCompartir =
+    abierto && esGestor(session.user.role, COMPARTIDORES_EXTERNOS);
 
   const yaCompartido = puedeCompartir
     ? await obtenerCompartido("WHATSAPP", "REQUERIMIENTO", r.id)
