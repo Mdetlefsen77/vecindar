@@ -25,4 +25,5 @@
   - config: `process.env.*` directo, sin `.env.example`
   - logs: `console.error`/`console.warn`, sin logger
   - tests de páginas y layouts: el mock de `redirect` lanza como el de Next (`vi.fn(() => { throw new Error("NEXT_REDIRECT") })`), si no el código sigue de largo y el test no protege el corte (HU-06)
+  - tests del proxy: `src/proxy.test.ts` mockea `next-auth/jwt` para todo el archivo; lo que dependa de la cookie de sesión real (nombre, sal, `secureCookie`) va en `src/proxy.sesion.test.ts`, con el `getToken` real y un token de `encode` (HU-13)
   - UI: público mayor, con botones y textos grandes, un color por sección (`src/lib/secciones.ts`) y rojo solo para emergencias
