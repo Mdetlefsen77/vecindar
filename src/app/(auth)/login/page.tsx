@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { destinoSeguro } from "@/lib/destino-login";
 
 function LoginForm() {
   const router = useRouter();
@@ -34,7 +35,7 @@ function LoginForm() {
         // Preserva el destino original si se llegó desde un link externo
         // (ver src/proxy.ts, que ya setea callbackUrl) — antes se ignoraba
         // y siempre mandaba a /inicio.
-        router.push(callbackUrl || "/inicio");
+        router.push(destinoSeguro(callbackUrl, window.location.origin));
         router.refresh();
       }
     } catch {
