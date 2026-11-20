@@ -150,6 +150,36 @@ describe("POST /api/notificaciones-externas/compartir con un incidente", () => {
     });
     expect(compartirEvento).not.toHaveBeenCalled();
   });
+
+  it("I-137 un incidente FALSA_ALARMA no se comparte: 409", async () => {
+    vi.mocked(prisma.incidente.findUnique).mockResolvedValue({
+      id: 5,
+      visibleVecinos: true,
+      estado: "FALSA_ALARMA",
+      descripcion: "Dos sujetos merodeando por la plaza del lote 12",
+      reportadoPor: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "INCIDENTE", entidadId: 5 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Este incidente ya está cerrado y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
+  });
 });
 
 describe("POST /api/notificaciones-externas/compartir con un pedido", () => {

@@ -40,7 +40,7 @@ async function resolverIncidente(entidadId: number) {
   if (!inc.visibleVecinos) {
     return { error: "Este incidente no está visible para vecinos." as const };
   }
-  if (inc.estado === "RESUELTO") {
+  if (inc.estado === "RESUELTO" || inc.estado === "FALSA_ALARMA") {
     return {
       error: "Este incidente ya está cerrado y no se comparte." as const,
       status: 409,
