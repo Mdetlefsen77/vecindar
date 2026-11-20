@@ -50,6 +50,16 @@ El sistema SHALL ofrecer una acción para compartir manualmente un incidente, un
 - **WHEN** un incidente tiene `visibleVecinos = false`
 - **THEN** la acción de compartir no está disponible para ese incidente
 
+Lo cerrado no se comparte (HU-15): un incidente `RESUELTO` o `FALSA_ALARMA`, un requerimiento `RESUELTO` o `CERRADO` y una mascota resuelta (`estado: false`) SHALL NOT compartirse. El sistema SHALL responder `409` con un mensaje por tipo ("Este incidente ya está cerrado y no se comparte.", "Este pedido ya está cerrado y no se comparte.", "Esta mascota ya está resuelta y no se comparte."), sin registrar la publicación ni componer el mensaje, también si el evento ya se había compartido cuando estaba abierto. El detalle de un evento cerrado SHALL NOT mostrar la acción de compartir ni el aviso de que ya se compartió.
+
+#### Scenario: Compartir un evento cerrado
+- **WHEN** un usuario intenta compartir un incidente `FALSA_ALARMA`, un requerimiento `CERRADO` o una mascota resuelta
+- **THEN** el sistema responde 409 con el mensaje de su tipo y no genera publicación ni mensaje
+
+#### Scenario: No se ofrece compartir un evento cerrado
+- **WHEN** un usuario visita el detalle de un incidente, requerimiento o mascota cerrados, aunque ya se hayan compartido
+- **THEN** no ve la acción de compartir ni el aviso "Ya se compartió en WhatsApp"
+
 ### Requirement: Un evento no se comparte dos veces
 El sistema SHALL impedir que el mismo evento sea compartido por el mismo canal más de una vez.
 

@@ -130,13 +130,13 @@ Como **vecino** quiero **que al iniciar sesión o registrarme desde un link me l
 - Lo mismo para el link entre login y registro (`/registro?callbackUrl=…` y `/login?callbackUrl=…`): un `callbackUrl` externo no se pasa de una pantalla a la otra.
 - _A refinar:_ (S-3 de `pendientes.md`) `router.push(callbackUrl || "/inicio")` en `src/app/(auth)/login/page.tsx:37` y el `callbackUrl` de `src/app/(auth)/registro/page.tsx:62,150`. Revisar también el destino que el registro deja asociado a la cuenta pendiente de aprobación. → Resuelto en `stories/HU-14.md`: el registro no guarda destino (solo lo pasa a `/login`); se valida en el login y en los dos links, por mismo origen.
 
-## HU-15 · Lo que ya se cerró no se comparte
+## ✅ HU-15 · Lo que ya se cerró no se comparte
 Como **vecino** quiero **que un incidente, pedido o mascota ya cerrados no se puedan compartir por WhatsApp** para **que el grupo no reciba como novedad algo que ya pasó, ni una falsa alarma que nombra a alguien**.
 - `POST /api/notificaciones-externas/compartir` con un incidente `RESUELTO` o `FALSA_ALARMA`, un pedido `RESUELTO` o `CERRADO` o una mascota resuelta (`estado: false`) → `409` con un mensaje claro, sin generar publicación ni mensaje.
 - Con un incidente `ACTIVO`, un pedido `NUEVO` o `EN_PROGRESO` y una mascota abierta, compartir funciona como hoy.
 - En el detalle de un evento cerrado, la app no muestra el botón de compartir.
-- _Pendiente de HU-11:_ `resolverIncidente` (`src/app/api/notificaciones-externas/compartir/route.ts:21-41`) no mira `estado`; desde HU-11 eso incluye el adelanto de la descripción.
-- _Pendiente de HU-12:_ `resolverRequerimiento` y `resolverMascota` (`route.ts:53-108`) tampoco miran el estado; desde HU-12 también comparten el adelanto.
+- ✅ _Pendiente de HU-11 (cubierto por HU-15):_ `resolverIncidente` (`src/app/api/notificaciones-externas/compartir/route.ts:21-41`) no mira `estado`; desde HU-11 eso incluye el adelanto de la descripción.
+- ✅ _Pendiente de HU-12 (cubierto por HU-15):_ `resolverRequerimiento` y `resolverMascota` (`route.ts:53-108`) tampoco miran el estado; desde HU-12 también comparten el adelanto.
 
 ## HU-16 · El vecino responde la encuesta de experiencia
 Como **vecino** quiero **contestar en pocos toques cómo me va con la app** para **que los que la hacen sepan qué mejorar**.
