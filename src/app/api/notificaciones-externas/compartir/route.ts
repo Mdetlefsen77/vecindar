@@ -99,6 +99,7 @@ async function resolverMascota(entidadId: number) {
     select: {
       id: true,
       tipo: true,
+      estado: true,
       descripcion: true,
       usuario: {
         select: {
@@ -110,6 +111,12 @@ async function resolverMascota(entidadId: number) {
     },
   });
   if (!m) return { error: "No encontrado." as const };
+  if (!m.estado) {
+    return {
+      error: "Esta mascota ya está resuelta y no se comparte." as const,
+      status: 409,
+    };
+  }
   return {
     urlDestino: `/mascotas/${m.id}`,
     construirMensaje: (link: string) =>

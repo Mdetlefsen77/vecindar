@@ -278,6 +278,7 @@ describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
     vi.mocked(prisma.mascotaPerdida.findUnique).mockResolvedValue({
       id: 9,
       tipo: "PERDIDA",
+      estado: true,
       nombre: "Toby",
       zona: "Plaza central",
       contacto: "351 555 1234",
@@ -307,5 +308,35 @@ describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
     expect(mensaje).not.toContain("Plaza central");
     expect(mensaje).not.toContain("351 555 1234");
     expect(mensaje).not.toContain("fotos.test");
+  });
+
+  it("I-140 una mascota resuelta no se comparte (409)", async () => {
+    vi.mocked(prisma.mascotaPerdida.findUnique).mockResolvedValue({
+      id: 9,
+      tipo: "PERDIDA",
+      estado: false,
+      descripcion: "Perro marrón con collar rojo",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "MASCOTA", entidadId: 9 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Esta mascota ya está resuelta y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
   });
 });
