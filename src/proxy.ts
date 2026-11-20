@@ -28,7 +28,8 @@ export async function proxy(request: NextRequest) {
     // si hay AUTH_URL, manda su protocolo y no el de la petición.
     secureCookie: process.env.AUTH_URL
       ? process.env.AUTH_URL.startsWith("https:")
-      : request.nextUrl.protocol === "https:",
+      : (request.headers.get("x-forwarded-proto") ??
+          request.nextUrl.protocol.replace(":", "")) === "https",
     // Mismo secreto que usa NextAuth para firmar (AUTH_SECRET tiene prioridad
     // sobre NEXTAUTH_SECRET en Auth.js v5).
     secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,

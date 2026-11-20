@@ -36,6 +36,21 @@ describe("proxy · cookie de sesión según el protocolo (getToken real)", () =>
     expect(res.status).toBe(200);
   });
 
+  it("U-69 · sin AUTH_URL ni NEXTAUTH_URL, http con x-forwarded-proto https y __Secure-authjs.session-token válida no redirige", async () => {
+    const nombre = "__Secure-authjs.session-token";
+    const req = new NextRequest("http://vecindar.test/inicio", {
+      headers: {
+        "x-forwarded-proto": "https",
+        cookie: `${nombre}=${await token(nombre)}`,
+      },
+    });
+
+    const res = await proxy(req);
+
+    expect(res.headers.get("location")).toBeNull();
+    expect(res.status).toBe(200);
+  });
+
   it("U-66 · con AUTH_URL http, https con authjs.session-token válida no redirige", async () => {
     vi.stubEnv("AUTH_URL", "http://vecindar.test");
     const nombre = "authjs.session-token";
