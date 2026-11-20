@@ -271,6 +271,34 @@ describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
     });
     expect(compartirEvento).not.toHaveBeenCalled();
   });
+
+  it("I-142 un pedido EN_PROGRESO se comparte: 200 con el mensaje", async () => {
+    vi.mocked(prisma.requerimiento.findUnique).mockResolvedValue({
+      id: 4,
+      categoria: "ILUMINACION",
+      estado: "EN_PROGRESO",
+      descripcion: "Hay un poste de luz caído sobre la calle 5",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "REQUERIMIENTO", entidadId: 4 }),
+        },
+      ),
+    );
+    const { mensaje } = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(mensaje).toContain("Hay un poste de luz…");
+  });
 });
 
 describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
