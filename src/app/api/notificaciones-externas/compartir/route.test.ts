@@ -241,6 +241,36 @@ describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
     });
     expect(compartirEvento).not.toHaveBeenCalled();
   });
+
+  it("I-139 un pedido CERRADO no se comparte: 409 y no se registra la publicación", async () => {
+    vi.mocked(prisma.requerimiento.findUnique).mockResolvedValue({
+      id: 4,
+      categoria: "ILUMINACION",
+      estado: "CERRADO",
+      descripcion: "Hay un poste de luz caído sobre la calle 5",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "REQUERIMIENTO", entidadId: 4 }),
+        },
+      ),
+    );
+
+    expect(res.status).toBe(409);
+    expect(await res.json()).toEqual({
+      error: "Este pedido ya está cerrado y no se comparte.",
+    });
+    expect(compartirEvento).not.toHaveBeenCalled();
+  });
 });
 
 describe("POST /api/notificaciones-externas/compartir con una mascota", () => {

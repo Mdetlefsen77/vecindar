@@ -75,7 +75,7 @@ async function resolverRequerimiento(entidadId: number) {
     },
   });
   if (!req) return { error: "No encontrado." as const };
-  if (req.estado === "RESUELTO") {
+  if (req.estado === "RESUELTO" || req.estado === "CERRADO") {
     return {
       error: "Este pedido ya está cerrado y no se comparte." as const,
       status: 409,
