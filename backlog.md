@@ -128,7 +128,7 @@ Como **vecino** quiero **que al iniciar sesión o registrarme desde un link me l
 - Con `callbackUrl` de una ruta interna (`/incidentes/12`), después del login va a esa ruta (como hoy).
 - Con `callbackUrl` externo (`https://otro.sitio`, `//otro.sitio`, `javascript:…`), después del login va a `/inicio`.
 - Lo mismo para el link entre login y registro (`/registro?callbackUrl=…` y `/login?callbackUrl=…`): un `callbackUrl` externo no se pasa de una pantalla a la otra.
-- _A refinar:_ (S-3 de `pendientes.md`) `router.push(callbackUrl || "/inicio")` en `src/app/(auth)/login/page.tsx:37` y el `callbackUrl` de `src/app/(auth)/registro/page.tsx:62,150`. Revisar también el destino que el registro deja asociado a la cuenta pendiente de aprobación.
+- _A refinar:_ (S-3 de `pendientes.md`) `router.push(callbackUrl || "/inicio")` en `src/app/(auth)/login/page.tsx:37` y el `callbackUrl` de `src/app/(auth)/registro/page.tsx:62,150`. Revisar también el destino que el registro deja asociado a la cuenta pendiente de aprobación. → Resuelto en `stories/HU-14.md`: el registro no guarda destino (solo lo pasa a `/login`); se valida en el login y en los dos links, por mismo origen.
 
 ## HU-15 · Lo que ya se cerró no se comparte
 Como **vecino** quiero **que un incidente, pedido o mascota ya cerrados no se puedan compartir por WhatsApp** para **que el grupo no reciba como novedad algo que ya pasó, ni una falsa alarma que nombra a alguien**.
