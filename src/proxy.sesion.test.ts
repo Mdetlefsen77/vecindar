@@ -106,4 +106,63 @@ describe("proxy · cookie de sesión según el protocolo (getToken real)", () =>
     expect(res.headers.get("location")).toBeNull();
     expect(res.status).toBe(200);
   });
+
+  it("U-68 · sin AUTH_URL ni NEXTAUTH_URL, https con solo authjs.session-token válida redirige a /login y /login no redirige", async () => {
+    const nombre = "authjs.session-token";
+    const cookie = `${nombre}=${await token(nombre)}`;
+
+    const inicio = await proxy(
+      new NextRequest("https://vecindar.test/inicio", { headers: { cookie } }),
+    );
+    const login = await proxy(
+      new NextRequest("https://vecindar.test/login", { headers: { cookie } }),
+    );
+
+    expect(inicio.headers.get("location")).toBe(
+      "https://vecindar.test/login?callbackUrl=%2Finicio",
+    );
+    expect(login.headers.get("location")).toBeNull();
+    expect(login.status).toBe(200);
+  });
+
+  it("U-72 · sin AUTH_URL ni NEXTAUTH_URL, http con x-forwarded-proto http y authjs.session-token válida no redirige", async () => {
+    const nombre = "authjs.session-token";
+    const req = new NextRequest("http://vecindar.test/inicio", {
+      headers: {
+        "x-forwarded-proto": "http",
+        cookie: `${nombre}=${await token(nombre)}`,
+      },
+    });
+
+    const res = await proxy(req);
+
+    expect(res.headers.get("location")).toBeNull();
+    expect(res.status).toBe(200);
+  });
+
+  it("U-70 · sin AUTH_URL ni NEXTAUTH_URL, https con __Secure-authjs.session-token emitida con la sal de la otra cookie redirige a /login", async () => {
+    const req = new NextRequest("https://vecindar.test/inicio", {
+      headers: {
+        cookie: `__Secure-authjs.session-token=${await token("authjs.session-token")}`,
+      },
+    });
+
+    const res = await proxy(req);
+
+    expect(res.headers.get("location")).toBe(
+      "https://vecindar.test/login?callbackUrl=%2Finicio",
+    );
+  });
+
+  it("U-71 · sin AUTH_URL ni NEXTAUTH_URL, https con __Secure-authjs.session-token=cualquiera redirige a /login", async () => {
+    const req = new NextRequest("https://vecindar.test/inicio", {
+      headers: { cookie: "__Secure-authjs.session-token=cualquiera" },
+    });
+
+    const res = await proxy(req);
+
+    expect(res.headers.get("location")).toBe(
+      "https://vecindar.test/login?callbackUrl=%2Finicio",
+    );
+  });
 });
