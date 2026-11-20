@@ -92,4 +92,18 @@ describe("proxy · cookie de sesión según el protocolo (getToken real)", () =>
     expect(res.headers.get("location")).toBeNull();
     expect(res.status).toBe(200);
   });
+
+  it("U-73 · con AUTH_URL http y NEXTAUTH_URL https, https con authjs.session-token válida no redirige", async () => {
+    vi.stubEnv("AUTH_URL", "http://vecindar.test");
+    vi.stubEnv("NEXTAUTH_URL", "https://vecindar.test");
+    const nombre = "authjs.session-token";
+    const req = new NextRequest("https://vecindar.test/inicio", {
+      headers: { cookie: `${nombre}=${await token(nombre)}` },
+    });
+
+    const res = await proxy(req);
+
+    expect(res.headers.get("location")).toBeNull();
+    expect(res.status).toBe(200);
+  });
 });
