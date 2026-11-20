@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { destinoSeguro } from "./destino-login";
+import { destinoSeguro, hrefConDestino } from "./destino-login";
 
 const ORIGEN = "https://vecindar.test";
 
@@ -34,5 +34,17 @@ describe("destinoSeguro", () => {
 
   it("U-81 · /.//otro.sitio (ruta resultante //otro.sitio) va a /inicio", () => {
     expect(destinoSeguro("/.//otro.sitio", ORIGEN)).toBe("/inicio");
+  });
+
+  it("U-82 · una URL que hace lanzar a new URL va a /inicio", () => {
+    expect(destinoSeguro("http://[", ORIGEN)).toBe("/inicio");
+  });
+});
+
+describe("hrefConDestino", () => {
+  it("U-83 · lleva el destino validado, no el callbackUrl crudo", () => {
+    expect(
+      hrefConDestino("/login", "https://vecindar.test/avisos", ORIGEN),
+    ).toBe("/login?callbackUrl=%2Favisos");
   });
 });
