@@ -69,6 +69,7 @@ describe("POST /api/notificaciones-externas/compartir con un incidente", () => {
     vi.mocked(prisma.incidente.findUnique).mockResolvedValue({
       id: 3,
       visibleVecinos: true,
+      estado: "ACTIVO",
       descripcion: "Dos sujetos merodeando por la plaza del lote 12",
       reportadoPor: {
         nombre: "Ana",
@@ -188,6 +189,7 @@ describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
       id: 4,
       categoria: "ILUMINACION",
       titulo: "Reclamo urgente",
+      estado: "NUEVO",
       descripcion: "Hay un poste de luz caído sobre la calle 5",
       usuario: {
         nombre: "Ana",
