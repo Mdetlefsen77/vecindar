@@ -8,6 +8,8 @@ vi.mock("@/lib/prisma/client", () => ({
   prisma: {
     aviso: { findFirst: vi.fn() },
     incidente: { findUnique: vi.fn() },
+    requerimiento: { findUnique: vi.fn() },
+    mascotaPerdida: { findUnique: vi.fn() },
   },
 }));
 vi.mock("@/lib/notificaciones-externas/compartir", () => ({
@@ -117,5 +119,73 @@ describe("POST /api/notificaciones-externas/compartir con un incidente", () => {
       error: "Este incidente no está visible para vecinos.",
     });
     expect(compartirEvento).not.toHaveBeenCalled();
+  });
+});
+
+describe("POST /api/notificaciones-externas/compartir con un pedido", () => {
+  it("I-129 la descripción sale cortada a las 5 primeras palabras y no el título", async () => {
+    vi.mocked(prisma.requerimiento.findUnique).mockResolvedValue({
+      id: 4,
+      categoria: "ILUMINACION",
+      titulo: "Reclamo urgente",
+      descripcion: "Hay un poste de luz caído sobre la calle 5",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "REQUERIMIENTO", entidadId: 4 }),
+        },
+      ),
+    );
+    const { mensaje } = await res.json();
+
+    expect(mensaje).toContain("Hay un poste de luz…");
+    expect(mensaje).not.toContain("caído");
+    expect(mensaje).not.toContain("Reclamo urgente");
+  });
+});
+
+describe("POST /api/notificaciones-externas/compartir con una mascota", () => {
+  it("I-130 la descripción sale cortada a las 5 primeras palabras y nada más de la mascota", async () => {
+    vi.mocked(prisma.mascotaPerdida.findUnique).mockResolvedValue({
+      id: 9,
+      tipo: "PERDIDA",
+      nombre: "Toby",
+      zona: "Plaza central",
+      contacto: "351 555 1234",
+      foto: "https://fotos.test/toby.jpg",
+      descripcion: "Perro marrón con collar rojo, muy asustado",
+      usuario: {
+        nombre: "Ana",
+        apellido: "Pérez",
+        ocultarNombreEnPublicacionExterna: false,
+      },
+    } as never);
+
+    const res = await POST(
+      new NextRequest(
+        "http://localhost/api/notificaciones-externas/compartir",
+        {
+          method: "POST",
+          body: JSON.stringify({ tipoEvento: "MASCOTA", entidadId: 9 }),
+        },
+      ),
+    );
+    const { mensaje } = await res.json();
+
+    expect(mensaje).toContain("Perro marrón con collar rojo,…");
+    expect(mensaje).not.toContain("asustado");
+    expect(mensaje).not.toContain("Toby");
+    expect(mensaje).not.toContain("Plaza central");
+    expect(mensaje).not.toContain("351 555 1234");
+    expect(mensaje).not.toContain("fotos.test");
   });
 });

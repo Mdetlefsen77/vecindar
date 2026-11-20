@@ -31,7 +31,7 @@ function nombrePublico(autor: AutorPlantilla): string {
 
 /**
  * Primeras 5 palabras de un texto libre, en una sola línea, con "…" solo si
- * se cortó algo. Vacío si no hay palabras. Lo usan el aviso y el incidente.
+ * se cortó algo. Vacío si no hay palabras. Lo usan el aviso, el incidente, el pedido y la mascota.
  */
 function adelanto(texto: string | null): string {
   const palabras = texto?.split(/\s+/).filter(Boolean) ?? [];
@@ -42,7 +42,7 @@ function adelanto(texto: string | null): string {
  * Plantillas del mensaje "teaser" (spec funcional §4 y §7): tipo de evento,
  * autor, fecha implícita (se comparte al momento) y el link — nunca
  * ubicación exacta, fotos, ni datos de contacto. De la descripción solo sale
- * el adelanto de 5 palabras (incidente y aviso); pedidos y mascotas, nada.
+ * el adelanto de 5 palabras (incidente, aviso, pedido y mascota).
  */
 /**
  * Oficio del catálogo. A diferencia del resto no es un teaser de un evento,
@@ -101,15 +101,19 @@ export function plantillaIncidente(
 export function plantillaRequerimiento(
   autor: AutorPlantilla,
   categoria: CategoriaReq,
+  descripcion: string,
   link: string,
 ): string {
   const de = categoria === "OTRO" ? "" : ` de ${CATEGORIA_REQ_LABEL[categoria]}`;
-  return `📋 NUEVO PEDIDO\n\n${nombrePublico(autor)} cargó un pedido${de}.\n\nVer detalle 👉 ${link}`;
+  const resumen = adelanto(descripcion);
+  const parrafo = resumen ? `${resumen}\n\n` : "";
+  return `📋 NUEVO PEDIDO\n\n${nombrePublico(autor)} cargó un pedido${de}.\n\n${parrafo}Ver detalle 👉 ${link}`;
 }
 
 export function plantillaMascota(
   autor: AutorPlantilla,
   tipo: TipoAlertaMascota,
+  descripcion: string,
   link: string,
 ): string {
   const esPerdida = tipo === "PERDIDA";
@@ -117,5 +121,7 @@ export function plantillaMascota(
   const accion = esPerdida
     ? "publicó la búsqueda de una mascota"
     : "avisó que encontró una mascota";
-  return `${encabezado}\n\n${nombrePublico(autor)} ${accion}.\n\nVer detalle 👉 ${link}`;
+  const resumen = adelanto(descripcion);
+  const parrafo = resumen ? `${resumen}\n\n` : "";
+  return `${encabezado}\n\n${nombrePublico(autor)} ${accion}.\n\n${parrafo}Ver detalle 👉 ${link}`;
 }

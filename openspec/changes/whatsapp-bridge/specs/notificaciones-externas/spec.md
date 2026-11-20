@@ -62,6 +62,8 @@ El mensaje compuesto para compartir un evento SHALL incluir únicamente: tipo de
 
 Excepción (HU-11): el mensaje de un incidente SHALL incluir un adelanto de la descripción: sus primeras 5 palabras en una sola línea, seguidas de "…" solo si había más, entre la línea del autor y el link. Así el grupo sabe de qué se trata y tiene que entrar a la app para leer el resto (propuesta del guardia, M-9 de `pendientes.md`). El riesgo de que esas 5 palabras nombren a un tercero o una casa queda aceptado. Un incidente con `visibleVecinos: false` SHALL NOT compartirse.
 
+Excepción (HU-12): el mensaje de un pedido y el de una mascota (perdida o encontrada) SHALL incluir el mismo adelanto de la descripción, con la misma regla y en el mismo lugar. Si la descripción no tiene palabras (vacía o solo espacios), el mensaje SHALL quedar sin ese párrafo. El título del pedido y el nombre, la zona, el contacto y la foto de la mascota SHALL NOT incluirse. El riesgo de que el autor escriba un teléfono o un nombre dentro de esas 5 palabras queda aceptado.
+
 #### Scenario: Incidente con el adelanto de la descripción
 - **WHEN** se comparte un incidente visible cuya descripción es "Dos sujetos merodeando por la plaza del lote 12"
 - **THEN** el mensaje incluye la línea "Dos sujetos merodeando por la…" y no incluye el resto de la descripción
@@ -69,6 +71,14 @@ Excepción (HU-11): el mensaje de un incidente SHALL incluir un adelanto de la d
 #### Scenario: Incidente restringido
 - **WHEN** se intenta compartir un incidente con `visibleVecinos: false`
 - **THEN** el sistema responde 404 y no genera ningún mensaje
+
+#### Scenario: Pedido con el adelanto de la descripción
+- **WHEN** se comparte un pedido de título "Reclamo urgente" cuya descripción es "Hay un poste de luz caído sobre la calle 5"
+- **THEN** el mensaje incluye la línea "Hay un poste de luz…" y no incluye el resto de la descripción ni el título
+
+#### Scenario: Mascota con el adelanto de la descripción
+- **WHEN** se comparte una mascota perdida de nombre "Toby" cuya descripción es "Perro marrón con collar rojo, muy asustado"
+- **THEN** el mensaje incluye la línea "Perro marrón con collar rojo,…" y no incluye el resto de la descripción, el nombre, la zona, el contacto ni la foto
 
 #### Scenario: Mensaje de mascota perdida sin foto ni contacto
 - **WHEN** se comparte una mascota perdida

@@ -56,6 +56,7 @@ async function resolverRequerimiento(entidadId: number) {
     select: {
       id: true,
       categoria: true,
+      descripcion: true,
       usuario: {
         select: {
           nombre: true,
@@ -72,6 +73,7 @@ async function resolverRequerimiento(entidadId: number) {
       plantillaRequerimiento(
         req.usuario as AutorPlantilla,
         req.categoria,
+        req.descripcion,
         link,
       ),
   };
@@ -83,6 +85,7 @@ async function resolverMascota(entidadId: number) {
     select: {
       id: true,
       tipo: true,
+      descripcion: true,
       usuario: {
         select: {
           nombre: true,
@@ -96,7 +99,12 @@ async function resolverMascota(entidadId: number) {
   return {
     urlDestino: `/mascotas/${m.id}`,
     construirMensaje: (link: string) =>
-      plantillaMascota(m.usuario as AutorPlantilla, m.tipo, link),
+      plantillaMascota(
+        m.usuario as AutorPlantilla,
+        m.tipo,
+        m.descripcion,
+        link,
+      ),
   };
 }
 

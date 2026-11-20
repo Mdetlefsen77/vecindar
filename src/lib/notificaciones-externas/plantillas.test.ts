@@ -2,6 +2,8 @@ import { describe, expect, it } from "vitest";
 import {
   plantillaAviso,
   plantillaIncidente,
+  plantillaMascota,
+  plantillaRequerimiento,
   type AutorPlantilla,
 } from "./plantillas";
 
@@ -109,4 +111,81 @@ describe("plantillaIncidente · adelanto de la descripción", () => {
       "🚨 NUEVO INCIDENTE\n\nAna P. reportó un incidente de seguridad en el barrio.\n\nVer detalle 👉 https://vecindar.test/incidentes",
     );
   });
+});
+
+describe("plantillaRequerimiento · adelanto de la descripción", () => {
+  const linkReq = "https://vecindar.test/requerimientos";
+
+  it("U-58 · con 6 palabras el mensaje lleva 5 y … entre el autor y el link", () => {
+    expect(
+      plantillaRequerimiento(
+        autor,
+        "ILUMINACION",
+        "uno dos tres cuatro cinco seis",
+        linkReq,
+      ),
+    ).toBe(
+      "📋 NUEVO PEDIDO\n\nAna P. cargó un pedido de Iluminación.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/requerimientos",
+    );
+  });
+
+  it("U-61 · con una descripción de solo espacios y saltos no deja línea vacía", () => {
+    expect(plantillaRequerimiento(autor, "ILUMINACION", "  \n ", linkReq)).toBe(
+      "📋 NUEVO PEDIDO\n\nAna P. cargó un pedido de Iluminación.\n\nVer detalle 👉 https://vecindar.test/requerimientos",
+    );
+  });
+
+  it('U-63 · con categoría OTRO la línea del autor no lleva " de …"', () => {
+    const msg = plantillaRequerimiento(
+      autor,
+      "OTRO",
+      "arreglar el cerco",
+      linkReq,
+    );
+    expect(msg.split("\n\n")[1]).toBe("Ana P. cargó un pedido.");
+  });
+});
+
+describe("plantillaMascota · adelanto de la descripción", () => {
+  const linkMasc = "https://vecindar.test/mascotas";
+
+  it("U-59 · perdida con 6 palabras lleva 5 y … entre el autor y el link", () => {
+    expect(
+      plantillaMascota(
+        autor,
+        "PERDIDA",
+        "uno dos tres cuatro cinco seis",
+        linkMasc,
+      ),
+    ).toBe(
+      "🐕 MASCOTA PERDIDA\n\nAna P. publicó la búsqueda de una mascota.\n\nuno dos tres cuatro cinco…\n\nVer detalle 👉 https://vecindar.test/mascotas",
+    );
+  });
+
+  it("U-60 · encontrada con 5 palabras normaliza espacios y no lleva …", () => {
+    const msg = plantillaMascota(
+      autor,
+      "ENCONTRADA",
+      "Gato\nblanco en\t la vereda",
+      linkMasc,
+    );
+    expect(msg.split("\n\n")[2]).toBe("Gato blanco en la vereda");
+  });
+
+  it("U-64 · encontrada lleva su encabezado y su línea del autor", () => {
+    expect(
+      plantillaMascota(autor, "ENCONTRADA", "gato blanco", linkMasc),
+    ).toMatch(
+      /^🐾 MASCOTA ENCONTRADA\n\nAna P\. avisó que encontró una mascota\.\n\n/,
+    );
+  });
+
+  it.each(["", "  \n "])(
+    "U-62 · con la descripción %j el mensaje es el de siempre, sin párrafo",
+    (descripcion) => {
+      expect(plantillaMascota(autor, "PERDIDA", descripcion, linkMasc)).toBe(
+        "🐕 MASCOTA PERDIDA\n\nAna P. publicó la búsqueda de una mascota.\n\nVer detalle 👉 https://vecindar.test/mascotas",
+      );
+    },
+  );
 });
