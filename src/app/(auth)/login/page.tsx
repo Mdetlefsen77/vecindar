@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { destinoSeguro } from "@/lib/destino-login";
+import { destinoSeguro, hrefConDestino } from "@/lib/destino-login";
 
 function LoginForm() {
   const router = useRouter();
@@ -47,11 +47,7 @@ function LoginForm() {
     }
   };
 
-  const destino = origen ? destinoSeguro(callbackUrl, origen) : "/inicio";
-  const hrefRegistro =
-    destino !== "/inicio"
-      ? `/registro?callbackUrl=${encodeURIComponent(destino)}`
-      : "/registro";
+  const hrefRegistro = hrefConDestino("/registro", callbackUrl, origen);
 
   return (
     <div className="min-h-dvh flex items-center justify-center bg-brand-surface px-4 py-12">

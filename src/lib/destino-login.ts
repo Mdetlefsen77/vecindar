@@ -14,3 +14,14 @@ export function destinoSeguro(
     return POR_DEFECTO;
   }
 }
+
+export function hrefConDestino(
+  base: string,
+  callbackUrl: string | null,
+  origen: string,
+): string {
+  const destino = origen ? destinoSeguro(callbackUrl, origen) : POR_DEFECTO;
+  return destino !== POR_DEFECTO
+    ? `${base}?callbackUrl=${encodeURIComponent(destino)}`
+    : base;
+}

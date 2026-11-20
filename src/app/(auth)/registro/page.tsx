@@ -10,7 +10,7 @@ import {
   DialogTitle,
   Description,
 } from "@headlessui/react";
-import { destinoSeguro } from "@/lib/destino-login";
+import { hrefConDestino } from "@/lib/destino-login";
 import { AVISO_SUSCRIPCION } from "@/lib/prueba";
 import { formatoPesos } from "@/lib/cobranza";
 import {
@@ -149,11 +149,7 @@ function RegistroForm() {
     }
   };
 
-  const destino = origen ? destinoSeguro(callbackUrl, origen) : "/inicio";
-  const hrefLogin =
-    destino !== "/inicio"
-      ? `/login?callbackUrl=${encodeURIComponent(destino)}`
-      : "/login";
+  const hrefLogin = hrefConDestino("/login", callbackUrl, origen);
 
   return (
     <>
