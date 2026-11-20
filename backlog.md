@@ -1,6 +1,6 @@
 # Backlog · Vecindar
 
-HU-01..05: clima en el inicio. HU-06 en adelante: pendientes de `pendientes.md`, por tandas (tanda 1: HU-06..09; tanda 2: HU-10..12).
+HU-01..05: clima en el inicio. HU-06 en adelante: pendientes de `pendientes.md`, por tandas (tanda 1: HU-06..09; tanda 2: HU-10..12; tanda 3: HU-13..18).
 
 ## Decisiones del MVP
 **Clima (HU-01..05)**
@@ -23,7 +23,15 @@ HU-01..05: clima en el inicio. HU-06 en adelante: pendientes de `pendientes.md`,
 - **Adelanto:** el detalle se corta en palabra entera y sigue con "…"; si el texto ya es corto, va completo y sin "…"; sin detalle, el mensaje queda como hoy. La misma regla para las cuatro plantillas. Cuántas palabras (el guardia propuso 2; se sugirió 4 o 5) se decide en `/story HU-10`.
 - **Orden:** HU-10 recorta el aviso, que ya comparte el detalle; HU-11 y HU-12 agregan el adelanto donde hoy no hay descripción. Eso cambia la regla actual de las plantillas ("nunca descripción", `docs/proposal-whatsapp-bridge.md`): sale texto escrito por un vecino fuera de la app.
 
-**Fuera de alcance:** otras ciudades o ubicación por GPS de cada vecino, historial del clima, radar o mapas meteorológicos, alertas oficiales del SMN, configuración de la tarjeta por vecino, guardar datos del clima en la base. De la tanda 1: cerrar sesiones activas a mano o listar dispositivos, acortar los 90 días de la sesión, poner login al Wrapped, mover el recordatorio de parte a otro scheduler. De la tanda 2: los partes de turno (`mensajeParte` sigue completo), la vista previa del link, los oficios, el número de palabras por tipo o configurable.
+**Tanda 3 de pendientes (HU-13..18)** · S-4, S-3 y M-8 de `pendientes.md`, y el corte por estado de `## Notas` (2026-11-20)
+- **Recurso:** la cookie de sesión que lee el proxy (`src/proxy.ts`), el destino después del login y el registro (`callbackUrl`), el `POST /api/notificaciones-externas/compartir` según el estado del evento, y una encuesta nueva dentro de la app.
+- **Sesión con https (HU-13):** el proxy tiene que encontrar la sesión con el nombre de cookie que emite Auth.js en https (`__Secure-authjs.session-token`) y seguir encontrándola con http en local. Primero se comprueba qué pasa hoy en producción (`/story HU-13`).
+- **Destino después del login (HU-14):** `callbackUrl` solo se usa si es una ruta interna del sitio; si no, se va a `/inicio`.
+- **Compartir según el estado (HU-15):** lo cerrado no se comparte. Incidente `RESUELTO` o `FALSA_ALARMA`, pedido `RESUELTO` o `CERRADO` y mascota resuelta (`estado: false`) → `409` con un mensaje claro, y la app no ofrece el botón (decisión del navigator, 2026-11-20).
+- **Encuesta (HU-16..18):** la propuesta de M-8 en `pendientes.md` (5 preguntas fijas en código, una respuesta por vecino y por ronda, resultados sin nombres). Se parte en responder, cuándo aparece y resultados para el admin (decisión del navigator, 2026-11-20). La persistencia es una tabla nueva en PostgreSQL con Prisma (receta de endpoint de `CLAUDE.md`).
+- **Stack:** el de `## Proyecto` en `CLAUDE.md`.
+
+**Fuera de alcance:** otras ciudades o ubicación por GPS de cada vecino, historial del clima, radar o mapas meteorológicos, alertas oficiales del SMN, configuración de la tarjeta por vecino, guardar datos del clima en la base. De la tanda 1: cerrar sesiones activas a mano o listar dispositivos, acortar los 90 días de la sesión, poner login al Wrapped, mover el recordatorio de parte a otro scheduler. De la tanda 2: los partes de turno (`mensajeParte` sigue completo), la vista previa del link, los oficios, el número de palabras por tipo o configurable. De la tanda 3: cambiar el nombre o la duración de la cookie de sesión, una lista de dominios externos permitidos en `callbackUrl`, ocultar del link compartido (`/r/…`) lo que se cerró después de compartirlo, el editor de encuestas para el admin, votaciones del barrio, exportar los resultados de la encuesta, preguntar por el uso de las secciones (sale de `VistaSeccion`).
 
 ## ✅ HU-01 · Clima actual en el inicio
 Como **vecino** quiero **ver arriba del inicio la temperatura actual y si está soleado, nublado, lloviendo, etc.** para **saber cómo está el día sin salir de la app**.
@@ -108,6 +116,48 @@ Como **vecino** quiero **que el pedido y la mascota que comparto por WhatsApp mu
 - _A refinar:_ (barrido de HU-10) al reutilizar el corte de `plantillaAviso`, la condición tiene que mirar las palabras (`palabras.length > 0`) y no el texto, si la descripción no pasa por `trim`; repetir la amenaza de líneas falsas en el mensaje sobre estas plantillas. → Resuelto en `stories/HU-12.md`: las plantillas deciden por las palabras (CA-3) y las líneas o el link falsos quedan como riesgo aceptado, como en HU-11.
 - _Pendiente de HU-11:_ el corte ya es `adelanto()` en `src/lib/notificaciones-externas/plantillas.ts` (decide por las palabras); la excepción de las dos specs del puente (`openspec/changes/whatsapp-bridge/specs/notificaciones-externas/spec.md` y `docs/spec-whatsapp-bridge.md` §4) hoy cubre solo el incidente y hay que ampliarla a pedidos y mascotas. → Cubierto en HU-12: excepción ampliada en las dos specs (Definición de Hecho de `stories/HU-12.md`).
 
+## ✅ HU-13 · La sesión se reconoce también con https
+Como **vecino** quiero **que la app me reconozca la sesión en el sitio publicado** para **no volver a la pantalla de login cuando ya entré**.
+- Con la cookie de sesión de https (`__Secure-authjs.session-token`) válida, una ruta protegida (`/inicio`) responde la página y no redirige a `/login`.
+- Con la cookie de sesión de http (`authjs.session-token`, en local) sigue funcionando igual.
+- Sin cookie, o con una cookie inválida, la ruta protegida sigue redirigiendo a `/login?callbackUrl=…`.
+- _A refinar:_ (S-4 de `pendientes.md`) en `@auth/core/jwt.js:86` `getToken` busca por defecto la cookie sin prefijo (`secureCookie ?? false`), y `src/lib/auth.ts` no configura cookies. Antes de cambiar nada, comprobar qué pasa hoy en producción: si los vecinos entran sin problema, entender por qué antes de decidir el arreglo. → Resuelto en `stories/HU-13.md`: producción emite hoy `authjs.session-token` (sin prefijo) y por eso anda; el bug está latente y el proxy pasa a elegir la cookie con la misma regla que Auth.js.
+
+## HU-14 · Después del login se vuelve solo a una página de la app
+Como **vecino** quiero **que al iniciar sesión o registrarme desde un link me lleve a esa página de la app y nunca a otro sitio** para **no caer en una página falsa que me pida mis datos**.
+- Con `callbackUrl` de una ruta interna (`/incidentes/12`), después del login va a esa ruta (como hoy).
+- Con `callbackUrl` externo (`https://otro.sitio`, `//otro.sitio`, `javascript:…`), después del login va a `/inicio`.
+- Lo mismo para el link entre login y registro (`/registro?callbackUrl=…` y `/login?callbackUrl=…`): un `callbackUrl` externo no se pasa de una pantalla a la otra.
+- _A refinar:_ (S-3 de `pendientes.md`) `router.push(callbackUrl || "/inicio")` en `src/app/(auth)/login/page.tsx:37` y el `callbackUrl` de `src/app/(auth)/registro/page.tsx:62,150`. Revisar también el destino que el registro deja asociado a la cuenta pendiente de aprobación.
+
+## HU-15 · Lo que ya se cerró no se comparte
+Como **vecino** quiero **que un incidente, pedido o mascota ya cerrados no se puedan compartir por WhatsApp** para **que el grupo no reciba como novedad algo que ya pasó, ni una falsa alarma que nombra a alguien**.
+- `POST /api/notificaciones-externas/compartir` con un incidente `RESUELTO` o `FALSA_ALARMA`, un pedido `RESUELTO` o `CERRADO` o una mascota resuelta (`estado: false`) → `409` con un mensaje claro, sin generar publicación ni mensaje.
+- Con un incidente `ACTIVO`, un pedido `NUEVO` o `EN_PROGRESO` y una mascota abierta, compartir funciona como hoy.
+- En el detalle de un evento cerrado, la app no muestra el botón de compartir.
+- _Pendiente de HU-11:_ `resolverIncidente` (`src/app/api/notificaciones-externas/compartir/route.ts:21-41`) no mira `estado`; desde HU-11 eso incluye el adelanto de la descripción.
+- _Pendiente de HU-12:_ `resolverRequerimiento` y `resolverMascota` (`route.ts:53-108`) tampoco miran el estado; desde HU-12 también comparten el adelanto.
+
+## HU-16 · El vecino responde la encuesta de experiencia
+Como **vecino** quiero **contestar en pocos toques cómo me va con la app** para **que los que la hacen sepan qué mejorar**.
+- En el Inicio hay una tarjeta grande "¿Nos contás cómo te va con la app? Son 5 preguntas" con **Responder**; al tocarla, una pregunta por paso con botones grandes (las 5 de M-8 en `pendientes.md`; las dos de texto son opcionales).
+- `POST /api/encuesta` sin sesión → `401`; con respuestas inválidas (fuera de rango, falta una obligatoria) → `400`; válida → `201` y queda guardada con el vecino y la ronda actual.
+- Un segundo envío del mismo vecino en la misma ronda → `409`, y no se guarda otra respuesta.
+- Al responder, la tarjeta desaparece del Inicio.
+
+## HU-17 · La encuesta aparece solo cuando corresponde
+Como **vecino** quiero **que la encuesta me la pidan cuando ya usé la app un tiempo, y poder dejarla para después** para **no sentir que me interrumpen**.
+- Una cuenta con menos de 2 semanas no ve la tarjeta en el Inicio.
+- **Ahora no** oculta la tarjeta; vuelve a aparecer más adelante dentro de la misma ronda (cuándo, se decide en `/story HU-17`).
+- Quien ya respondió la ronda actual no ve la tarjeta; con una ronda nueva, vuelve a verla.
+
+## HU-18 · El admin ve los resultados de la encuesta sin nombres
+Como **admin** quiero **ver los resultados de cada ronda de la encuesta** para **saber cómo les va a los vecinos con la app y comparar entre rondas**.
+- `/admin/encuesta` muestra, por ronda: cantidad de respuestas, promedio de facilidad (1 a 5), % de "se lee bien", NPS y los comentarios abiertos.
+- Ningún resultado ni comentario muestra el nombre de quien respondió.
+- Un vecino (rol sin permiso) que entra a `/admin/encuesta` no ve los resultados (redirige o `403`, como el resto de `/admin`).
+- Sin respuestas en la ronda, la página lo dice en vez de mostrar números vacíos.
+
 ## Notas
 - 2026-11-04 · (HU-05) En el plan Hobby de Vercel los crons son solo diarios: la push sale a una hora fija, así que una tormenta que se forma en el día puede no avisarse a tiempo. Hay que elegir la hora en `/story HU-05`.
 - 2026-11-04 · (HU-01) Los datos de Open-Meteo tienen licencia CC BY 4.0, que pide atribución: agregar un "Datos: Open-Meteo" chico en la tarjeta o en `/clima`. Su plan gratis es para uso no comercial; Vecindar cobra suscripción. Resuelto en HU-01: atribución en la tarjeta y plan gratis por ahora, con `OPEN_METEO_URL`/`OPEN_METEO_API_KEY` listas para pasar al plan comercial. **Pendiente:** decidir cuándo contratarlo.
@@ -141,11 +191,12 @@ Como **vecino** quiero **que el pedido y la mascota que comparto por WhatsApp mu
 - 2026-11-17 · (HU-10) `src/lib/notificaciones-externas/plantillas.ts` no cumple prettier desde antes de HU-10 (`npx prettier --check` avisa en `main`); no se reformateó para no mezclarlo con la historia.
 - 2026-11-17 · (HU-10, seguridad) `POST /api/avisos` (`src/app/api/avisos/route.ts:44`) arma el cuerpo de la push con `ubicacion — detalle` sin colapsar los saltos de línea del detalle (recortado a 140 caracteres). Es otro canal que el de HU-10; revisar si la push tiene que seguir la misma regla de una sola línea.
 - 2026-11-17 · (HU-11, seguridad, hardening) El adelanto del aviso y del incidente (`plantillas.ts`) deja pasar links: una descripción de pocas palabras como "Ver detalle 👉 https://otro.sitio" sale completa, justo arriba del link real del mensaje. Aceptado en HU-11 (el autor es un vecino aprobado y queda identificado en el mensaje). Si se quiere cerrar: cortar el adelanto antes de la primera palabra con `://` o `www.`, en las dos plantillas.
-- 2026-11-17 · (HU-11, seguridad) Un incidente visible marcado `FALSA_ALARMA` o `RESUELTO` se sigue pudiendo compartir: `resolverIncidente` (`src/app/api/notificaciones-externas/compartir/route.ts:21-41`) no mira `estado`. Con HU-11 eso incluye el adelanto de la descripción, que puede nombrar a alguien o una casa en un incidente que el barrio ya dio por falso. Ninguna spec lo prohíbe; decidir si compartir se corta por estado.
 - 2026-11-17 · (HU-11) `src/app/api/notificaciones-externas/compartir/route.ts` no cumple prettier desde antes de HU-11 (`npx prettier --check` avisa en `main`), igual que `plantillas.ts`; no se reformateó para no mezclarlo con la historia.
 - 2026-11-17 · (HU-11, seguridad) Dentro de la app, un incidente con `visibleVecinos: false` lo ven también REFERENTE_MANZANA y TESORERO: `src/app/api/incidentes/[id]/route.ts:44` y `src/app/(dashboard)/incidentes/[id]/page.tsx:49` solo bloquean al rol VECINO. Compartirlo por WhatsApp sí está bloqueado para todos los roles (I-128). Decidir qué roles ven un incidente restringido.
 - 2026-11-17 · (HU-12, seguridad, hardening) El adelanto (`adelanto()` en `plantillas.ts`) puede llevar un teléfono si el autor lo escribe en las primeras 5 palabras de la descripción ("Se perdió Toby, llamar 351…"), aunque la mascota tenga su campo `contacto`, que no sale. Aceptado en HU-12. Si se quiere cerrar: cortar el adelanto antes de la primera palabra con 3 o más dígitos seguidos, en las cuatro plantillas.
 - 2026-11-17 · (HU-12) `crearMascotaSchema` (`src/lib/validation/mascotas.ts`) valida `descripcion`, `zona` y `contacto` con `min(1)` antes de `trim()`: `"   "` pasa y se guarda como `""`. El pedido usa `trim().min(1)`. Fuera de alcance de HU-12.
-- 2026-11-19 · (HU-12, seguridad) Como el incidente (nota de HU-11), un pedido `RESUELTO`/`CERRADO` o una mascota resuelta (`estado: false`) se siguen pudiendo compartir, y desde HU-12 con el adelanto de la descripción: `resolverRequerimiento` y `resolverMascota` (`src/app/api/notificaciones-externas/compartir/route.ts:53-108`) no miran el estado. Decidir junto con el incidente si compartir se corta por estado.
 - 2026-11-19 · (HU-12, seguridad) Dentro de la app, `GET /api/mascotas/[id]` (`src/app/api/mascotas/[id]/route.ts:27`) le devuelve a cualquier sesión el `telefono` del dueño, además del `contacto` de la mascota. No viene del diff de HU-12 (compartir no lo usa); decidir si el teléfono del dueño tiene que salir en el detalle.
 - 2026-11-19 · (HU-12, seguridad, hardening) `adelanto()` (`src/lib/notificaciones-externas/plantillas.ts:36-39`) cuenta palabras pero no limita el largo: una "palabra" sin espacios, o un texto unido con espacios de ancho cero (U+200B, que `\s` no cubre), puede llevar la descripción entera al mensaje; U+0085 (NEL) llega tal cual y podría verse como salto de línea. Lo escribe el propio autor. Si se quiere cerrar: tope de caracteres en el adelanto, o normalizar U+200B/U+2060/U+0085 como espacio (junto con la nota del teléfono).
+- 2026-11-20 · (HU-13, seguridad) En producción la cookie de sesión se llama `authjs.session-token`, sin prefijo: Auth.js no está usando cookies seguras, así que la emite sin el atributo `Secure`. Lo más probable es que `AUTH_URL`/`NEXTAUTH_URL` en Vercel tenga una URL `http://` (Auth.js elige por esa URL, `@auth/core/lib/utils/env.js:66-86`). Revisar las variables en Vercel y corregirlas **después** de mergear HU-13 (antes, el proxy dejaría afuera a todos los vecinos). Con HU-13, el proxy y `auth()` eligen la misma cookie: al corregirlo, las sesiones abiertas se pierden una vez (cambia el nombre de la cookie) y cada vecino vuelve a iniciar sesión, sin bucle.
+- 2026-11-20 · (HU-13, hardening) El proxy decide la cookie con `(AUTH_URL ?? NEXTAUTH_URL).startsWith("https:")` (`src/proxy.ts`), mientras Auth.js usa `new URL(...).protocol`, que normaliza a minúsculas: una variable escrita `HTTPS://…` haría que el proxy busque la cookie sin prefijo y `auth()` la segura (bucle `/inicio` ↔ `/login`). Lo mismo con la cabecera `x-forwarded-proto` (`src/proxy.ts:32-33`, compara el valor entero con `"https"`): `HTTPS` o `https:` Auth.js los normaliza a cookie segura y el proxy elige la sin prefijo; con una lista `https,http`, `auth()` falla con `ERR_INVALID_URL` (revisión de código de HU-13: sobrevive la mutación `=== "https"` → `!== "http"`). Sin URL configurada, el proxy además confía en la cabecera tal como llega (barrido de HU-13; sin impacto porque la sal y el secreto siguen validando). Si se quiere cerrar: armar el protocolo con `new URL(...).protocol` igual que `createActionURL`, con tests para `HTTPS://`, `HTTPS`, `https:` y `https,http`.
+- 2026-11-20 · (HU-13, seguridad) `/mi-suscripcion` y `/reportes` (`src/app/(dashboard)/`) no están en `RUTAS_PROTEGIDAS` ni en `config.matcher` de `src/proxy.ts`: solo los protege el `auth()` del layout, sin la primera barrera del proxy (viene de antes de HU-13). Las rutas fuera del dashboard (`wrapped`, `i`, `r`, `prueba-finalizada`, `cuenta-no-aprobada`) no se revisaron. Decidir si se agregan al proxy.

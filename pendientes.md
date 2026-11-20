@@ -12,8 +12,8 @@ Prioridad: **A** riesgo real o algo roto · **B** mejora con valor claro · **C*
 |---|---|---|---|---|
 | S-1 | A | → ✅ **HU-09** (sigue pública, acotada a años con datos: 404 fuera de 2026..año actual en ART, sin consultar la base). `/wrapped/[anio]` no está en `RUTAS_PROTEGIDAS`, queda fuera de `(dashboard)` y no llama a `auth()`. Falta ver qué datos muestra, si otra capa la protege y la ruta `imagen` | sin confirmar | `src/app/wrapped/[anio]/`, `src/proxy.ts` |
 | S-2 | A | → ✅ **HU-06** (desaprobada, hecha 2026-11-11) y ✅ **HU-07** (cambio de rol, hecha 2026-11-16: el rol se lee de la base en cada `auth()`). Una cuenta desaprobada podría conservar el acceso hasta que venza el JWT (90 días): `verificado` solo se mira en `authorize` | sospecha | `src/lib/auth.ts:48,97`, `layout.tsx:44-47` |
-| S-3 | B | `router.push(callbackUrl \|\| "/inicio")` sin exigir mismo origen en login y registro (posible redirect abierto) | sospecha | `login/page.tsx:9,37`, `registro/page.tsx:62,150` |
-| S-4 | B | Con https, el proxy busca `authjs.session-token` y Auth.js emite `__Secure-authjs.session-token`: mandaría a `/login` a vecinos con sesión | confirmado en la librería, falta ver producción | `src/proxy.ts:25-30`, `src/lib/auth.ts` |
+| S-3 | B | → **HU-14**. `router.push(callbackUrl \|\| "/inicio")` sin exigir mismo origen en login y registro (posible redirect abierto) | sospecha | `login/page.tsx:9,37`, `registro/page.tsx:62,150` |
+| S-4 | B | → **HU-13**. Con https, el proxy busca `authjs.session-token` y Auth.js emite `__Secure-authjs.session-token`: mandaría a `/login` a vecinos con sesión | confirmado en la librería, falta ver producción | `src/proxy.ts:25-30`, `src/lib/auth.ts` |
 | S-5 | B | El bloqueo de prueba vencida y, desde HU-06, el de cuenta desaprobada están solo en el layout (el proxy mira solo el JWT y las páginas leen `prisma` con `auth()`); falta ver si una navegación RSC lo reejecuta. Si no, una cuenta desaprobada o vencida podría abrir otras pantallas del dashboard con datos frescos, no solo la que tenía abierta, también con una petición RSC armada a mano (`Next-Router-State-Tree` que dé el layout por cargado) (barridos de HU-06, 2026-11-10 y 2026-11-11; comprobarlo en Next 16) | sospecha | `layout.tsx:50-57` |
 | S-6 | B | Previews de Vercel con la DB de producción: si un preview tiene `CRON_SECRET`, puede gastar el aviso de clima del día o mandar push reales | validar config de Vercel | Vercel → env vars por entorno |
 | S-7 | C | Hardening de crons y Open-Meteo: token comparado con `!==` (no en tiempo constante), `apikey` sin `encodeURIComponent`, `fetch` sin `redirect: "error"`, cuerpo sin límite, log del error completo de Prisma/push, rechazar `http://` en `OPEN_METEO_URL` | hardening | `src/app/api/cron/*`, `TarjetaClima.tsx`, `clima/page.tsx` |
@@ -53,8 +53,8 @@ Según lo que dejó cada módulo; verificar contra el código antes de armar la 
 | M-5 | C | Mapa | Lugares del barrio (faltan las ubicaciones reales); etapa 2: coordenadas y pines en avisos, pedidos y mascotas; etapa 3: manzanas por incidentes, cámaras, luminarias |
 | M-6 | C | Reportes | Fases siguientes de `docs/tasks-reportes.md` |
 | M-7 | C | Crecimiento | Email (en pausa por falta de dominio para Resend); incentivo por referido sin aprobar |
-| M-8 | B | Encuesta de experiencia (nuevo) | Encuesta dentro de la app para medir cómo les va a los vecinos con la app. Ver detalle abajo |
-| M-9 | B | Compartir con adelanto (nuevo) → **HU-10..12** | Al compartir en WhatsApp, mostrar solo las primeras palabras del detalle + "…" para que entren a la app. Avisos, incidentes, pedidos y mascotas; partes no. Ver detalle abajo |
+| M-8 | B | Encuesta de experiencia (nuevo) → **HU-16..18** | Encuesta dentro de la app para medir cómo les va a los vecinos con la app. Ver detalle abajo |
+| M-9 | B | Compartir con adelanto (nuevo) → ✅ **HU-10..12** (hechas, 2026-11-19) | Al compartir en WhatsApp, mostrar solo las primeras palabras del detalle + "…" para que entren a la app. Avisos, incidentes, pedidos y mascotas; partes no. Ver detalle abajo |
 
 ### M-8 · Encuesta de experiencia en la app
 
