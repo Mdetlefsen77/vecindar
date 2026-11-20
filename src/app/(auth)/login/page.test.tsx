@@ -55,4 +55,16 @@ describe("login · destino tras iniciar sesión", () => {
       ),
     );
   });
+
+  it("I-132 · una ruta del sitio con query y # se respeta entera", async () => {
+    await enviar(
+      "callbackUrl=" + encodeURIComponent("/incidentes/12?desde=wa#detalle"),
+    );
+    expect(push).toHaveBeenCalledWith("/incidentes/12?desde=wa#detalle");
+  });
+
+  it("I-135 · sin callbackUrl va a /inicio", async () => {
+    await enviar("");
+    expect(push).toHaveBeenCalledWith("/inicio");
+  });
 });
