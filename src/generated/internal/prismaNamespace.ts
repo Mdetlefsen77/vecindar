@@ -413,7 +413,8 @@ export const ModelName = {
   ReporteOficio: 'ReporteOficio',
   Aviso: 'Aviso',
   ConfirmacionAviso: 'ConfirmacionAviso',
-  AlertaClima: 'AlertaClima'
+  AlertaClima: 'AlertaClima',
+  RespuestaEncuesta: 'RespuestaEncuesta'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -429,7 +430,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "promoOficio" | "recomendacionOficio" | "reporteOficio" | "aviso" | "confirmacionAviso" | "alertaClima"
+    modelProps: "manzana" | "lote" | "residente" | "usuario" | "suscripcion" | "pago" | "vistaSeccion" | "incidente" | "configSLA" | "alertaPanico" | "comentarioAlerta" | "pushSubscription" | "requerimiento" | "comentarioReq" | "mascotaPerdida" | "codigoInvitacion" | "transicionEstado" | "reporte" | "publicacionExterna" | "linkRastreable" | "clickLink" | "parteTurno" | "categoriaOficio" | "oficio" | "promoOficio" | "recomendacionOficio" | "reporteOficio" | "aviso" | "confirmacionAviso" | "alertaClima" | "respuestaEncuesta"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2653,6 +2654,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RespuestaEncuesta: {
+      payload: Prisma.$RespuestaEncuestaPayload<ExtArgs>
+      fields: Prisma.RespuestaEncuestaFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RespuestaEncuestaFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RespuestaEncuestaFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>
+        }
+        findFirst: {
+          args: Prisma.RespuestaEncuestaFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RespuestaEncuestaFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>
+        }
+        findMany: {
+          args: Prisma.RespuestaEncuestaFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>[]
+        }
+        create: {
+          args: Prisma.RespuestaEncuestaCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>
+        }
+        createMany: {
+          args: Prisma.RespuestaEncuestaCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RespuestaEncuestaCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>[]
+        }
+        delete: {
+          args: Prisma.RespuestaEncuestaDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>
+        }
+        update: {
+          args: Prisma.RespuestaEncuestaUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>
+        }
+        deleteMany: {
+          args: Prisma.RespuestaEncuestaDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RespuestaEncuestaUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RespuestaEncuestaUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>[]
+        }
+        upsert: {
+          args: Prisma.RespuestaEncuestaUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RespuestaEncuestaPayload>
+        }
+        aggregate: {
+          args: Prisma.RespuestaEncuestaAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRespuestaEncuesta>
+        }
+        groupBy: {
+          args: Prisma.RespuestaEncuestaGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RespuestaEncuestaGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RespuestaEncuestaCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RespuestaEncuestaCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3116,6 +3191,21 @@ export const AlertaClimaScalarFieldEnum = {
 } as const
 
 export type AlertaClimaScalarFieldEnum = (typeof AlertaClimaScalarFieldEnum)[keyof typeof AlertaClimaScalarFieldEnum]
+
+
+export const RespuestaEncuestaScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  ronda: 'ronda',
+  facilidad: 'facilidad',
+  seLee: 'seLee',
+  nps: 'nps',
+  gusta: 'gusta',
+  cambiaria: 'cambiaria',
+  createdAt: 'createdAt'
+} as const
+
+export type RespuestaEncuestaScalarFieldEnum = (typeof RespuestaEncuestaScalarFieldEnum)[keyof typeof RespuestaEncuestaScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3729,6 +3819,7 @@ export type GlobalOmitConfig = {
   aviso?: Prisma.AvisoOmit
   confirmacionAviso?: Prisma.ConfirmacionAvisoOmit
   alertaClima?: Prisma.AlertaClimaOmit
+  respuestaEncuesta?: Prisma.RespuestaEncuestaOmit
 }
 
 /* Types for Logging */

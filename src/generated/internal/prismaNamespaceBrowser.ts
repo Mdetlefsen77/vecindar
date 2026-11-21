@@ -80,7 +80,8 @@ export const ModelName = {
   ReporteOficio: 'ReporteOficio',
   Aviso: 'Aviso',
   ConfirmacionAviso: 'ConfirmacionAviso',
-  AlertaClima: 'AlertaClima'
+  AlertaClima: 'AlertaClima',
+  RespuestaEncuesta: 'RespuestaEncuesta'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -523,6 +524,21 @@ export const AlertaClimaScalarFieldEnum = {
 } as const
 
 export type AlertaClimaScalarFieldEnum = (typeof AlertaClimaScalarFieldEnum)[keyof typeof AlertaClimaScalarFieldEnum]
+
+
+export const RespuestaEncuestaScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  ronda: 'ronda',
+  facilidad: 'facilidad',
+  seLee: 'seLee',
+  nps: 'nps',
+  gusta: 'gusta',
+  cambiaria: 'cambiaria',
+  createdAt: 'createdAt'
+} as const
+
+export type RespuestaEncuestaScalarFieldEnum = (typeof RespuestaEncuestaScalarFieldEnum)[keyof typeof RespuestaEncuestaScalarFieldEnum]
 
 
 export const SortOrder = {
