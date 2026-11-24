@@ -285,6 +285,31 @@ describe("TarjetaEncuesta", () => {
     }
   });
 
+  it("I-165 · escribir en la pregunta 5 envía cambiaria en el body", async () => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 201 }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    llegarAEnviar({ gusta: "Los avisos" });
+    fireEvent.change(screen.getByRole("textbox"), {
+      target: { value: "Más letra" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    const [, init] = fetchMock.mock.calls[0] as unknown as [
+      string,
+      RequestInit,
+    ];
+    expect(JSON.parse(init.body as string)).toEqual({
+      facilidad: 4,
+      seLee: "SI",
+      nps: 9,
+      gusta: "Los avisos",
+      cambiaria: "Más letra",
+    });
+  });
+
   it("I-162 · se ve el texto completo de la introducción y los textos de las preguntas 4 y 5", () => {
     render(<TarjetaEncuesta />);
     expect(
