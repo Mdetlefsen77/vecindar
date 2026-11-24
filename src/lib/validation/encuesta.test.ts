@@ -42,6 +42,12 @@ describe("encuestaSchema", () => {
     ).toBe(true);
   });
 
+  it("U-94 seLee: NO válido", () => {
+    expect(encuestaSchema.safeParse({ ...base, seLee: "NO" }).success).toBe(
+      true,
+    );
+  });
+
   it("U-91 obligatorias: sin facilidad, seLee o nps inválido; sin textos válido", () => {
     const sinFacilidad = { seLee: "SI", nps: 5 };
     const sinSeLee = { facilidad: 3, nps: 5 };
