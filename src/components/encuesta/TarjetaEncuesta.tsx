@@ -125,8 +125,10 @@ export function TarjetaEncuesta() {
           <textarea
             value={gusta}
             onChange={(e) => setGusta(e.target.value)}
+            maxLength={500}
             className="w-full rounded-2xl border border-gray-300 p-3 text-lg"
           />
+          <p className="text-base text-gray-600">{gusta.length}/500</p>
           <button className={BOTON} onClick={() => setPaso(5)}>
             Siguiente
           </button>
@@ -140,8 +142,10 @@ export function TarjetaEncuesta() {
           <textarea
             value={cambiaria}
             onChange={(e) => setCambiaria(e.target.value)}
+            maxLength={500}
             className="w-full rounded-2xl border border-gray-300 p-3 text-lg"
           />
+          <p className="text-base text-gray-600">{cambiaria.length}/500</p>
           {error && (
             <p role="alert" className="text-lg font-bold">
               No pudimos enviar tus respuestas. Probá de nuevo.

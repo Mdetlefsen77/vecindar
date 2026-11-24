@@ -176,4 +176,22 @@ describe("TarjetaEncuesta", () => {
     );
     expect(screen.getByRole("button", { name: "Enviar" })).toBeTruthy();
   });
+
+  it("I-156 · los campos de texto tienen maxLength 500 y un contador n/500", () => {
+    vi.stubGlobal("fetch", vi.fn());
+    render(<TarjetaEncuesta />);
+
+    llegarAEnviar({ gusta: "Los avisos" });
+    fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
+    const gusta = screen.getByRole("textbox") as HTMLTextAreaElement;
+    expect(gusta.maxLength).toBe(500);
+    expect(screen.getByText("10/500")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    const cambiaria = screen.getByRole("textbox") as HTMLTextAreaElement;
+    expect(cambiaria.maxLength).toBe(500);
+    expect(screen.getByText("0/500")).toBeTruthy();
+    fireEvent.change(cambiaria, { target: { value: "Más letra" } });
+    expect(screen.getByText("9/500")).toBeTruthy();
+  });
 });
