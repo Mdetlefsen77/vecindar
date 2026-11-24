@@ -20,18 +20,25 @@ export function TarjetaEncuesta() {
   const [cambiaria, setCambiaria] = useState("");
   const [enviada, setEnviada] = useState(false);
   const [yaRespondida, setYaRespondida] = useState(false);
+  const [error, setError] = useState(false);
 
   async function enviar() {
     const body: Record<string, unknown> = { facilidad, seLee, nps };
     if (gusta) body.gusta = gusta;
     if (cambiaria) body.cambiaria = cambiaria;
-    const res = await fetch("/api/encuesta", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    if (res.ok) setEnviada(true);
-    else if (res.status === 409) setYaRespondida(true);
+    setError(false);
+    try {
+      const res = await fetch("/api/encuesta", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (res.ok) setEnviada(true);
+      else if (res.status === 409) setYaRespondida(true);
+      else setError(true);
+    } catch {
+      setError(true);
+    }
   }
 
   if (yaRespondida) {
@@ -135,6 +142,11 @@ export function TarjetaEncuesta() {
             onChange={(e) => setCambiaria(e.target.value)}
             className="w-full rounded-2xl border border-gray-300 p-3 text-lg"
           />
+          {error && (
+            <p role="alert" className="text-lg font-bold">
+              No pudimos enviar tus respuestas. Probá de nuevo.
+            </p>
+          )}
           <button className={BOTON} onClick={enviar}>
             Enviar
           </button>

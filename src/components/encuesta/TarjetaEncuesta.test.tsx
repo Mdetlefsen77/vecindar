@@ -8,6 +8,8 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+const MENSAJE_ERROR = "No pudimos enviar tus respuestas. Probá de nuevo.";
+
 describe("TarjetaEncuesta", () => {
   it("I-150 · responde paso a paso, envía a /api/encuesta y agradece", async () => {
     const fetchMock = vi.fn(async () => new Response("{}", { status: 201 }));
@@ -121,5 +123,66 @@ describe("TarjetaEncuesta", () => {
       expect(screen.getByText("Ya respondiste esta encuesta")).toBeTruthy(),
     );
     expect(screen.queryByText("¡Gracias por contarnos!")).toBeNull();
+  });
+
+  it("I-153 · con 500 muestra el error, deja reintentar y reenvía las mismas respuestas", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("{}", { status: 500 }))
+      .mockResolvedValueOnce(new Response("{}", { status: 201 }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    fireEvent.change(screen.getByRole("textbox"), {
+      target: { value: "Los avisos" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() =>
+      expect(screen.getByText(MENSAJE_ERROR)).toBeTruthy(),
+    );
+    expect(screen.queryByText("¡Gracias por contarnos!")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() =>
+      expect(screen.getByText("¡Gracias por contarnos!")).toBeTruthy(),
+    );
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const cuerpos = fetchMock.mock.calls.map(([, init]) =>
+      JSON.parse((init as RequestInit).body as string),
+    );
+    expect(cuerpos[1]).toEqual(cuerpos[0]);
+    expect(cuerpos[1]).toEqual({
+      facilidad: 4,
+      seLee: "SI",
+      nps: 9,
+      gusta: "Los avisos",
+    });
+  });
+
+  it("I-153 · si el fetch lanza (sin conexión) muestra el mismo error y deja reintentar", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockRejectedValue(new TypeError("Failed to fetch"));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() =>
+      expect(screen.getByText(MENSAJE_ERROR)).toBeTruthy(),
+    );
+    expect(screen.getByRole("button", { name: "Enviar" })).toBeTruthy();
   });
 });
