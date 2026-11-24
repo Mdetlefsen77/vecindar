@@ -10,20 +10,30 @@ afterEach(() => {
 
 const MENSAJE_ERROR = "No pudimos enviar tus respuestas. Probá de nuevo.";
 
+// Recorre la tarjeta desde "Responder" hasta la pantalla con el botón Enviar.
+function llegarAEnviar({
+  seLee = "Sí",
+  gusta,
+}: { seLee?: string; gusta?: string } = {}) {
+  fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+  fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+  fireEvent.click(screen.getByRole("button", { name: seLee }));
+  fireEvent.click(screen.getByRole("button", { name: "9" }));
+  if (gusta !== undefined) {
+    fireEvent.change(screen.getByRole("textbox"), {
+      target: { value: gusta },
+    });
+  }
+  fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+}
+
 describe("TarjetaEncuesta", () => {
   it("I-150 · responde paso a paso, envía a /api/encuesta y agradece", async () => {
     const fetchMock = vi.fn(async () => new Response("{}", { status: 201 }));
     vi.stubGlobal("fetch", fetchMock);
     render(<TarjetaEncuesta />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
-    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
-    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
-    fireEvent.click(screen.getByRole("button", { name: "9" }));
-    fireEvent.change(screen.getByRole("textbox"), {
-      target: { value: "Los avisos" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    llegarAEnviar({ gusta: "Los avisos" });
     fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
 
     await vi.waitFor(() =>
@@ -83,11 +93,7 @@ describe("TarjetaEncuesta", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<TarjetaEncuesta />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
-    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
-    fireEvent.click(screen.getByRole("button", { name: "No" }));
-    fireEvent.click(screen.getByRole("button", { name: "9" }));
-    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    llegarAEnviar({ seLee: "No" });
     fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
 
     await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
@@ -112,11 +118,7 @@ describe("TarjetaEncuesta", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<TarjetaEncuesta />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
-    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
-    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
-    fireEvent.click(screen.getByRole("button", { name: "9" }));
-    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    llegarAEnviar();
     fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
 
     await vi.waitFor(() =>
@@ -133,14 +135,7 @@ describe("TarjetaEncuesta", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<TarjetaEncuesta />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
-    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
-    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
-    fireEvent.click(screen.getByRole("button", { name: "9" }));
-    fireEvent.change(screen.getByRole("textbox"), {
-      target: { value: "Los avisos" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    llegarAEnviar({ gusta: "Los avisos" });
     fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
 
     await vi.waitFor(() =>
@@ -173,11 +168,7 @@ describe("TarjetaEncuesta", () => {
     vi.stubGlobal("fetch", fetchMock);
     render(<TarjetaEncuesta />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
-    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
-    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
-    fireEvent.click(screen.getByRole("button", { name: "9" }));
-    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    llegarAEnviar();
     fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
 
     await vi.waitFor(() =>
