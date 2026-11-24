@@ -177,6 +177,35 @@ describe("TarjetaEncuesta", () => {
     expect(screen.getByRole("button", { name: "Enviar" })).toBeTruthy();
   });
 
+  it("I-161 · al reintentar tras un 500, el mensaje de error se oculta mientras el fetch no responde", async () => {
+    let responder: (res: Response) => void = () => {};
+    const pendiente = new Promise<Response>((resolve) => {
+      responder = resolve;
+    });
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("{}", { status: 500 }))
+      .mockReturnValueOnce(pendiente);
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    llegarAEnviar();
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+    await vi.waitFor(() =>
+      expect(screen.getByText(MENSAJE_ERROR)).toBeTruthy(),
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    expect(screen.queryByText(MENSAJE_ERROR)).toBeNull();
+
+    responder(new Response("{}", { status: 201 }));
+    await vi.waitFor(() =>
+      expect(screen.getByText("¡Gracias por contarnos!")).toBeTruthy(),
+    );
+  });
+
   it("I-156 · los campos de texto tienen maxLength 500 y un contador n/500", () => {
     vi.stubGlobal("fetch", vi.fn());
     render(<TarjetaEncuesta />);
