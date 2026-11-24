@@ -68,4 +68,37 @@ describe("POST /api/encuesta", () => {
       error: expect.any(String),
     });
   });
+
+  it("I-147 ignora usuarioId y ronda del body: se guarda con el usuario de la sesión y la ronda actual", async () => {
+    const res = await POST(
+      pedido({
+        facilidad: 4,
+        seLee: "SI",
+        nps: 9,
+        usuarioId: 99,
+        ronda: "2020-T1",
+      }),
+    );
+    expect(res.status).toBe(201);
+    expect(prisma.respuestaEncuesta.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({ usuarioId: 7, ronda: "2026-T4" }),
+    });
+  });
+
+  it("I-149 con facilidad fuera de rango responde 400 y no guarda", async () => {
+    const res = await POST(pedido({ facilidad: 6, seLee: "SI", nps: 9 }));
+    expect(res.status).toBe(400);
+    expect(prisma.respuestaEncuesta.create).not.toHaveBeenCalled();
+  });
+
+  it("I-155 sin sesión responde 401 y no guarda", async () => {
+    vi.mocked(requireSession).mockResolvedValue({
+      response: new Response(JSON.stringify({ error: "No autorizado" }), {
+        status: 401,
+      }),
+    } as never);
+    const res = await POST(pedido({ facilidad: 4, seLee: "SI", nps: 9 }));
+    expect(res.status).toBe(401);
+    expect(prisma.respuestaEncuesta.create).not.toHaveBeenCalled();
+  });
 });
