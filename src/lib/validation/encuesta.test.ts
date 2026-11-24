@@ -32,4 +32,13 @@ describe("encuestaSchema", () => {
     );
     expect(encuestaSchema.safeParse({ ...base, nps: 7.5 }).success).toBe(false);
   });
+
+  it("U-90 seLee: QUIZAS inválido; MAS_O_MENOS válido", () => {
+    expect(encuestaSchema.safeParse({ ...base, seLee: "QUIZAS" }).success).toBe(
+      false,
+    );
+    expect(
+      encuestaSchema.safeParse({ ...base, seLee: "MAS_O_MENOS" }).success,
+    ).toBe(true);
+  });
 });
