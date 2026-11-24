@@ -238,4 +238,22 @@ describe("TarjetaEncuesta", () => {
     ).toBeTruthy();
     expect(screen.getByRole("button", { name: "Anterior" })).toBeTruthy();
   });
+
+  it("I-162 · se ve el texto completo de la introducción y los textos de las preguntas 4 y 5", () => {
+    render(<TarjetaEncuesta />);
+    expect(
+      screen.getByText("¿Nos contás cómo te va con la app? Son 5 preguntas"),
+    ).toBeTruthy();
+
+    llegarAEnviar();
+    fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
+    expect(screen.getByText("¿Qué es lo que más te gusta?")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    expect(
+      screen.getByText(
+        "Si pudieras cambiar o agregar una sola cosa, ¿cuál sería?",
+      ),
+    ).toBeTruthy();
+  });
 });
