@@ -19,6 +19,7 @@ export function TarjetaEncuesta() {
   const [gusta, setGusta] = useState("");
   const [cambiaria, setCambiaria] = useState("");
   const [enviada, setEnviada] = useState(false);
+  const [yaRespondida, setYaRespondida] = useState(false);
 
   async function enviar() {
     const body: Record<string, unknown> = { facilidad, seLee, nps };
@@ -30,6 +31,11 @@ export function TarjetaEncuesta() {
       body: JSON.stringify(body),
     });
     if (res.ok) setEnviada(true);
+    else if (res.status === 409) setYaRespondida(true);
+  }
+
+  if (yaRespondida) {
+    return <p className="text-lg font-bold">Ya respondiste esta encuesta</p>;
   }
 
   if (enviada) {

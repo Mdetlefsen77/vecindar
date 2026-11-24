@@ -99,4 +99,27 @@ describe("TarjetaEncuesta", () => {
       nps: 9,
     });
   });
+
+  it("I-152 · el servidor responde 409 y se muestra Ya respondiste esta encuesta", async () => {
+    const fetchMock = vi.fn(
+      async () =>
+        new Response(JSON.stringify({ error: "Ya respondiste" }), {
+          status: 409,
+        }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() =>
+      expect(screen.getByText("Ya respondiste esta encuesta")).toBeTruthy(),
+    );
+    expect(screen.queryByText("¡Gracias por contarnos!")).toBeNull();
+  });
 });
