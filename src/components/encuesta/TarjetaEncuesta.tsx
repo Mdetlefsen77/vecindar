@@ -5,6 +5,12 @@ import { useState } from "react";
 const BOTON =
   "rounded-2xl border border-gray-300 bg-white px-4 py-3 min-h-[60px] text-lg font-bold";
 
+const OPCIONES_SE_LEE = [
+  ["SI", "Sí"],
+  ["MAS_O_MENOS", "Más o menos"],
+  ["NO", "No"],
+] as const;
+
 export function TarjetaEncuesta() {
   const [paso, setPaso] = useState(0);
   const [facilidad, setFacilidad] = useState<number>();
@@ -67,33 +73,18 @@ export function TarjetaEncuesta() {
           <p className="text-lg font-bold">
             ¿Se leen bien los textos y botones?
           </p>
-          <button
-            className={BOTON}
-            onClick={() => {
-              setSeLee("SI");
-              setPaso(3);
-            }}
-          >
-            Sí
-          </button>
-          <button
-            className={BOTON}
-            onClick={() => {
-              setSeLee("NO");
-              setPaso(3);
-            }}
-          >
-            No
-          </button>
-          <button
-            className={BOTON}
-            onClick={() => {
-              setSeLee("MAS_O_MENOS");
-              setPaso(3);
-            }}
-          >
-            Más o menos
-          </button>
+          {OPCIONES_SE_LEE.map(([valor, etiqueta]) => (
+            <button
+              key={valor}
+              className={BOTON}
+              onClick={() => {
+                setSeLee(valor);
+                setPaso(3);
+              }}
+            >
+              {etiqueta}
+            </button>
+          ))}
         </>
       )}
       {paso === 3 && (
