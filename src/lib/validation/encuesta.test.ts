@@ -18,4 +18,11 @@ describe("encuestaSchema", () => {
       true,
     );
   });
+
+  it("U-88 nps: -1 y 11 inválidos; 0 y 10 válidos", () => {
+    expect(encuestaSchema.safeParse({ ...base, nps: -1 }).success).toBe(false);
+    expect(encuestaSchema.safeParse({ ...base, nps: 11 }).success).toBe(false);
+    expect(encuestaSchema.safeParse({ ...base, nps: 0 }).success).toBe(true);
+    expect(encuestaSchema.safeParse({ ...base, nps: 10 }).success).toBe(true);
+  });
 });
