@@ -19,4 +19,16 @@ describe("rondaActual", () => {
       else process.env.TZ = tzOriginal;
     }
   });
+
+  it("U-86 · el cambio de año se decide en hora de Córdoba: 31/12 23:30 es 2025-T4", () => {
+    const tzOriginal = process.env.TZ;
+    process.env.TZ = "UTC";
+    try {
+      // 31/12/2025 23:30 en Córdoba
+      expect(rondaActual(new Date("2026-01-01T02:30:00Z"))).toBe("2025-T4");
+    } finally {
+      if (tzOriginal === undefined) delete process.env.TZ;
+      else process.env.TZ = tzOriginal;
+    }
+  });
 });
