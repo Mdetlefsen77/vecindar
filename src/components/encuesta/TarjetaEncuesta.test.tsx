@@ -75,4 +75,28 @@ describe("TarjetaEncuesta", () => {
       nps: 9,
     });
   });
+
+  it("I-157 · elegir No en la pregunta 2 envía seLee NO", async () => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 201 }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    fireEvent.click(screen.getByRole("button", { name: "No" }));
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    const [, init] = fetchMock.mock.calls[0] as unknown as [
+      string,
+      RequestInit,
+    ];
+    expect(JSON.parse(init.body as string)).toEqual({
+      facilidad: 4,
+      seLee: "NO",
+      nps: 9,
+    });
+  });
 });

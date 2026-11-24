@@ -79,6 +79,15 @@ export function TarjetaEncuesta() {
           <button
             className={BOTON}
             onClick={() => {
+              setSeLee("NO");
+              setPaso(3);
+            }}
+          >
+            No
+          </button>
+          <button
+            className={BOTON}
+            onClick={() => {
               setSeLee("MAS_O_MENOS");
               setPaso(3);
             }}
