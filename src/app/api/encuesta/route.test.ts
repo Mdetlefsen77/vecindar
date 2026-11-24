@@ -69,6 +69,25 @@ describe("POST /api/encuesta", () => {
     });
   });
 
+  it("I-159 si create falla con otro código de Prisma (P2003) el error se relanza y no responde 409", async () => {
+    const error = new Prisma.PrismaClientKnownRequestError(
+      "Foreign key constraint failed",
+      { code: "P2003", clientVersion: "7.4.1" },
+    );
+    vi.mocked(prisma.respuestaEncuesta.create).mockRejectedValue(error);
+    await expect(
+      POST(pedido({ facilidad: 4, seLee: "SI", nps: 9 })),
+    ).rejects.toBe(error);
+  });
+
+  it("I-159 si create falla con un Error común el error se relanza y no responde 409", async () => {
+    const error = new Error("conexión caída");
+    vi.mocked(prisma.respuestaEncuesta.create).mockRejectedValue(error);
+    await expect(
+      POST(pedido({ facilidad: 4, seLee: "SI", nps: 9 })),
+    ).rejects.toBe(error);
+  });
+
   it("I-147 ignora usuarioId y ronda del body: se guarda con el usuario de la sesión y la ronda actual", async () => {
     const res = await POST(
       pedido({
