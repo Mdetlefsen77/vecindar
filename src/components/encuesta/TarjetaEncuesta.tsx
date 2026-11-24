@@ -76,6 +76,15 @@ export function TarjetaEncuesta() {
           >
             Sí
           </button>
+          <button
+            className={BOTON}
+            onClick={() => {
+              setSeLee("MAS_O_MENOS");
+              setPaso(3);
+            }}
+          >
+            Más o menos
+          </button>
         </>
       )}
       {paso === 3 && (
@@ -124,6 +133,11 @@ export function TarjetaEncuesta() {
             Enviar
           </button>
         </>
+      )}
+      {paso >= 2 && (
+        <button className={BOTON} onClick={() => setPaso(paso - 1)}>
+          Anterior
+        </button>
       )}
     </section>
   );
