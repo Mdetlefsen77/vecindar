@@ -63,4 +63,15 @@ describe("encuestaSchema", () => {
       encuestaSchema.safeParse({ ...base, cambiaria: "a".repeat(501) }).success,
     ).toBe(false);
   });
+
+  it("U-93 textos de solo espacios quedan en null", () => {
+    const r = encuestaSchema.safeParse({
+      ...base,
+      cambiaria: "   ",
+      gusta: "   ",
+    });
+    expect(r.success).toBe(true);
+    expect(r.data?.cambiaria).toBeNull();
+    expect(r.data?.gusta).toBeNull();
+  });
 });

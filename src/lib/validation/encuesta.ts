@@ -8,10 +8,10 @@ export const encuestaSchema = z.object({
     .string()
     .max(500)
     .nullish()
-    .transform((v) => v ?? null),
+    .transform((v) => v?.trim() || null),
   cambiaria: z
     .string()
     .max(500)
     .nullish()
-    .transform((v) => v ?? null),
+    .transform((v) => v?.trim() || null),
 });
