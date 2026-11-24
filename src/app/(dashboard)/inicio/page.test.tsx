@@ -1,8 +1,8 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { respuestasPorRonda } = vi.hoisted(() => ({
-  respuestasPorRonda: new Set<string>(),
+const { respuestas } = vi.hoisted(() => ({
+  respuestas: new Set<string>(),
 }));
 
 vi.mock("@/lib/auth", () => ({
@@ -46,8 +46,22 @@ vi.mock("@/lib/prisma/client", () => {
       aviso: lista(),
       alertaPanico: lista(),
       respuestaEncuesta: {
-        findFirst: vi.fn(async ({ where }: { where: { ronda: string } }) =>
-          respuestasPorRonda.has(where.ronda) ? { id: 1 } : null,
+        findFirst: vi.fn(
+          async ({
+            where,
+          }: {
+            where: { usuarioId?: number; ronda: string };
+          }) =>
+            [...respuestas].some((clave) => {
+              const [usuarioId, ronda] = clave.split(":");
+              return (
+                (where.usuarioId === undefined ||
+                  String(where.usuarioId) === usuarioId) &&
+                where.ronda === ronda
+              );
+            })
+              ? { id: 1 }
+              : null,
         ),
       },
     },
@@ -61,7 +75,7 @@ const TEXTO = "¿Nos contás cómo te va con la app?";
 beforeEach(() => {
   vi.useFakeTimers();
   vi.setSystemTime(new Date("2026-11-20T15:00:00Z"));
-  respuestasPorRonda.clear();
+  respuestas.clear();
 });
 
 afterEach(() => {
@@ -72,11 +86,16 @@ describe("/inicio · tarjeta de la encuesta", () => {
   it("I-154 se ve si no respondió la ronda actual y no si ya la respondió", async () => {
     expect(renderToStaticMarkup(await InicioPage())).toContain(TEXTO);
 
-    respuestasPorRonda.add("2026-T4");
+    respuestas.add("7:2026-T4");
     expect(renderToStaticMarkup(await InicioPage())).not.toContain(TEXTO);
 
-    respuestasPorRonda.clear();
-    respuestasPorRonda.add("2026-T3");
+    respuestas.clear();
+    respuestas.add("7:2026-T3");
+    expect(renderToStaticMarkup(await InicioPage())).toContain(TEXTO);
+  });
+
+  it("I-158 se ve si respondió otro vecino y no el de la sesión", async () => {
+    respuestas.add("8:2026-T4");
     expect(renderToStaticMarkup(await InicioPage())).toContain(TEXTO);
   });
 });
