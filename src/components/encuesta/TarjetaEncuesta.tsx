@@ -1,15 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { OPCIONES_SE_LEE, PREGUNTAS_ENCUESTA } from "@/lib/encuesta";
 
 const BOTON =
   "rounded-2xl border border-gray-300 bg-white px-4 py-3 min-h-[60px] text-lg font-bold";
-
-const OPCIONES_SE_LEE = [
-  ["SI", "Sí"],
-  ["MAS_O_MENOS", "Más o menos"],
-  ["NO", "No"],
-] as const;
 
 export function TarjetaEncuesta() {
   const [paso, setPaso] = useState(0);
@@ -53,9 +48,7 @@ export function TarjetaEncuesta() {
     <section className="rounded-2xl border border-gray-300 bg-white px-4 py-3">
       {paso === 0 && (
         <>
-          <p className="text-lg font-bold">
-            ¿Nos contás cómo te va con la app? Son 5 preguntas
-          </p>
+          <p className="text-lg font-bold">{PREGUNTAS_ENCUESTA.intro}</p>
           <button className={BOTON} onClick={() => setPaso(1)}>
             Responder
           </button>
@@ -63,9 +56,7 @@ export function TarjetaEncuesta() {
       )}
       {paso === 1 && (
         <>
-          <p className="text-lg font-bold">
-            ¿Qué tan fácil te resulta usar la app?
-          </p>
+          <p className="text-lg font-bold">{PREGUNTAS_ENCUESTA.facilidad}</p>
           {[1, 2, 3, 4, 5].map((n) => (
             <button
               key={n}
@@ -83,9 +74,7 @@ export function TarjetaEncuesta() {
       )}
       {paso === 2 && (
         <>
-          <p className="text-lg font-bold">
-            ¿Se leen bien los textos y botones?
-          </p>
+          <p className="text-lg font-bold">{PREGUNTAS_ENCUESTA.seLee}</p>
           {OPCIONES_SE_LEE.map(([valor, etiqueta]) => (
             <button
               key={valor}
@@ -102,9 +91,7 @@ export function TarjetaEncuesta() {
       )}
       {paso === 3 && (
         <>
-          <p className="text-lg font-bold">
-            Del 0 al 10, ¿cuánto se la recomendarías a un vecino?
-          </p>
+          <p className="text-lg font-bold">{PREGUNTAS_ENCUESTA.nps}</p>
           {Array.from({ length: 11 }, (_, n) => (
             <button
               key={n}
@@ -121,7 +108,7 @@ export function TarjetaEncuesta() {
       )}
       {paso === 4 && (
         <>
-          <p className="text-lg font-bold">¿Qué es lo que más te gusta?</p>
+          <p className="text-lg font-bold">{PREGUNTAS_ENCUESTA.gusta}</p>
           <textarea
             value={gusta}
             onChange={(e) => setGusta(e.target.value)}
@@ -136,9 +123,7 @@ export function TarjetaEncuesta() {
       )}
       {paso === 5 && (
         <>
-          <p className="text-lg font-bold">
-            Si pudieras cambiar o agregar una sola cosa, ¿cuál sería?
-          </p>
+          <p className="text-lg font-bold">{PREGUNTAS_ENCUESTA.cambiaria}</p>
           <textarea
             value={cambiaria}
             onChange={(e) => setCambiaria(e.target.value)}
