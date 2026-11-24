@@ -268,6 +268,23 @@ describe("TarjetaEncuesta", () => {
     });
   });
 
+  it("I-164 · cada carita de la pregunta 1 muestra su emoji y su número debajo", () => {
+    render(<TarjetaEncuesta />);
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+
+    const caritas: [number, string][] = [
+      [1, "😞"],
+      [2, "🙁"],
+      [3, "😐"],
+      [4, "🙂"],
+      [5, "😄"],
+    ];
+    for (const [n, emoji] of caritas) {
+      const boton = screen.getByRole("button", { name: `Carita ${n}` });
+      expect(boton.textContent).toBe(`${emoji}${n}`);
+    }
+  });
+
   it("I-162 · se ve el texto completo de la introducción y los textos de las preguntas 4 y 5", () => {
     render(<TarjetaEncuesta />);
     expect(

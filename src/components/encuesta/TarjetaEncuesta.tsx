@@ -6,6 +6,8 @@ import { OPCIONES_SE_LEE, PREGUNTAS_ENCUESTA } from "@/lib/encuesta";
 const BOTON =
   "rounded-2xl border border-gray-300 bg-white px-4 py-3 min-h-[60px] text-lg font-bold";
 
+const CARITAS = ["😞", "🙁", "😐", "🙂", "😄"];
+
 export function TarjetaEncuesta() {
   const [paso, setPaso] = useState(0);
   const [facilidad, setFacilidad] = useState<number>();
@@ -60,14 +62,17 @@ export function TarjetaEncuesta() {
           {[1, 2, 3, 4, 5].map((n) => (
             <button
               key={n}
-              className={BOTON}
+              className={`${BOTON} flex flex-col items-center`}
               aria-label={`Carita ${n}`}
               onClick={() => {
                 setFacilidad(n);
                 setPaso(2);
               }}
             >
-              {n}
+              <span aria-hidden="true" className="text-3xl">
+                {CARITAS[n - 1]}
+              </span>
+              <span>{n}</span>
             </button>
           ))}
         </>
