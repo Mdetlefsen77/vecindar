@@ -41,4 +41,14 @@ describe("encuestaSchema", () => {
       encuestaSchema.safeParse({ ...base, seLee: "MAS_O_MENOS" }).success,
     ).toBe(true);
   });
+
+  it("U-91 obligatorias: sin facilidad, seLee o nps inválido; sin textos válido", () => {
+    const sinFacilidad = { seLee: "SI", nps: 5 };
+    const sinSeLee = { facilidad: 3, nps: 5 };
+    const sinNps = { facilidad: 3, seLee: "SI" };
+    expect(encuestaSchema.safeParse(sinFacilidad).success).toBe(false);
+    expect(encuestaSchema.safeParse(sinSeLee).success).toBe(false);
+    expect(encuestaSchema.safeParse(sinNps).success).toBe(false);
+    expect(encuestaSchema.safeParse(base).success).toBe(true);
+  });
 });
