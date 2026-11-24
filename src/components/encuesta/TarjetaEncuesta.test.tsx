@@ -239,6 +239,35 @@ describe("TarjetaEncuesta", () => {
     expect(screen.getByRole("button", { name: "Anterior" })).toBeTruthy();
   });
 
+  it("I-163 · la pregunta 1 va de Carita 1 a Carita 5 y la 3 de 0 a 10; elegir 10 envía nps 10", async () => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 201 }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    expect(screen.getByRole("button", { name: "Carita 1" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Carita 5" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
+
+    expect(screen.getByRole("button", { name: "0" })).toBeTruthy();
+    expect(screen.getByRole("button", { name: "10" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "10" }));
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    const [, init] = fetchMock.mock.calls[0] as unknown as [
+      string,
+      RequestInit,
+    ];
+    expect(JSON.parse(init.body as string)).toEqual({
+      facilidad: 4,
+      seLee: "SI",
+      nps: 10,
+    });
+  });
+
   it("I-162 · se ve el texto completo de la introducción y los textos de las preguntas 4 y 5", () => {
     render(<TarjetaEncuesta />);
     expect(
