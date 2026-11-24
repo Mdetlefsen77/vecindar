@@ -25,4 +25,11 @@ describe("encuestaSchema", () => {
     expect(encuestaSchema.safeParse({ ...base, nps: 0 }).success).toBe(true);
     expect(encuestaSchema.safeParse({ ...base, nps: 10 }).success).toBe(true);
   });
+
+  it("U-89 facilidad y nps decimales son inválidos", () => {
+    expect(encuestaSchema.safeParse({ ...base, facilidad: 3.5 }).success).toBe(
+      false,
+    );
+    expect(encuestaSchema.safeParse({ ...base, nps: 7.5 }).success).toBe(false);
+  });
 });
