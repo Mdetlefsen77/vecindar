@@ -194,4 +194,19 @@ describe("TarjetaEncuesta", () => {
     fireEvent.change(cambiaria, { target: { value: "Más letra" } });
     expect(screen.getByText("9/500")).toBeTruthy();
   });
+
+  it("I-160 · en la pregunta 1 no hay Anterior y en la 2 sí", () => {
+    render(<TarjetaEncuesta />);
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    expect(
+      screen.getByText("¿Qué tan fácil te resulta usar la app?"),
+    ).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Anterior" })).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    expect(
+      screen.getByText("¿Se leen bien los textos y botones?"),
+    ).toBeTruthy();
+    expect(screen.getByRole("button", { name: "Anterior" })).toBeTruthy();
+  });
 });
