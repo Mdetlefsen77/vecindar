@@ -51,4 +51,16 @@ describe("encuestaSchema", () => {
     expect(encuestaSchema.safeParse(sinNps).success).toBe(false);
     expect(encuestaSchema.safeParse(base).success).toBe(true);
   });
+
+  it("U-92 textos: gusta de 501 inválido, de 500 válido; cambiaria de 501 inválido", () => {
+    expect(
+      encuestaSchema.safeParse({ ...base, gusta: "a".repeat(501) }).success,
+    ).toBe(false);
+    expect(
+      encuestaSchema.safeParse({ ...base, gusta: "a".repeat(500) }).success,
+    ).toBe(true);
+    expect(
+      encuestaSchema.safeParse({ ...base, cambiaria: "a".repeat(501) }).success,
+    ).toBe(false);
+  });
 });

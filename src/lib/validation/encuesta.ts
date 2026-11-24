@@ -6,10 +6,12 @@ export const encuestaSchema = z.object({
   nps: z.number().int().min(0).max(10),
   gusta: z
     .string()
+    .max(500)
     .nullish()
     .transform((v) => v ?? null),
   cambiaria: z
     .string()
+    .max(500)
     .nullish()
     .transform((v) => v ?? null),
 });
