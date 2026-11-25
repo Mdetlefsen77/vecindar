@@ -327,4 +327,38 @@ describe("TarjetaEncuesta", () => {
       ),
     ).toBeTruthy();
   });
+
+  it("I-166 · Anterior en la pregunta 2 vuelve a la 1 y la nueva carita se envía", async () => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 201 }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    expect(
+      screen.getByText("¿Se leen bien los textos y botones?"),
+    ).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Anterior" }));
+    expect(
+      screen.getByText("¿Qué tan fácil te resulta usar la app?"),
+    ).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Carita 2" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    const [, init] = fetchMock.mock.calls[0] as unknown as [
+      string,
+      RequestInit,
+    ];
+    expect(JSON.parse(init.body as string)).toEqual({
+      facilidad: 2,
+      seLee: "SI",
+      nps: 9,
+    });
+  });
 });
