@@ -361,4 +361,24 @@ describe("TarjetaEncuesta", () => {
       nps: 9,
     });
   });
+
+  it("I-167 · con 401 muestra el error genérico, deja Enviar y no dice Ya respondiste", async () => {
+    const fetchMock = vi.fn(
+      async () =>
+        new Response(JSON.stringify({ error: "No autorizado" }), {
+          status: 401,
+        }),
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    llegarAEnviar();
+    fireEvent.click(screen.getByRole("button", { name: "Enviar" }));
+
+    await vi.waitFor(() =>
+      expect(screen.getByText(MENSAJE_ERROR)).toBeTruthy(),
+    );
+    expect(screen.getByRole("button", { name: "Enviar" })).toBeTruthy();
+    expect(screen.queryByText("Ya respondiste esta encuesta")).toBeNull();
+  });
 });
