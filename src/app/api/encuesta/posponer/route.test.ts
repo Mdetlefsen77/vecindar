@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { NextResponse } from "next/server";
+
 vi.mock("@/lib/api/guard", () => ({
   requireSession: vi.fn(),
   getUserId: vi.fn(),
@@ -34,5 +36,14 @@ describe("POST /api/encuesta/posponer", () => {
       where: { id: 7 },
       data: { encuestaPospuestaEn: new Date("2026-11-20T15:00:00Z") },
     });
+  });
+
+  it("I-172 sin sesión responde 401 y no escribe nada", async () => {
+    vi.mocked(requireSession).mockResolvedValue({
+      response: NextResponse.json({ error: "No autorizado" }, { status: 401 }),
+    } as never);
+    const res = await POST();
+    expect(res.status).toBe(401);
+    expect(prisma.usuario.update).not.toHaveBeenCalled();
   });
 });
