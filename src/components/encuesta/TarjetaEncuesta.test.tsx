@@ -381,4 +381,18 @@ describe("TarjetaEncuesta", () => {
     expect(screen.getByRole("button", { name: "Enviar" })).toBeTruthy();
     expect(screen.queryByText("Ya respondiste esta encuesta")).toBeNull();
   });
+
+  it("I-168 · muestra el número de pregunta solo desde la 1", () => {
+    render(<TarjetaEncuesta />);
+    expect(screen.queryByText(/Pregunta/)).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Responder" }));
+    expect(screen.getByText("Pregunta 1 de 5")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "Carita 4" }));
+    fireEvent.click(screen.getByRole("button", { name: "Sí" }));
+    fireEvent.click(screen.getByRole("button", { name: "9" }));
+    fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
+    expect(screen.getByText("Pregunta 5 de 5")).toBeTruthy();
+  });
 });
