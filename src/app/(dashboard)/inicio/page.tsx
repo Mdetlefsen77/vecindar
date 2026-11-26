@@ -5,6 +5,8 @@ import { getUserId } from "@/lib/api/guard";
 import { Suspense } from "react";
 import Link from "next/link";
 import { TarjetaClima } from "@/components/clima/TarjetaClima";
+import { TarjetaEncuesta } from "@/components/encuesta/TarjetaEncuesta";
+import { rondaActual } from "@/lib/encuesta";
 import InvitarVecino from "@/components/crecimiento/InvitarVecino";
 import { obtenerOCrearCodigo } from "@/lib/crecimiento/invitaciones";
 import { invitacionesConPrimerPago } from "@/lib/crecimiento/beneficiosServer";
@@ -94,6 +96,7 @@ export default async function InicioPage() {
     avisos,
     avisosActivos,
     alertaSos,
+    respuestaEncuesta,
   ] = await Promise.all([
     prisma.usuario.findUnique({
       where: { id: usuarioId },
@@ -175,6 +178,10 @@ export default async function InicioPage() {
       },
       orderBy: { createdAt: "desc" },
       select: { estado: true },
+    }),
+    prisma.respuestaEncuesta.findFirst({
+      where: { usuarioId, ronda: rondaActual(ahora) },
+      select: { id: true },
     }),
   ]);
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
@@ -355,6 +362,8 @@ export default async function InicioPage() {
       <Suspense fallback={null}>
         <TarjetaClima />
       </Suspense>
+
+      {!respuestaEncuesta && <TarjetaEncuesta />}
 
       {/* ─── SOS: franja de todo el ancho, el único bloque rojo ──────── */}
       <Link
