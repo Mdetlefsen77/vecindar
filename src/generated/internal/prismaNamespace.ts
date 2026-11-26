@@ -2817,6 +2817,7 @@ export const UsuarioScalarFieldEnum = {
   loteId: 'loteId',
   verificado: 'verificado',
   rol: 'rol',
+  encuestaPospuestaEn: 'encuestaPospuestaEn',
   invitadoPorId: 'invitadoPorId',
   origenRegistro: 'origenRegistro',
   ocultarNombreEnPublicacionExterna: 'ocultarNombreEnPublicacionExterna',

@@ -78,6 +78,9 @@ model Usuario {
   verificado Boolean @default(false)
   rol        Rol     @default(VECINO)
 
+  // "Ahora no" de la encuesta (ver src/lib/encuesta.ts): hora del servidor.
+  encuestaPospuestaEn DateTime?
+
   // Relaciones
   incidentes         Incidente[]
   alertasPanico      AlertaPanico[]     @relation("UsuarioAlertas")
