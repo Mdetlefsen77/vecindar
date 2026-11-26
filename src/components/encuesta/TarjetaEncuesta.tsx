@@ -29,7 +29,11 @@ export function TarjetaEncuesta() {
   const [pospuesta, setPospuesta] = useState(false);
 
   async function posponer() {
-    await fetch("/api/encuesta/posponer", { method: "POST" });
+    try {
+      await fetch("/api/encuesta/posponer", { method: "POST" });
+    } catch {
+      // sin red: igual se oculta en esta pantalla
+    }
     setPospuesta(true);
   }
 

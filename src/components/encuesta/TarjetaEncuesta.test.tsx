@@ -413,4 +413,27 @@ describe("TarjetaEncuesta", () => {
     await vi.waitFor(() => expect(screen.queryByText("Encuesta")).toBeNull());
     expect(screen.queryByRole("button", { name: "Responder" })).toBeNull();
   });
+
+  it('I-175 · "Ahora no" oculta la tarjeta aunque el POST falle (500 o sin red)', async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response("{}", { status: 500 })),
+    );
+    render(<TarjetaEncuesta />);
+    fireEvent.click(screen.getByRole("button", { name: "Ahora no" }));
+    await vi.waitFor(() => expect(screen.queryByText("Encuesta")).toBeNull());
+    expect(screen.queryByRole("button", { name: "Responder" })).toBeNull();
+    cleanup();
+
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new TypeError("Failed to fetch");
+      }),
+    );
+    render(<TarjetaEncuesta />);
+    fireEvent.click(screen.getByRole("button", { name: "Ahora no" }));
+    await vi.waitFor(() => expect(screen.queryByText("Encuesta")).toBeNull());
+    expect(screen.queryByRole("button", { name: "Responder" })).toBeNull();
+  });
 });
