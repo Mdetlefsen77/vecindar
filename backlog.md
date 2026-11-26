@@ -138,7 +138,7 @@ Como **vecino** quiero **que un incidente, pedido o mascota ya cerrados no se pu
 - ✅ _Pendiente de HU-11 (cubierto por HU-15):_ `resolverIncidente` (`src/app/api/notificaciones-externas/compartir/route.ts:21-41`) no mira `estado`; desde HU-11 eso incluye el adelanto de la descripción.
 - ✅ _Pendiente de HU-12 (cubierto por HU-15):_ `resolverRequerimiento` y `resolverMascota` (`route.ts:53-108`) tampoco miran el estado; desde HU-12 también comparten el adelanto.
 
-## HU-16 · El vecino responde la encuesta de experiencia
+## ✅ HU-16 · El vecino responde la encuesta de experiencia
 Como **vecino** quiero **contestar en pocos toques cómo me va con la app** para **que los que la hacen sepan qué mejorar**.
 - En el Inicio hay una tarjeta grande "¿Nos contás cómo te va con la app? Son 5 preguntas" con **Responder**; al tocarla, una pregunta por paso con botones grandes (las 5 de M-8 en `pendientes.md`; las dos de texto son opcionales).
 - `POST /api/encuesta` sin sesión → `401`; con respuestas inválidas (fuera de rango, falta una obligatoria) → `400`; válida → `201` y queda guardada con el vecino y la ronda actual.
@@ -157,6 +157,7 @@ Como **admin** quiero **ver los resultados de cada ronda de la encuesta** para *
 - Ningún resultado ni comentario muestra el nombre de quien respondió.
 - Un vecino (rol sin permiso) que entra a `/admin/encuesta` no ve los resultados (redirige o `403`, como el resto de `/admin`).
 - Sin respuestas en la ronda, la página lo dice en vez de mostrar números vacíos.
+- _Pendiente de HU-16:_ mostrar `gusta`/`cambiaria` como texto de React (nunca HTML) y neutralizar `=`, `+`, `-`, `@` si se exporta a CSV (ver `## Notas` del 2026-11-24); las etiquetas de `seLee` están en `OPCIONES_SE_LEE` (`src/lib/encuesta.ts`).
 
 ## Notas
 - 2026-11-04 · (HU-05) En el plan Hobby de Vercel los crons son solo diarios: la push sale a una hora fija, así que una tormenta que se forma en el día puede no avisarse a tiempo. Hay que elegir la hora en `/story HU-05`.
