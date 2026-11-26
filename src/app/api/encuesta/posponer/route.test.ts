@@ -46,4 +46,21 @@ describe("POST /api/encuesta/posponer", () => {
     expect(res.status).toBe(401);
     expect(prisma.usuario.update).not.toHaveBeenCalled();
   });
+
+  it("I-173 si el body trae usuarioId 99 se guarda en el usuario de la sesión (7), no en el 99", async () => {
+    const req = new Request("http://localhost/api/encuesta/posponer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ usuarioId: 99 }),
+    });
+    const res = await (POST as unknown as (r: Request) => Promise<Response>)(
+      req,
+    );
+    expect(res.status).toBe(200);
+    expect(prisma.usuario.update).toHaveBeenCalledTimes(1);
+    expect(prisma.usuario.update).toHaveBeenCalledWith({
+      where: { id: 7 },
+      data: { encuestaPospuestaEn: new Date("2026-11-20T15:00:00Z") },
+    });
+  });
 });
