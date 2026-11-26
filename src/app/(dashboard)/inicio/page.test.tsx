@@ -114,4 +114,9 @@ describe("/inicio · tarjeta de la encuesta", () => {
     cuentaCreada(new Date(Date.now() - 14 * DIA + 1));
     expect(renderToStaticMarkup(await InicioPage())).not.toContain(TEXTO);
   });
+
+  it("I-170 se ve si la cuenta tiene 14 días justos", async () => {
+    cuentaCreada(new Date(Date.now() - 14 * DIA));
+    expect(renderToStaticMarkup(await InicioPage())).toContain(TEXTO);
+  });
 });
