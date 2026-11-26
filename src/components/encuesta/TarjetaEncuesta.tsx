@@ -26,6 +26,16 @@ export function TarjetaEncuesta() {
   const [enviada, setEnviada] = useState(false);
   const [yaRespondida, setYaRespondida] = useState(false);
   const [error, setError] = useState(false);
+  const [pospuesta, setPospuesta] = useState(false);
+
+  async function posponer() {
+    try {
+      await fetch("/api/encuesta/posponer", { method: "POST" });
+    } catch {
+      // sin red: igual se oculta en esta pantalla
+    }
+    setPospuesta(true);
+  }
 
   async function enviar() {
     const body: Record<string, unknown> = { facilidad, seLee, nps };
@@ -45,6 +55,8 @@ export function TarjetaEncuesta() {
       setError(true);
     }
   }
+
+  if (pospuesta) return null;
 
   if (yaRespondida) {
     return (
@@ -90,6 +102,9 @@ export function TarjetaEncuesta() {
           <p className={PREGUNTA}>{PREGUNTAS_ENCUESTA.intro}</p>
           <button className={BOTON_PRINCIPAL} onClick={() => setPaso(1)}>
             Responder
+          </button>
+          <button className={BOTON_SECUNDARIO} onClick={posponer}>
+            Ahora no
           </button>
         </>
       )}

@@ -145,7 +145,7 @@ Como **vecino** quiero **contestar en pocos toques cómo me va con la app** para
 - Un segundo envío del mismo vecino en la misma ronda → `409`, y no se guarda otra respuesta.
 - Al responder, la tarjeta desaparece del Inicio.
 
-## HU-17 · La encuesta aparece solo cuando corresponde
+## ✅ HU-17 · La encuesta aparece solo cuando corresponde
 Como **vecino** quiero **que la encuesta me la pidan cuando ya usé la app un tiempo, y poder dejarla para después** para **no sentir que me interrumpen**.
 - Una cuenta con menos de 2 semanas no ve la tarjeta en el Inicio.
 - **Ahora no** oculta la tarjeta; vuelve a aparecer más adelante dentro de la misma ronda (cuándo, se decide en `/story HU-17`).
@@ -213,3 +213,5 @@ Como **admin** quiero **ver los resultados de cada ronda de la encuesta** para *
 - 2026-11-24 · (HU-16, hardening) En `src/lib/validation/encuesta.ts:5-7`, `.max(500)` se evalúa antes del `trim`: un `gusta`/`cambiaria` de 500 caracteres con espacios alrededor da `400`. La tarjeta lo evita con `maxLength={500}`; se corregiría con `z.string().trim().max(500)`.
 - 2026-11-24 · (HU-16, seguridad, hardening) `getUserId` (`src/lib/api/guard.ts:6-8`) hace `Number(session.user.id)` sin validar: si al JWT le faltara el `id`, `NaN` llegaría a `findUnique` y la respuesta sería `500` en todas las rutas con `requireSession`. No se vio un camino para que un actor lo provoque.
 - 2026-11-26 · (HU-16, seguridad, hardening) `POST /api/encuesta` (`src/app/api/encuesta/route.ts:16`) lee el body completo con `req.json()` antes de validar, sin un tope de tamaño en el código; un usuario con sesión podría mandar un body enorme. Es disponibilidad y vale para todas las rutas con el mismo patrón; si hay un límite de la plataforma (Vercel), está fuera del repo.
+- 2026-11-26 · (HU-17, seguridad, hardening) `POST /api/encuesta/posponer` (`src/app/api/encuesta/posponer/route.ts:12`): con un JWT vigente de un usuario que ya no existe, `prisma.usuario.update` lanza P2025 y la ruta responde `500` sin control. Se cortaría con `updateMany` o capturando el error y devolviendo `401`/`404` (relacionado con la nota de `requireSession` y los usuarios borrados).
+- 2026-11-26 · (HU-17, seguridad, hardening) `POST /api/encuesta/posponer` no limita la frecuencia: un usuario con sesión puede repetirlo sin tope, y cada llamada es una escritura (solo sobre su propia fila).

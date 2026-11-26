@@ -102,6 +102,7 @@ export default async function InicioPage() {
       where: { id: usuarioId },
       select: {
         createdAt: true,
+        encuestaPospuestaEn: true,
         vistasSecciones: true,
         suscripcion: { select: { montoMensual: true, exento: true } },
       },
@@ -184,6 +185,13 @@ export default async function InicioPage() {
       select: { id: true },
     }),
   ]);
+  const cuentaConDosSemanas =
+    !!usuarioConVistas &&
+    ahora.getTime() - usuarioConVistas.createdAt.getTime() >= 14 * 86_400_000;
+  const pospuestaReciente =
+    !!usuarioConVistas?.encuestaPospuestaEn &&
+    ahora.getTime() - usuarioConVistas.encuestaPospuestaEn.getTime() <
+      7 * 86_400_000;
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
     usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
       ?.vistoAt ??
@@ -363,7 +371,9 @@ export default async function InicioPage() {
         <TarjetaClima />
       </Suspense>
 
-      {!respuestaEncuesta && <TarjetaEncuesta />}
+      {cuentaConDosSemanas && !respuestaEncuesta && !pospuestaReciente && (
+        <TarjetaEncuesta />
+      )}
 
       {/* ─── SOS: franja de todo el ancho, el único bloque rojo ──────── */}
       <Link

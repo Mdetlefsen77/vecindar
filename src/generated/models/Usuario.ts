@@ -48,6 +48,7 @@ export type UsuarioMinAggregateOutputType = {
   loteId: number | null
   verificado: boolean | null
   rol: $Enums.Rol | null
+  encuestaPospuestaEn: Date | null
   invitadoPorId: number | null
   origenRegistro: $Enums.OrigenRegistro | null
   ocultarNombreEnPublicacionExterna: boolean | null
@@ -69,6 +70,7 @@ export type UsuarioMaxAggregateOutputType = {
   loteId: number | null
   verificado: boolean | null
   rol: $Enums.Rol | null
+  encuestaPospuestaEn: Date | null
   invitadoPorId: number | null
   origenRegistro: $Enums.OrigenRegistro | null
   ocultarNombreEnPublicacionExterna: boolean | null
@@ -90,6 +92,7 @@ export type UsuarioCountAggregateOutputType = {
   loteId: number
   verificado: number
   rol: number
+  encuestaPospuestaEn: number
   invitadoPorId: number
   origenRegistro: number
   ocultarNombreEnPublicacionExterna: number
@@ -125,6 +128,7 @@ export type UsuarioMinAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  encuestaPospuestaEn?: true
   invitadoPorId?: true
   origenRegistro?: true
   ocultarNombreEnPublicacionExterna?: true
@@ -146,6 +150,7 @@ export type UsuarioMaxAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  encuestaPospuestaEn?: true
   invitadoPorId?: true
   origenRegistro?: true
   ocultarNombreEnPublicacionExterna?: true
@@ -167,6 +172,7 @@ export type UsuarioCountAggregateInputType = {
   loteId?: true
   verificado?: true
   rol?: true
+  encuestaPospuestaEn?: true
   invitadoPorId?: true
   origenRegistro?: true
   ocultarNombreEnPublicacionExterna?: true
@@ -275,6 +281,7 @@ export type UsuarioGroupByOutputType = {
   loteId: number
   verificado: boolean
   rol: $Enums.Rol
+  encuestaPospuestaEn: Date | null
   invitadoPorId: number | null
   origenRegistro: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna: boolean
@@ -319,6 +326,7 @@ export type UsuarioWhereInput = {
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
@@ -367,6 +375,7 @@ export type UsuarioOrderByWithRelationInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  encuestaPospuestaEn?: Prisma.SortOrderInput | Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
@@ -418,6 +427,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
@@ -466,6 +476,7 @@ export type UsuarioOrderByWithAggregationInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  encuestaPospuestaEn?: Prisma.SortOrderInput | Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrderInput | Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
@@ -495,6 +506,7 @@ export type UsuarioScalarWhereWithAggregatesInput = {
   loteId?: Prisma.IntWithAggregatesFilter<"Usuario"> | number
   verificado?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolWithAggregatesFilter<"Usuario"> | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.DateTimeNullableWithAggregatesFilter<"Usuario"> | Date | string | null
   invitadoPorId?: Prisma.IntNullableWithAggregatesFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroWithAggregatesFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolWithAggregatesFilter<"Usuario"> | boolean
@@ -514,6 +526,7 @@ export type UsuarioCreateInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -561,6 +574,7 @@ export type UsuarioUncheckedCreateInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -605,6 +619,7 @@ export type UsuarioUpdateInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -652,6 +667,7 @@ export type UsuarioUncheckedUpdateInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -698,6 +714,7 @@ export type UsuarioCreateManyInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -717,6 +734,7 @@ export type UsuarioUpdateManyMutationInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -737,6 +755,7 @@ export type UsuarioUncheckedUpdateManyInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -773,6 +792,7 @@ export type UsuarioCountOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  encuestaPospuestaEn?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
@@ -800,6 +820,7 @@ export type UsuarioMaxOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  encuestaPospuestaEn?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
@@ -821,6 +842,7 @@ export type UsuarioMinOrderByAggregateInput = {
   loteId?: Prisma.SortOrder
   verificado?: Prisma.SortOrder
   rol?: Prisma.SortOrder
+  encuestaPospuestaEn?: Prisma.SortOrder
   invitadoPorId?: Prisma.SortOrder
   origenRegistro?: Prisma.SortOrder
   ocultarNombreEnPublicacionExterna?: Prisma.SortOrder
@@ -909,12 +931,12 @@ export type EnumRolFieldUpdateOperationsInput = {
   set?: $Enums.Rol
 }
 
-export type EnumOrigenRegistroFieldUpdateOperationsInput = {
-  set?: $Enums.OrigenRegistro
-}
-
 export type NullableDateTimeFieldUpdateOperationsInput = {
   set?: Date | string | null
+}
+
+export type EnumOrigenRegistroFieldUpdateOperationsInput = {
+  set?: $Enums.OrigenRegistro
 }
 
 export type UsuarioUpdateOneWithoutInvitadosNestedInput = {
@@ -1313,6 +1335,7 @@ export type UsuarioCreateWithoutLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -1358,6 +1381,7 @@ export type UsuarioUncheckedCreateWithoutLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -1433,6 +1457,7 @@ export type UsuarioScalarWhereInput = {
   loteId?: Prisma.IntFilter<"Usuario"> | number
   verificado?: Prisma.BoolFilter<"Usuario"> | boolean
   rol?: Prisma.EnumRolFilter<"Usuario"> | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.DateTimeNullableFilter<"Usuario"> | Date | string | null
   invitadoPorId?: Prisma.IntNullableFilter<"Usuario"> | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFilter<"Usuario"> | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFilter<"Usuario"> | boolean
@@ -1452,6 +1477,7 @@ export type UsuarioCreateWithoutInvitadosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -1498,6 +1524,7 @@ export type UsuarioUncheckedCreateWithoutInvitadosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -1546,6 +1573,7 @@ export type UsuarioCreateWithoutInvitadoPorInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -1592,6 +1620,7 @@ export type UsuarioUncheckedCreateWithoutInvitadoPorInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -1656,6 +1685,7 @@ export type UsuarioUpdateWithoutInvitadosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1702,6 +1732,7 @@ export type UsuarioUncheckedUpdateWithoutInvitadosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1761,6 +1792,7 @@ export type UsuarioCreateWithoutSuscripcionInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -1807,6 +1839,7 @@ export type UsuarioUncheckedCreateWithoutSuscripcionInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -1866,6 +1899,7 @@ export type UsuarioUpdateWithoutSuscripcionInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -1912,6 +1946,7 @@ export type UsuarioUncheckedUpdateWithoutSuscripcionInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1955,6 +1990,7 @@ export type UsuarioCreateWithoutPagosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -2001,6 +2037,7 @@ export type UsuarioUncheckedCreateWithoutPagosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -2049,6 +2086,7 @@ export type UsuarioCreateWithoutPagosRegistradosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -2095,6 +2133,7 @@ export type UsuarioUncheckedCreateWithoutPagosRegistradosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -2154,6 +2193,7 @@ export type UsuarioUpdateWithoutPagosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2200,6 +2240,7 @@ export type UsuarioUncheckedUpdateWithoutPagosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2254,6 +2295,7 @@ export type UsuarioUpdateWithoutPagosRegistradosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2300,6 +2342,7 @@ export type UsuarioUncheckedUpdateWithoutPagosRegistradosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2343,6 +2386,7 @@ export type UsuarioCreateWithoutVistasSeccionesInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -2389,6 +2433,7 @@ export type UsuarioUncheckedCreateWithoutVistasSeccionesInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -2448,6 +2493,7 @@ export type UsuarioUpdateWithoutVistasSeccionesInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2494,6 +2540,7 @@ export type UsuarioUncheckedUpdateWithoutVistasSeccionesInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2537,6 +2584,7 @@ export type UsuarioCreateWithoutIncidentesInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -2583,6 +2631,7 @@ export type UsuarioUncheckedCreateWithoutIncidentesInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -2642,6 +2691,7 @@ export type UsuarioUpdateWithoutIncidentesInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2688,6 +2738,7 @@ export type UsuarioUncheckedUpdateWithoutIncidentesInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2731,6 +2782,7 @@ export type UsuarioCreateWithoutAlertasPanicoInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -2777,6 +2829,7 @@ export type UsuarioUncheckedCreateWithoutAlertasPanicoInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -2825,6 +2878,7 @@ export type UsuarioCreateWithoutAlertasAtendidasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -2871,6 +2925,7 @@ export type UsuarioUncheckedCreateWithoutAlertasAtendidasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -2930,6 +2985,7 @@ export type UsuarioUpdateWithoutAlertasPanicoInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -2976,6 +3032,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasPanicoInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3030,6 +3087,7 @@ export type UsuarioUpdateWithoutAlertasAtendidasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3076,6 +3134,7 @@ export type UsuarioUncheckedUpdateWithoutAlertasAtendidasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3119,6 +3178,7 @@ export type UsuarioCreateWithoutComentariosAlertasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -3165,6 +3225,7 @@ export type UsuarioUncheckedCreateWithoutComentariosAlertasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -3224,6 +3285,7 @@ export type UsuarioUpdateWithoutComentariosAlertasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3270,6 +3332,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosAlertasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3313,6 +3376,7 @@ export type UsuarioCreateWithoutPushSubscriptionsInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -3359,6 +3423,7 @@ export type UsuarioUncheckedCreateWithoutPushSubscriptionsInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -3418,6 +3483,7 @@ export type UsuarioUpdateWithoutPushSubscriptionsInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3464,6 +3530,7 @@ export type UsuarioUncheckedUpdateWithoutPushSubscriptionsInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3507,6 +3574,7 @@ export type UsuarioCreateWithoutRequerimientosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -3553,6 +3621,7 @@ export type UsuarioUncheckedCreateWithoutRequerimientosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -3612,6 +3681,7 @@ export type UsuarioUpdateWithoutRequerimientosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3658,6 +3728,7 @@ export type UsuarioUncheckedUpdateWithoutRequerimientosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3701,6 +3772,7 @@ export type UsuarioCreateWithoutComentariosReqInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -3747,6 +3819,7 @@ export type UsuarioUncheckedCreateWithoutComentariosReqInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -3806,6 +3879,7 @@ export type UsuarioUpdateWithoutComentariosReqInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -3852,6 +3926,7 @@ export type UsuarioUncheckedUpdateWithoutComentariosReqInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -3895,6 +3970,7 @@ export type UsuarioCreateWithoutMascotasPerdidasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -3941,6 +4017,7 @@ export type UsuarioUncheckedCreateWithoutMascotasPerdidasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -4000,6 +4077,7 @@ export type UsuarioUpdateWithoutMascotasPerdidasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4046,6 +4124,7 @@ export type UsuarioUncheckedUpdateWithoutMascotasPerdidasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4089,6 +4168,7 @@ export type UsuarioCreateWithoutCodigoInvitacionInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -4135,6 +4215,7 @@ export type UsuarioUncheckedCreateWithoutCodigoInvitacionInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -4194,6 +4275,7 @@ export type UsuarioUpdateWithoutCodigoInvitacionInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4240,6 +4322,7 @@ export type UsuarioUncheckedUpdateWithoutCodigoInvitacionInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4283,6 +4366,7 @@ export type UsuarioCreateWithoutTransicionesRealizadasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -4329,6 +4413,7 @@ export type UsuarioUncheckedCreateWithoutTransicionesRealizadasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -4388,6 +4473,7 @@ export type UsuarioUpdateWithoutTransicionesRealizadasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4434,6 +4520,7 @@ export type UsuarioUncheckedUpdateWithoutTransicionesRealizadasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4477,6 +4564,7 @@ export type UsuarioCreateWithoutReportesGeneradosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -4523,6 +4611,7 @@ export type UsuarioUncheckedCreateWithoutReportesGeneradosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -4582,6 +4671,7 @@ export type UsuarioUpdateWithoutReportesGeneradosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4628,6 +4718,7 @@ export type UsuarioUncheckedUpdateWithoutReportesGeneradosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4671,6 +4762,7 @@ export type UsuarioCreateWithoutPublicacionesExternasInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -4717,6 +4809,7 @@ export type UsuarioUncheckedCreateWithoutPublicacionesExternasInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -4776,6 +4869,7 @@ export type UsuarioUpdateWithoutPublicacionesExternasInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -4822,6 +4916,7 @@ export type UsuarioUncheckedUpdateWithoutPublicacionesExternasInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -4865,6 +4960,7 @@ export type UsuarioCreateWithoutClicksLinksInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -4911,6 +5007,7 @@ export type UsuarioUncheckedCreateWithoutClicksLinksInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -4970,6 +5067,7 @@ export type UsuarioUpdateWithoutClicksLinksInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5016,6 +5114,7 @@ export type UsuarioUncheckedUpdateWithoutClicksLinksInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5059,6 +5158,7 @@ export type UsuarioCreateWithoutPartesTurnoInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -5105,6 +5205,7 @@ export type UsuarioUncheckedCreateWithoutPartesTurnoInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -5164,6 +5265,7 @@ export type UsuarioUpdateWithoutPartesTurnoInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5210,6 +5312,7 @@ export type UsuarioUncheckedUpdateWithoutPartesTurnoInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5253,6 +5356,7 @@ export type UsuarioCreateWithoutOficiosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -5299,6 +5403,7 @@ export type UsuarioUncheckedCreateWithoutOficiosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -5358,6 +5463,7 @@ export type UsuarioUpdateWithoutOficiosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5404,6 +5510,7 @@ export type UsuarioUncheckedUpdateWithoutOficiosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5447,6 +5554,7 @@ export type UsuarioCreateWithoutRecomendacionesOficioInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -5493,6 +5601,7 @@ export type UsuarioUncheckedCreateWithoutRecomendacionesOficioInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -5552,6 +5661,7 @@ export type UsuarioUpdateWithoutRecomendacionesOficioInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5598,6 +5708,7 @@ export type UsuarioUncheckedUpdateWithoutRecomendacionesOficioInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5641,6 +5752,7 @@ export type UsuarioCreateWithoutReportesOficioInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -5687,6 +5799,7 @@ export type UsuarioUncheckedCreateWithoutReportesOficioInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -5746,6 +5859,7 @@ export type UsuarioUpdateWithoutReportesOficioInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5792,6 +5906,7 @@ export type UsuarioUncheckedUpdateWithoutReportesOficioInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -5835,6 +5950,7 @@ export type UsuarioCreateWithoutAvisosInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -5881,6 +5997,7 @@ export type UsuarioUncheckedCreateWithoutAvisosInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -5940,6 +6057,7 @@ export type UsuarioUpdateWithoutAvisosInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -5986,6 +6104,7 @@ export type UsuarioUncheckedUpdateWithoutAvisosInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -6029,6 +6148,7 @@ export type UsuarioCreateWithoutConfirmacionesAvisoInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -6075,6 +6195,7 @@ export type UsuarioUncheckedCreateWithoutConfirmacionesAvisoInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -6134,6 +6255,7 @@ export type UsuarioUpdateWithoutConfirmacionesAvisoInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6180,6 +6302,7 @@ export type UsuarioUncheckedUpdateWithoutConfirmacionesAvisoInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -6223,6 +6346,7 @@ export type UsuarioCreateWithoutRespuestasEncuestaInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -6269,6 +6393,7 @@ export type UsuarioUncheckedCreateWithoutRespuestasEncuestaInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -6328,6 +6453,7 @@ export type UsuarioUpdateWithoutRespuestasEncuestaInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6374,6 +6500,7 @@ export type UsuarioUncheckedUpdateWithoutRespuestasEncuestaInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -6418,6 +6545,7 @@ export type UsuarioCreateManyLoteInput = {
   telefono?: string | null
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   invitadoPorId?: number | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
@@ -6437,6 +6565,7 @@ export type UsuarioUpdateWithoutLoteInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6482,6 +6611,7 @@ export type UsuarioUncheckedUpdateWithoutLoteInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -6527,6 +6657,7 @@ export type UsuarioUncheckedUpdateManyWithoutLoteInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   invitadoPorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -6548,6 +6679,7 @@ export type UsuarioCreateManyInvitadoPorInput = {
   loteId: number
   verificado?: boolean
   rol?: $Enums.Rol
+  encuestaPospuestaEn?: Date | string | null
   origenRegistro?: $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: boolean
   pruebaIniciadaAt?: Date | string | null
@@ -6566,6 +6698,7 @@ export type UsuarioUpdateWithoutInvitadoPorInput = {
   telefono?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6612,6 +6745,7 @@ export type UsuarioUncheckedUpdateWithoutInvitadoPorInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6657,6 +6791,7 @@ export type UsuarioUncheckedUpdateManyWithoutInvitadoPorInput = {
   loteId?: Prisma.IntFieldUpdateOperationsInput | number
   verificado?: Prisma.BoolFieldUpdateOperationsInput | boolean
   rol?: Prisma.EnumRolFieldUpdateOperationsInput | $Enums.Rol
+  encuestaPospuestaEn?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   origenRegistro?: Prisma.EnumOrigenRegistroFieldUpdateOperationsInput | $Enums.OrigenRegistro
   ocultarNombreEnPublicacionExterna?: Prisma.BoolFieldUpdateOperationsInput | boolean
   pruebaIniciadaAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -6906,6 +7041,7 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  encuestaPospuestaEn?: boolean
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
@@ -6955,6 +7091,7 @@ export type UsuarioSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  encuestaPospuestaEn?: boolean
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
@@ -6978,6 +7115,7 @@ export type UsuarioSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  encuestaPospuestaEn?: boolean
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
@@ -7001,6 +7139,7 @@ export type UsuarioSelectScalar = {
   loteId?: boolean
   verificado?: boolean
   rol?: boolean
+  encuestaPospuestaEn?: boolean
   invitadoPorId?: boolean
   origenRegistro?: boolean
   ocultarNombreEnPublicacionExterna?: boolean
@@ -7012,7 +7151,7 @@ export type UsuarioSelectScalar = {
   updatedAt?: boolean
 }
 
-export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "invitadoPorId" | "origenRegistro" | "ocultarNombreEnPublicacionExterna" | "pruebaIniciadaAt" | "pruebaHasta" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
+export type UsuarioOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "password" | "nombre" | "apellido" | "telefono" | "loteId" | "verificado" | "rol" | "encuestaPospuestaEn" | "invitadoPorId" | "origenRegistro" | "ocultarNombreEnPublicacionExterna" | "pruebaIniciadaAt" | "pruebaHasta" | "ultimoLoginAt" | "ultimaActividadAt" | "createdAt" | "updatedAt", ExtArgs["result"]["usuario"]>
 export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   lote?: boolean | Prisma.LoteDefaultArgs<ExtArgs>
   incidentes?: boolean | Prisma.Usuario$incidentesArgs<ExtArgs>
@@ -7093,6 +7232,7 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     loteId: number
     verificado: boolean
     rol: $Enums.Rol
+    encuestaPospuestaEn: Date | null
     invitadoPorId: number | null
     origenRegistro: $Enums.OrigenRegistro
     ocultarNombreEnPublicacionExterna: boolean
@@ -7561,6 +7701,7 @@ export interface UsuarioFieldRefs {
   readonly loteId: Prisma.FieldRef<"Usuario", 'Int'>
   readonly verificado: Prisma.FieldRef<"Usuario", 'Boolean'>
   readonly rol: Prisma.FieldRef<"Usuario", 'Rol'>
+  readonly encuestaPospuestaEn: Prisma.FieldRef<"Usuario", 'DateTime'>
   readonly invitadoPorId: Prisma.FieldRef<"Usuario", 'Int'>
   readonly origenRegistro: Prisma.FieldRef<"Usuario", 'OrigenRegistro'>
   readonly ocultarNombreEnPublicacionExterna: Prisma.FieldRef<"Usuario", 'Boolean'>
