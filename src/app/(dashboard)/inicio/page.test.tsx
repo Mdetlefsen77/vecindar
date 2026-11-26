@@ -156,4 +156,9 @@ describe("/inicio · tarjeta de la encuesta", () => {
     respuestas.add("7:2026-T3");
     expect(renderToStaticMarkup(await InicioPage())).toContain(TEXTO);
   });
+
+  it("I-180 no se ve si el usuario de la sesión ya no existe", async () => {
+    vi.mocked(prisma.usuario.findUnique).mockResolvedValue(null);
+    expect(renderToStaticMarkup(await InicioPage())).not.toContain(TEXTO);
+  });
 });
