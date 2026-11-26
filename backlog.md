@@ -145,7 +145,7 @@ Como **vecino** quiero **contestar en pocos toques cómo me va con la app** para
 - Un segundo envío del mismo vecino en la misma ronda → `409`, y no se guarda otra respuesta.
 - Al responder, la tarjeta desaparece del Inicio.
 
-## HU-17 · La encuesta aparece solo cuando corresponde
+## ✅ HU-17 · La encuesta aparece solo cuando corresponde
 Como **vecino** quiero **que la encuesta me la pidan cuando ya usé la app un tiempo, y poder dejarla para después** para **no sentir que me interrumpen**.
 - Una cuenta con menos de 2 semanas no ve la tarjeta en el Inicio.
 - **Ahora no** oculta la tarjeta; vuelve a aparecer más adelante dentro de la misma ronda (cuándo, se decide en `/story HU-17`).
