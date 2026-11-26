@@ -184,6 +184,9 @@ export default async function InicioPage() {
       select: { id: true },
     }),
   ]);
+  const cuentaConDosSemanas =
+    !!usuarioConVistas &&
+    ahora.getTime() - usuarioConVistas.createdAt.getTime() >= 14 * 86_400_000;
   const vistoAt = (seccion: "INCIDENTES" | "REQUERIMIENTOS" | "MASCOTAS") =>
     usuarioConVistas?.vistasSecciones.find((v) => v.seccion === seccion)
       ?.vistoAt ??
@@ -363,7 +366,7 @@ export default async function InicioPage() {
         <TarjetaClima />
       </Suspense>
 
-      {!respuestaEncuesta && <TarjetaEncuesta />}
+      {cuentaConDosSemanas && !respuestaEncuesta && <TarjetaEncuesta />}
 
       {/* ─── SOS: franja de todo el ancho, el único bloque rojo ──────── */}
       <Link

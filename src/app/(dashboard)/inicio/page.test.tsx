@@ -69,13 +69,24 @@ vi.mock("@/lib/prisma/client", () => {
 });
 
 import InicioPage from "@/app/(dashboard)/inicio/page";
+import { prisma } from "@/lib/prisma/client";
 
 const TEXTO = "¿Nos contás cómo te va con la app?";
+const DIA = 24 * 3_600_000;
+
+function cuentaCreada(createdAt: Date) {
+  vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
+    createdAt,
+    vistasSecciones: [],
+    suscripcion: null,
+  } as never);
+}
 
 beforeEach(() => {
   vi.useFakeTimers();
   vi.setSystemTime(new Date("2026-11-20T15:00:00Z"));
   respuestas.clear();
+  cuentaCreada(new Date(Date.now() - 365 * DIA));
 });
 
 afterEach(() => {
@@ -97,5 +108,10 @@ describe("/inicio · tarjeta de la encuesta", () => {
   it("I-158 se ve si respondió otro vecino y no el de la sesión", async () => {
     respuestas.add("8:2026-T4");
     expect(renderToStaticMarkup(await InicioPage())).toContain(TEXTO);
+  });
+
+  it("I-169 no se ve si la cuenta tiene 14 días menos 1 ms", async () => {
+    cuentaCreada(new Date(Date.now() - 14 * DIA + 1));
+    expect(renderToStaticMarkup(await InicioPage())).not.toContain(TEXTO);
   });
 });
