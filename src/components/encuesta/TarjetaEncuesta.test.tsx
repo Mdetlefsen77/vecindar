@@ -395,4 +395,22 @@ describe("TarjetaEncuesta", () => {
     fireEvent.click(screen.getByRole("button", { name: "Siguiente" }));
     expect(screen.getByText("Pregunta 5 de 5")).toBeTruthy();
   });
+
+  it('I-174 · "Ahora no" hace POST a /api/encuesta/posponer y la tarjeta desaparece', async () => {
+    const fetchMock = vi.fn(async () => new Response("{}", { status: 200 }));
+    vi.stubGlobal("fetch", fetchMock);
+    render(<TarjetaEncuesta />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Ahora no" }));
+
+    await vi.waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    const [url, init] = fetchMock.mock.calls[0] as unknown as [
+      string,
+      RequestInit,
+    ];
+    expect(url).toBe("/api/encuesta/posponer");
+    expect(init.method).toBe("POST");
+    await vi.waitFor(() => expect(screen.queryByText("Encuesta")).toBeNull());
+    expect(screen.queryByRole("button", { name: "Responder" })).toBeNull();
+  });
 });
