@@ -74,9 +74,13 @@ import { prisma } from "@/lib/prisma/client";
 const TEXTO = "¿Nos contás cómo te va con la app?";
 const DIA = 24 * 3_600_000;
 
-function cuentaCreada(createdAt: Date) {
+function cuentaCreada(
+  createdAt: Date,
+  encuestaPospuestaEn: Date | null = null,
+) {
   vi.mocked(prisma.usuario.findUnique).mockResolvedValue({
     createdAt,
+    encuestaPospuestaEn,
     vistasSecciones: [],
     suscripcion: null,
   } as never);
@@ -118,5 +122,13 @@ describe("/inicio · tarjeta de la encuesta", () => {
   it("I-170 se ve si la cuenta tiene 14 días justos", async () => {
     cuentaCreada(new Date(Date.now() - 14 * DIA));
     expect(renderToStaticMarkup(await InicioPage())).toContain(TEXTO);
+  });
+
+  it("I-176 no se ve si se pospuso hace 7 días menos 1 ms", async () => {
+    cuentaCreada(
+      new Date(Date.now() - 365 * DIA),
+      new Date(Date.now() - 7 * DIA + 1),
+    );
+    expect(renderToStaticMarkup(await InicioPage())).not.toContain(TEXTO);
   });
 });
